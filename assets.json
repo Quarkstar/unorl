@@ -1,0 +1,54 @@
+{
+  "model": {
+    "repo": "Qwen/Qwen2.5-Math-1.5B",
+    "revision": "4a83ca6e4526a4f2da3aa259ec36c259f66b2ab2",
+    "path": "models/Qwen2.5-Math-1.5B"
+  },
+  "train": {
+    "repo": "eshwarprasadS/DAPO-Math-8k-Stratified",
+    "revision": "0b19042b014353f5aac497da1f354907aae52113",
+    "path": "data/raw/dapo-stratified",
+    "train_rows": 7500,
+    "validation_rows": 500,
+    "split": "train",
+    "prepared_path": "data/train.parquet"
+  },
+  "eval": {
+    "repo": "BytedTsinghua-SIA/AIME-2024",
+    "revision": "aa49075e24ad594b79fdf0bdcefa735c2181be67",
+    "path": "data/raw/aime",
+    "cleaned_rows": 30
+  },
+  "conditional_model": "models/Qwen2.5-Math-1.5B-conditional",
+  "eval25": {
+    "repo": "math-ai/aime25",
+    "revision": "563bb8404243c5f09de6ec262f2db674fe5bce9b",
+    "path": "data/raw/aime25",
+    "cleaned_rows": 30
+  },
+  "eval26": {
+    "repo": "math-ai/aime26",
+    "revision": "79037aebdb6580008fb960d17cb21fd3099083e3",
+    "path": "data/raw/aime26",
+    "cleaned_rows": 30
+  },
+  "train_original": {
+    "repo": "BytedTsinghua-SIA/DAPO-Math-17k",
+    "revision": "65877096c24ffa7abc4e4fa5edb95cf3413a5674",
+    "path": "data/raw/dapo"
+  },
+  "evaluation": {
+    "path": "data/eval.parquet",
+    "rows": 90,
+    "years": [
+      2024,
+      2025,
+      2026
+    ]
+  },
+  "context_extension": {
+    "original": 4096,
+    "configured": 16384,
+    "rope_scaling": null
+  }
+}
