@@ -45,7 +45,8 @@ def validate_low_resource(cfg):
         "one update per fresh batch": trainer.update_epochs_per_batch == 1
         and trainer.policy_mini_batch_size == trainer.train_batch_size,
         "signed REINFORCE loss": algorithm.policy_loss_type == "signed_reinforce",
-        "uncentered estimator": algorithm.advantage_estimator == "signed_reinforce"
+        "supported reward baseline": algorithm.advantage_estimator
+        in {"signed_reinforce", "batch_mean_reinforce", "batch_norm_reinforce"}
         and not algorithm.advantage_batch_normalize,
         "no KL or entropy bonus": not algorithm.use_kl_loss
         and not algorithm.use_kl_in_reward

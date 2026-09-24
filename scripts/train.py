@@ -30,6 +30,8 @@ def environment(gpus="0"):
     }.items():
         env[key] = str(ROOT / relative)
     env.update(
+        TMPDIR="/tmp",
+        RAY_TMPDIR="/tmp",
         CONDITIONAL_PROJECT_ROOT=str(ROOT),
         PYTHONPATH=str(ROOT / ".deps") + ":" + str(CODE) + ":" + str(SKYRL),
         PYTHONUNBUFFERED="1",
@@ -86,7 +88,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--launch", action="store_true")
     parser.add_argument(
-        "--mode", choices=["conditional", "positive", "grpo", "reinforce"], default="conditional"
+        "--mode", choices=["conditional", "positive", "grpo", "reinforce", "ppo"], default="conditional"
     )
     parser.add_argument(
         "--pair", action="store_true", help="Run conditional then GRPO sequentially"
@@ -110,7 +112,7 @@ def main():
     mode = ("pair" if args.pair else args.mode) + ("-smoke" if args.smoke else "")
     date = datetime.now(timezone.utc).strftime("%Y%m%d")
     run_id = args.run_id
-    model_label = "qwen3-4b-base" if args.mode == "reinforce" else "qwen25-math-1.5b"
+    model_label = "qwen3-4b-base" if args.mode in {"reinforce", "ppo"} else "qwen25-math-1.5b"
     if run_id is None:
         attempt = 1
         while (ROOT / "runs" / f"{model_label}-{mode}-{date}-{attempt:02d}").exists():
@@ -148,9 +150,13 @@ def main():
                 "trainer.dump_data_batch": True,
             }
         )
-    module = (
-        "conditional_rl.low_resource_train" if args.mode == "reinforce" else "conditional_rl.train"
-    )
+        if args.mode == "ppo":
+            cfg["trainer.max_training_steps"] = 2
+            cfg["trainer.critic_warmup_steps"] = 1
+    module = {
+        "reinforce": "conditional_rl.low_resource_train",
+        "ppo": "conditional_rl.ppo_train",
+    }.get(args.mode, "conditional_rl.train")
     command = [str(PYTHON), "-m", module] + [
         f"{key}={json.dumps(value)}" for key, value in cfg.items()
     ]

@@ -20,9 +20,29 @@ def signed_advantage(token_level_rewards, response_mask, **kwargs):
     return returns, returns.clone()
 
 
+def batch_mean_advantage(token_level_rewards, response_mask, **kwargs):
+    """Center signed outcome rewards by their current on-policy batch mean."""
+    signed_returns(token_level_rewards, response_mask)
+    scores = token_level_rewards.sum(dim=-1, keepdim=True)
+    centered = (scores - scores.mean()) * response_mask.to(token_level_rewards.dtype)
+    return centered, centered.clone()
+
+
+def batch_normalized_advantage(token_level_rewards, response_mask, **kwargs):
+    """Center and scale signed terminal rewards across the rollout batch."""
+    signed_returns(token_level_rewards, response_mask)
+    scores = token_level_rewards.sum(dim=-1, keepdim=True)
+    centered = scores - scores.mean()
+    scale = scores.std(unbiased=False).clamp_min(1e-8)
+    normalized = (centered / scale) * response_mask.to(token_level_rewards.dtype)
+    return normalized, normalized.clone()
+
+
 def register_algorithms():
     PolicyLossRegistry.register("signed_reinforce", reinforce_loss)
     AdvantageEstimatorRegistry.register("signed_reinforce", signed_advantage)
+    AdvantageEstimatorRegistry.register("batch_mean_reinforce", batch_mean_advantage)
+    AdvantageEstimatorRegistry.register("batch_norm_reinforce", batch_normalized_advantage)
 
 
 class ReinforceTrainer(BenchmarkTrainer):

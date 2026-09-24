@@ -19,6 +19,7 @@ from conditional_rl.low_resource import (
     signed_returns,
 )
 from conditional_rl.low_resource_config import LowResourceTrainConfig, validate_low_resource
+from conditional_rl.low_resource_train import batch_mean_advantage, batch_normalized_advantage
 from conditional_rl.low_resource_worker import MergedWeightExtractor
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,6 +74,39 @@ def test_reject_nonbinary_reward(score):
 def test_all_failed_batch_keeps_negative_signal():
     result = signed_returns(-torch.ones(4, 1), torch.ones(4, 1))
     assert (result == -1).all()
+
+
+def test_batch_mean_advantage_centers_without_std_scaling():
+    rewards = torch.tensor([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]])
+    mask = torch.tensor([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 0.0]])
+    advantages, returns = batch_mean_advantage(rewards, mask)
+    expected = torch.tensor(
+        [[2 / 3, 2 / 3, 2 / 3], [2 / 3, 2 / 3, 2 / 3], [-4 / 3, -4 / 3, 0.0]]
+    )
+    torch.testing.assert_close(advantages, expected)
+    torch.testing.assert_close(returns, expected)
+
+
+def test_batch_normalized_advantage_uses_population_standard_deviation():
+    rewards = torch.tensor([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]])
+    mask = torch.tensor([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 0.0]])
+    advantages, returns = batch_normalized_advantage(rewards, mask)
+    expected = torch.tensor(
+        [[1 / (2**0.5), 1 / (2**0.5), 1 / (2**0.5)],
+         [1 / (2**0.5), 1 / (2**0.5), 1 / (2**0.5)],
+         [-2**0.5, -2**0.5, 0.0]]
+    )
+    torch.testing.assert_close(advantages, expected)
+    torch.testing.assert_close(returns, expected)
+    torch.testing.assert_close(advantages[:, 0].mean(), torch.tensor(0.0), atol=1e-6, rtol=0)
+    torch.testing.assert_close(advantages[:, 0].std(unbiased=False), torch.tensor(1.0))
+
+
+def test_batch_normalized_advantage_is_zero_for_zero_variance_batch():
+    rewards = torch.tensor([[-1.0, 0.0, 0.0]] * 4)
+    mask = torch.ones_like(rewards)
+    advantages, _ = batch_normalized_advantage(rewards, mask)
+    assert torch.count_nonzero(advantages) == 0
 
 
 def test_reinforce_advantages_use_batch_token_mean():
@@ -165,6 +199,28 @@ def test_profile_and_fail_closed_validation():
     cfg.trainer.update_epochs_per_batch = 2
     with pytest.raises(ValueError, match="one update"):
         validate_low_resource(cfg)
+
+
+def test_batch_mean_profile_validates():
+    profile = json.loads(
+        (ROOT / "configs/qwen3-4b-base-reinforce-batchmean-r1.json").read_text()
+    )
+    cfg = LowResourceTrainConfig.from_cli_overrides(
+        [f"{key}={json.dumps(value)}" for key, value in profile.items()]
+    )
+    validate_low_resource(cfg)
+    assert cfg.trainer.algorithm.advantage_estimator == "batch_mean_reinforce"
+
+
+def test_batch_normalized_profile_validates():
+    profile = json.loads(
+        (ROOT / "configs/qwen3-4b-base-reinforce-batchnorm-r1.json").read_text()
+    )
+    cfg = LowResourceTrainConfig.from_cli_overrides(
+        [f"{key}={json.dumps(value)}" for key, value in profile.items()]
+    )
+    validate_low_resource(cfg)
+    assert cfg.trainer.algorithm.advantage_estimator == "batch_norm_reinforce"
 
 
 def _distributed_merge_worker(rank, init_file):
