@@ -35,11 +35,13 @@ class ReinforceTrainer(BenchmarkTrainer):
         return True  # REINFORCE does not consume old log probabilities.
 
     def _normalize_advantages(self, data, mini_batch_boundaries, prompt_boundaries=None):
-        # Mean across trajectories, SUM across response tokens. Do not divide
-        # by each trajectory's length or whiten rewards.
+        # Token mean over each policy minibatch. Each response's signed terminal
+        # reward is broadcast over its response tokens; average over all valid
+        # response tokens to match SkyRL's `token_mean` reduction.
         advantages = data["advantages"].clone()
         for start, end in mini_batch_boundaries:
-            advantages[start:end] /= end - start
+            token_count = data["loss_mask"][start:end].sum().clamp(min=1)
+            advantages[start:end] /= token_count
         data["advantages"] = advantages
         return data
 

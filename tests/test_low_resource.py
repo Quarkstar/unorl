@@ -75,6 +75,19 @@ def test_all_failed_batch_keeps_negative_signal():
     assert (result == -1).all()
 
 
+def test_reinforce_advantages_use_batch_token_mean():
+    from conditional_rl.low_resource_train import ReinforceTrainer
+
+    trainer = ReinforceTrainer.__new__(ReinforceTrainer)
+    data = {
+        "advantages": torch.tensor([[1.0, 1.0, 1.0], [-1.0, -1.0, 0.0]]),
+        "loss_mask": torch.tensor([[1.0, 1.0, 1.0], [1.0, 1.0, 0.0]]),
+    }
+    result = trainer._normalize_advantages(data, [(0, 2)])
+    expected = torch.tensor([[0.2, 0.2, 0.2], [-0.2, -0.2, 0.0]])
+    torch.testing.assert_close(result["advantages"], expected)
+
+
 def test_merge_preserves_outputs_and_parameter_identity(model):
     tokens = torch.tensor([[1, 4, 8, 2]])
     before = model(tokens).logits.detach()
@@ -136,13 +149,19 @@ def test_sgd_has_no_state_across_merges_and_resume(model, tmp_path):
 
 
 def test_profile_and_fail_closed_validation():
-    profile = json.loads((ROOT / "configs/qwen3-4b-base-reinforce-relora.json").read_text())
+    profile = json.loads(
+        (ROOT / "configs/qwen3-4b-base-reinforce-lora-r1-blog.json").read_text()
+    )
     cfg = LowResourceTrainConfig.from_cli_overrides(
         [f"{key}={json.dumps(value)}" for key, value in profile.items()]
     )
     validate_low_resource(cfg)
     assert cfg.trainer.low_resource.lora_rank == 1
     assert cfg.generator.n_samples_per_prompt == 1
+    assert cfg.trainer.algorithm.loss_reduction == "token_mean"
+    assert cfg.trainer.train_batch_size == 256
+    assert cfg.trainer.policy_mini_batch_size == 256
+    assert cfg.trainer.epochs == 4
     cfg.trainer.update_epochs_per_batch = 2
     with pytest.raises(ValueError, match="one update"):
         validate_low_resource(cfg)
@@ -268,7 +287,9 @@ def test_skyrl_accepts_registered_algorithm():
 
     from conditional_rl.low_resource_train import register_algorithms
 
-    profile = json.loads((ROOT / "configs/qwen3-4b-base-reinforce-relora.json").read_text())
+    profile = json.loads(
+        (ROOT / "configs/qwen3-4b-base-reinforce-lora-r1-blog.json").read_text()
+    )
     cfg = LowResourceTrainConfig.from_cli_overrides(
         [f"{key}={json.dumps(value)}" for key, value in profile.items()]
     )

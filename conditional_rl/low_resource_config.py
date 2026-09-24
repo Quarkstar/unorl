@@ -38,8 +38,7 @@ def validate_low_resource(cfg):
         "no critic": trainer.critic.model.path is None,
         "training enabled": not trainer.policy.inference_only_init,
         "no legacy importance correction": not algorithm.use_tis,
-        "sequence-sum objective": algorithm.loss_reduction == "seq_mean_token_sum_norm"
-        and algorithm.max_seq_len == 1,
+        "token-mean objective": algorithm.loss_reduction == "token_mean",
         "synchronous training": not trainer.fully_async.enabled,
         "NCCL full-weight sync": generator.inference_engine.weight_sync_backend == "nccl",
         "one rollout per prompt": generator.n_samples_per_prompt == 1,
