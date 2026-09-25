@@ -18,6 +18,8 @@ PYTHON = ROOT.parent / "SciBuddy/.venv-skyrl/bin/python"
 
 def environment(gpus="0"):
     env = dict(os.environ)
+    temp_root = ROOT / ".tmp"
+    temp_root.mkdir(parents=True, exist_ok=True)
     for key, relative in {
         "HF_HOME": ".cache/huggingface",
         "XDG_CACHE_HOME": ".cache",
@@ -30,8 +32,8 @@ def environment(gpus="0"):
     }.items():
         env[key] = str(ROOT / relative)
     env.update(
-        TMPDIR="/tmp",
-        RAY_TMPDIR="/tmp",
+        TMPDIR=str(temp_root),
+        RAY_TMPDIR=str(temp_root / "ray"),
         CONDITIONAL_PROJECT_ROOT=str(ROOT),
         PYTHONPATH=str(ROOT / ".deps") + ":" + str(CODE) + ":" + str(SKYRL),
         PYTHONUNBUFFERED="1",
