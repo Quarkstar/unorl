@@ -20,6 +20,8 @@ def environment(gpus="0"):
     env = dict(os.environ)
     temp_root = ROOT / ".tmp"
     temp_root.mkdir(parents=True, exist_ok=True)
+    ray_temp_root = ROOT.parent / ".raytmp"
+    ray_temp_root.mkdir(parents=True, exist_ok=True)
     for key, relative in {
         "HF_HOME": ".cache/huggingface",
         "XDG_CACHE_HOME": ".cache",
@@ -33,7 +35,7 @@ def environment(gpus="0"):
         env[key] = str(ROOT / relative)
     env.update(
         TMPDIR=str(temp_root),
-        RAY_TMPDIR=str(temp_root / "ray"),
+        RAY_TMPDIR=str(ray_temp_root),
         CONDITIONAL_PROJECT_ROOT=str(ROOT),
         PYTHONPATH=str(ROOT / ".deps") + ":" + str(CODE) + ":" + str(SKYRL),
         PYTHONUNBUFFERED="1",
