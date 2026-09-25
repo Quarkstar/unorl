@@ -92,7 +92,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--launch", action="store_true")
     parser.add_argument(
-        "--mode", choices=["conditional", "positive", "grpo", "reinforce", "ppo"], default="conditional"
+        "--mode",
+        choices=["conditional", "positive", "grpo", "reinforce", "ppo"],
+        default="conditional",
     )
     parser.add_argument(
         "--pair", action="store_true", help="Run conditional then GRPO sequentially"
@@ -158,7 +160,7 @@ def main():
             cfg["trainer.max_training_steps"] = 2
             cfg["trainer.critic_warmup_steps"] = 1
     module = {
-        "reinforce": "conditional_rl.low_resource_train",
+        "reinforce": "conditional_rl.reinforce_adamw_train",
         "ppo": "conditional_rl.ppo_train",
     }.get(args.mode, "conditional_rl.train")
     command = [str(PYTHON), "-m", module] + [
