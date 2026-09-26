@@ -251,9 +251,46 @@ def experiment_page(run):
     (BOOK / "experiments" / f"{rid}.md").write_text(text)
 
 
+def diagnosis_plot():
+    path = BOOK / "data/truncation-analysis.json"
+    if not path.exists():
+        return
+    evidence = json.loads(path.read_text())
+    fig, axes = plt.subplots(1, 3, figsize=(14, 4.5), layout="constrained")
+    for run, color in zip(evidence, COLORS):
+        rows = run["evaluations"]
+        steps = [r["step"] for r in rows]
+        values = [
+            [r["truncated"] / r["responses"] for r in rows],
+            [r["avg_tokens"] for r in rows],
+            [
+                (r["correct"] - r["truncated_correct"]) / max(r["responses"] - r["truncated"], 1)
+                for r in rows
+            ],
+        ]
+        for ax, y in zip(axes, values):
+            ax.plot(steps, y, color=color, label=run["label"], marker="o", lw=2)
+    for ax, title in zip(
+        axes,
+        [
+            "AIME25 truncation rate",
+            "Mean evaluation response tokens",
+            "Correctness among completed responses",
+        ],
+    ):
+        ax.set(title=title, xlabel="Training step")
+    axes[0].yaxis.set_major_formatter(PercentFormatter(1))
+    axes[2].yaxis.set_major_formatter(PercentFormatter(1))
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="outside lower center", ncol=3, frameon=False)
+    fig.suptitle("After step 60 · more unfinished answers", fontsize=16, fontweight="bold")
+    save(fig, "truncation-diagnosis")
+
+
 def main():
     for d in ["experiments", "figures"]:
         (BOOK / d).mkdir(exist_ok=True)
+    diagnosis_plot()
     registry = json.loads((BOOK / "data/registry.json").read_text())
     runs = [json.loads((BOOK / "data" / f"{r['id']}.json").read_text()) for r in registry]
     for run in runs:
@@ -322,7 +359,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-confounded.svg",
         "Earlier single-rollout trials used stateless SGD and sometimes a different loss reduction. Their failures do not establish that REINFORCE fails with AdamW.",
     )
-    text += "\n## Next research questions\n\n1. Measure adapter magnitudes by layer and test LoRA on only the final N layers.\n2. Test [NoRA-style initialization](notes/nora.md) with scaling controlled.\n3. Test QLoRA separately.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central. These next experiments are planned, not executed results.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
+    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Next research questions\n\n1. Measure adapter magnitudes by layer and test LoRA on only the final N layers.\n2. Test [NoRA-style initialization](notes/nora.md) with scaling controlled.\n3. Test QLoRA separately.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central. These next experiments are planned, not executed results.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:
         w = csv.DictWriter(f, fieldnames=list(csvrows[0]), lineterminator="\n")
@@ -340,7 +377,13 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
                 ],
             }
         )
-    toc.extend([{"file": "research/notes/nora.md"}, {"file": "research/publishing.md"}])
+    toc.extend(
+        [
+            {"file": "research/notes/nora.md"},
+            {"file": "research/notes/batchnorm-after60.md"},
+            {"file": "research/publishing.md"},
+        ]
+    )
     cfg = {
         "version": 1,
         "project": {

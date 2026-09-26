@@ -14,6 +14,7 @@ from skyrl.train.config import SkyRLTrainConfig
 from skyrl.train.utils import initialize_ray
 from skyrl.train.utils.utils import validate_cfg
 
+from unorl.diagnostics import rollout_diagnostics
 from unorl.train import BaselineExperiment, BenchmarkTrainer, MetricsCallback
 
 
@@ -52,7 +53,17 @@ def signed_reinforce_policy_loss(
 
 
 class SignedReinforceTrainer(BenchmarkTrainer):
-    """Use SkyRL's default FSDP worker, AdamW optimizer, and advantage scaling."""
+    """Use default FSDP/AdamW with observable truncation and loss-mask selection."""
+
+    def convert_to_training_input(self, generator_output, uids):
+        self.all_metrics.update(
+            rollout_diagnostics(
+                generator_output,
+                normalize_rewards=self.cfg.trainer.algorithm.advantage_estimator
+                == "batch_norm_reinforce",
+            )
+        )
+        return super().convert_to_training_input(generator_output, uids)
 
 
 class SignedReinforceExperiment(BaselineExperiment):
@@ -83,7 +94,10 @@ def validate_experiment_config(cfg):
         and not algorithm.use_kl_in_reward
         and not algorithm.use_entropy_loss,
         "token-level TIS correction": algorithm.off_policy_correction.tis_ratio_type == "token",
-        "matching overlong filtering": generator.apply_overlong_filtering,
+        "explicit truncation policy": isinstance(generator.apply_overlong_filtering, bool),
+        "preserve signed rewards on truncation": not generator.zero_reward_on_non_stop,
+        "one normalization and token-mean reduction": not algorithm.advantage_batch_normalize
+        and algorithm.loss_reduction == "token_mean",
         "constant LR without warmup": trainer.policy.optimizer_config.scheduler == "constant"
         and trainer.policy.optimizer_config.num_warmup_steps == 0,
     }

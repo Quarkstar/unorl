@@ -73,6 +73,10 @@ Earlier research used different objectives, model variants, and response budgets
 Earlier single-rollout trials used stateless SGD and sometimes a different loss reduction. Their failures do not establish that REINFORCE fails with AdamW.
 ```
 
+## Post-step-60 diagnosis
+
+The [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.
+
 ## Next research questions
 
 1. Measure adapter magnitudes by layer and test LoRA on only the final N layers.
