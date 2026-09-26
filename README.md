@@ -1,8 +1,8 @@
-# ConditionalRL
+# UNORL
 
-Reward-conditioned **online SFT**, using SkyRL's normal single-turn math rollout
-and shared math-answer verifier. Both correct and incorrect sampled responses receive
-positive imitation updates under their respective labels.
+Research code for low-resource, on-policy reinforcement learning and
+reward-conditioned online SFT using SkyRL's single-turn math rollout and shared
+math-answer verifier.
 
 ```
 Sampling system: Generate a correct solution.

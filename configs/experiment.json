@@ -30,7 +30,7 @@
   "trainer.max_ckpts_to_keep": 2,
   "trainer.resume_mode": null,
   "trainer.logger": "console",
-  "trainer.project_name": "conditional-rl",
+  "trainer.project_name": "unorl",
   "trainer.seed": 42,
   "generator.batched": true,
   "generator.max_turns": 1,

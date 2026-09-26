@@ -8,7 +8,7 @@ import subprocess
 import time
 from huggingface_hub import HfApi, snapshot_download
 
-ROOT = Path('/data_storage/yl_test/nzy/ConditionalRL')
+ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--repo', default='Qwen/Qwen3-4B-Instruct-2507')
 parser.add_argument('--output', default='models/Qwen3-4B-Instruct-2507')

@@ -8,7 +8,7 @@ import time
 
 import psutil
 
-ROOT = Path('/data_storage/yl_test/nzy/ConditionalRL')
+ROOT = Path(__file__).resolve().parents[1]
 WATCH = ROOT / 'runs/step20-model-followup-20260915'
 GRPO = ROOT / 'runs/qwen25-math-1.5b-grpo-20260915-02'
 COND = ROOT / 'runs/qwen25-math-1.5b-conditional-20260915-02'

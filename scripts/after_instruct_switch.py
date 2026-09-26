@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 import time
 
-ROOT = Path('/data_storage/yl_test/nzy/ConditionalRL')
+ROOT = Path(__file__).resolve().parents[1]
 PAIR = ROOT / 'runs/qwen3-4b-instruct-pair-20260915-02'
 PYTHON = ROOT.parent / 'SciBuddy/.venv-skyrl/bin/python'
 STATUS = ROOT / 'runs/logs/qwen3-4b-instruct-grpo-20260915-02.exit-status'

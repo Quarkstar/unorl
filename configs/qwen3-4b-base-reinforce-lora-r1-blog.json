@@ -32,7 +32,7 @@
   "trainer.max_ckpts_to_keep": 1,
   "trainer.resume_mode": null,
   "trainer.logger": "console",
-  "trainer.project_name": "conditional-rl",
+  "trainer.project_name": "unorl",
   "trainer.seed": 42,
   "generator.batched": true,
   "generator.max_turns": 1,
@@ -55,12 +55,12 @@
   "environment.env_class": "conditional_math",
   "trainer.dump_eval_results": true,
   "environment.skyrl_gym.max_env_workers": 0,
-  "trainer.policy.model.path": "/data_storage/yl_test/nzy/ConditionalRL/models/Qwen3-4B-Base",
+  "trainer.policy.model.path": "/data_storage/yl_test/nzy/unorl/models/Qwen3-4B-Base",
   "generator.inference_engine.engine_init_kwargs": {
     "max_model_len": 10240
   },
   "data.val_data": [
-    "/data_storage/yl_test/nzy/ConditionalRL/data/eval-aime25.parquet"
+    "/data_storage/yl_test/nzy/unorl/data/eval-aime25.parquet"
   ],
   "trainer.policy.model.lora.rank": 0,
   "trainer.policy.model.lora.alpha": 32,
