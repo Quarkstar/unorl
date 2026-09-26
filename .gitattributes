@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.png binary
+research/figures/*.svg linguist-generated=true
+research/experiments/*.md linguist-generated=true
+research/data/*.json linguist-generated=true
+research/data/*.csv linguist-generated=true

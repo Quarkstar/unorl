@@ -9,7 +9,7 @@ import torch
 from peft import LoraConfig, get_peft_model
 from transformers import Qwen3Config, Qwen3ForCausalLM
 
-from conditional_rl.low_resource import (
+from unorl.low_resource import (
     ConstantLearningRate,
     adapter_layers,
     effective_weights,
@@ -18,9 +18,9 @@ from conditional_rl.low_resource import (
     reinforce_loss,
     signed_returns,
 )
-from conditional_rl.low_resource_config import LowResourceTrainConfig, validate_low_resource
-from conditional_rl.low_resource_train import batch_mean_advantage, batch_normalized_advantage
-from conditional_rl.low_resource_worker import MergedWeightExtractor
+from unorl.low_resource_config import LowResourceTrainConfig, validate_low_resource
+from unorl.low_resource_train import batch_mean_advantage, batch_normalized_advantage
+from unorl.low_resource_worker import MergedWeightExtractor
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -80,9 +80,7 @@ def test_batch_mean_advantage_centers_without_std_scaling():
     rewards = torch.tensor([[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]])
     mask = torch.tensor([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 0.0]])
     advantages, returns = batch_mean_advantage(rewards, mask)
-    expected = torch.tensor(
-        [[2 / 3, 2 / 3, 2 / 3], [2 / 3, 2 / 3, 2 / 3], [-4 / 3, -4 / 3, 0.0]]
-    )
+    expected = torch.tensor([[2 / 3, 2 / 3, 2 / 3], [2 / 3, 2 / 3, 2 / 3], [-4 / 3, -4 / 3, 0.0]])
     torch.testing.assert_close(advantages, expected)
     torch.testing.assert_close(returns, expected)
 
@@ -92,9 +90,11 @@ def test_batch_normalized_advantage_uses_population_standard_deviation():
     mask = torch.tensor([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 0.0]])
     advantages, returns = batch_normalized_advantage(rewards, mask)
     expected = torch.tensor(
-        [[1 / (2**0.5), 1 / (2**0.5), 1 / (2**0.5)],
-         [1 / (2**0.5), 1 / (2**0.5), 1 / (2**0.5)],
-         [-2**0.5, -2**0.5, 0.0]]
+        [
+            [1 / (2**0.5), 1 / (2**0.5), 1 / (2**0.5)],
+            [1 / (2**0.5), 1 / (2**0.5), 1 / (2**0.5)],
+            [-(2**0.5), -(2**0.5), 0.0],
+        ]
     )
     torch.testing.assert_close(advantages, expected)
     torch.testing.assert_close(returns, expected)
@@ -110,7 +110,7 @@ def test_batch_normalized_advantage_is_zero_for_zero_variance_batch():
 
 
 def test_reinforce_advantages_use_batch_token_mean():
-    from conditional_rl.low_resource_train import ReinforceTrainer
+    from unorl.low_resource_train import ReinforceTrainer
 
     trainer = ReinforceTrainer.__new__(ReinforceTrainer)
     data = {
@@ -183,9 +183,7 @@ def test_sgd_has_no_state_across_merges_and_resume(model, tmp_path):
 
 
 def test_profile_and_fail_closed_validation():
-    profile = json.loads(
-        (ROOT / "configs/qwen3-4b-base-reinforce-lora-r1-blog.json").read_text()
-    )
+    profile = json.loads((ROOT / "configs/qwen3-4b-base-reinforce-lora-r1-blog.json").read_text())
     cfg = LowResourceTrainConfig.from_cli_overrides(
         [f"{key}={json.dumps(value)}" for key, value in profile.items()]
     )
@@ -202,9 +200,7 @@ def test_profile_and_fail_closed_validation():
 
 
 def test_batch_mean_profile_validates():
-    profile = json.loads(
-        (ROOT / "configs/qwen3-4b-base-reinforce-batchmean-r1.json").read_text()
-    )
+    profile = json.loads((ROOT / "configs/qwen3-4b-base-reinforce-batchmean-r1.json").read_text())
     cfg = LowResourceTrainConfig.from_cli_overrides(
         [f"{key}={json.dumps(value)}" for key, value in profile.items()]
     )
@@ -213,9 +209,7 @@ def test_batch_mean_profile_validates():
 
 
 def test_batch_normalized_profile_validates():
-    profile = json.loads(
-        (ROOT / "configs/qwen3-4b-base-reinforce-batchnorm-r1.json").read_text()
-    )
+    profile = json.loads((ROOT / "configs/qwen3-4b-base-reinforce-batchnorm-r1.json").read_text())
     cfg = LowResourceTrainConfig.from_cli_overrides(
         [f"{key}={json.dumps(value)}" for key, value in profile.items()]
     )
@@ -273,7 +267,7 @@ def test_skyrl_checkpoint_export_and_merge_schedule(model, tmp_path, monkeypatch
     from skyrl.backends.skyrl_train.workers.model_wrapper import HFModelWrapper
     from skyrl.train.config.config import FSDPConfig, ModelConfig, OptimizerConfig
 
-    from conditional_rl.low_resource_worker import LowResourcePolicyWorker, SGDStrategy
+    from unorl.low_resource_worker import LowResourcePolicyWorker, SGDStrategy
 
     # Exercise real checkpoint IO on CPU; only CUDA runtime calls are stubbed.
     monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
@@ -341,11 +335,9 @@ def test_skyrl_checkpoint_export_and_merge_schedule(model, tmp_path, monkeypatch
 def test_skyrl_accepts_registered_algorithm():
     from skyrl.train.utils.utils import validate_cfg
 
-    from conditional_rl.low_resource_train import register_algorithms
+    from unorl.low_resource_train import register_algorithms
 
-    profile = json.loads(
-        (ROOT / "configs/qwen3-4b-base-reinforce-lora-r1-blog.json").read_text()
-    )
+    profile = json.loads((ROOT / "configs/qwen3-4b-base-reinforce-lora-r1-blog.json").read_text())
     cfg = LowResourceTrainConfig.from_cli_overrides(
         [f"{key}={json.dumps(value)}" for key, value in profile.items()]
     )

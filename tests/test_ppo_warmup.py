@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import torch
 
-from conditional_rl.ppo_train import ValueWarmupTrainer, monte_carlo_returns
+from unorl.ppo_train import ValueWarmupTrainer, monte_carlo_returns
 
 
 def test_monte_carlo_returns_broadcast_terminal_outcomes_over_valid_tokens():
@@ -18,9 +18,7 @@ def test_monte_carlo_returns_broadcast_terminal_outcomes_over_valid_tokens():
 
 def test_warmup_updates_critic_without_updating_policy():
     trainer = object.__new__(ValueWarmupTrainer)
-    trainer.cfg = SimpleNamespace(
-        trainer=SimpleNamespace(critic_warmup_steps=5)
-    )
+    trainer.cfg = SimpleNamespace(trainer=SimpleNamespace(critic_warmup_steps=5))
     trainer.global_step = 1
     trainer.all_timings = {}
     trainer.all_metrics = {}

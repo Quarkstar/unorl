@@ -54,15 +54,15 @@
   "generator.inference_engine.gpu_memory_utilization": 0.8,
   "generator.inference_engine.enforce_eager": false,
   "generator.inference_engine.weight_sync_backend": "nccl",
-  "environment.env_class": "conditional_math",
+  "environment.env_class": "unorl_math",
   "trainer.dump_eval_results": true,
   "environment.skyrl_gym.max_env_workers": 0,
-  "trainer.policy.model.path": "/data_storage/yl_test/nzy/unorl/models/Qwen3-4B-Base",
+  "trainer.policy.model.path": "models/Qwen3-4B-Base",
   "generator.inference_engine.engine_init_kwargs": {
     "max_model_len": 10240
   },
   "data.val_data": [
-    "/data_storage/yl_test/nzy/unorl/data/eval-aime25.parquet"
+    "data/eval-aime25.parquet"
   ],
   "trainer.policy.model.lora.rank": 1,
   "trainer.policy.model.lora.alpha": 32,
@@ -71,7 +71,7 @@
   "trainer.algorithm.advantage_batch_normalize": true,
   "trainer.critic_mini_batch_size": 64,
   "trainer.critic_warmup_steps": 5,
-  "trainer.critic.model.path": "/data_storage/yl_test/nzy/unorl/models/Qwen3-4B-Base",
+  "trainer.critic.model.path": "models/Qwen3-4B-Base",
   "trainer.critic.model.lora.rank": 1,
   "trainer.critic.model.lora.alpha": 32,
   "trainer.critic.model.lora.dropout": 0.0,
@@ -81,11 +81,11 @@
   "trainer.critic.optimizer_config.scheduler": "constant_with_warmup",
   "trainer.critic.optimizer_config.weight_decay": 0.0,
   "trainer.run_name": "qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01",
-  "trainer.ckpt_path": "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01/checkpoints",
-  "trainer.export_path": "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01/exports",
-  "trainer.log_path": "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01/infra",
+  "trainer.ckpt_path": "runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01/checkpoints",
+  "trainer.export_path": "runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01/exports",
+  "trainer.log_path": "runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01/infra",
   "data.train_data": [
-    "/data_storage/yl_test/nzy/unorl/data/train-benchmark-clean.parquet"
+    "data/train-benchmark-clean.parquet"
   ],
   "trainer.placement.critic_num_gpus_per_node": 8,
   "trainer.algorithm.gamma": 1.0,

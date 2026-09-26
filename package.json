@@ -1,0 +1,14 @@
+{
+  "name": "unorl-research-book",
+  "private": true,
+  "scripts": {
+    "docs:dev": "myst start",
+    "docs:build": "myst build --html --strict"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "mystmd": "1.11.0"
+  }
+}

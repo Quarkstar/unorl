@@ -1,0 +1,21 @@
+{
+  "original_rows": 7500,
+  "retained_rows": 7492,
+  "removed_training_indices": [
+    2588,
+    6178,
+    6634,
+    6639,
+    6640,
+    6644,
+    6656,
+    7437
+  ],
+  "method": "Whitespace-normalized benchmark question substring in training prompt; does not detect paraphrases",
+  "sha256": "f6f0b8c36f79b642249d524e910811f891013340120cff355802e59c369d8249",
+  "eval_counts": {
+    "math500": 500,
+    "amc23": 40,
+    "aime25": 30
+  }
+}

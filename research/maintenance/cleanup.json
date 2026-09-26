@@ -1,0 +1,39 @@
+{
+  "scope": "Smoke-test records only; substantive experiment records retained",
+  "removed": [
+    "runs/qwen3-4b-base-conditional-metrics-smoke-20260917-01",
+    "runs/qwen3-4b-base-positive-only-smoke-20260918-01",
+    "runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-smoke-20260924-01",
+    "runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-smoke-20260924-02",
+    "runs/qwen3-4b-base-reinforce-relora-gpu0-lr3e-4-smoke20-20260922-01",
+    "runs/qwen3-4b-base-reinforce-relora-smoke20-20260922-01",
+    "runs/logs/qwen3-4b-base-conditional-metrics-smoke-20260917-01.exit-status",
+    "runs/logs/qwen3-4b-base-conditional-metrics-smoke-20260917-01.log",
+    "runs/logs/qwen3-4b-base-conditional-metrics-smoke-20260917-01.pid",
+    "runs/logs/qwen3-4b-base-positive-only-smoke-20260918-01.exit-status",
+    "runs/logs/qwen3-4b-base-positive-only-smoke-20260918-01.log",
+    "runs/logs/qwen3-4b-base-positive-only-smoke-20260918-01.pid",
+    "runs/logs/qwen3-4b-base-ppo-lora-r1-valuewarmup-smoke-20260924-01.exit-status",
+    "runs/logs/qwen3-4b-base-ppo-lora-r1-valuewarmup-smoke-20260924-01.log",
+    "runs/logs/qwen3-4b-base-ppo-lora-r1-valuewarmup-smoke-20260924-01.pid",
+    "runs/logs/qwen3-4b-base-ppo-lora-r1-valuewarmup-smoke-20260924-02.log",
+    "runs/logs/qwen3-4b-base-ppo-lora-r1-valuewarmup-smoke-20260924-02.pid",
+    "runs/logs/qwen3-4b-base-reinforce-relora-gpu0-lr3e-4-smoke20-20260922-01.exit-status",
+    "runs/logs/qwen3-4b-base-reinforce-relora-gpu0-lr3e-4-smoke20-20260922-01.log",
+    "runs/logs/qwen3-4b-base-reinforce-relora-gpu0-lr3e-4-smoke20-20260922-01.pid",
+    "runs/logs/qwen3-4b-base-reinforce-relora-smoke20-20260922-01.exit-status",
+    "runs/logs/qwen3-4b-base-reinforce-relora-smoke20-20260922-01.log",
+    "runs/logs/qwen3-4b-base-reinforce-relora-smoke20-20260922-01.pid"
+  ],
+  "renamed_package": "unorl",
+  "repaired_local_symlinks": [
+    "models/Qwen2.5-Math-1.5B-system/model.safetensors",
+    "models/Qwen2.5-Math-1.5B-system/vocab.json",
+    "models/Qwen2.5-Math-1.5B-system/tokenizer_config.json",
+    "models/Qwen2.5-Math-1.5B-system/README.md",
+    "models/Qwen2.5-Math-1.5B-system/tokenizer.json",
+    "models/Qwen2.5-Math-1.5B-system/generation_config.json",
+    "models/Qwen2.5-Math-1.5B-system/merges.txt"
+  ],
+  "retired_directory_alias": "ConditionalRL"
+}

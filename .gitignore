@@ -1,8 +1,22 @@
+# Local training inputs, outputs, and runtime caches
 .cache/
 .deps/
+.tmp/
 models/
 data/
 runs/
+# Keep portable research data in Git
+!research/data/
+!research/data/**
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
+.ruff_cache/
+.venv*/
+*.egg-info/
+build/
+dist/
+# Documentation toolchain and rendered website
+node_modules/
+_build/
+.myst/

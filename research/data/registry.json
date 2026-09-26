@@ -1,0 +1,77 @@
+[
+  {
+    "id": "qwen3-4b-base-grpo-20260916-01",
+    "title": "Full-parameter GRPO",
+    "group": "reference"
+  },
+  {
+    "id": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+    "title": "Rank-1 LoRA GRPO",
+    "group": "primary"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01",
+    "title": "Vanilla REINFORCE \u00b7 AdamW",
+    "group": "primary"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01",
+    "title": "Batch-normalized REINFORCE \u00b7 AdamW",
+    "group": "primary"
+  },
+  {
+    "id": "qwen3-4b-base-conditional-20260916-01",
+    "title": "Archived \u00b7 conditional online SFT",
+    "group": "historical"
+  },
+  {
+    "id": "qwen3-4b-base-positive-only-20260918-01",
+    "title": "Archived \u00b7 positive-only online SFT",
+    "group": "historical"
+  },
+  {
+    "id": "qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01",
+    "title": "PPO \u00b7 value-model warmup",
+    "group": "historical"
+  },
+  {
+    "id": "qwen3-4b-instruct-grpo-20260915-01",
+    "title": "Archived \u00b7 Instruct GRPO pilot",
+    "group": "historical"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-02",
+    "title": "Batch-normalized REINFORCE \u00b7 SGD",
+    "group": "confounded"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-batchmean-b256-20260924-01",
+    "title": "Mean-centered REINFORCE \u00b7 SGD",
+    "group": "confounded"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-tokenmean-b256-20260924-01",
+    "title": "Token-mean REINFORCE \u00b7 SGD",
+    "group": "confounded"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-lora-r1-blog-20260923-03",
+    "title": "Early REINFORCE \u00b7 loss-scale issue",
+    "group": "confounded"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-relora-gpu0-b16-m100-300-20260922-01",
+    "title": "Single-GPU ReLoRA exploration",
+    "group": "confounded"
+  },
+  {
+    "id": "qwen3-4b-base-grpo-lora-r1-gpu0-20260923-01",
+    "title": "Single-GPU LoRA launch record",
+    "group": "incomplete"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-01",
+    "title": "Interrupted batch-normalized launch",
+    "group": "incomplete"
+  }
+]

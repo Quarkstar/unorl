@@ -5,10 +5,8 @@ import argparse
 import json
 import subprocess
 from datetime import datetime, timezone
-from pathlib import Path
 
-from train import CODE, ROOT, environment, PYTHON
-
+from train import CODE, PYTHON, ROOT, environment
 
 CONFIGS = (
     ("reinforce", "qwen3-4b-base-reinforce-adamw-r1.json"),
@@ -42,7 +40,7 @@ def main():
     status_path.write_text(json.dumps(status, indent=2) + "\n")
 
     for name, config in CONFIGS:
-        run_id = f"qwen3-4b-base-{name}-adamw-r1-b256-20260925-01"
+        run_id = f"{args.pair_id}-{name}"
         command = [
             str(PYTHON),
             str(CODE / "scripts" / "train.py"),

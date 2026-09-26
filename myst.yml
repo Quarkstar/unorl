@@ -1,0 +1,63 @@
+version: 1
+project:
+  title: UNORL
+  description: A research book on resource-efficient on-policy reinforcement learning.
+  exclude:
+  - runs/**
+  - models/**
+  - data/**
+  - node_modules/**
+  - .venv-docs/**
+  - .deps/**
+  - .cache/**
+  - .tmp/**
+  toc:
+  - file: research/index.md
+  - file: research/methods.md
+  - title: Current algorithm comparison
+    children:
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.md
+      title: Rank-1 LoRA GRPO
+    - file: research/experiments/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01.md
+      title: Vanilla REINFORCE · AdamW
+    - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md
+      title: Batch-normalized REINFORCE · AdamW
+  - title: Full-parameter reference
+    children:
+    - file: research/experiments/qwen3-4b-base-grpo-20260916-01.md
+      title: Full-parameter GRPO
+  - title: Earlier research
+    children:
+    - file: research/experiments/qwen3-4b-base-conditional-20260916-01.md
+      title: Archived · conditional online SFT
+    - file: research/experiments/qwen3-4b-base-positive-only-20260918-01.md
+      title: Archived · positive-only online SFT
+    - file: research/experiments/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.md
+      title: PPO · value-model warmup
+    - file: research/experiments/qwen3-4b-instruct-grpo-20260915-01.md
+      title: Archived · Instruct GRPO pilot
+  - title: Optimizer and loss confounds
+    children:
+    - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-02.md
+      title: Batch-normalized REINFORCE · SGD
+    - file: research/experiments/qwen3-4b-base-reinforce-batchmean-b256-20260924-01.md
+      title: Mean-centered REINFORCE · SGD
+    - file: research/experiments/qwen3-4b-base-reinforce-tokenmean-b256-20260924-01.md
+      title: Token-mean REINFORCE · SGD
+    - file: research/experiments/qwen3-4b-base-reinforce-lora-r1-blog-20260923-03.md
+      title: Early REINFORCE · loss-scale issue
+    - file: research/experiments/qwen3-4b-base-reinforce-relora-gpu0-b16-m100-300-20260922-01.md
+      title: Single-GPU ReLoRA exploration
+  - title: Incomplete launch records
+    children:
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-gpu0-20260923-01.md
+      title: Single-GPU LoRA launch record
+    - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-01.md
+      title: Interrupted batch-normalized launch
+  - file: research/notes/nora.md
+  - file: research/publishing.md
+site:
+  template: book-theme
+  title: UNORL
+  options:
+    logo_text: UNORL

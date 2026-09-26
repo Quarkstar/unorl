@@ -55,15 +55,15 @@
   "generator.inference_engine.gpu_memory_utilization": 0.8,
   "generator.inference_engine.enforce_eager": true,
   "generator.inference_engine.weight_sync_backend": "nccl",
-  "environment.env_class": "conditional_math",
+  "environment.env_class": "unorl_math",
   "trainer.dump_eval_results": true,
   "environment.skyrl_gym.max_env_workers": 0,
-  "trainer.policy.model.path": "/data_storage/yl_test/nzy/unorl/models/Qwen3-4B-Base",
+  "trainer.policy.model.path": "models/Qwen3-4B-Base",
   "generator.inference_engine.engine_init_kwargs": {
     "max_model_len": 10240
   },
   "data.val_data": [
-    "/data_storage/yl_test/nzy/unorl/data/eval-aime25.parquet"
+    "data/eval-aime25.parquet"
   ],
   "trainer.policy.model.lora.rank": 1,
   "trainer.policy.model.lora.alpha": 32,
