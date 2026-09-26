@@ -106,3 +106,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for checks, experiment recording, and the
 reproducibility expectations. No GitHub remote or public site is assumed; the
 included deployment workflow becomes usable after the repository is pushed and
 GitHub Pages is enabled.
+
+## License
+
+UNORL is licensed under the [MIT License](LICENSE). Third-party libraries, models
+and datasets retain their own licenses.

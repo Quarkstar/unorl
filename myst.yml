@@ -1,6 +1,7 @@
 version: 1
 project:
   title: UNORL
+  license: MIT
   description: A research book on resource-efficient on-policy reinforcement learning.
   exclude:
   - runs/**

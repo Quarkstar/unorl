@@ -345,6 +345,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "version": 1,
         "project": {
             "title": "UNORL",
+            "license": "MIT",
             "description": "A research book on resource-efficient on-policy reinforcement learning.",
             "exclude": [
                 "runs/**",
