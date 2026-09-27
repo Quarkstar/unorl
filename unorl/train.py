@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import ray
+import skyrl_gym
 from skyrl.train.config import SkyRLTrainConfig
 from skyrl.train.entrypoints.main_base import BasePPOExp
 from skyrl.train.trainer import RayPPOTrainer
@@ -14,6 +15,16 @@ from skyrl.train.utils.utils import validate_cfg
 
 from unorl import benchmark_eval, grading  # noqa: F401
 from unorl.prompts import system_tokenizer
+
+
+def register_math_environments():
+    """Install environments in the Ray entrypoint process, not only the driver."""
+    for name, target in (
+        ("benchmark_math", "unorl.benchmark_eval:BenchmarkEnv"),
+        ("unorl_math", "unorl.grading:MathAnswerEnv"),
+    ):
+        if name not in skyrl_gym.registry:
+            skyrl_gym.register(name, entry_point=target)
 
 
 class MetricsCallback(TrainingCallback):
@@ -103,6 +114,7 @@ class BaselineExperiment(BasePPOExp):
 
 @ray.remote(num_cpus=1)
 def entrypoint(cfg):
+    register_math_environments()
     BaselineExperiment(cfg).run()
 
 
