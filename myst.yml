@@ -15,6 +15,10 @@ project:
   toc:
   - file: research/index.md
   - file: research/methods.md
+  - title: Controlled follow-up experiments
+    children:
+    - file: research/experiments/unorl-batchnorm-retain-truncated-20260926-01.md
+      title: Retain truncated failures · AdamW
   - title: Current algorithm comparison
     children:
     - file: research/experiments/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.md

@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 BOOK = ROOT / "research"
 COLORS = ["#2196F3", "#009688", "#FF9800", "#9C27B0", "#F44336", "#607D8B"]
 GROUPS = {
+    "ablation": "Controlled follow-up experiments",
     "primary": "Current algorithm comparison",
     "reference": "Full-parameter reference",
     "historical": "Earlier research",
@@ -405,7 +406,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "site": {"template": "book-theme", "title": "UNORL", "options": {"logo_text": "UNORL"}},
     }
     (ROOT / "myst.yml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True))
-    print(f"Built {len(runs)} experiment pages and {len(runs) - 2 + 3} plot sets")
+    print(f"Built {len(runs)} experiment pages and comparison figures")
 
 
 if __name__ == "__main__":

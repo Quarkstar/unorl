@@ -1,4 +1,5 @@
 run_id,group,last_train_step,last_eval_step,avg_at_8,pass_at_8
+unorl-batchnorm-retain-truncated-20260926-01,ablation,100,100,0.14583333333333334,0.3
 qwen3-4b-base-grpo-lora-r1-blog-20260923-01,primary,100,100,0.2,0.43333333333333335
 qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01,primary,100,100,0.14583333333333334,0.26666666666666666
 qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01,primary,100,100,0.17916666666666667,0.3

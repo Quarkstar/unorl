@@ -105,3 +105,37 @@ The [analysis snapshot](../data/truncation-analysis.json) records per-question
 counts, source hashes, missing dumps, and training-window means. Regenerate it
 locally with `python scripts/research/analyze_truncation.py`; the book renderer
 uses the committed snapshot without requiring raw run files.
+
+## Outcome of the 100-step trial
+
+The trial completed successfully (exit status 0). All training responses remained
+trainable (`rollout/trainable_response_fraction=1`) and no incorrect response was
+masked at the recorded checkpoints. Training truncation reached 11.3% at steps 80
+and 100. At step 100, truncated failures carried 34.0% of the negative advantage
+mass before token-mean reduction. The active response mean advantage was essentially
+zero, as expected when all 256 responses enter batch centering.
+
+| AIME25 | Step 60 | Step 80 | Step 100 |
+|---|---:|---:|---:|
+| Retain truncated: avg@8 | 15.8% | 16.25% | 14.6% |
+| Retain truncated: pass@8 | 23.3% | 30.0% | 30.0% |
+| Retain truncated: truncated / 240 | 41 | 36 | 34 |
+| Original filtering: avg@8 | 17.5% | 12.9% | 17.9% |
+| Original filtering: pass@8 | 43.3% | 16.7% | 30.0% |
+| Original filtering: truncated / 240 | 39 | 63 | 101 |
+
+The new policy generated far fewer unfinished evaluation answers at step 100
+(34/240 versus 101/240), so the changed gradient reached the behavior it targeted.
+It did not produce a higher final AIME25 accuracy: the last avg@8 was 14.6%
+versus 17.9%, and both runs solved 9 of 30 questions at least once in eight
+samples. The new run's pass@8 stopped falling after step 60, but its avg@8
+slipped from step 80 to 100. A single 30-question evaluation cannot establish
+a reliable small difference. This trial does **not** demonstrate stable learning
+improvement, despite reducing truncation.
+
+The step-0 and step-20 raw evaluation dumps in this trial are malformed; their
+aggregate metrics remain in the trainer log. Valid response-level counts support
+the step-40, 60, 80, and 100 truncation figures above. A useful next ablation is
+to retain the failed truncated responses with a smaller or tapered negative
+weight, while keeping the loss denominator fixed. That would test whether the
+full negative update over-suppresses potentially useful reasoning.

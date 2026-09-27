@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 
 NOTES = {
+    "unorl-batchnorm-retain-truncated-20260926-01": (
+        "Retain truncated failures · AdamW",
+        "ablation",
+        "Completed 100-step controlled follow-up. Only overlong filtering changes from the batch-normalized AdamW profile. Training masks confirm truncated failures receive updates. AIME25 truncation fell substantially by step 100, but final avg@8 was 14.6% versus 17.9% with filtering; both had 30.0% pass@8. Steps 60–100 were steadier in pass@8, but accuracy did not show stable improvement. See the batch-normalized REINFORCE diagnosis.",
+    ),
     "qwen3-4b-base-grpo-20260916-01": (
         "Full-parameter GRPO",
         "reference",

@@ -22,6 +22,12 @@ Google Material palette. Evaluation points are unsmoothed; training curves use a
 
 Final columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.
 
+### Controlled follow-up experiments
+
+| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
+|---|---:|---:|---:|---:|---|
+| [Retain truncated failures · AdamW](experiments/unorl-batchnorm-retain-truncated-20260926-01.md) | 100 | 100 | 14.6% | 30.0% | AdamW (SkyRL default) |
+
 ### Current algorithm comparison
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
