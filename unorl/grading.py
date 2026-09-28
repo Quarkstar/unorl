@@ -45,4 +45,5 @@ class MathAnswerEnv(AIMEEnv):
         )
 
 
-skyrl_gym.register("unorl_math", entry_point="unorl.grading:MathAnswerEnv")
+if "unorl_math" not in skyrl_gym.registry:
+    skyrl_gym.register("unorl_math", entry_point="unorl.grading:MathAnswerEnv")

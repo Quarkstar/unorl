@@ -38,4 +38,5 @@ class BenchmarkEnv(AIMEEnv):
         )
 
 
-skyrl_gym.register("benchmark_math", entry_point="unorl.benchmark_eval:BenchmarkEnv")
+if "benchmark_math" not in skyrl_gym.registry:
+    skyrl_gym.register("benchmark_math", entry_point="unorl.benchmark_eval:BenchmarkEnv")
