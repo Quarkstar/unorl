@@ -64,3 +64,28 @@ NoRA: initialize the usual A randomly, normalize each A column to unit norm,
 keep B zero, and then use standard LoRA training. At rank one this is
 equivalent to sign initialization. The α/r scale and learning-rate comparison
 must be recorded as part of the method.
+
+## UNORL trial: NoRA-init with rank-one GRPO
+
+Profile: `configs/qwen3-4b-base-grpo-lora-r1-nora-init.json`.
+The reference is the full-layer rank-one GRPO blog recipe. This trial changes
+only initialization (`nora_init`) and alpha (32 to 1). It evaluates the
+normalized initialization with the paper's recommended unit effective scale;
+it cannot isolate initialization from the alpha change. AdamW LR stays
+1.5e-5, with no warmup; data, prompts, eight rollouts, 32 prompts per step,
+8K response cap, 100 steps, eight GPUs, and AIME25 evaluation every 20 steps
+all match the reference.
+
+`unorl/nora.py` normalizes the default Kaiming A columns once before FSDP
+sharding and optimizer creation. At rank one this retains each random sign,
+so the ±1 fraction is approximately, rather than exactly, 50/50. B remains
+zero. A and B both train freely afterward; there is no continuing constraint,
+SGD, adapter merging, layer restriction, or quantization in this experiment.
+The worker records initialization counts in the log. Native PEFT export and
+vLLM adapter synchronization remain unchanged. Checkpoint resume happens after
+initialization, so restored adapters are not normalized again.
+
+The implementation checks that initialization leaves logits unchanged, that A
+receives gradients after B starts learning, and that native adapter reload and
+merging preserve trained logits. The 100-step run will assess convergence;
+this change is not expected to reduce the parameter or optimizer memory.

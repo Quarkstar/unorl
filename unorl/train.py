@@ -49,6 +49,13 @@ class MetricsCallback(TrainingCallback):
 
 
 class BenchmarkTrainer(RayPPOTrainer):
+    def build_models(self, policy_worker, critic_worker, ref_worker):
+        if self.cfg.trainer.policy.model.lora.init_method == "nora_init":
+            from unorl.nora_worker import PolicyWorker
+
+            policy_worker = PolicyWorker
+        return super().build_models(policy_worker, critic_worker, ref_worker)
+
     async def eval(self, vllm_metrics_scraper=None):
         if not hasattr(self, "benchmark_batches"):
             self.benchmark_batches = {}
