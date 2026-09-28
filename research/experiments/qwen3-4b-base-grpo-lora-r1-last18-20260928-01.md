@@ -4,14 +4,14 @@ title: "GRPO · rank-1 LoRA in the final 18 layers"
 
 # GRPO · rank-1 LoRA in the final 18 layers
 
-In-progress controlled comparison with full-layer rank-1 GRPO. The same model, data, optimizer, learning rate, rollout count and response budget are used; adapters are excluded from layers 0–17. The actual synced adapter contains 1,032,192 parameters in layers 18–35, versus 2,064,384 in the reference. Initial learning is slower, while training correctness and held-out accuracy improve. This partial snapshot does not establish the final performance gap or peak training memory savings. Failed startup attempts produced no learning results and are excluded.
+Completed 100-step controlled comparison with full-layer rank-1 GRPO. The same model, data, optimizer, learning rate, rollout count and response budget are used; adapters are excluded from layers 0–17. The actual synced adapter contains 1,032,192 parameters in layers 18–35, versus 2,064,384 in the reference. Learning starts more slowly, but final-window training correctness nearly catches up: 36.4% versus 37.5% over steps 81–100. Final AIME25 avg@8 is 17.9% versus 20.0%, and pass@8 is 33.3% versus 43.3% (10 versus 13 questions solved). This demonstrates learning with half the adapter parameters, but a single run on 30 questions does not establish equivalence to the reference. Peak training memory savings remain unmeasured. Failed startup attempts produced no learning results and are excluded.
 
 ## Configuration and provenance
 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-lora-r1-last18-20260928-01` |
-| Record | 83 steps logged / 100 planned |
+| Record | 100 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -28,7 +28,7 @@ In-progress controlled comparison with full-layer rank-1 GRPO. The same model, d
 | Evaluation samples/question | 8 |
 | GPUs (policy) | 8 |
 | KL loss / reward | False / False |
-| Exit status | not retained |
+| Exit status | 0 |
 
 [Download the metric/configuration snapshot](../data/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.json). The snapshot includes hashes of the original local source files and the recorded SkyRL revision. Machine-specific root paths are made relative; original run identifiers remain unchanged.
 
@@ -51,6 +51,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | 40 | 7.5% | 20.0% |
 | 60 | 12.1% | 26.7% |
 | 80 | 15.0% | 26.7% |
+| 100 | 17.9% | 33.3% |
 
 
 Some raw evaluation dumps were truncated or malformed; aggregated logged metrics above are retained, but per-question counts for these files are unavailable:
@@ -65,16 +66,17 @@ Some raw evaluation dumps were truncated or malformed; aggregated logged metrics
 | aime25 | 40 | 18/240 | 6/30 |
 | aime25 | 60 | 29/240 | 8/30 |
 | aime25 | 80 | 36/240 | 8/30 |
+| aime25 | 100 | 43/240 | 10/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **9.0%** over the first 10 logged updates and **34.6%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **9.0%** over the first 10 logged updates and **33.2%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.8409 at step 1 → 0.1352 at step 83.
-- Policy gradient norm: 0.02289 at step 1 → 0.02938 at step 83.
-- Mean generated response tokens: 1243 at step 1 → 3636 at step 83.
+- Logged entropy: 0.8409 at step 1 → 0.1298 at step 100.
+- Policy gradient norm: 0.02289 at step 1 → 0.02798 at step 100.
+- Mean generated response tokens: 1243 at step 1 → 3855 at step 100.
 
-Best recorded AIME25 pass@8: **26.7% at step 60**. Last recorded: **26.7% at step 80**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **33.3% at step 100**. Last recorded: **33.3% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

@@ -8,7 +8,7 @@ NOTES = {
     "qwen3-4b-base-grpo-lora-r1-last18-20260928-01": (
         "GRPO · rank-1 LoRA in the final 18 layers",
         "ablation",
-        "In-progress controlled comparison with full-layer rank-1 GRPO. The same model, data, optimizer, learning rate, rollout count and response budget are used; adapters are excluded from layers 0–17. The actual synced adapter contains 1,032,192 parameters in layers 18–35, versus 2,064,384 in the reference. Initial learning is slower, while training correctness and held-out accuracy improve. This partial snapshot does not establish the final performance gap or peak training memory savings. Failed startup attempts produced no learning results and are excluded.",
+        "Completed 100-step controlled comparison with full-layer rank-1 GRPO. The same model, data, optimizer, learning rate, rollout count and response budget are used; adapters are excluded from layers 0–17. The actual synced adapter contains 1,032,192 parameters in layers 18–35, versus 2,064,384 in the reference. Learning starts more slowly, but final-window training correctness nearly catches up: 36.4% versus 37.5% over steps 81–100. Final AIME25 avg@8 is 17.9% versus 20.0%, and pass@8 is 33.3% versus 43.3% (10 versus 13 questions solved). This demonstrates learning with half the adapter parameters, but a single run on 30 questions does not establish equivalence to the reference. Peak training memory savings remain unmeasured. Failed startup attempts produced no learning results and are excluded.",
     ),
     "unorl-batchnorm-retain-truncated-20260926-01": (
         "Retain truncated failures · AdamW",

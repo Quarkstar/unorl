@@ -10,6 +10,7 @@ Its source is in [research/](research/index.md).
 | Qwen3-4B-Base, rank-1 LoRA, step 100 | AIME25 avg@8 | AIME25 pass@8 |
 |---|---:|---:|
 | GRPO | 20.0% | 43.3% |
+| GRPO / LoRA in final 18 layers | 17.9% | 33.3% |
 | Vanilla REINFORCE / AdamW | 14.6% | 26.7% |
 | Batch-normalized REINFORCE / AdamW | 17.9% | 30.0% |
 
