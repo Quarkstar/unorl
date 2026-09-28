@@ -3,8 +3,9 @@
 Resource-efficient **on-policy reinforcement learning** with SkyRL. We study
 single-rollout learning, rank-1 LoRA, and ways to reduce training activation memory.
 
-The [research book](research/index.md) contains a page for every retained experiment,
+The [published research book](https://quarkstar.github.io/unorl/) contains a page for every retained experiment,
 configuration snapshots, Material-colored learning curves, and a comparison of results.
+Its source is in [research/](research/index.md).
 
 | Qwen3-4B-Base, rank-1 LoRA, step 100 | AIME25 avg@8 | AIME25 pass@8 |
 |---|---:|---:|
@@ -103,9 +104,8 @@ records exactly which paths were deleted.
 ## Development
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for checks, experiment recording, and the
-reproducibility expectations. No GitHub remote or public site is assumed; the
-included deployment workflow becomes usable after the repository is pushed and
-GitHub Pages is enabled.
+reproducibility expectations. The [GitHub repository](https://github.com/Quarkstar/unorl)
+builds and publishes the research book through GitHub Actions on pushes to `main`.
 
 ## License
 

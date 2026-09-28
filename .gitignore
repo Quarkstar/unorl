@@ -1,13 +1,27 @@
 # Local training inputs, outputs, and runtime caches
-.cache/
-.deps/
-.tmp/
-models/
-data/
-runs/
-# Keep portable research data in Git
-!research/data/
-!research/data/**
+/.cache/
+/.deps/
+/.tmp/
+/.raytmp/
+/models/
+/data/
+/runs/
+# Portable research/data summaries and figures remain tracked.
+# Credentials and local environment overrides
+.env
+.env.*
+!.env.example
+!.env.*.example
+# Checkpoints and raw datasets outside the usual local directories
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.parquet
+*.arrow
+*.log
+wandb/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -16,6 +30,10 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+.coverage
+.coverage.*
+htmlcov/
+.DS_Store
 # Documentation toolchain and rendered website
 node_modules/
 _build/

@@ -28,9 +28,11 @@ For a repository named `unorl`, the normal URL is `https://OWNER.github.io/unorl
 For `OWNER.github.io` repositories or custom domains, GitHub's configured base path
 is used. The workflow does not contain a hard-coded owner or repository URL.
 
+This project's repository is [Quarkstar/unorl](https://github.com/Quarkstar/unorl),
+and the published book is [quarkstar.github.io/unorl](https://quarkstar.github.io/unorl/).
+
 See the [official MyST GitHub Pages guide](https://mystmd.org/guide/deployment-github-pages)
-for the Pages source setting and base-path behavior. No remote or deployment has
-been created automatically by this reorganization.
+for the Pages source setting and base-path behavior.
 
 ## Updating records
 

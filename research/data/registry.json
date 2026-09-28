@@ -1,5 +1,10 @@
 [
   {
+    "id": "qwen3-4b-base-grpo-lora-r1-last18-20260928-01",
+    "title": "GRPO \u00b7 rank-1 LoRA in the final 18 layers",
+    "group": "ablation"
+  },
+  {
     "id": "unorl-batchnorm-retain-truncated-20260926-01",
     "title": "Retain truncated failures \u00b7 AdamW",
     "group": "ablation"

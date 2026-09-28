@@ -17,6 +17,8 @@ project:
   - file: research/methods.md
   - title: Controlled follow-up experiments
     children:
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md
+      title: GRPO · rank-1 LoRA in the final 18 layers
     - file: research/experiments/unorl-batchnorm-retain-truncated-20260926-01.md
       title: Retain truncated failures · AdamW
   - title: Current algorithm comparison
