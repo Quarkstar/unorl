@@ -21,6 +21,7 @@ The sequence-summed loss and stateless SGD differ from the corrected experiment.
 | Loss reduction | seq_mean_token_sum_norm |
 | LoRA rank | 1 |
 | LoRA alpha | 32 |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
 | Prompts × responses | 32 × 1 = 32 responses/update |

@@ -179,6 +179,9 @@ def experiment_page(run):
         "LoRA alpha": cfg.get(
             "trainer.low_resource.lora_alpha", cfg.get("trainer.policy.model.lora.alpha", "—")
         ),
+        "LoRA initialization": cfg.get(
+            "trainer.policy.model.lora.init_method", "kaiming (default)"
+        ),
         "Learning rate": cfg.get("trainer.policy.optimizer_config.lr", "not recorded"),
         "Warmup steps": cfg.get("trainer.policy.optimizer_config.num_warmup_steps", "not recorded"),
         "Prompts × responses": f"{batch} × {n} = {batch * n if batch else 'unknown'} responses/update",
@@ -249,7 +252,42 @@ def experiment_page(run):
             "Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.\n"
         )
     text += "\n## Interpretation limits\n\nOne retained run is not a multi-seed study. AIME contains only 30 questions per year; avg@8 measures sampled single-response accuracy, while pass@8 measures question coverage. A peak checkpoint is not the final result. Response-count matching does not equal token-compute matching. See [measurement conventions](../methods.md).\n"
+    if cfg.get("trainer.policy.model.lora.init_method") == "nora_init":
+        text += nora_observations(run)
     (BOOK / "experiments" / f"{rid}.md").write_text(text)
+
+
+def nora_observations(run):
+    """Keep the NoRA interpretation and paired measurements reproducible."""
+    reference_id = "qwen3-4b-base-grpo-lora-r1-blog-20260923-01"
+    reference = json.loads((BOOK / "data" / f"{reference_id}.json").read_text())
+    text = "\n## Faster early learning: comparison with standard LoRA\n\n"
+    text += f"Reference: [full-layer rank-1 GRPO]({reference_id}.md). The model, data, prompt format, AdamW LR, batch, rollout count and response cap match. Initialization and alpha change together; this is a method-and-scaling comparison.\n\n"
+    text += figure(
+        "../figures/comparison-nora.svg",
+        "NoRA-init versus standard full-layer LoRA. Same number of responses per update; longer responses mean token compute is not matched.",
+    )
+    text += "\n### Training correctness by 20-step window\n\n| Steps | NoRA-init | Standard LoRA | Difference |\n|---|---:|---:|---:|\n"
+    for start in range(1, 101, 20):
+        means = []
+        for current in (run, reference):
+            values = [
+                row["metrics"]["reward/mean_positive_reward"]
+                for row in current["metrics"]
+                if start <= row["step"] < start + 20
+                and "reward/mean_positive_reward" in row["metrics"]
+            ]
+            means.append(statistics.mean(values))
+        text += f"| {start}–{start + 19} | {pct(means[0])} | {pct(means[1])} | {(means[0] - means[1]) * 100:+.1f} pp |\n"
+    text += "\n### AIME25 checkpoint comparison\n\n| Step | NoRA avg@8 | LoRA avg@8 | NoRA pass@8 | LoRA pass@8 |\n|---:|---:|---:|---:|---:|\n"
+    reference_evals = {step: (avg, pas) for step, avg, pas in evaluation(reference)}
+    for step, avg, pas in evaluation(run):
+        base_avg, base_pas = reference_evals[step]
+        text += f"| {step} | {pct(avg)} | {pct(base_avg)} | {pct(pas)} | {pct(base_pas)} |\n"
+    text += "\n### Interpretation and next hypothesis\n\nThe early acceleration is a promising result even though the final evaluation does not beat the reference. Step-zero scores differ despite B=0 and unchanged initial logits; these are stochastic evaluation draws, not different starting weights. NoRA's positive signal is faster improvement in both training correctness and early held-out evaluation.\n\n"
+    text += "The later plateau is an observation, not evidence that NoRA is its cause. A fixed rank-one update is one possible constraint; data difficulty, truncation and optimization dynamics are alternative explanations. This run does not identify the cause.\n\n"
+    text += "**Next hypothesis: periodic merge/reset.** Merge the learned BA update into the backbone, then initialize a fresh adapter with NoRA-init and B=0. This preserves the policy at the reset boundary in exact arithmetic while allowing the accumulated update across cycles to exceed rank one. Test whether the early learning speed returns after reset and whether later reward and AIME25 accuracy improve. Optimizer-state reset and the merge interval must be explicit experimental settings. Existing exploratory merge runs also changed the optimizer and algorithm, so they do not validate this hypothesis. No new merge experiment has been launched.\n"
+    return text
 
 
 def diagnosis_plot():
@@ -311,6 +349,15 @@ def main():
         "comparison-confounded",
         "Earlier trials · optimizer and loss confounds",
     )
+    nora_runs = [
+        run
+        for run in runs
+        if run["config"].get("trainer.policy.model.lora.init_method") == "nora_init"
+        or run["run_id"] == "qwen3-4b-base-grpo-lora-r1-blog-20260923-01"
+    ]
+    comparison(
+        nora_runs, {"ablation", "primary"}, "comparison-nora", "NoRA-init · faster early learning"
+    )
     text = """---
 title: UNORL research book
 ---
@@ -330,6 +377,8 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-primary.svg",
         "Google Material palette. Evaluation points are unsmoothed; training curves use a trailing 10-update mean with raw values faintly shown.",
     )
+    text += "\n## NoRA-init: faster early learning\n\nThe completed [NoRA-init trial](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) reaches **33.8%** mean training correctness in steps 21–40, versus **23.7%** with standard rank-1 LoRA. Step-20 AIME25 avg@8 is **9.2% versus 4.2%**. Later training correctness plateaus near 38–39%; final avg@8 / pass@8 is **17.9% / 36.7%**, versus **20.0% / 43.3%**. Initialization and alpha differ together. The early acceleration motivates testing merge/reset; the cause of the plateau and benefit of merging remain unproven.\n\n"
+    text += figure("figures/comparison-nora.svg", "NoRA-init and standard rank-1 LoRA GRPO.")
     text += "\n## All retained experiment results\n\nFinal columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.\n\n"
     csvrows = []
     for group, title in GROUPS.items():
@@ -360,7 +409,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-confounded.svg",
         "Earlier single-rollout trials used stateless SGD and sometimes a different loss reduction. Their failures do not establish that REINFORCE fails with AdamW.",
     )
-    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Next research questions\n\n1. Measure adapter magnitudes by layer and test LoRA on only the final N layers.\n2. Test [NoRA-style initialization](notes/nora.md) with scaling controlled.\n3. Test QLoRA separately.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central. These next experiments are planned, not executed results.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
+    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. Next, test periodic merge/reset as a possible way to sustain learning; this is a hypothesis, not an executed follow-up.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:
         w = csv.DictWriter(f, fieldnames=list(csvrows[0]), lineterminator="\n")

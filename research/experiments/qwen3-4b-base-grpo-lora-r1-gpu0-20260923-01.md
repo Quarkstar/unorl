@@ -21,6 +21,7 @@ Configuration is retained but there are no metrics. No learning or evaluation co
 | Loss reduction | token_mean |
 | LoRA rank | 1 |
 | LoRA alpha | 16 |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1e-06 |
 | Warmup steps | 5 |
 | Prompts × responses | 4 × 8 = 32 responses/update |

@@ -21,6 +21,7 @@ This earlier experiment used the custom stateless SGD worker, not the later Adam
 | Loss reduction | token_mean |
 | LoRA rank | 1 |
 | LoRA alpha | 32 |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
 | Prompts × responses | 256 × 1 = 256 responses/update |

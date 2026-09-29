@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 
 NOTES = {
+    "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01": (
+        "GRPO · rank-1 NoRA-init",
+        "ablation",
+        "Completed 100 steps successfully. The main positive signal is faster early learning: training correctness averages 18.4% versus 12.2% in steps 1–20, and 33.8% versus 23.7% in steps 21–40. AIME25 avg@8 at step 20 is 9.2% versus 4.2% for standard rank-1 LoRA. Training correctness later levels off near 38–39%; this does not establish that NoRA causes the plateau. Final avg@8 / pass@8 is 17.9% / 36.7%, versus the reference's 20.0% / 43.3%. The trial changes initialization and alpha together (normalized A with alpha 1 versus Kaiming A with alpha 32), so the acceleration cannot be attributed to initialization alone. The next hypothesis is that periodic merge/reset may retain the faster learning while expanding the accumulated update beyond one fixed rank-one adapter. No merge/reset was used in this trial, and that hypothesis remains untested under this recipe.",
+    ),
     "qwen3-4b-base-grpo-lora-r1-last18-20260928-01": (
         "GRPO · rank-1 LoRA in the final 18 layers",
         "ablation",
@@ -172,6 +177,11 @@ def main():
                 else None,
             },
         }
+        for name in ("initial-adapter-audit.json", "comparison-audit.json"):
+            if (p / name).exists():
+                raw = (p / name).read_bytes()
+                result.setdefault("audits", {})[name] = portable(json.loads(raw))
+                hashes[name] = hashlib.sha256(raw).hexdigest()
         exitfile = root / "runs/logs" / f"{rid}.exit-status"
         if exitfile.exists():
             result["exit_status"] = exitfile.read_text().strip()

@@ -21,6 +21,7 @@ This short pilot uses an instruction-tuned model and a 16k response budget. Its 
 | Loss reduction | token_mean |
 | LoRA rank | 0 |
 | LoRA alpha | — |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1e-06 |
 | Warmup steps | 5 |
 | Prompts × responses | 32 × 8 = 256 responses/update |

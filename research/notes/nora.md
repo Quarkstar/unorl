@@ -87,5 +87,24 @@ initialization, so restored adapters are not normalized again.
 
 The implementation checks that initialization leaves logits unchanged, that A
 receives gradients after B starts learning, and that native adapter reload and
-merging preserve trained logits. The 100-step run will assess convergence;
-this change is not expected to reduce the parameter or optimizer memory.
+merging preserve trained logits. The completed 100-step run assesses convergence;
+this change does not reduce the parameter or optimizer memory.
+
+## Completed trial: acceleration is the positive signal
+
+The [experiment report](../experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md)
+contains the full curves, checkpoint evaluations and paired training-window
+comparison. The run completed all 100 steps on 2026-09-28 with exit status 0.
+
+NoRA-init reached 33.8% training correctness in steps 21–40 versus 23.7% for
+standard LoRA. Step-20 AIME25 avg@8 was 9.2% versus 4.2%. This is promising
+faster early learning. Final AIME25 avg@8 / pass@8 was 17.9% / 36.7%, versus
+20.0% / 43.3%; the endpoint did not establish a performance gain.
+
+The later plateau is not evidence against NoRA itself. Our next hypothesis
+is to merge the adapter into the backbone and reset a fresh NoRA-initialized
+adapter, allowing accumulated weight updates to exceed rank one. Merge/reset
+might recover early learning speed, but this is not established by this run.
+A future comparison must state the merge interval and optimizer-state reset
+policy explicitly and keep the algorithm and other training settings fixed.
+No merge follow-up was started when recording these results.

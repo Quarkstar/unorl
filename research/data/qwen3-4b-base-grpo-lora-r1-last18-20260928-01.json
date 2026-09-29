@@ -6081,9 +6081,36 @@
     "sha256": {
       "metrics.jsonl": "a43cf3965268c16b8cf0b16fbe47ad63ddbfb755d4c9e5d9faa584d32b2cb257",
       "config.json": "9f8c6737a3fc90e501c3f7c73fad27bc3cf6d2eb654548642a31103e84c3c176",
-      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b"
+      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
+      "comparison-audit.json": "183be5c2761d4c37b19561bd012b317130cad50036e7712d10381905a08e17fb"
     },
     "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
+  },
+  "audits": {
+    "comparison-audit.json": {
+      "baseline": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+      "recipe_differences": {
+        "trainer.policy.model.lora.exclude_modules": {
+          "baseline": null,
+          "trial": ".*\\.layers\\.(?:[0-9]|1[0-7])\\..*"
+        }
+      },
+      "ignored_run_metadata": [
+        "trainer.ckpt_path",
+        "trainer.export_path",
+        "trainer.log_path",
+        "trainer.project_name",
+        "trainer.run_name"
+      ],
+      "renames_normalized": true,
+      "training_data_sha256": "f6f0b8c36f79b642249d524e910811f891013340120cff355802e59c369d8249",
+      "grading_function_ast_matches": {
+        "score_answer": true,
+        "symbolic_score": true
+      },
+      "baseline_adapter_parameters": 2064384,
+      "trial_adapter_parameters": 1032192
+    }
   },
   "exit_status": "0"
 }

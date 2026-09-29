@@ -21,6 +21,7 @@ Only verified correct self-generated responses are trained. This run demonstrate
 | Loss reduction | token_mean |
 | LoRA rank | 0 |
 | LoRA alpha | — |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1e-06 |
 | Warmup steps | 5 |
 | Prompts × responses | 32 × 8 = 256 responses/update |

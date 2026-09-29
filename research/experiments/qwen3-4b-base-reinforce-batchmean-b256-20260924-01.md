@@ -21,6 +21,7 @@ Batch-mean centering without standard-deviation scaling did not show a convincin
 | Loss reduction | token_mean |
 | LoRA rank | 1 |
 | LoRA alpha | 32 |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
 | Prompts × responses | 256 × 1 = 256 responses/update |

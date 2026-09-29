@@ -21,6 +21,7 @@ This combines rank-1 LoRA, periodic merge/reset, single-rollout REINFORCE, SGD a
 | Loss reduction | seq_mean_token_sum_norm |
 | LoRA rank | 1 |
 | LoRA alpha | 1 |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 0.0003 |
 | Warmup steps | 0 |
 | Prompts × responses | 16 × 1 = 16 responses/update |

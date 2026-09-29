@@ -21,6 +21,7 @@ Rank-1 LoRA improves over initialization with the adjusted learning rate. It use
 | Loss reduction | token_mean |
 | LoRA rank | 1 |
 | LoRA alpha | 32 |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
 | Prompts × responses | 32 × 8 = 256 responses/update |

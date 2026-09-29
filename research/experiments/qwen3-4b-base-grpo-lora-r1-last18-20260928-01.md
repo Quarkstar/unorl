@@ -21,6 +21,7 @@ Completed 100-step controlled comparison with full-layer rank-1 GRPO. The same m
 | Loss reduction | token_mean |
 | LoRA rank | 1 |
 | LoRA alpha | 32 |
+| LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
 | Prompts × responses | 32 × 8 = 256 responses/update |
