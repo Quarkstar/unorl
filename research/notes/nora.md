@@ -108,3 +108,21 @@ might recover early learning speed, but this is not established by this run.
 A future comparison must state the merge interval and optimizer-state reset
 policy explicitly and keep the algorithm and other training settings fixed.
 No merge follow-up was started when recording these results.
+
+## Follow-up: NoRA-init in the last half of the network
+
+Profile: `configs/qwen3-4b-base-grpo-lora-r1-nora-init-last18.json`.
+Run ID: `qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01`.
+
+The hypothesis is that NoRA-init shortens the slower early learning observed
+with adapters only in layers 18–35. Relative to full-layer NoRA-init, only the
+layer exclusion changes. Relative to standard last-half LoRA, initialization
+and alpha change together (Kaiming/32 to NoRA-init/1).
+
+The model, data, prompts, AdamW LR 1.5e-5, 32 prompts × 8 rollouts, 8K response
+limit, 100 steps and eight GPUs match the earlier GRPO experiments. Evaluate
+AIME25 with eight samples per question before training and every 20 steps.
+No merge/reset is applied: first test whether normalized initialization alone
+with its unit scale can address the delayed start. This uses the existing
+adapter-placement implementation; a frozen-prefix activation cutoff is not
+part of this experiment. No learning conclusion is recorded before results.
