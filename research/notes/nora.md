@@ -129,7 +129,7 @@ part of this experiment. No learning conclusion is recorded before results.
 
 
 For the last-half NoRA run, `scripts/monitor_vram.py` attaches an external
-NVML sampler at 0.5-second intervals before the first training update. It
+NVML sampler at 10-second intervals before the first training update. It
 writes `vram-samples.jsonl` (per-device and per-process readings) and
 `vram-summary.json` (running per-device peaks grouped by rollout, evaluation,
 training-forward and training-update phases). Device readings include all
@@ -138,3 +138,5 @@ console timer events and can lag because of buffering. These are sampled
 peaks, not exact PyTorch allocator high-water marks; sub-interval spikes and
 startup before attachment may be missed. The sampler exits automatically when
 the run's exit-status file appears.
+
+The sampler initially used 0.5 seconds, then switched to 10 seconds at the user's request before training began. Earlier samples and peaks are retained.

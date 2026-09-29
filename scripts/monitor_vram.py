@@ -48,7 +48,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--gpus", default="0,1,2,3,4,5,6,7")
-    parser.add_argument("--interval", type=float, default=0.5)
+    parser.add_argument("--interval", type=float, default=10.0)
+    parser.add_argument(
+        "--resume", action="store_true", help="Append samples and retain prior peaks"
+    )
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     if Path(args.run_id).name != args.run_id or args.run_id in {".", ".."}:
@@ -65,8 +68,17 @@ def main():
     peaks = {}
     started = datetime.now(timezone.utc).isoformat()
     samples = 0
+    intervals = [args.interval]
+    if args.resume:
+        prior = json.loads((run / "vram-summary.json").read_text())
+        started = prior["started_utc"]
+        samples = prior["samples"]
+        peaks = prior["peak_used_bytes"]
+        intervals = sorted(
+            set(prior.get("sampling_intervals_seconds", [prior["interval_seconds"]]) + intervals)
+        )
     try:
-        with (run / "vram-samples.jsonl").open("x", buffering=1) as output:
+        with (run / "vram-samples.jsonl").open("a" if args.resume else "x", buffering=1) as output:
             while True:
                 with log.open() as stream:
                     stream.seek(offset)
@@ -110,6 +122,7 @@ def main():
                     "started_utc": started,
                     "updated_utc": datetime.now(timezone.utc).isoformat(),
                     "interval_seconds": args.interval,
+                    "sampling_intervals_seconds": intervals,
                     "samples": samples,
                     "finished": exitfile.exists(),
                     "peak_used_bytes": peaks,
