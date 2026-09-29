@@ -126,3 +126,15 @@ No merge/reset is applied: first test whether normalized initialization alone
 with its unit scale can address the delayed start. This uses the existing
 adapter-placement implementation; a frozen-prefix activation cutoff is not
 part of this experiment. No learning conclusion is recorded before results.
+
+
+For the last-half NoRA run, `scripts/monitor_vram.py` attaches an external
+NVML sampler at 0.5-second intervals before the first training update. It
+writes `vram-samples.jsonl` (per-device and per-process readings) and
+`vram-summary.json` (running per-device peaks grouped by rollout, evaluation,
+training-forward and training-update phases). Device readings include all
+resident processes, including inference allocations. Phase labels follow
+console timer events and can lag because of buffering. These are sampled
+peaks, not exact PyTorch allocator high-water marks; sub-interval spikes and
+startup before attachment may be missed. The sampler exits automatically when
+the run's exit-status file appears.
