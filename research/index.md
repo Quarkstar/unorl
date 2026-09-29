@@ -97,6 +97,8 @@ The [truncation analysis](notes/batchnorm-after60.md) examines the loss of quest
 
 ## Research directions and next questions
 
+The [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.
+
 1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.
 2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. Next, test periodic merge/reset as a possible way to sustain learning; this is a hypothesis, not an executed follow-up.
 3. Test QLoRA separately; this direction remains untested.
