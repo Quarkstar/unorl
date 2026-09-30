@@ -75,7 +75,9 @@ def load_config(profile):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=["grpo", "reinforce", "ppo"], default="reinforce")
+    parser.add_argument(
+        "--mode", choices=["grpo", "reinforce", "ppo", "nora-merge"], default="reinforce"
+    )
     parser.add_argument("--config", help="Profile in configs/; defaults depend on --mode")
     parser.add_argument("--gpus", default="0", help="Explicit comma-separated device IDs")
     parser.add_argument("--run-id")
@@ -87,6 +89,7 @@ def main():
             "grpo": "qwen3-4b-base-grpo-lora-r1-blog.json",
             "reinforce": "qwen3-4b-base-reinforce-batchnorm-adamw-r1.json",
             "ppo": "qwen3-4b-base-ppo-lora-r1-valuewarmup.json",
+            "nora-merge": "qwen3-4b-base-grpo-nora-merge-r1.json",
         }[args.mode]
     run_id = args.run_id or f"unorl-{args.mode}-{datetime.now(timezone.utc):%Y%m%d-%H%M%S}"
     if Path(run_id).name != run_id or run_id in {".", ".."}:
@@ -105,6 +108,7 @@ def main():
         "grpo": "unorl.train",
         "reinforce": "unorl.reinforce_adamw_train",
         "ppo": "unorl.ppo_train",
+        "nora-merge": "unorl.nora_merge_train",
     }[args.mode]
     command = [str(PYTHON), "-m", module] + [f"{k}={json.dumps(v)}" for k, v in cfg.items()]
     if args.dry_run:

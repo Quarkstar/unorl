@@ -87,12 +87,14 @@ def adapter_delta(layer: LoraLayer) -> torch.Tensor:
 
 
 @torch.no_grad()
-def merge_and_reset(model, seed: int) -> dict[str, float]:
+def merge_and_reset(model, seed: int, init_method: str = "kaiming") -> dict[str, float]:
     """Accumulate BA into W and restart A/random, B/zero on every rank.
 
     FP32 base storage is the default to retain small repeated updates. The
     rounding metric exposes precision lost when users select BF16 base storage.
     """
+    if init_method not in {"kaiming", "nora_init"}:
+        raise ValueError("Merge/reset supports Kaiming or NoRA-init")
     delta_energy = 0.0
     error_energy = 0.0
     count = 0
@@ -113,6 +115,10 @@ def merge_and_reset(model, seed: int) -> dict[str, float]:
         generator = torch.Generator(device="cpu").manual_seed(seed + count)
         fresh_a = torch.empty(tuple(a.shape), dtype=torch.float32, device="cpu")
         torch.nn.init.kaiming_uniform_(fresh_a, a=math.sqrt(5), generator=generator)
+        if init_method == "nora_init":
+            fresh_a.sign_()
+            if not (fresh_a.abs() == 1).all():
+                raise ValueError("NoRA-init requires nonzero fresh A entries")
         copy_parameter(a, fresh_a.to(base.device))
         copy_parameter(b, torch.zeros(tuple(b.shape), dtype=b.dtype, device=base.device))
     if not count:

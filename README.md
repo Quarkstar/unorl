@@ -67,6 +67,13 @@ npm run docs:dev
 The committed snapshots make the book buildable on a fresh clone without GPUs.
 See [publishing](research/publishing.md) for GitHub Pages setup.
 
+## Current follow-up
+
+Full-layer NoRA-init with merge/reset tests whether new rank-one adapters can
+sustain the earlier learning speed. The 100-step GRPO recipe merges at steps
+40 and 80, resets adapter AdamW history, and keeps the constant LR. See the
+[implementation and measurement plan](research/notes/nora.md).
+
 ## Training
 
 Training uses a **separately installed SkyRL runtime**, pinned to commit
@@ -91,6 +98,11 @@ The download helper is `scripts/download_qwen3.py` (use `--repo Qwen/Qwen3-4B-Ba
 # Inspect the configuration without launching training or requiring a GPU:
 python scripts/train.py --mode reinforce \
   --config qwen3-4b-base-reinforce-batchnorm-adamw-r1.json --dry-run
+
+# Full NoRA-init merge/reset follow-up (eight GPUs):
+python scripts/train.py --mode nora-merge \
+  --config qwen3-4b-base-grpo-nora-merge-r1.json \
+  --gpus 0,1,2,3,4,5,6,7 --launch
 
 # Explicit GPU selection; this profile expects eight policy GPUs:
 python scripts/train.py --mode reinforce \

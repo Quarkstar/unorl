@@ -140,3 +140,50 @@ startup before attachment may be missed. The sampler exits automatically when
 the run's exit-status file appears.
 
 The sampler initially used 0.5 seconds, then switched to 10 seconds at the user's request before training began. Earlier samples and peaks are retained.
+
+
+## Full-layer merge/reset follow-up (2026-09-30)
+
+Selected follow-up: full NoRA-init with merges after optimizer updates **40 and
+80** in a 100-step GRPO run. Profile:
+`configs/qwen3-4b-base-grpo-nora-merge-r1.json`; entrypoint:
+`unorl.nora_merge_train`. The profile differs from the completed full-layer
+NoRA-init reference only by the added merge interval. Keep Qwen3-4B-Base,
+all 36 layers, rank 1 / alpha 1, AdamW LR 1.5e-5, no warmup, 32 prompts ×
+8 responses, 8192 response tokens, eight GPUs and AIME25 avg@8 / pass@8
+before training and every 20 steps. LoFT-simple remains a separate candidate.
+
+At each boundary, accumulate the current scaled B @ A into the frozen FP32
+backbone, initialize a fresh A with independent ±1 entries, and zero B.
+Parameter objects and scheduler state are preserved. **Clear all adapter AdamW
+moments and step counters**; the next update starts fresh optimizer history at
+the same constant LR. This is an explicit reset baseline, not a method that
+solves optimizer continuity. After two merges, each accumulated weight update
+can have rank at most three; neither high effective rank nor improved learning
+is guaranteed.
+
+Rollout retains the reference's native rank-one vLLM adapter path. At startup,
+resume and after each merge, send accumulated backbone W over NCCL first,
+then load the current adapter through SkyRL's native LoRA synchronization.
+Other updates synchronize only the adapter. Sending only the adapter after a
+merge would lose prior learned updates; sending W + B @ A and also loading
+the adapter would count the active update twice. Final HF export materializes
+W + B @ A; FSDP checkpoints retain the merged backbone, active factors and
+optimizer/scheduler for resumption.
+
+Validation: 72 CPU/runtime tests passed, including parameter identity,
+optimizer reset/repopulation, profile equality and synchronization order.
+An eight-GPU actual FSDP2 check completed four AdamW updates with a merge
+between updates two and three, then verified checkpoint reload and dense
+export. The tiny BF16 forward probe changed by a maximum 0.00114 in logits;
+merging preserves the function in exact arithmetic, but mixed-precision
+forward computation has rounding differences. The full run records this probe
+at each merge rather than assuming bitwise equality.
+
+Record exact PyTorch peak allocated/reserved memory for each training update,
+including merge work at boundaries. Sample NVML memory every **10 seconds**
+for rollout, evaluation, training and synchronization. Merge gathers may raise
+peak memory. Both measurements are required to distinguish training allocator
+memory from total device residency. Results remain pending until measured;
+compare the post-40 and post-80 slopes and AIME25 checkpoints against the
+completed full-layer NoRA-init reference.
