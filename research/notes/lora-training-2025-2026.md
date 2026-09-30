@@ -289,3 +289,47 @@ activation storage and transient buffers; include inference residency in
 end-to-end peak reporting. NVIDIA measurements evaluate this implementation,
 not iPhone feasibility. Phone validation must eventually account for unified
 memory and the actual supported numerical kernels.
+
+## Implemented LoRA-FA comparison: 2026-09-30
+
+Profile: `configs/qwen3-4b-base-grpo-lorafa-r1.json`. All layers, rank one,
+Kaiming A, zero B, alpha 32, native AdamW LR 1.5e-5, constant schedule without
+warmup, 32 prompts × eight rollouts, 8K response cap, 100 steps, eight A100s,
+and AIME25 avg@8/pass@8 every 20 steps. The reference is the standard full-layer
+rank-one GRPO recipe. `lora.init_method=lorafa` selects the custom worker but
+is translated to Kaiming before PEFT initialization; it does not introduce
+NoRA initialization or another scaling change.
+
+`unorl/lorafa.py` freezes A before sharding. `unorl/lorafa_worker.py` retains
+SkyRL's native FSDP2 strategy and AdamW. After initialization, each A is
+materialized once to compute its FP32 squared norm. The cached correction is
+`1 / (scale**2 * (A.square().sum() + 1e-8))`. It multiplies accumulated B
+DTensor gradients locally before native gradient clipping, AdamW and scheduler
+stepping. Checkpoint loading rebuilds the cache from restored A. This
+rank-one specialization needs no dense weight-shaped correction tensor.
+
+This is the paper's gradient correction with the **reference's native AdamW
+implementation and defaults** retained. It does not reproduce every numerical
+default or epsilon convention of PEFT's separate optimizer. The recorded
+`policy/grad_norm` is measured after correction and before clipping, so its
+magnitude is not directly comparable with the reference's uncorrected norm.
+The initialization audit records correction factors and optimizer settings.
+
+Expected trainable B count for this architecture: **1,105,920 parameters**;
+A's 958,464 parameters remain stored but frozen. All backbone parameters stay
+frozen. A/B export and vLLM synchronization use native PEFT paths.
+
+The worker records per-rank CUDA allocator peak allocated/reserved bytes from
+policy forward/backward through the optimizer step. These include the resident
+policy allocations in that process; weight backloading before forward/backward
+is outside the reset window. The external 10-second NVML sampler additionally
+covers device residency across rollout, evaluation and training. No matched
+full-layer reference allocator measurement exists yet, so measured peaks alone
+cannot establish the size of the saving against that old run.
+
+Correctness checks cover projected-gradient geometry, unchanged initial
+logits, frozen A/backbone, B-only Adam state, activation storage in an isolated
+adapter branch, and native adapter reload/merge. A distributed tiny-model check
+uses the actual SkyRL strategy on the intended GPU count and verifies
+checkpoint/resume. Smoke artifacts are excluded from published experiment
+results. Learning and end-to-end memory benefits remain experimental questions.

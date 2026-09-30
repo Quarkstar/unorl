@@ -97,6 +97,21 @@ SkyRL/project revisions, metrics and logs for each new run. Existing run IDs are
 never silently reused. The original CUDA runtime settings are retained; configure
 the runtime for your hardware before launching elsewhere.
 
+The full-layer rank-one LoRA-FA comparison uses
+`configs/qwen3-4b-base-grpo-lorafa-r1.json`. It retains the GRPO reference's
+Kaiming initialization, alpha 32, AdamW LR 1.5e-5, eight rollouts and 100 steps.
+A is frozen before FSDP2; B gradients receive the regularized inverse-Gram
+correction before clipping and native AdamW. The `lorafa` initialization field
+selects this worker; actual initialization remains Kaiming. Run it with
+`--mode grpo --config qwen3-4b-base-grpo-lorafa-r1.json --gpus 0,1,2,3,4,5,6,7`.
+See the [method investigation](research/notes/lora-training-2025-2026.md).
+
+`scripts/check_lorafa_fsdp.py` checks this strategy with a tiny Qwen3 model
+under `torchrun`, including frozen weights, Adam state, checkpoint resume and
+native adapter export. Its output belongs under `.tmp/`. LoRA-FA records
+per-rank training allocator peaks in `training-memory-rank*.jsonl`; the
+separate `scripts/monitor_vram.py` sampler measures total device residency.
+
 Retired conditional-SFT training and migration scripts have been removed from the
 active code. Their substantive experiment results remain in the book. Smoke-run
 records were removed; the [cleanup manifest](research/maintenance/cleanup.json)
