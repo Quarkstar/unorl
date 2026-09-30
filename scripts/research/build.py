@@ -184,6 +184,7 @@ def experiment_page(run):
         else "Kaiming (LoRA-FA worker; A frozen)",
         "Learning rate": cfg.get("trainer.policy.optimizer_config.lr", "not recorded"),
         "Warmup steps": cfg.get("trainer.policy.optimizer_config.num_warmup_steps", "not recorded"),
+        "Merge/reset interval (updates)": cfg.get("trainer.nora_merge_interval", "not applied"),
         "Prompts × responses": f"{batch} × {n} = {batch * n if batch else 'unknown'} responses/update",
         "Response limit": cfg.get("generator.sampling_params.max_generate_length", "not recorded"),
         "Evaluation samples/question": cfg.get(

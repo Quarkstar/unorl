@@ -24,6 +24,7 @@ Completed 100 steps successfully. Freeze A and apply the regularized inverse-Gra
 | LoRA initialization | Kaiming (LoRA-FA worker; A frozen) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
+| Merge/reset interval (updates) | not applied |
 | Prompts × responses | 32 × 8 = 256 responses/update |
 | Response limit | 8192 |
 | Evaluation samples/question | 8 |

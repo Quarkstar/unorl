@@ -24,6 +24,7 @@ This earlier experiment used the custom stateless SGD worker, not the later Adam
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
+| Merge/reset interval (updates) | not applied |
 | Prompts × responses | 256 × 1 = 256 responses/update |
 | Response limit | 8192 |
 | Evaluation samples/question | 8 |

@@ -55,6 +55,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
+| [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | — | — | — | — | AdamW (SkyRL default) |
 | [GRPO · full-layer rank-1 LoRA-FA](experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md) | 100 | 100 | 17.5% | 33.3% | AdamW (SkyRL default) |
 | [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 100 | 100 | 15.8% | 30.0% | AdamW (SkyRL default) |
 | [GRPO · rank-1 NoRA-init](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) | 100 | 100 | 17.9% | 36.7% | AdamW (SkyRL default) |

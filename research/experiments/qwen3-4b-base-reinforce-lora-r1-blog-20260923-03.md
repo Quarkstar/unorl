@@ -24,6 +24,7 @@ The sequence-summed loss and stateless SGD differ from the corrected experiment.
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
+| Merge/reset interval (updates) | not applied |
 | Prompts × responses | 32 × 1 = 32 responses/update |
 | Response limit | 8192 |
 | Evaluation samples/question | 8 |

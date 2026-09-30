@@ -1,4 +1,5 @@
 run_id,group,last_train_step,last_eval_step,avg_at_8,pass_at_8
+qwen3-4b-base-grpo-nora-merge-r1-20260930-01,ablation,,,,
 qwen3-4b-base-grpo-lorafa-r1-20260930-01,ablation,100,100,0.175,0.3333333333333333
 qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01,ablation,100,100,0.15833333333333333,0.3
 qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01,ablation,100,100,0.17916666666666667,0.36666666666666664

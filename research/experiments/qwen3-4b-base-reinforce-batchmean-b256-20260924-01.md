@@ -24,6 +24,7 @@ Batch-mean centering without standard-deviation scaling did not show a convincin
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
+| Merge/reset interval (updates) | not applied |
 | Prompts × responses | 256 × 1 = 256 responses/update |
 | Response limit | 8192 |
 | Evaluation samples/question | 8 |

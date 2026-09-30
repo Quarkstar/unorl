@@ -24,6 +24,7 @@ This combines rank-1 LoRA, periodic merge/reset, single-rollout REINFORCE, SGD a
 | LoRA initialization | kaiming (default) |
 | Learning rate | 0.0003 |
 | Warmup steps | 0 |
+| Merge/reset interval (updates) | not applied |
 | Prompts × responses | 16 × 1 = 16 responses/update |
 | Response limit | 8192 |
 | Evaluation samples/question | 4 |

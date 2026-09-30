@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 
 NOTES = {
+    "qwen3-4b-base-grpo-nora-merge-r1-20260930-01": (
+        "GRPO · full NoRA-init with merge/reset",
+        "ablation",
+        "Launched a 100-step controlled follow-up to full-layer NoRA-init. The sole profile addition is a merge interval of 40 updates: merge at steps 40 and 80, fresh normalized sign A and zero B, clear adapter AdamW moments and step counters, and preserve the constant LR/scheduler. All 36 layers, rank 1 / alpha 1, eight rollouts, model/data, batch and response cap match the full NoRA-init reference. Backbone W is synchronized before the native adapter at startup/resume and merges, avoiding lost or double-counted updates. This explicit reset baseline does not preserve Adam continuity or guarantee high effective rank. Eight-GPU FSDP2 merge, continued AdamW training, checkpoint resume and dense export checks passed before launch. Learning and memory conclusions remain pending; ten-second NVML samples and exact per-update training allocator peaks are recorded locally, including merge work.",
+    ),
     "qwen3-4b-base-grpo-lorafa-r1-20260930-01": (
         "GRPO · full-layer rank-1 LoRA-FA",
         "ablation",

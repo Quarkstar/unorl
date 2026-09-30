@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "run_id": "qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
+  "title": "GRPO \u00b7 full NoRA-init with merge/reset",
+  "group": "ablation",
+  "analysis": "Launched a 100-step controlled follow-up to full-layer NoRA-init. The sole profile addition is a merge interval of 40 updates: merge at steps 40 and 80, fresh normalized sign A and zero B, clear adapter AdamW moments and step counters, and preserve the constant LR/scheduler. All 36 layers, rank 1 / alpha 1, eight rollouts, model/data, batch and response cap match the full NoRA-init reference. Backbone W is synchronized before the native adapter at startup/resume and merges, avoiding lost or double-counted updates. This explicit reset baseline does not preserve Adam continuity or guarantee high effective rank. Eight-GPU FSDP2 merge, continued AdamW training, checkpoint resume and dense export checks passed before launch. Learning and memory conclusions remain pending; ten-second NVML samples and exact per-update training allocator peaks are recorded locally, including merge work.",
+  "optimizer": "AdamW (SkyRL default)",
+  "config": {
+    "trainer.algorithm.policy_loss_type": "regular",
+    "trainer.algorithm.advantage_estimator": "grpo",
+    "trainer.algorithm.grpo_norm_by_std": false,
+    "trainer.algorithm.loss_reduction": "token_mean",
+    "trainer.algorithm.use_kl_loss": false,
+    "trainer.algorithm.use_kl_in_reward": false,
+    "trainer.algorithm.zero_variance_filter": false,
+    "trainer.algorithm.dynamic_sampling.type": null,
+    "trainer.algorithm.off_policy_correction.tis_ratio_type": "token",
+    "trainer.algorithm.off_policy_correction.token_tis_ratio_clip_high": 1000000000.0,
+    "trainer.algorithm.off_policy_correction.sequence_mask_metric": null,
+    "trainer.algorithm.eps_clip_low": 1000000000.0,
+    "trainer.algorithm.eps_clip_high": 1000000000.0,
+    "trainer.strategy": "fsdp",
+    "trainer.placement.colocate_all": true,
+    "trainer.placement.policy_num_gpus_per_node": 8,
+    "trainer.epochs": 1,
+    "trainer.max_training_steps": 100,
+    "trainer.train_batch_size": 32,
+    "trainer.policy_mini_batch_size": 32,
+    "trainer.micro_train_batch_size_per_gpu": 2,
+    "trainer.micro_forward_batch_size_per_gpu": 2,
+    "trainer.update_epochs_per_batch": 1,
+    "trainer.max_prompt_length": 2048,
+    "trainer.policy.optimizer_config.lr": 1.5e-05,
+    "trainer.policy.optimizer_config.num_warmup_steps": 0,
+    "trainer.policy.optimizer_config.scheduler": "constant",
+    "trainer.policy.optimizer_config.weight_decay": 0.0,
+    "trainer.eval_before_train": true,
+    "trainer.eval_interval": 20,
+    "trainer.eval_batch_size": 128,
+    "trainer.ckpt_interval": 100,
+    "trainer.hf_save_interval": 100,
+    "trainer.max_ckpts_to_keep": 1,
+    "trainer.resume_mode": null,
+    "trainer.logger": "console",
+    "trainer.project_name": "unorl",
+    "trainer.seed": 42,
+    "generator.batched": true,
+    "generator.max_turns": 1,
+    "generator.n_samples_per_prompt": 8,
+    "generator.eval_n_samples_per_prompt": 8,
+    "generator.sampling_params.temperature": 1.0,
+    "generator.sampling_params.top_p": 1.0,
+    "generator.sampling_params.max_generate_length": 8192,
+    "generator.eval_sampling_params.temperature": 1.0,
+    "generator.eval_sampling_params.top_p": 1.0,
+    "generator.eval_sampling_params.max_generate_length": 8192,
+    "generator.apply_overlong_filtering": true,
+    "generator.inference_engine.backend": "vllm",
+    "generator.inference_engine.num_engines": 8,
+    "generator.inference_engine.tensor_parallel_size": 1,
+    "generator.inference_engine.run_engines_locally": true,
+    "generator.inference_engine.gpu_memory_utilization": 0.8,
+    "generator.inference_engine.enforce_eager": true,
+    "generator.inference_engine.weight_sync_backend": "nccl",
+    "environment.env_class": "unorl_math",
+    "trainer.dump_eval_results": true,
+    "environment.skyrl_gym.max_env_workers": 0,
+    "trainer.policy.model.path": "models/Qwen3-4B-Base",
+    "generator.inference_engine.engine_init_kwargs": {
+      "max_model_len": 10240
+    },
+    "data.val_data": [
+      "data/eval-aime25.parquet"
+    ],
+    "trainer.policy.model.lora.rank": 1,
+    "trainer.policy.model.lora.alpha": 1,
+    "trainer.policy.model.lora.dropout": 0.0,
+    "trainer.policy.model.lora.target_modules": "all-linear",
+    "trainer.policy.model.lora.init_method": "nora_init",
+    "trainer.nora_merge_interval": 40,
+    "data.train_data": [
+      "data/train-benchmark-clean.parquet"
+    ],
+    "trainer.run_name": "qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
+    "trainer.ckpt_path": "runs/qwen3-4b-base-grpo-nora-merge-r1-20260930-01/checkpoints",
+    "trainer.export_path": "runs/qwen3-4b-base-grpo-nora-merge-r1-20260930-01/exports",
+    "trainer.log_path": "runs/qwen3-4b-base-grpo-nora-merge-r1-20260930-01/infra"
+  },
+  "metrics": [],
+  "evaluation_counts": [],
+  "unreadable_eval_dumps": [],
+  "provenance": {
+    "source": "runs/qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
+    "sha256": {
+      "config.json": "1850d77681aaa5765a209fbe80edc847c340d9424a33d7dc669aae29835b059a",
+      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
+      "comparison-audit.json": "a7c169bf016ca85ee7dfb8df8736d2a85422eaa762480dd16322fd50b21948e0"
+    },
+    "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
+  },
+  "audits": {
+    "comparison-audit.json": {
+      "reference_run": "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01",
+      "profile_changes": {
+        "trainer.nora_merge_interval": {
+          "reference": null,
+          "trial": 40
+        }
+      },
+      "implementation_commit": "158111207cd1ff59be7836404fa327c0d85116d9",
+      "optimizer": "native AdamW",
+      "optimizer_reset": "clear adapter moments and step counters at 40 and 80; constant LR and scheduler preserved",
+      "rollout_sync": "base W then native adapter at startup/resume and after merges; only native adapter between merges",
+      "distributed_validation": {
+        "success": true,
+        "world_size": 8,
+        "optimizer": "AdamW",
+        "updates": 4,
+        "merge_after_update": 2,
+        "grad_norms": [
+          1.0893651247024536,
+          1.073070764541626,
+          1.2902876138687134,
+          1.2920405864715576
+        ],
+        "probe_logits_max_abs_diff": 0.0011444091796875,
+        "merge_metrics": {
+          "relora/merged_layers": 14.0,
+          "relora/delta_l2": 0.13937158125548854,
+          "relora/rounding_relative_l2": 2.632039251230997e-07,
+          "relora/retired_optimizer_state_entries": 28.0,
+          "relora/optimizer_state_entries_after_reset": 0.0
+        },
+        "parameter_identity_preserved": true,
+        "scheduler_preserved": true,
+        "adam_history_reset_and_rebuilt": true,
+        "checkpoint_resume_verified": true,
+        "dense_export_includes_prior_merge_and_current_adapter": true
+      },
+      "vram_monitor_interval_seconds": 10,
+      "training_allocator_peak_window": "policy forward/backward through optimizer, including merge/reset when scheduled"
+    }
+  }
+}

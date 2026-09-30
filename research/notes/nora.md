@@ -144,6 +144,9 @@ The sampler initially used 0.5 seconds, then switched to 10 seconds at the user'
 
 ## Full-layer merge/reset follow-up (2026-09-30)
 
+Launched run: `qwen3-4b-base-grpo-nora-merge-r1-20260930-01`.
+[Experiment record](../experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md).
+
 Selected follow-up: full NoRA-init with merges after optimizer updates **40 and
 80** in a 100-step GRPO run. Profile:
 `configs/qwen3-4b-base-grpo-nora-merge-r1.json`; entrypoint:
