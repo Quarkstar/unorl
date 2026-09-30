@@ -17,6 +17,10 @@ project:
   - file: research/methods.md
   - title: Controlled follow-up experiments
     children:
+    - file: research/experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md
+      title: GRPO · full-layer rank-1 LoRA-FA
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md
+      title: GRPO · rank-1 NoRA-init in the final 18 layers
     - file: research/experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md
       title: GRPO · rank-1 NoRA-init
     - file: research/experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md

@@ -1,5 +1,15 @@
 [
   {
+    "id": "qwen3-4b-base-grpo-lorafa-r1-20260930-01",
+    "title": "GRPO \u00b7 full-layer rank-1 LoRA-FA",
+    "group": "ablation"
+  },
+  {
+    "id": "qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01",
+    "title": "GRPO \u00b7 rank-1 NoRA-init in the final 18 layers",
+    "group": "ablation"
+  },
+  {
     "id": "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01",
     "title": "GRPO \u00b7 rank-1 NoRA-init",
     "group": "ablation"

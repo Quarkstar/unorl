@@ -7,10 +7,14 @@ The [published research book](https://quarkstar.github.io/unorl/) contains a pag
 configuration snapshots, Material-colored learning curves, and a comparison of results.
 Its source is in [research/](research/index.md).
 
-| Qwen3-4B-Base, rank-1 LoRA, step 100 | AIME25 avg@8 | AIME25 pass@8 |
+| Qwen3-4B-Base, step 100 | AIME25 avg@8 | AIME25 pass@8 |
 |---|---:|---:|
-| GRPO | 20.0% | 43.3% |
+| GRPO / full-parameter fine-tuning (historical reference) | 17.9% | 36.7% |
+| GRPO / full-layer rank-1 LoRA | 20.0% | 43.3% |
+| GRPO / full-layer rank-1 NoRA-init | 17.9% | 36.7% |
+| GRPO / full-layer rank-1 LoRA-FA | 17.5% | 33.3% |
 | GRPO / LoRA in final 18 layers | 17.9% | 33.3% |
+| GRPO / NoRA-init in final 18 layers | 15.8% | 30.0% |
 | Vanilla REINFORCE / AdamW | 14.6% | 26.7% |
 | Batch-normalized REINFORCE / AdamW | 17.9% | 30.0% |
 
@@ -18,6 +22,9 @@ These are single-run results on 30 AIME25 questions. GRPO uses 32 prompts × 8
 responses, while REINFORCE uses 256 prompts × 1 response per update. Matching
 response count does not match prompt exposure or total token compute. Read the
 [measurement conventions](research/methods.md) before comparing experiments.
+The historical full-parameter reference differs in learning rate, warmup,
+advantage normalization, clipping and importance correction; it is not an
+isolated comparison of full-parameter training against adapters.
 
 ## Repository layout
 

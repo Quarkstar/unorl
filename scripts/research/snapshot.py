@@ -5,6 +5,16 @@ import json
 from pathlib import Path
 
 NOTES = {
+    "qwen3-4b-base-grpo-lorafa-r1-20260930-01": (
+        "GRPO · full-layer rank-1 LoRA-FA",
+        "ablation",
+        "Completed 100 steps successfully. Freeze A and apply the regularized inverse-Gram correction to accumulated B gradients before clipping and native AdamW. The full-layer rank-one reference's Kaiming initialization, alpha 32, LR 1.5e-5, eight rollouts, batch size and response budget are retained. LoRA-FA leads the sampled avg@8 comparison at step 80 (17.9% versus standard LoRA's 13.8%), but at step 100 reaches 17.5% / 33.3% avg@8 / pass@8 versus 20.0% / 43.3%. This demonstrates substantial learning with frozen A, not a statistically established ranking or superiority to the reference. The reported gradient norm is after inverse-Gram correction and is not directly comparable to uncorrected reference norms. The historical full-parameter GRPO baseline reaches 17.9% / 36.7%, but differs in LR, warmup, advantage normalization, clipping and importance correction. No matched reference allocator measurement exists yet to quantify memory savings.",
+    ),
+    "qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01": (
+        "GRPO · rank-1 NoRA-init in the final 18 layers",
+        "ablation",
+        "Completed 100 steps successfully. Relative to full-layer NoRA-init, only adapter placement changes: layers 18–35. Training correctness increases from 11.9% in steps 1–20 to 37.3% in steps 81–100. Final AIME25 avg@8 / pass@8 is 15.8% / 30.0%. The half-layer trial does not reproduce the full-layer NoRA-init run's early acceleration. Comparisons with standard initialization also change alpha from 32 to 1. This single run does not isolate the cause of the later plateau or establish a reliable ranking on 30 evaluation questions. Sampled training device-memory peak is 23.24 GiB; the ten-second NVML sampler can miss brief peaks and includes all resident processes.",
+    ),
     "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01": (
         "GRPO · rank-1 NoRA-init",
         "ablation",
@@ -23,7 +33,7 @@ NOTES = {
     "qwen3-4b-base-grpo-20260916-01": (
         "Full-parameter GRPO",
         "reference",
-        "Full-policy GRPO provides the original learning reference. Its learning rate and warmup differ from the later LoRA profiles, so this is not an isolated adapter ablation.",
+        "Full-policy GRPO provides the original learning reference: AIME25 avg@8 / pass@8 is 17.9% / 36.7% at step 100. It uses LR 1e-6 and five warmup steps; the later LoRA profiles use LR 1.5e-5 without warmup. Advantage standard-deviation normalization, policy clipping and importance correction also differ. This historical result must remain visible in comparisons, but it is not an isolated adapter ablation.",
     ),
     "qwen3-4b-base-grpo-lora-r1-blog-20260923-01": (
         "Rank-1 LoRA GRPO",

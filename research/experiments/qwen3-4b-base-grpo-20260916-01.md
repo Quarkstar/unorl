@@ -4,7 +4,7 @@ title: "Full-parameter GRPO"
 
 # Full-parameter GRPO
 
-Full-policy GRPO provides the original learning reference. Its learning rate and warmup differ from the later LoRA profiles, so this is not an isolated adapter ablation.
+Full-policy GRPO provides the original learning reference: AIME25 avg@8 / pass@8 is 17.9% / 36.7% at step 100. It uses LR 1e-6 and five warmup steps; the later LoRA profiles use LR 1.5e-5 without warmup. Advantage standard-deviation normalization, policy clipping and importance correction also differ. This historical result must remain visible in comparisons, but it is not an isolated adapter ablation.
 
 ## Configuration and provenance
 

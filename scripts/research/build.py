@@ -179,9 +179,9 @@ def experiment_page(run):
         "LoRA alpha": cfg.get(
             "trainer.low_resource.lora_alpha", cfg.get("trainer.policy.model.lora.alpha", "—")
         ),
-        "LoRA initialization": cfg.get(
-            "trainer.policy.model.lora.init_method", "kaiming (default)"
-        ),
+        "LoRA initialization": cfg.get("trainer.policy.model.lora.init_method", "kaiming (default)")
+        if cfg.get("trainer.policy.model.lora.init_method") != "lorafa"
+        else "Kaiming (LoRA-FA worker; A frozen)",
         "Learning rate": cfg.get("trainer.policy.optimizer_config.lr", "not recorded"),
         "Warmup steps": cfg.get("trainer.policy.optimizer_config.num_warmup_steps", "not recorded"),
         "Prompts × responses": f"{batch} × {n} = {batch * n if batch else 'unknown'} responses/update",
@@ -252,7 +252,7 @@ def experiment_page(run):
             "Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.\n"
         )
     text += "\n## Interpretation limits\n\nOne retained run is not a multi-seed study. AIME contains only 30 questions per year; avg@8 measures sampled single-response accuracy, while pass@8 measures question coverage. A peak checkpoint is not the final result. Response-count matching does not equal token-compute matching. See [measurement conventions](../methods.md).\n"
-    if cfg.get("trainer.policy.model.lora.init_method") == "nora_init":
+    if run["run_id"] == "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01":
         text += nora_observations(run)
     (BOOK / "experiments" / f"{rid}.md").write_text(text)
 
@@ -356,7 +356,26 @@ def main():
         or run["run_id"] == "qwen3-4b-base-grpo-lora-r1-blog-20260923-01"
     ]
     comparison(
-        nora_runs, {"ablation", "primary"}, "comparison-nora", "NoRA-init · faster early learning"
+        nora_runs,
+        {"ablation", "primary"},
+        "comparison-nora",
+        "NoRA-init · full and final-half adapters",
+    )
+    lora_ids = [
+        "qwen3-4b-base-grpo-20260916-01",
+        "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+        "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01",
+        "qwen3-4b-base-grpo-lorafa-r1-20260930-01",
+        "qwen3-4b-base-grpo-lora-r1-last18-20260928-01",
+        "qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01",
+    ]
+    by_id = {run["run_id"]: run for run in runs}
+    lora_runs = [by_id[rid] for rid in lora_ids]
+    comparison(
+        lora_runs,
+        {"reference", "primary", "ablation"},
+        "comparison-lora",
+        "GRPO · full-parameter and LoRA comparisons",
     )
     text = """---
 title: UNORL research book
@@ -377,8 +396,22 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-primary.svg",
         "Google Material palette. Evaluation points are unsmoothed; training curves use a trailing 10-update mean with raw values faintly shown.",
     )
+    text += "\n## Full-parameter and LoRA comparisons\n\nAll rows use Qwen3-4B-Base and eight rollouts per prompt. Full-parameter GRPO is a historical reference: LR, warmup, advantage normalization, clipping and importance correction differ from the later LoRA recipe. The LoRA-FA run completes at 17.5% avg@8 and 33.3% pass@8; its step-80 advantage does not persist at step 100. Single runs on 30 questions cannot establish a reliable ranking of small differences.\n\n| Method | Step-80 avg@8 | Step-100 avg@8 | Step-100 pass@8 |\n|---|---:|---:|---:|\n"
+    for run in lora_runs:
+        ev = {step: (avg, pas) for step, avg, pas in evaluation(run)}
+        avg80 = ev.get(80, (None, None))[0]
+        avg100, pass100 = ev.get(100, (None, None))
+        text += f"| [{run['title']}](experiments/{run['run_id']}.md) | {pct(avg80)} | {pct(avg100)} | {pct(pass100)} |\n"
+    text += "\n"
+    text += figure(
+        "figures/comparison-lora.svg",
+        "Google Material palette. Full-parameter GRPO remains visible as a historical reference with different settings.",
+    )
     text += "\n## NoRA-init: faster early learning\n\nThe completed [NoRA-init trial](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) reaches **33.8%** mean training correctness in steps 21–40, versus **23.7%** with standard rank-1 LoRA. Step-20 AIME25 avg@8 is **9.2% versus 4.2%**. Later training correctness plateaus near 38–39%; final avg@8 / pass@8 is **17.9% / 36.7%**, versus **20.0% / 43.3%**. Initialization and alpha differ together. The early acceleration motivates testing merge/reset; the cause of the plateau and benefit of merging remain unproven.\n\n"
-    text += figure("figures/comparison-nora.svg", "NoRA-init and standard rank-1 LoRA GRPO.")
+    text += figure(
+        "figures/comparison-nora.svg",
+        "Full-layer and final-half NoRA-init, compared with standard full-layer rank-1 LoRA GRPO.",
+    )
     text += "\n## All retained experiment results\n\nFinal columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.\n\n"
     csvrows = []
     for group, title in GROUPS.items():

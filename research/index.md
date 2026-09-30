@@ -18,14 +18,33 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
 Google Material palette. Evaluation points are unsmoothed; training curves use a trailing 10-update mean with raw values faintly shown.
 ```
 
+## Full-parameter and LoRA comparisons
+
+All rows use Qwen3-4B-Base and eight rollouts per prompt. Full-parameter GRPO is a historical reference: LR, warmup, advantage normalization, clipping and importance correction differ from the later LoRA recipe. The LoRA-FA run completes at 17.5% avg@8 and 33.3% pass@8; its step-80 advantage does not persist at step 100. Single runs on 30 questions cannot establish a reliable ranking of small differences.
+
+| Method | Step-80 avg@8 | Step-100 avg@8 | Step-100 pass@8 |
+|---|---:|---:|---:|
+| [Full-parameter GRPO](experiments/qwen3-4b-base-grpo-20260916-01.md) | 16.7% | 17.9% | 36.7% |
+| [Rank-1 LoRA GRPO](experiments/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.md) | 13.8% | 20.0% | 43.3% |
+| [GRPO · rank-1 NoRA-init](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) | 15.4% | 17.9% | 36.7% |
+| [GRPO · full-layer rank-1 LoRA-FA](experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md) | 17.9% | 17.5% | 33.3% |
+| [GRPO · rank-1 LoRA in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md) | 15.0% | 17.9% | 33.3% |
+| [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 16.2% | 15.8% | 30.0% |
+
+```{figure} figures/comparison-lora.svg
+:alt: Google Material palette. Full-parameter GRPO remains visible as a historical reference with different settings.
+
+Google Material palette. Full-parameter GRPO remains visible as a historical reference with different settings.
+```
+
 ## NoRA-init: faster early learning
 
 The completed [NoRA-init trial](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) reaches **33.8%** mean training correctness in steps 21–40, versus **23.7%** with standard rank-1 LoRA. Step-20 AIME25 avg@8 is **9.2% versus 4.2%**. Later training correctness plateaus near 38–39%; final avg@8 / pass@8 is **17.9% / 36.7%**, versus **20.0% / 43.3%**. Initialization and alpha differ together. The early acceleration motivates testing merge/reset; the cause of the plateau and benefit of merging remain unproven.
 
 ```{figure} figures/comparison-nora.svg
-:alt: NoRA-init and standard rank-1 LoRA GRPO.
+:alt: Full-layer and final-half NoRA-init, compared with standard full-layer rank-1 LoRA GRPO.
 
-NoRA-init and standard rank-1 LoRA GRPO.
+Full-layer and final-half NoRA-init, compared with standard full-layer rank-1 LoRA GRPO.
 ```
 
 ## All retained experiment results
@@ -36,6 +55,8 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
+| [GRPO · full-layer rank-1 LoRA-FA](experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md) | 100 | 100 | 17.5% | 33.3% | AdamW (SkyRL default) |
+| [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 100 | 100 | 15.8% | 30.0% | AdamW (SkyRL default) |
 | [GRPO · rank-1 NoRA-init](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) | 100 | 100 | 17.9% | 36.7% | AdamW (SkyRL default) |
 | [GRPO · rank-1 LoRA in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md) | 100 | 100 | 17.9% | 33.3% | AdamW (SkyRL default) |
 | [Retain truncated failures · AdamW](experiments/unorl-batchnorm-retain-truncated-20260926-01.md) | 100 | 100 | 14.6% | 30.0% | AdamW (SkyRL default) |
