@@ -86,19 +86,51 @@
     "trainer.export_path": "runs/qwen3-4b-base-grpo-nora-merge-r1-20260930-01/exports",
     "trainer.log_path": "runs/qwen3-4b-base-grpo-nora-merge-r1-20260930-01/infra"
   },
-  "metrics": [],
-  "evaluation_counts": [],
+  "metrics": [
+    {
+      "step": 0,
+      "metrics": {
+        "eval/aime25/avg_score": -0.9583333333333334,
+        "eval/aime25/pass_at_8": 0.13333333333333333,
+        "eval/aime25/mean_positive_reward": 0.020833333333333332,
+        "eval/aime25/avg@8": 0.020833333333333332,
+        "eval/aime25/pass@8": 0.13333333333333333
+      }
+    }
+  ],
+  "evaluation_counts": [
+    {
+      "step": 0,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 5,
+      "solved_questions": 4
+    }
+  ],
   "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
     "sha256": {
+      "metrics.jsonl": "1787d856d4c1300d66200b34de085bc3ecb47d99765eca3b18c6dff6f6b45650",
       "config.json": "1850d77681aaa5765a209fbe80edc847c340d9424a33d7dc669aae29835b059a",
       "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
+      "initial-adapter-audit.json": "296374fb280a40f0acff0289ccf1e8f1e9aa98868faebcb9aaf85b77cc830aaa",
       "comparison-audit.json": "a7c169bf016ca85ee7dfb8df8736d2a85422eaa762480dd16322fd50b21948e0"
     },
     "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
   },
   "audits": {
+    "initial-adapter-audit.json": {
+      "rank": 1,
+      "alpha": 1,
+      "initialization": "nora_init",
+      "trainable_parameters": 2064384,
+      "optimizer": "AdamW",
+      "merge_interval": 40,
+      "optimizer_reset": "clear old adapter Adam state; preserve scheduler and LR",
+      "rollout_sync": "base W at startup/resume and merges; native adapter BA every step"
+    },
     "comparison-audit.json": {
       "reference_run": "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01",
       "profile_changes": {

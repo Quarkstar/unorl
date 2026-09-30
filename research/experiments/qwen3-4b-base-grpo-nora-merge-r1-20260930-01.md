@@ -11,7 +11,7 @@ Launched a 100-step controlled follow-up to full-layer NoRA-init. The sole profi
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-nora-merge-r1-20260930-01` |
-| Record | No retained metrics |
+| Record | 0 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -36,14 +36,31 @@ Launched a 100-step controlled follow-up to full-layer NoRA-init. The sole profi
 
 ## Learning curves
 
-No metric records survived, so no curve or score is fabricated.
+```{figure} ../figures/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.svg
+:alt: Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+
+Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+```
 
 ## Evaluation results
 
-No AIME25 checkpoint evaluation is retained.
+### AIME25
+
+| Step | Sample accuracy | Pass@8 |
+|---:|---:|---:|
+| 0 | 2.1% | 13.3% |
+
+
+## Evaluation sample counts
+
+| Benchmark | Step | Correct responses | Questions solved ≥1 time |
+|---|---:|---:|---:|
+| aime25 | 0 | 5/240 | 4/30 |
 
 ## Quantitative observations
 
+
+Best recorded AIME25 pass@8: **13.3% at step 0**. Last recorded: **13.3% at step 0**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
