@@ -54,11 +54,24 @@ class BenchmarkTrainer(RayPPOTrainer):
             from unorl.lorafa_worker import PolicyWorker
 
             policy_worker = PolicyWorker
+        elif self.cfg.trainer.policy.model.lora.init_method == "loft_simple":
+            from unorl.loft_worker import PolicyWorker
+
+            policy_worker = PolicyWorker
         elif self.cfg.trainer.policy.model.lora.init_method == "nora_init":
             from unorl.nora_worker import PolicyWorker
 
             policy_worker = PolicyWorker
         return super().build_models(policy_worker, critic_worker, ref_worker)
+
+    def train_critic_and_policy(self, training_input):
+        result = super().train_critic_and_policy(training_input)
+        if self.cfg.trainer.policy.model.lora.init_method == "loft_simple":
+            records = ray.get(
+                self.policy_model.async_run_ray_method("pass_through", "resource_metrics")
+            )
+            self.all_metrics.update(records[0])
+        return result
 
     async def eval(self, vllm_metrics_scraper=None):
         if not hasattr(self, "benchmark_batches"):
