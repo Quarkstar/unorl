@@ -31,7 +31,8 @@ All rows use Qwen3-4B-Base and eight rollouts per prompt. Full-parameter GRPO is
 | [GRPO · rank-1 LoRA in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md) | 15.0% | 17.9% | 33.3% |
 | [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 16.2% | 15.8% | 30.0% |
 | [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 20.0% | 15.0% | 30.0% |
-| [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | — | — | — |
+| [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 2.1% | 3.3% | 20.0% |
+| [GRPO · standard rank-1 ReLoRA, restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | — | — | — |
 
 ```{figure} figures/comparison-lora.svg
 :alt: Google Material palette. Full-parameter GRPO remains visible as a historical reference with different settings.
@@ -57,7 +58,8 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 0 | 0 | 2.1% | 13.3% | LoFTSimpleAdamW (Adam-family) |
+| [GRPO · standard rank-1 ReLoRA, restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | — | — | — | — | AdamW (SkyRL default) |
+| [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 100 | 100 | 3.3% | 20.0% | LoFTSimpleAdamW (Adam-family) |
 | [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 100 | 100 | 15.0% | 30.0% | AdamW (SkyRL default) |
 | [GRPO · full-layer rank-1 LoRA-FA](experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md) | 100 | 100 | 17.5% | 33.3% | AdamW (SkyRL default) |
 | [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 100 | 100 | 15.8% | 30.0% | AdamW (SkyRL default) |
@@ -125,7 +127,7 @@ The [truncation analysis](notes/batchnorm-after60.md) examines the loss of quest
 The [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.
 
 1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.
-2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple is the next running optimizer-geometry comparison; its results are pending.
+2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: a matched restart-ramp versus constant-LR merge/reset comparison is underway.
 3. Test QLoRA separately; this direction remains untested.
 
 The current scope is on-policy learning; small batches and single-rollout use remain central.

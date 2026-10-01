@@ -24,6 +24,7 @@ Configuration is retained but there are no metrics. No learning or evaluation co
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1e-06 |
 | Warmup steps | 5 |
+| Restart warmup (updates) | not applied |
 | Merge/reset interval (updates) | not applied |
 | Prompts × responses | 4 × 8 = 32 responses/update |
 | Response limit | 8192 |

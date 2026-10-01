@@ -24,6 +24,7 @@ The run was stopped after early degradation. Five critic-only warmup steps prece
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
+| Restart warmup (updates) | not applied |
 | Merge/reset interval (updates) | not applied |
 | Prompts × responses | 256 × 1 = 256 responses/update |
 | Response limit | 8192 |

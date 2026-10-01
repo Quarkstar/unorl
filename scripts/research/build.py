@@ -15,7 +15,18 @@ from matplotlib.ticker import PercentFormatter
 
 ROOT = Path(__file__).resolve().parents[2]
 BOOK = ROOT / "research"
-COLORS = ["#2196F3", "#009688", "#FF9800", "#9C27B0", "#F44336", "#607D8B", "#795548", "#3F51B5"]
+COLORS = [
+    "#2196F3",
+    "#009688",
+    "#FF9800",
+    "#9C27B0",
+    "#F44336",
+    "#607D8B",
+    "#795548",
+    "#3F51B5",
+    "#E91E63",
+    "#00BCD4",
+]
 GROUPS = {
     "ablation": "Controlled follow-up experiments",
     "primary": "Current algorithm comparison",
@@ -119,7 +130,9 @@ def run_plot(run):
     for ax, (key, title, smooth, percent), color in zip(axes.flat, specs, COLORS):
         exists = line(ax, run, key, color, smooth=smooth)
         ax.set(title=title, xlabel="Training step")
-        interval = run["config"].get("trainer.nora_merge_interval")
+        interval = run["config"].get(
+            "trainer.relora_merge_interval", run["config"].get("trainer.nora_merge_interval")
+        )
         if interval:
             last_step = max((r["step"] for r in run["metrics"]), default=0)
             for boundary in range(interval, last_step + 1, interval):
@@ -189,7 +202,10 @@ def experiment_page(run):
         else "Kaiming (LoRA-FA worker; A frozen)",
         "Learning rate": cfg.get("trainer.policy.optimizer_config.lr", "not recorded"),
         "Warmup steps": cfg.get("trainer.policy.optimizer_config.num_warmup_steps", "not recorded"),
-        "Merge/reset interval (updates)": cfg.get("trainer.nora_merge_interval", "not applied"),
+        "Restart warmup (updates)": cfg.get("trainer.relora_restart_warmup_updates", "not applied"),
+        "Merge/reset interval (updates)": cfg.get(
+            "trainer.relora_merge_interval", cfg.get("trainer.nora_merge_interval", "not applied")
+        ),
         "Prompts × responses": f"{batch} × {n} = {batch * n if batch else 'unknown'} responses/update",
         "Response limit": cfg.get("generator.sampling_params.max_generate_length", "not recorded"),
         "Evaluation samples/question": cfg.get(
@@ -378,6 +394,7 @@ def main():
     lora_ids += [
         "qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
         "qwen3-4b-base-grpo-loft-simple-r1-20261001-01",
+        "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01",
     ]
     by_id = {run["run_id"]: run for run in runs}
     lora_runs = [by_id[rid] for rid in lora_ids]
@@ -452,7 +469,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-confounded.svg",
         "Earlier single-rollout trials used stateless SGD and sometimes a different loss reduction. Their failures do not establish that REINFORCE fails with AdamW.",
     )
-    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple is the next running optimizer-geometry comparison; its results are pending.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
+    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: a matched restart-ramp versus constant-LR merge/reset comparison is underway.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:
         w = csv.DictWriter(f, fieldnames=list(csvrows[0]), lineterminator="\n")

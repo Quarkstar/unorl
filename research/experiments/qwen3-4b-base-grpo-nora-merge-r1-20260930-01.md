@@ -24,6 +24,7 @@ Completed all 100 steps successfully in 6h43m of training-loop time. Merges at s
 | LoRA initialization | nora_init |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
+| Restart warmup (updates) | not applied |
 | Merge/reset interval (updates) | 40 |
 | Prompts × responses | 32 × 8 = 256 responses/update |
 | Response limit | 8192 |

@@ -24,6 +24,7 @@ Completed 100-step controlled comparison with full-layer rank-1 GRPO. The same m
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1.5e-05 |
 | Warmup steps | 0 |
+| Restart warmup (updates) | not applied |
 | Merge/reset interval (updates) | not applied |
 | Prompts × responses | 32 × 8 = 256 responses/update |
 | Response limit | 8192 |

@@ -24,6 +24,7 @@ This short pilot uses an instruction-tuned model and a 16k response budget. Its 
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1e-06 |
 | Warmup steps | 5 |
+| Restart warmup (updates) | not applied |
 | Merge/reset interval (updates) | not applied |
 | Prompts × responses | 32 × 8 = 256 responses/update |
 | Response limit | 16384 |

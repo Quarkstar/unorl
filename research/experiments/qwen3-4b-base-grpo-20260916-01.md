@@ -24,6 +24,7 @@ Full-policy GRPO provides the original learning reference: AIME25 avg@8 / pass@8
 | LoRA initialization | kaiming (default) |
 | Learning rate | 1e-06 |
 | Warmup steps | 5 |
+| Restart warmup (updates) | not applied |
 | Merge/reset interval (updates) | not applied |
 | Prompts × responses | 32 × 8 = 256 responses/update |
 | Response limit | 8192 |
