@@ -28,6 +28,14 @@ def reset_nora_adapter(model, optimizer, seed):
 
 
 class NoRAMergePolicyWorker(NoRAInitPolicyWorker):
+    @property
+    def merge_interval(self):
+        return self.cfg.nora_merge_interval
+
+    @property
+    def merge_label(self):
+        return "NoRA"
+
     def init_model(self, model_path, num_training_steps=None):
         with patch.object(fsdp_worker, "FSDPStrategy", MergedExportStrategy):
             result = super().init_model(model_path, num_training_steps)
@@ -80,7 +88,10 @@ class NoRAMergePolicyWorker(NoRAInitPolicyWorker):
             path = Path(self.cfg.export_path).parent / "backbone-sync-audit.jsonl"
             with path.open("a") as handle:
                 handle.write(json.dumps(row) + "\n")
-            print("NoRA backbone and adapter synchronized: " + json.dumps(row), flush=True)
+            print(
+                self.merge_label + " backbone and adapter synchronized: " + json.dumps(row),
+                flush=True,
+            )
         self._pending_base_sync = False
 
     def forward_backward(self, *args, **kwargs):
@@ -107,11 +118,7 @@ class NoRAMergePolicyWorker(NoRAInitPolicyWorker):
         norm = super().optim_step()
         step = self.scheduler.last_epoch
         self.merge_metrics = {}
-        if (
-            step > 0
-            and step % self.cfg.nora_merge_interval == 0
-            and (norm is None or math.isfinite(norm))
-        ):
+        if step > 0 and step % self.merge_interval == 0 and (norm is None or math.isfinite(norm)):
             self.merge_metrics = self._merge_with_probe(step)
             self._pending_base_sync = True
         root = Path(self.cfg.export_path).parent
@@ -130,16 +137,14 @@ class NoRAMergePolicyWorker(NoRAInitPolicyWorker):
         if self.merge_metrics and dist.get_rank() == 0:
             with (root / "merge-audit.jsonl").open("a") as handle:
                 handle.write(json.dumps(row) + "\n")
-            print("NoRA merge/reset: " + json.dumps(row), flush=True)
+            print(self.merge_label + " merge/reset: " + json.dumps(row), flush=True)
         self._memory_window_active = False
         return norm
 
     def resource_metrics(self):
         return {
             **self.merge_metrics,
-            "relora/completed_cycles": float(
-                self.scheduler.last_epoch // self.cfg.nora_merge_interval
-            ),
+            "relora/completed_cycles": float(self.scheduler.last_epoch // self.merge_interval),
             "optimizer/state_entries": float(len(self.optimizer.state)),
         }
 

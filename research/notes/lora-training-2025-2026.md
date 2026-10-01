@@ -378,3 +378,54 @@ next-update reproduction after checkpoint reload. The tiny model's calibrated
 A norms exceeded 100 before clipping, which is permitted by the algorithm;
 validation checks finite gradients and resume correctness rather than applying
 a bound copied from ordinary LoRA. Learning benefit remains unmeasured.
+
+
+## Main research line: make ReLoRA sustain RL learning (2026-10-01)
+
+The project priority is repeated rank-one merge/restart training. Standalone
+LoFT and quantization are secondary until this mechanism is understood. The
+success criterion is better sustained learning than a matched non-merging
+rank-one reference, while keeping only one active adapter and bounded memory.
+
+Our completed NoRA merge trial tested constant LR plus complete Adam-history
+removal. It did not reproduce the stabilization components of the original
+[ReLoRA paper](https://arxiv.org/html/2307.05695v2): partial moment reset and a
+restart LR schedule with warmup. The paper describes pruning 99% of small
+state entries. The current [official repository](https://github.com/Guitaricet/relora)
+at `176f37633fe02019835387258ddabcf6d91e328d` offers several reset modes;
+its README recommends 90% magnitude pruning or its nearly complete reset
+mode. These settings must be distinguished rather than called one recipe.
+The repository prunes moment tensors in place rather than deleting all state
+and resetting Adam's bias-correction counters as our earlier worker did.
+
+The earlier run does not prove an immediate reset-induced collapse. Training
+correctness averaged 37.0% at steps 31–40, 39.2% at 41–50, 38.7% at 71–80,
+41.0% at 81–90, then 33.4% at 91–100. Boundary discontinuity, insufficient
+useful rank growth and unrelated late training dynamics remain separate
+hypotheses. The four-token logit probe is inadequate to establish an RL
+impact; validate log-probability/KL changes on actual math trajectories.
+
+Controlled restart comparison (2026-10-01): implementation and validation completed; the five-update ramp runs first, followed by the constant-LR control on successful completion. Both use native AdamW with full state clearing, merges at 40 and 80, and the unchanged standard-LoRA GRPO settings. Actual eight-GPU FSDP2 checks cover merging, restart scheduling, response-prefix probes, checkpoint loading and dense export. CPU checks cover the fixed-A preserved-history control and low-rank spectra. Each boundary probes up to 128 real response tokens per rank and reports token-weighted KL/log-probability changes across all ranks. Per-layer accumulated-update singular values are saved at steps 40, 80 and 100. Training allocator peaks and ten-second NVML samples are recorded. Full Adam reset is held constant to isolate the ramp; this pair is not the complete published ReLoRA recipe.
+
+Follow-up sequence:
+
+1. Establish merge/sync correctness on fixed math trajectories and measure
+   accumulated-update singular values from stored low-rank factors. A fixed-A,
+   B-only, no-decay control with preserved Adam history checks the expected
+   reparameterization equivalence before introducing new directions.
+2. Use the working standard-LoRA GRPO recipe as the reference: Kaiming A,
+   alpha 32, rank one, AdamW, unchanged data/rollouts/batch/response budget.
+   Add repeated merges and a brief post-reset LR ramp; compare with the same
+   merge setup without the ramp. Initial training warmup stays unchanged.
+3. Compare full history removal with partial moment pruning, keeping the
+   schedule fixed. Retain Adam counters for pruning; log retained moment
+   energy and effective weight-space step sizes. This tests the original
+   stabilization idea, not exact optimizer-coordinate transport.
+4. If useful rank still does not grow, test gradual A refresh with explicit
+   representable-history transport. This is a later proposed extension,
+   separated from the original-style restart recipe.
+
+A longer matched non-merging control is needed before claiming improved
+learning beyond a rank-one ceiling. Two merges in 100 steps are preliminary
+evidence. Do not change initialization, adapter placement, RL algorithm,
+precision or quantization together with restart behavior.

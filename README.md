@@ -154,3 +154,19 @@ builds and publishes the research book through GitHub Actions on pushes to `main
 
 UNORL is licensed under the [MIT License](LICENSE). Third-party libraries, models
 and datasets retain their own licenses.
+
+### ReLoRA restart comparison
+
+Use `scripts/run_relora_comparison.py --tag UNIQUE_SUFFIX` with the SkyRL
+Python environment to run two matched 100-step trials on GPUs 0–7: five-update
+post-merge LR ramp, then constant LR. Both use the standard Kaiming rank-one
+LoRA GRPO recipe, native AdamW and merges at steps 40/80 with full Adam-state
+clearing. Initial warmup remains zero. Actual math-response-prefix KL and
+log-probability changes, accumulated-update spectra, and peak training memory
+are recorded. The control starts only after successful completion of the ramp
+trial. Successful runs remove checkpoint/export weights and temporary factor
+caches, retaining logs, evaluations and diagnostic JSON records.
+
+Validation: `scripts/check_relora_fsdp.py --output OUTPUT` under eight-process
+`torch.distributed.run` checks reset scheduling, merge behavior, exact
+next-update reproduction after checkpoint loading, and dense export.
