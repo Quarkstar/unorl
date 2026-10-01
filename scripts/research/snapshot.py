@@ -5,10 +5,15 @@ import json
 from pathlib import Path
 
 NOTES = {
+    "qwen3-4b-base-grpo-loft-simple-r1-20261001-01": (
+        "GRPO · full-layer rank-1 LoFT-simple",
+        "ablation",
+        "Launched a 100-step GRPO comparison using the authors' LoFT-simple optimizer geometry: alternate B/A updates starting with B; rescale gradients and transport first moments; update moments for both factors every step; no second-moment transport or merge. Retain the reference's Kaiming initialization, LR 1.5e-5, beta values, batch, eight rollouts and response budget. Method-required differences include alpha 1 and Adam epsilon 1e-4, versus alpha 32 / epsilon 1e-8 in the reference. Rank-one specialization avoids dense weight-shaped calibration tensors; saved previous factors and alternation phase are part of the checkpoint. Eight-step CPU parity with the pinned authors' implementation and clipping agreed to within 1.5e-8 in parameters. Actual eight-GPU FSDP2 checks verified frozen backbone, A/B optimizer state, adapter export and exact next-update reproduction after resume. Calibrated active gradient norms are not directly comparable to ordinary LoRA norms. Learning and peak-memory conclusions remain pending.",
+    ),
     "qwen3-4b-base-grpo-nora-merge-r1-20260930-01": (
         "GRPO · full NoRA-init with merge/reset",
         "ablation",
-        "Launched a 100-step controlled follow-up to full-layer NoRA-init. The sole profile addition is a merge interval of 40 updates: merge at steps 40 and 80, fresh normalized sign A and zero B, clear adapter AdamW moments and step counters, and preserve the constant LR/scheduler. All 36 layers, rank 1 / alpha 1, eight rollouts, model/data, batch and response cap match the full NoRA-init reference. Backbone W is synchronized before the native adapter at startup/resume and merges, avoiding lost or double-counted updates. This explicit reset baseline does not preserve Adam continuity or guarantee high effective rank. Eight-GPU FSDP2 merge, continued AdamW training, checkpoint resume and dense export checks passed before launch. Learning and memory conclusions remain pending; ten-second NVML samples and exact per-update training allocator peaks are recorded locally, including merge work.",
+        "Completed all 100 steps successfully in 6h43m of training-loop time. Merges at steps 40 and 80 accumulated each learned adapter, created fresh normalized sign A / zero B, and cleared adapter AdamW history while preserving constant LR/scheduler. Backbone synchronization succeeded at startup and both merges. Training correctness over successive 20-step windows was 18.4%, 34.4%, 39.2%, 39.6%, and 37.2%: this run did not sustain renewed improvement after resets. AIME25 avg@8 peaked at 20.0% at step 80, then finished at 15.0% / 30.0% avg@8 / pass@8, versus 17.9% / 36.7% without merges and 20.0% / 43.3% for standard LoRA. These are sampled single-run results on 30 questions. Merge probe max logit differences were 0.25 and 0.3125, with RMS differences 0.0506 and 0.0556; merging was not bitwise function-preserving under mixed-precision forward computation. Peak training allocator usage was 18.00 GiB allocated / 18.96 GiB reserved, including merge work. This explicit Adam-reset baseline does not isolate rank growth from optimizer discontinuity or establish that merging generally fails.",
     ),
     "qwen3-4b-base-grpo-lorafa-r1-20260930-01": (
         "GRPO · full-layer rank-1 LoRA-FA",
@@ -150,6 +155,8 @@ def main():
             rows = [{"step": k, "metrics": v} for k, v in sorted(by_step.items())]
 
         optimizer = "SGD" if "trainer.low_resource.lora_rank" in cfg else "AdamW (SkyRL default)"
+        if cfg.get("trainer.policy.model.lora.init_method") == "loft_simple":
+            optimizer = "LoFTSimpleAdamW (Adam-family)"
         summary = []
         omissions = []
         for f in sorted(p.glob("exports/*/dumped_evals/global_step_*_evals/*.jsonl")):

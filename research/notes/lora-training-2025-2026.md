@@ -259,7 +259,9 @@ It masks a discontinuous update boundary rather than restoring lost history.
 
 ## Proposed experiments, one change at a time
 
-These are **plans, not launched experiments**. Keep the selected GRPO recipe,
+LoRA-FA and the fresh-state NoRA merge/reset trial have completed; LoFT-simple
+is running as of 2026-10-01. Other comparison arms below remain plans.
+Keep the selected GRPO recipe,
 model, dataset, eight rollouts, response budget, evaluation and Adam-family
 settings fixed except for method-required changes. Record every change;
 matched numeric LR need not mean matched effective weight-space steps.
@@ -333,3 +335,46 @@ adapter branch, and native adapter reload/merge. A distributed tiny-model check
 uses the actual SkyRL strategy on the intended GPU count and verifies
 checkpoint/resume. Smoke artifacts are excluded from published experiment
 results. Learning and end-to-end memory benefits remain experimental questions.
+
+
+## LoFT-simple implementation and launch: 2026-10-01
+
+Run: `qwen3-4b-base-grpo-loft-simple-r1-20261001-01`.
+[Experiment page](../experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md).
+Profile: `configs/qwen3-4b-base-grpo-loft-simple-r1.json`.
+
+`unorl/loft.py` specializes the pinned authors' LoFT-simple implementation to
+rank one. It uses ordinary Kaiming A / zero B, **alpha=1**, epsilon **1e-4**,
+betas 0.9/0.999 and zero weight decay. Keep LR 1.5e-5, 100 updates, all
+36 layers, 32 prompts × eight responses, an 8192-token cap, all eight A100s,
+and AIME25 avg@8/pass@8 every 20 steps. Relative to standard LoRA, alpha and
+epsilon change with the optimizer method; this is not an isolated optimizer
+ablation with identical numerical scaling. No NoRA initialization, frozen A,
+merge/reset, SGD or additional warmup is introduced.
+
+The active factor alternates B, A, B, A. Both factors' first and second
+moments update every step; first moments are transported using the overlap
+with the saved previous opposite factor. Second moments stay elementwise and
+are not transported. Regularization is 1e-6 for A's opposite-factor Gram and
+1e-8 for B's. Clipping follows the authors' **simple** branch: compute the
+norm of active calibrated factor gradients, then scale all raw gradients.
+It does not use the full variant's dense projected-weight norm. Recorded
+`policy/grad_norm` therefore differs in meaning from the standard LoRA norm.
+
+For FSDP2, gather only small rank-one factors/gradients for scalar calibration
+and update local shards in place. No dense weight-shaped calibration buffer
+is constructed. Previous opposite factors are saved inside optimizer state,
+and the alternating update phase is included in `state_dict`; this repairs
+the reference optimizer's otherwise unsaved auxiliary history for our resume
+contract. Native PEFT adapter synchronization and export remain in use.
+A/B still participate in backward, so this does not claim LoRA-FA's activation
+saving. Training allocator peaks and ten-second NVML readings are recorded.
+
+Validation: 77 tests passed. `scripts/check_loft_reference.py` compared eight
+CPU updates against the pinned authors' implementation including clipping;
+maximum parameter difference was 1.49e-8. `scripts/check_loft_fsdp.py` verified
+actual eight-GPU FSDP2 updates, a frozen backbone, native A/B export and exact
+next-update reproduction after checkpoint reload. The tiny model's calibrated
+A norms exceeded 100 before clipping, which is permitted by the algorithm;
+validation checks finite gradients and resume correctness rather than applying
+a bound copied from ordinary LoRA. Learning benefit remains unmeasured.

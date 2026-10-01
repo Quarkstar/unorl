@@ -190,3 +190,17 @@ peak memory. Both measurements are required to distinguish training allocator
 memory from total device residency. Results remain pending until measured;
 compare the post-40 and post-80 slopes and AIME25 checkpoints against the
 completed full-layer NoRA-init reference.
+
+
+### Completed merge/reset result
+
+The full-layer follow-up finished all 100 steps with exit status 0. Mean
+correctness across 20-step windows was 18.4%, 34.4%, 39.2%, 39.6%, 37.2%.
+Resetting at 40 and 80 did not produce sustained renewed learning. Step-80
+AIME25 avg@8 reached 20.0%, but final avg@8 / pass@8 was 15.0% / 30.0%,
+versus 17.9% / 36.7% without merging. Precision probes at the boundaries
+changed logits by up to 0.25 and 0.3125; exact policy continuity did not hold
+in BF16 forward computation. Peak training allocator usage was 18.00 GiB
+allocated / 18.96 GiB reserved. This trial changes accumulated rank, optimizer
+history and numerical forward evaluation together; it cannot identify which
+one limits improvement. LoFT-simple is the next separate comparison.

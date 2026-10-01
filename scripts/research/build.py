@@ -15,7 +15,7 @@ from matplotlib.ticker import PercentFormatter
 
 ROOT = Path(__file__).resolve().parents[2]
 BOOK = ROOT / "research"
-COLORS = ["#2196F3", "#009688", "#FF9800", "#9C27B0", "#F44336", "#607D8B"]
+COLORS = ["#2196F3", "#009688", "#FF9800", "#9C27B0", "#F44336", "#607D8B", "#795548", "#3F51B5"]
 GROUPS = {
     "ablation": "Controlled follow-up experiments",
     "primary": "Current algorithm comparison",
@@ -119,6 +119,11 @@ def run_plot(run):
     for ax, (key, title, smooth, percent), color in zip(axes.flat, specs, COLORS):
         exists = line(ax, run, key, color, smooth=smooth)
         ax.set(title=title, xlabel="Training step")
+        interval = run["config"].get("trainer.nora_merge_interval")
+        if interval:
+            last_step = max((r["step"] for r in run["metrics"]), default=0)
+            for boundary in range(interval, last_step + 1, interval):
+                ax.axvline(boundary, color="#607D8B", ls=":", alpha=0.6, lw=1)
         if percent:
             ax.yaxis.set_major_formatter(PercentFormatter(1))
         if not exists:
@@ -287,7 +292,7 @@ def nora_observations(run):
         text += f"| {step} | {pct(avg)} | {pct(base_avg)} | {pct(pas)} | {pct(base_pas)} |\n"
     text += "\n### Interpretation and next hypothesis\n\nThe early acceleration is a promising result even though the final evaluation does not beat the reference. Step-zero scores differ despite B=0 and unchanged initial logits; these are stochastic evaluation draws, not different starting weights. NoRA's positive signal is faster improvement in both training correctness and early held-out evaluation.\n\n"
     text += "The later plateau is an observation, not evidence that NoRA is its cause. A fixed rank-one update is one possible constraint; data difficulty, truncation and optimization dynamics are alternative explanations. This run does not identify the cause.\n\n"
-    text += "**Next hypothesis: periodic merge/reset.** Merge the learned BA update into the backbone, then initialize a fresh adapter with NoRA-init and B=0. This preserves the policy at the reset boundary in exact arithmetic while allowing the accumulated update across cycles to exceed rank one. Test whether the early learning speed returns after reset and whether later reward and AIME25 accuracy improve. Optimizer-state reset and the merge interval must be explicit experimental settings. Existing exploratory merge runs also changed the optimizer and algorithm, so they do not validate this hypothesis. The full-layer merge/reset follow-up is documented in [the NoRA method note](../notes/nora.md), with merges at updates 40 and 80 and an explicit Adam-state reset. Its learning benefit remains unproven.\n"
+    text += "**Next hypothesis: periodic merge/reset.** Merge the learned BA update into the backbone, then initialize a fresh adapter with NoRA-init and B=0. This preserves the policy at the reset boundary in exact arithmetic while allowing the accumulated update across cycles to exceed rank one. Test whether the early learning speed returns after reset and whether later reward and AIME25 accuracy improve. Optimizer-state reset and the merge interval must be explicit experimental settings. Existing exploratory merge runs also changed the optimizer and algorithm, so they do not validate this hypothesis. The [full-layer merge/reset follow-up](qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) completed with merges at updates 40 and 80 and an explicit Adam-state reset. It did not sustain further reward improvement after resets; final AIME25 avg@8 was 15.0%.\n"
     return text
 
 
@@ -370,6 +375,10 @@ def main():
         "qwen3-4b-base-grpo-lora-r1-last18-20260928-01",
         "qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01",
     ]
+    lora_ids += [
+        "qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
+        "qwen3-4b-base-grpo-loft-simple-r1-20261001-01",
+    ]
     by_id = {run["run_id"]: run for run in runs}
     lora_runs = [by_id[rid] for rid in lora_ids]
     comparison(
@@ -443,7 +452,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-confounded.svg",
         "Earlier single-rollout trials used stateless SGD and sometimes a different loss reduction. Their failures do not establish that REINFORCE fails with AdamW.",
     )
-    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer periodic merge/reset follow-up uses boundaries 40 and 80 with fresh adapters and explicit Adam-state reset; results are pending.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
+    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple is the next running optimizer-geometry comparison; its results are pending.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:
         w = csv.DictWriter(f, fieldnames=list(csvrows[0]), lineterminator="\n")

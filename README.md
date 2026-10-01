@@ -12,6 +12,8 @@ Its source is in [research/](research/index.md).
 | GRPO / full-parameter fine-tuning (historical reference) | 17.9% | 36.7% |
 | GRPO / full-layer rank-1 LoRA | 20.0% | 43.3% |
 | GRPO / full-layer rank-1 NoRA-init | 17.9% | 36.7% |
+| GRPO / full NoRA-init with merge/reset | 15.0% | 30.0% |
+| GRPO / full-layer rank-1 LoFT-simple | Running | Running |
 | GRPO / full-layer rank-1 LoRA-FA | 17.5% | 33.3% |
 | GRPO / LoRA in final 18 layers | 17.9% | 33.3% |
 | GRPO / NoRA-init in final 18 layers | 15.8% | 30.0% |
@@ -69,10 +71,11 @@ See [publishing](research/publishing.md) for GitHub Pages setup.
 
 ## Current follow-up
 
-Full-layer NoRA-init with merge/reset tests whether new rank-one adapters can
-sustain the earlier learning speed. The 100-step GRPO recipe merges at steps
-40 and 80, resets adapter AdamW history, and keeps the constant LR. See the
-[implementation and measurement plan](research/notes/nora.md).
+Full-layer rank-one **LoFT-simple** tests gradient and first-moment calibration
+with alternating A/B updates. The 100-step GRPO recipe retains eight rollouts
+and the response budget; unit adapter scaling and Adam epsilon 1e-4 follow the
+authors' implementation. See the [implementation and validation record](research/notes/lora-training-2025-2026.md).
+The completed NoRA merge/reset trial did not sustain improvement after resets.
 
 ## Training
 
@@ -98,6 +101,11 @@ The download helper is `scripts/download_qwen3.py` (use `--repo Qwen/Qwen3-4B-Ba
 # Inspect the configuration without launching training or requiring a GPU:
 python scripts/train.py --mode reinforce \
   --config qwen3-4b-base-reinforce-batchnorm-adamw-r1.json --dry-run
+
+# LoFT-simple follow-up (eight GPUs):
+python scripts/train.py --mode grpo \
+  --config qwen3-4b-base-grpo-loft-simple-r1.json \
+  --gpus 0,1,2,3,4,5,6,7 --launch
 
 # Full NoRA-init merge/reset follow-up (eight GPUs):
 python scripts/train.py --mode nora-merge \
