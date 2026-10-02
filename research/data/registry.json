@@ -1,7 +1,12 @@
 [
   {
+    "id": "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01",
+    "title": "GRPO \u00b7 standard rank-1 ReLoRA, restart ramp (fixed probe)",
+    "group": "ablation"
+  },
+  {
     "id": "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01",
-    "title": "GRPO \u00b7 standard rank-1 ReLoRA, restart ramp",
+    "title": "GRPO \u00b7 ReLoRA restart ramp, failed probe attempt",
     "group": "ablation"
   },
   {

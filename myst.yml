@@ -17,8 +17,10 @@ project:
   - file: research/methods.md
   - title: Controlled follow-up experiments
     children:
+    - file: research/experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md
+      title: GRPO · standard rank-1 ReLoRA, restart ramp (fixed probe)
     - file: research/experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md
-      title: GRPO · standard rank-1 ReLoRA, restart ramp
+      title: GRPO · ReLoRA restart ramp, failed probe attempt
     - file: research/experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md
       title: GRPO · full-layer rank-1 LoFT-simple
     - file: research/experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md

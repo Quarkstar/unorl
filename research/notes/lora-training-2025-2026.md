@@ -429,3 +429,23 @@ A longer matched non-merging control is needed before claiming improved
 learning beyond a rank-one ceiling. Two merges in 100 steps are preliminary
 evidence. Do not change initialization, adapter placement, RL algorithm,
 precision or quantization together with restart behavior.
+
+
+### October 2: diagnostic failure and restart
+
+The first standard-LoRA restart-ramp attempt completed 39 updates and failed
+while preparing the step-40 probe, before any merge. SkyRL left-pads complete
+trajectories and right-aligns response indicators. For a shorter response, the
+prompt can fall inside the common response slice. The diagnostic now aligns
+response indicators to full sequence positions and extracts prompt tokens
+using attention AND NOT response position. It also skips empty padded rows.
+No reward, loss, optimizer or schedule setting changed.
+
+A regression test uses native SkyRL preprocessing. Eight-GPU FSDP2 validation
+now invokes the actual ReLoRA worker boundary method, checking collective
+response-prefix diagnostics, accumulated rank, reset scheduling, checkpoint
+loading with exact next-update reproduction, and dense export. All 85 tests
+passed. The pair restarted from the base model under the `20261002-01` suffix;
+no checkpoint before step 100 existed for the failed attempt. Its logs and
+evaluation records are retained. Before merging, reward increased normally;
+no conclusion about the benefit of ReLoRA follows from that attempt.

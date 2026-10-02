@@ -5,10 +5,15 @@ import json
 from pathlib import Path
 
 NOTES = {
-    "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01": (
-        "GRPO · standard rank-1 ReLoRA, restart ramp",
+    "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01": (
+        "GRPO · standard rank-1 ReLoRA, restart ramp (fixed probe)",
         "ablation",
-        "Launched the first of two matched 100-step ReLoRA trials: standard full-layer Kaiming rank-one LoRA, alpha 32, native AdamW LR 1.5e-5, unchanged eight rollouts / 32 prompts / 8192 response budget. Merge at steps 40 and 80, clear complete Adam history, then apply LR multipliers 0, .25, .5, .75, 1 over the next five updates; initial warmup is zero. An otherwise identical constant-LR control is queued after successful completion. This isolates restart warmup with full resets, not the complete original ReLoRA recipe. Log teacher-forced KL/log-probability changes on up to 128 real response tokens per rank, token-weighted across eight ranks; accumulated low-rank spectra at merges and at step 100; per-rank allocator peaks plus ten-second NVML samples. All 83 unit/integrity tests passed; actual eight-GPU FSDP2 verified merging, scheduler behavior, exact next-update reproduction after resume, and dense export. Learning outcomes are pending.",
+        "Restarted from the original base model after correcting the trajectory-prefix diagnostic. Recipe unchanged: standard Kaiming rank-one LoRA, alpha 32, native AdamW LR 1.5e-5, eight rollouts, 32 prompts/update, 8192 response tokens, 100 steps. Merge/reset at steps 40/80, then five-update LR multipliers 0, .25, .5, .75, 1; no initial warmup. Constant-LR control queued after successful completion. Regression tests use native SkyRL left-padding and response-slice construction. Actual eight-GPU tests now exercise the real worker merge method, collective KL aggregation and accumulated-rank diagnostics, plus exact next-update reproduction after checkpoint loading and dense export. All 85 tests passed. The previous attempt failed before any merge and therefore does not measure ReLoRA behavior. Logs/evaluation dumps from that attempt are retained. Outcomes for this restarted comparison are pending.",
+    ),
+    "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01": (
+        "GRPO · ReLoRA restart ramp, failed probe attempt",
+        "ablation",
+        "Stopped with exit status 1 during step 40, before the first merge or optimizer update at that step; 39 updates completed. A diagnostic indexing bug treated the start of the common response slice as the prompt boundary. With native SkyRL whole-sequence left padding, short responses can have their prompt inside that slice, so the probe incorrectly raised an empty-prompt error. Native training itself was unaffected. Correctness over steps 1–10, 11–20, 21–30 and 31–39 was 10.4%, 17.1%, 21.1%, 27.7%; standard LoRA reference over the same ranges was 9.65%, 14.84%, 20.82%, 25.95%. AIME25 at step 20 was 6.25% avg@8 / 26.67% pass@8, versus 4.17% / 23.33% in the reference. These are pre-merge single-run results and do not establish a ReLoRA benefit. No boundary/rank results were produced. The control did not start. Fixed and restarted from the base model on October 2; original logs and evaluations retained.",
     ),
     "qwen3-4b-base-grpo-loft-simple-r1-20261001-01": (
         "GRPO · full-layer rank-1 LoFT-simple",

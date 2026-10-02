@@ -395,6 +395,7 @@ def main():
         "qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
         "qwen3-4b-base-grpo-loft-simple-r1-20261001-01",
         "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01",
+        "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01",
     ]
     by_id = {run["run_id"]: run for run in runs}
     lora_runs = [by_id[rid] for rid in lora_ids]

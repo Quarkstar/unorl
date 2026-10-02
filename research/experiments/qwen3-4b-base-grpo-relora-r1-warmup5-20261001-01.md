@@ -1,17 +1,17 @@
 ---
-title: "GRPO · standard rank-1 ReLoRA, restart ramp"
+title: "GRPO · ReLoRA restart ramp, failed probe attempt"
 ---
 
-# GRPO · standard rank-1 ReLoRA, restart ramp
+# GRPO · ReLoRA restart ramp, failed probe attempt
 
-Launched the first of two matched 100-step ReLoRA trials: standard full-layer Kaiming rank-one LoRA, alpha 32, native AdamW LR 1.5e-5, unchanged eight rollouts / 32 prompts / 8192 response budget. Merge at steps 40 and 80, clear complete Adam history, then apply LR multipliers 0, .25, .5, .75, 1 over the next five updates; initial warmup is zero. An otherwise identical constant-LR control is queued after successful completion. This isolates restart warmup with full resets, not the complete original ReLoRA recipe. Log teacher-forced KL/log-probability changes on up to 128 real response tokens per rank, token-weighted across eight ranks; accumulated low-rank spectra at merges and at step 100; per-rank allocator peaks plus ten-second NVML samples. All 83 unit/integrity tests passed; actual eight-GPU FSDP2 verified merging, scheduler behavior, exact next-update reproduction after resume, and dense export. Learning outcomes are pending.
+Stopped with exit status 1 during step 40, before the first merge or optimizer update at that step; 39 updates completed. A diagnostic indexing bug treated the start of the common response slice as the prompt boundary. With native SkyRL whole-sequence left padding, short responses can have their prompt inside that slice, so the probe incorrectly raised an empty-prompt error. Native training itself was unaffected. Correctness over steps 1–10, 11–20, 21–30 and 31–39 was 10.4%, 17.1%, 21.1%, 27.7%; standard LoRA reference over the same ranges was 9.65%, 14.84%, 20.82%, 25.95%. AIME25 at step 20 was 6.25% avg@8 / 26.67% pass@8, versus 4.17% / 23.33% in the reference. These are pre-merge single-run results and do not establish a ReLoRA benefit. No boundary/rank results were produced. The control did not start. Fixed and restarted from the base model on October 2; original logs and evaluations retained.
 
 ## Configuration and provenance
 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01` |
-| Record | No retained metrics |
+| Record | 39 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -31,20 +31,44 @@ Launched the first of two matched 100-step ReLoRA trials: standard full-layer Ka
 | Evaluation samples/question | 8 |
 | GPUs (policy) | 8 |
 | KL loss / reward | False / False |
-| Exit status | not retained |
+| Exit status | 1 |
 
 [Download the metric/configuration snapshot](../data/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.json). The snapshot includes hashes of the original local source files and the recorded SkyRL revision. Machine-specific root paths are made relative; original run identifiers remain unchanged.
 
 ## Learning curves
 
-No metric records survived, so no curve or score is fabricated.
+```{figure} ../figures/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.svg
+:alt: Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+
+Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+```
 
 ## Evaluation results
 
-No AIME25 checkpoint evaluation is retained.
+### AIME25
+
+| Step | Sample accuracy | Pass@8 |
+|---:|---:|---:|
+| 0 | 2.5% | 16.7% |
+| 20 | 6.2% | 26.7% |
+
+
+## Evaluation sample counts
+
+| Benchmark | Step | Correct responses | Questions solved ≥1 time |
+|---|---:|---:|---:|
+| aime25 | 0 | 6/240 | 5/30 |
+| aime25 | 20 | 15/240 | 8/30 |
 
 ## Quantitative observations
 
+Training response correctness averaged **10.4%** over the first 10 logged updates and **27.3%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+
+- Logged entropy: 0.8396 at step 1 → 0.2061 at step 39.
+- Policy gradient norm: 0.04044 at step 1 → 0.02973 at step 39.
+- Mean generated response tokens: 1354 at step 1 → 2821 at step 39.
+
+Best recorded AIME25 pass@8: **26.7% at step 20**. Last recorded: **26.7% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

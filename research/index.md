@@ -32,7 +32,8 @@ All rows use Qwen3-4B-Base and eight rollouts per prompt. Full-parameter GRPO is
 | [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 16.2% | 15.8% | 30.0% |
 | [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 20.0% | 15.0% | 30.0% |
 | [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 2.1% | 3.3% | 20.0% |
-| [GRPO · standard rank-1 ReLoRA, restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | — | — | — |
+| [GRPO · ReLoRA restart ramp, failed probe attempt](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | — | — | — |
+| [GRPO · standard rank-1 ReLoRA, restart ramp (fixed probe)](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | — | — | — |
 
 ```{figure} figures/comparison-lora.svg
 :alt: Google Material palette. Full-parameter GRPO remains visible as a historical reference with different settings.
@@ -58,7 +59,8 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · standard rank-1 ReLoRA, restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | — | — | — | — | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 ReLoRA, restart ramp (fixed probe)](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | — | — | — | — | AdamW (SkyRL default) |
+| [GRPO · ReLoRA restart ramp, failed probe attempt](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | 39 | 20 | 6.2% | 26.7% | AdamW (SkyRL default) |
 | [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 100 | 100 | 3.3% | 20.0% | LoFTSimpleAdamW (Adam-family) |
 | [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 100 | 100 | 15.0% | 30.0% | AdamW (SkyRL default) |
 | [GRPO · full-layer rank-1 LoRA-FA](experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md) | 100 | 100 | 17.5% | 33.3% | AdamW (SkyRL default) |
