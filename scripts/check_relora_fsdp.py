@@ -5,6 +5,7 @@ import faulthandler
 import json
 import os
 from pathlib import Path
+from types import SimpleNamespace
 
 import torch
 import torch.distributed as dist
@@ -12,10 +13,10 @@ from skyrl.backends.skyrl_train.workers.model_wrapper import HFModelWrapper
 from skyrl.train.config import SkyRLTrainConfig
 from transformers import AutoModelForCausalLM, Qwen3Config, Qwen3ForCausalLM
 
-from unorl.low_resource import adapter_layers, effective_weights, full_tensor, merge_and_reset
+from unorl.low_resource import adapter_layers, effective_weights, full_tensor
 from unorl.merged_weights import BaseWeightExtractor
 from unorl.relora import distribution_shift, response_log_distribution
-from unorl.relora_worker import ReLoRAStrategy
+from unorl.relora_worker import ReLoRAPolicyWorker, ReLoRAStrategy
 
 
 def main():
@@ -79,6 +80,12 @@ def main():
         )
         wrapped, optimizer, scheduler = strategy.prepare((wrapped, None, None))
         model = wrapped.model
+        worker = ReLoRAPolicyWorker.__new__(ReLoRAPolicyWorker)
+        worker.model = wrapped
+        worker.optimizer = optimizer
+        worker.scheduler = scheduler
+        worker.cfg = SimpleNamespace(seed=42, export_path=str(args.output / "exports"))
+        worker._factor_history = {}
         identities = {n: id(p) for n, p in model.named_parameters()}
         tokens = torch.tensor([[1, 2, 3, 4]], device="cuda")
         norms = []
@@ -99,8 +106,8 @@ def main():
                     before_dist = response_log_distribution(model, tokens[0], 2)
                     scheduler_state = scheduler.state_dict()
                     before_weights = {n: v.clone() for n, v in effective_weights(model)}
-                    metrics = merge_and_reset(model, seed=12345 + step, init_method="kaiming")
-                    optimizer.state.clear()
+                    worker._math_probe = (tokens[0].cpu(), 2)
+                    metrics = worker._merge_with_probe(step)
                     after = model(tokens).logits.float()
                     shift = distribution_shift(
                         before_dist, response_log_distribution(model, tokens[0], 2), tokens[0, -2:]
@@ -168,6 +175,7 @@ def main():
                 "adam_history_reset_and_rebuilt": True,
                 "checkpoint_resume_verified": True,
                 "next_update_reproduced_exactly": True,
+                "actual_worker_boundary_and_collective_rank_diagnostics_verified": True,
                 "applied_lrs": applied_lrs,
                 "dense_export_includes_prior_merge_and_current_adapter": True,
             }

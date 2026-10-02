@@ -135,3 +135,33 @@ def test_profiles_change_only_merges_and_restart_ramp():
     profiles[0].trainer.policy.model.lora.alpha = 1
     with pytest.raises(ValueError, match="standard full-layer"):
         validate_relora(profiles[0])
+
+
+def test_math_prefix_matches_native_skyrl_left_padding_and_response_alignment():
+    from skyrl.train.dataset.preprocess import convert_prompts_responses_to_batch_tensors
+
+    prompts = [[5, 6], [10, 11, 12]]
+    responses = [[7, 8], [13, 14, 15, 16, 17, 18, 19, 20]]
+    sequences, attention, masks, *_ = convert_prompts_responses_to_batch_tensors(
+        0,
+        prompts,
+        responses,
+        [[1.0] * len(r) for r in responses],
+        [[1] * len(r) for r in responses],
+    )
+    # The short row's prompt lives inside the trailing max-response slice.
+    slice_start = sequences.shape[1] - masks.shape[1]
+    assert not attention[0, :slice_start].any()
+    for index in (0, 1):
+        data = {
+            "sequences": sequences[index : index + 1],
+            "attention_mask": attention[index : index + 1],
+            "response_mask": masks[index : index + 1],
+        }
+        tokens, n = trajectory_prefix(data, response_tokens=2)
+        assert tokens.tolist() == prompts[index] + responses[index][:2]
+        assert n == 2
+    data = {"sequences": sequences, "attention_mask": attention.clone(), "response_mask": masks}
+    data["attention_mask"][0].zero_()
+    tokens, n = trajectory_prefix(data, response_tokens=2)
+    assert tokens.tolist() == prompts[1] + responses[1][:2] and n == 2

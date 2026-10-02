@@ -23,15 +23,22 @@ def restart_multiplier(completed_updates, merge_interval, warmup_updates):
 
 def trajectory_prefix(data, response_tokens=128):
     """Unpad one real math prompt and retain a bounded response prefix."""
-    sequence = data["sequences"][0].detach()
-    attention = data["attention_mask"][0].bool()
-    response_mask = data["response_mask"][0].bool()
-    prompt_end = sequence.numel() - response_mask.numel()
-    prompt = sequence[:prompt_end][attention[:prompt_end]]
-    response = sequence[prompt_end:][response_mask][:response_tokens]
-    if not prompt.numel() or not response.numel():
-        raise ValueError("Merge probe needs a valid prompt and response")
-    return torch.cat([prompt, response]).cpu(), response.numel()
+    for sequence, attention, response_mask in zip(
+        data["sequences"], data["attention_mask"], data["response_mask"]
+    ):
+        sequence = sequence.detach()
+        attention = attention.bool()
+        # SkyRL right-aligns response indicators within a trailing slice of
+        # the left-padded complete sequence. That slice can include prompt
+        # tokens, so its start is not the sample's prompt/response boundary.
+        response_positions = torch.zeros_like(attention)
+        if response_mask.numel():
+            response_positions[-response_mask.numel() :] = response_mask.bool()
+        prompt = sequence[attention & ~response_positions]
+        response = sequence[attention & response_positions][:response_tokens]
+        if prompt.numel() and response.numel():
+            return torch.cat([prompt, response]).cpu(), response.numel()
+    raise ValueError("Merge probe needs at least one valid prompt and response")
 
 
 @torch.no_grad()
