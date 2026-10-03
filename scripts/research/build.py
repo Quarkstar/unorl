@@ -609,7 +609,11 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
             ],
             "toc": toc,
         },
-        "site": {"template": "book-theme", "title": "UNORL", "options": {"logo_text": "UNORL"}},
+        "site": {
+            "template": "book-theme",
+            "title": "UNORL",
+            "options": {"logo_text": "UNORL", "favicon": "research/favicon.svg"},
+        },
     }
     (ROOT / "myst.yml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True))
     print(f"Built {len(runs)} experiment pages and comparison figures")
