@@ -98,8 +98,111 @@
     "source": "runs/qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
     "sha256": {
       "config.json": "dd0cd60df5377051c2c8507455c461e2a92548a2880ac15ac5c473afb9281cf6",
-      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b"
+      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
+      "initial-adapter-audit.json": "6f2175872434f300d0c29e7d112135b10a9b4b9b854d3ff69949d4afa82cce70",
+      "resume-policy-audit.json": "0d3c8f7f98d572866a2dee9d4d4c846f9b957e3727b681990da0ed1493a70e68",
+      "prelaunch-validation.json": "6bf243da08fc4defeaee68214dbdfb3a7ce4bf12aaa0a9bab57a15b7ea741589"
     },
     "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
+  },
+  "audits": {
+    "initial-adapter-audit.json": {
+      "method": "standard LoRA continuation, no merges",
+      "rank": 1,
+      "alpha": 32,
+      "initialization": "kaiming",
+      "optimizer": "AdamW",
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "epsilon": 1e-08,
+      "trainable_parameters": 2064384,
+      "merge_interval": 40,
+      "restart_warmup_updates": 0,
+      "optimizer_reset": "none; preserve A moments and all counters, project B first moment by cosine, retain B variance",
+      "rollout_sync": "base W then adapter after merge/resume; adapter only otherwise",
+      "probe": "one real math response prefix per rank, at most 128 response tokens",
+      "rank_diagnostic": "thin QR / small SVD of accumulated low-rank factors",
+      "refresh_angle_degrees": 0.0,
+      "first_merge_step": 101,
+      "compensation": "W += scale * B @ (A_old - A_new); B unchanged",
+      "moment_transport": "approximate for B; unknown orthogonal-direction variance is not reconstructed"
+    },
+    "resume-policy-audit.json": {
+      "checkpoint": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/checkpoints/global_step_100/policy",
+      "scheduler_step": 100,
+      "adam_step_min": 100.0,
+      "adam_step_max": 100.0,
+      "optimizer": "AdamW",
+      "lr": 1.5e-05,
+      "history_layers": 0,
+      "history_restored_from_checkpoint": true
+    },
+    "prelaunch-validation.json": {
+      "success": true,
+      "world_size": 8,
+      "optimizer": "AdamW",
+      "updates": 8,
+      "merge_after_updates": [
+        4,
+        7
+      ],
+      "grad_norms": [
+        5.789613723754883,
+        4.653574466705322,
+        3.943572759628296,
+        3.640787363052368,
+        2.9278383255004883,
+        2.719346284866333,
+        3.112868547439575,
+        2.2554657459259033
+      ],
+      "probe_logits_max_abs_diff": 0.00146484375,
+      "merge_metrics": {
+        "relora/merged_layers": 14.0,
+        "relora/delta_l2": 0.5473639158981959,
+        "relora/rounding_relative_l2": 7.731300389091947e-08,
+        "refresh/angle_degrees": 20.0,
+        "refresh/b_first_moment_projection": 0.9396926207859084,
+        "refresh/optimizer_state_entries": 28.0,
+        "relora/probe_response_tokens": 16.0,
+        "relora/probe_response_kl_mean": 1.250637069460936e-07,
+        "relora/probe_chosen_logprob_mean_abs_diff": 5.841255187988281e-05,
+        "relora/probe_chosen_logprob_max_abs_diff": 7.843971252441406e-05,
+        "relora/probe_argmax_flip_fraction": 0.0,
+        "relora/mean_accumulated_stable_rank": 1.0043545690031237,
+        "relora/mean_energy_outside_first_direction": 0.00433116868567085
+      },
+      "response_prefix_probe": {
+        "relora/probe_response_tokens": 2.0,
+        "relora/probe_response_kl_mean": 1.250637069460936e-07,
+        "relora/probe_chosen_logprob_mean_abs_diff": 5.841255187988281e-05,
+        "relora/probe_chosen_logprob_max_abs_diff": 7.843971252441406e-05,
+        "relora/probe_argmax_flip_fraction": 0.0
+      },
+      "next_lr": 0.001,
+      "parameter_identity_preserved": true,
+      "scheduler_preserved": true,
+      "adam_history_preserved": true,
+      "diagnostic_factor_history_checkpointed": true,
+      "actual_worker_optimizer_and_weight_step_telemetry_verified": true,
+      "checkpoint_resume_verified": true,
+      "next_update_reproduced_exactly": true,
+      "actual_refresh_worker_boundary_and_collective_rank_diagnostics_verified": true,
+      "applied_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "dense_export_includes_prior_merge_and_current_adapter": true,
+      "unit_test_result": "94 passed, 7 warnings",
+      "implementation_commit": "33a7526"
+    }
   }
 }

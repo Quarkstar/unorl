@@ -231,7 +231,12 @@ def main():
                 else None,
             },
         }
-        for name in ("initial-adapter-audit.json", "comparison-audit.json"):
+        for name in (
+            "initial-adapter-audit.json",
+            "comparison-audit.json",
+            "resume-policy-audit.json",
+            "prelaunch-validation.json",
+        ):
             if (p / name).exists():
                 raw = (p / name).read_bytes()
                 result.setdefault("audits", {})[name] = portable(json.loads(raw))
