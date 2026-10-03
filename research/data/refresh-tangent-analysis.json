@@ -1,0 +1,35 @@
+{
+  "scope": "Synthetic 11x13 rank-one float64 CPU example; scale absorbed in target update.",
+  "seed": 42,
+  "results": [
+    {
+      "angle_degrees": 0,
+      "function_difference_max": 0.0,
+      "pure_orthogonal_B_update_relative_residual": 1.6045957728981733e-16,
+      "expected_sine": 0.0,
+      "mixed_update_relative_residual": 1.2167944541613595e-16
+    },
+    {
+      "angle_degrees": 20,
+      "function_difference_max": 5.551115123125783e-17,
+      "pure_orthogonal_B_update_relative_residual": 0.34202014332566866,
+      "expected_sine": 0.3420201433256687,
+      "mixed_update_relative_residual": 0.1983021624150804
+    },
+    {
+      "angle_degrees": 45,
+      "function_difference_max": 2.7755575615628914e-17,
+      "pure_orthogonal_B_update_relative_residual": 0.7071067811865475,
+      "expected_sine": 0.7071067811865475,
+      "mixed_update_relative_residual": 0.40997820305028754
+    },
+    {
+      "angle_degrees": 90,
+      "function_difference_max": 5.551115123125783e-17,
+      "pure_orthogonal_B_update_relative_residual": 1.0,
+      "expected_sine": 1.0,
+      "mixed_update_relative_residual": 0.5797967350310673
+    }
+  ],
+  "limitations": "First-order parameter update geometry, not an Adam transport theorem or model performance measurement. Finite factor updates include the additional db @ da term. Compensating W preserves the function but does not preserve the adapter tangent space."
+}

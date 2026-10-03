@@ -1628,3 +1628,89 @@ while retaining the historical comparison separately:
 Until completed updates and evaluations exist in both branches, this artifact
 records zero common-update counts and no paired evaluation result. It never
 fills missing control results from the historical run.
+
+## 30. First-principles check: function continuity is not update-space continuity
+
+While the fresh control runs, a small CPU calculation checks a remaining
+mechanism in the gradual-refresh design. This is **synthetic geometry**, not
+another model-training experiment or evidence that the mechanism caused the
+AIME deficit. Reproduce it with:
+
+```bash
+../SciBuddy/.venv-skyrl/bin/python scripts/research/diagnose_refresh_tangent.py
+```
+
+The output is `research/data/refresh-tangent-analysis.json`. The float64 example
+checks angles 0, 20, 45 and 90 degrees, exact function compensation, and
+orthogonality of the residual to every allowed first-order adapter update.
+
+### What compensation preserves, and what it changes
+
+After compensating the frozen backbone, `W + scale * B @ A` is unchanged.
+However, once the backbone is frozen again, the available small training
+updates are:
+
+```python
+D = scale * (B @ dA + dB @ A)
+```
+
+Rotating A changes that set of matrices even when B is retained. A component
+of an old B update may no longer be representable. For an arbitrary target D,
+absorb scale into D and project it onto the new update space:
+
+```python
+# b: [out, 1], a: [1, in], target: [out, in]
+# Gauge choice: b.T @ db == 0
+# Only for a small explanatory example; do not allocate dense model-sized D.
+da = b.T @ target / b.square().sum()
+db = (target @ a.T - b @ (da @ a.T)) / a.square().sum()
+projected = b @ da + db @ a
+residual = target - projected
+```
+
+The residual is orthogonal to both `b @ arbitrary_da` and
+`arbitrary_db @ a`: `b.T @ residual == 0` and `residual @ a.T == 0`.
+Therefore this is the closest available first-order update in Frobenius norm,
+not merely a particular optimizer construction. No choice of Adam moments can
+recover a component outside that space while keeping only this active adapter
+and a frozen compensated backbone.
+
+Take an old B-update component perpendicular to B. Rotating A by angle theta
+loses `sin(theta)` of that component's **norm** from the new update space.
+At 20 degrees this is **34.20% of the affected component**, or **11.70% of its
+squared norm**. This is not a 34% loss of the whole model update. In the toy's
+mixed A/B update, the relative residual is **19.83%**, a value determined by
+its arbitrary synthetic factors and not transferable to the real training run.
+The function difference remains below 6e-17 throughout.
+
+This also explains why multiplying B's first moment by cosine is only a
+projection approximation. It retains the old-direction contribution along the
+new A, while omitting historical gradients in the new orthogonal direction.
+Second-moment cross terms remain unknown. Native Adam's diagonal
+preconditioner and finite-update `dB @ dA` term add further complications;
+this calculation is not a theorem of exact Adam transport.
+
+### Implications for a subsequent algorithm design
+
+A small response-prefix KL verifies a different invariant from preservation of
+future update directions. A useful next boundary diagnostic is the minimum
+relative residual when projecting the actual recent weight-space update onto
+the proposed new adapter's update space. Existing low-rank update factors can
+support this calculation without allocating a dense gradient matrix.
+
+One controlled refinement is an **adaptive rotation with an update-direction
+loss budget**: choose the largest angle within a fixed cap for which that
+projection residual remains below a prespecified fraction of the recent update.
+This would replace the arbitrary 20-degree choice, not claim exact optimizer
+continuity. A strict budget can make rotations too small to produce useful rank
+growth, so retaining performance alone would not validate the capacity goal.
+Another direction, already discussed above, is a short overlap transition that
+keeps the old update space available while a new direction learns. That requires
+a temporary second adapter and an explicit memory/compute accounting; it cannot
+be presented as an unchanged rank-one recipe.
+
+Neither refinement is launched here. The ongoing fresh 100-step control first
+checks whether the completed trial's apparent endpoint deficit persists under
+the same runtime. Any subsequent trial must state its update-space criterion,
+optimizer approximation, rank-growth target and full 100-step comparison before
+launch. Extending to 200 steps is not a substitute for that design.
