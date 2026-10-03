@@ -1944,6 +1944,15 @@ cannot be interpreted as evidence that refresh improves learning. Subsequent
 windows must be interpreted alongside this pre-existing divergence, and a
 shared-prefix intervention would be needed for stronger causal attribution.
 
+The paired whole-question bootstrap (10,000 draws, seed 42) also leaves the
+step-40 difference uncertain: candidate-minus-control avg@8 is +5.00 points
+with a 95% interval of **[-1.25, +12.50] points**; pass@8 is +3.33 points
+with **[-6.67, +16.67] points**. Adjusting for the initial score difference
+gives an avg@8 improvement difference of +4.58 points with
+**[-2.08, +12.50] points**. These intervals describe evaluation-question
+uncertainty for this single run pair, not training-seed variability, and do
+not establish either superiority or equivalence.
+
 The real control checkpoint at the planned first boundary was analyzed on CPU,
 without modifying training or loading dense weights. Saved update factors for
 all 252 projections reconstruct the actual logged weight-update norm; the
