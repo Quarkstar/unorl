@@ -1793,3 +1793,84 @@ where available, and explicitly marks the 21–40 window incomplete. Hourly
 monitoring remains active. The next check is due roughly one hour after this
 book update finishes; step-40 evaluation and the 41–60 window are the next
 relevant milestones for the merge comparison.
+
+## 33. Candidate refinement: spread the rotation over a transition window
+
+The fresh control remained healthy at **step 29** at 21:46 UTC on October 3.
+No training setting changed. Before selecting another trial, the update-space
+calculation in section 30 suggests a more direct continuity intervention than
+reducing the total rotation toward zero: spread the same rotation over time.
+
+### Proposed isolated comparison
+
+Keep the current candidate's model, data, rank one, alpha 32, AdamW, constant
+learning rate, batches, eight rollouts and **100-update budget**. Replace each
+single 20-degree refresh with ten incremental rotations of at most two degrees,
+after updates **40–49** and **80–89**. Preserve B and compensate W at every
+increment. No LR ramp, optimizer reset, extra trainable adapter or extension to
+200 steps. The control must finish before deciding whether to launch this trial.
+
+For each projection, choose an orthonormal plane at the start of the transition:
+`e1` is the normalized starting A; `e2` is a seeded orthogonal direction. Apply
+the small rotation in that fixed plane to the current A, without constructing an
+input-by-input rotation matrix:
+
+```python
+# Explanatory update; e1/e2 are fixed unit rows for the transition.
+c1 = (A * e1).sum()
+c2 = (A * e2).sum()
+new_c1 = cos(delta) * c1 - sin(delta) * c2
+new_c2 = sin(delta) * c1 + cos(delta) * c2
+A_new = A + (new_c1 - c1) * e1 + (new_c2 - c2) * e2
+W += scale * B @ (A - A_new)
+A.copy_(A_new)
+```
+
+This orthogonal operator preserves A's norm, leaves its component outside the
+plane unchanged, and gives a per-step angular displacement no larger than two
+degrees. Without intervening learning, ten such rotations equal one 20-degree
+rotation. With learning, the resulting A need not match the one-shot trial:
+interleaving optimization and rotation is precisely the intended intervention.
+
+### Expected benefit and limits
+
+For the old B-update component perpendicular to B, the local unavailable
+fraction is at most `sin(2 degrees) == 0.03490`, compared with
+`sin(20 degrees) == 0.34202` for a single boundary. This is a bound on the
+**affected component at an individual boundary**, not a tenfold reduction in
+the whole-model learning error. At the end, the update space still differs
+from the original one; spreading rotation does not remove that final difference.
+
+Adam observes new gradients between increments. With beta1 0.9, the original
+first-moment contribution has weight **0.34868** after ten updates; with beta2
+0.999, the original second-moment contribution still has weight **0.99004**.
+Thus first-moment adaptation is plausible, while stale variance remains a
+specific concern. Multiplying the B first moment by the local overlap remains
+approximate: repeated local projections are not an exact transport of the
+historical dense gradient. A's moments and all counters would remain intact.
+The appropriate tests are actual update-space residuals, weight-step norm and
+alignment, variance/first-moment diagnostics, and held-out learning—not only
+small output KL.
+
+There are additional tradeoffs. More dense backbone corrections and weight
+synchronizations increase runtime. The correction rows remain in the chosen
+two-dimensional plane, so their accumulated history can be represented with
+two low-rank terms per transition rather than ten uncompressed terms. Even so,
+the accumulated update's rank ceiling can differ from the one-shot method;
+that capacity difference must be reported rather than claimed identical. Only
+one adapter is active, and persistent optimizer state remains bounded by its
+parameter count, but actual peak memory must be measured.
+
+This is a **design proposal**, not validated training behavior. Before launch,
+CPU and distributed checks must verify norm/function continuity, transition
+state across checkpoint resume, consistent rollout synchronization, memory
+accounting and the original 100-step comparison. The fresh control's final
+result determines whether this refinement is the most informative next trial.
+
+The CPU composition check is now included in
+`scripts/research/diagnose_refresh_tangent.py`. Ten fixed-plane two-degree
+increments preserve norms and compensated effective weights, reproduce a single
+20-degree final row to L2 error **3.95e-16**, and give maximum local affected-
+component residual **0.0348995**. The example deliberately has no intervening
+training updates. It verifies the geometry, not Adam adaptation, distributed
+execution or a learning benefit; those launch gates remain outstanding.

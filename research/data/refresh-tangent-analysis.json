@@ -31,5 +31,13 @@
       "mixed_update_relative_residual": 0.5797967350310673
     }
   ],
+  "transition_example": {
+    "increments": 10,
+    "increment_degrees": 2,
+    "intervening_training_updates": false,
+    "maximum_local_affected_component_relative_residual": 0.034899496702501004,
+    "final_row_difference_from_one_20_degree_rotation": 3.945151744817069e-16,
+    "scope": "Checks fixed-plane composition and local compensation; not optimizer adaptation."
+  },
   "limitations": "First-order parameter update geometry, not an Adam transport theorem or model performance measurement. Finite factor updates include the additional db @ da term. Compensating W preserves the function but does not preserve the adapter tangent space."
 }

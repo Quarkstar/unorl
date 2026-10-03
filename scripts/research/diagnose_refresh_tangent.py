@@ -52,10 +52,36 @@ def main():
                 "mixed_update_relative_residual": float(mixed_residual.norm() / mixed.norm()),
             }
         )
+    current_a = a.clone()
+    increment = math.radians(2)
+    local_losses = []
+    for _ in range(10):
+        c1, c2 = (current_a * a).sum(), (current_a * q).sum()
+        new_c1 = math.cos(increment) * c1 - math.sin(increment) * c2
+        new_c2 = math.sin(increment) * c1 + math.cos(increment) * c2
+        new_a = current_a + (new_c1 - c1) * a + (new_c2 - c2) * q
+        torch.testing.assert_close(new_a.norm(), current_a.norm(), atol=1e-12, rtol=0)
+        correction = b @ (current_a - new_a)
+        torch.testing.assert_close(correction + b @ new_a, b @ current_a, atol=1e-12, rtol=0)
+        _, residual = project_update(b, new_a, db @ current_a)
+        local_losses.append(float(residual.norm() / (db.norm() * current_a.norm())))
+        current_a = new_a
+    expected = math.cos(math.radians(20)) * a + math.sin(math.radians(20)) * q
+    torch.testing.assert_close(current_a, expected, atol=1e-12, rtol=0)
     report = {
         "scope": "Synthetic 11x13 rank-one float64 CPU example; scale absorbed in target update.",
         "seed": 42,
         "results": rows,
+        "transition_example": {
+            "increments": 10,
+            "increment_degrees": 2,
+            "intervening_training_updates": False,
+            "maximum_local_affected_component_relative_residual": max(local_losses),
+            "final_row_difference_from_one_20_degree_rotation": float(
+                (current_a - expected).norm()
+            ),
+            "scope": "Checks fixed-plane composition and local compensation; not optimizer adaptation.",
+        },
         "limitations": (
             "First-order parameter update geometry, not an Adam transport theorem or model performance "
             "measurement. Finite factor updates include the additional db @ da term. Compensating W "
