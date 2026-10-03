@@ -1973,3 +1973,24 @@ weights in exact arithmetic. It supports testing smaller local rotations;
 it does not establish that the previous update is the desired next update,
 that Adam transport is exact, or that gradual refresh will improve accuracy.
 No new variant is launched. The fair comparison remains 100 steps from base.
+
+
+## 36. Second hourly control check: 47 completed updates
+
+The scheduled watcher checked the live control at **2026-10-03 22:37:33 UTC**:
+launcher PID 1573646 matched its recorded process start identity and was alive;
+47/100 updates were complete, with no exit status. Last-ten-update correctness
+was **30.5859%**, latest entropy **0.156713**, gradient norm **0.0338213**,
+and average response length **2537.52 tokens**. The watcher successfully
+exported 29 auditable snapshots and rebuilt the experiment pages and figures.
+The ten-second VRAM monitor was also verified live during this monitoring turn.
+
+The completed first post-refresh window, updates 41–45, has mean correctness
+**31.4063%** for the fresh standard control versus **38.9063%** for the refresh
+candidate. The candidate-control gap is +7.50 points, compared with +3.3398
+points during the pre-refresh 21–40 window. This shows no immediate reward
+collapse in the warm refresh candidate. It remains a short, correlated window
+from independently diverged runs; the change in gap does not identify a causal
+merge benefit. The longer 46–60 window and step-60 AIME evaluation are pending.
+The control's latest completed AIME evaluation remains step 40, and no new
+refresh variant has been launched.

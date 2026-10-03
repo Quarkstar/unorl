@@ -4,7 +4,7 @@
     "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
   },
   "completed_updates": {
-    "control": 40,
+    "control": 47,
     "candidate": 100
   },
   "config_differences": {
@@ -119,14 +119,88 @@
       }
     },
     "41-45": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 5,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.3140625,
+          "candidate": 0.3890625,
+          "candidate_minus_control": 0.07499999999999996,
+          "updates": 5
+        },
+        "policy/policy_entropy": {
+          "control": 0.16584885716438294,
+          "candidate": 0.15656570494174957,
+          "candidate_minus_control": -0.009283152222633373,
+          "updates": 5
+        },
+        "policy/grad_norm": {
+          "control": 0.035128016769886014,
+          "candidate": 0.030370119959115982,
+          "candidate_minus_control": -0.004757896810770032,
+          "updates": 5
+        },
+        "generate/avg_num_tokens": {
+          "control": 2203.94453125,
+          "candidate": 2961.478125,
+          "candidate_minus_control": 757.5335937499999,
+          "updates": 5
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.06689923078993029,
+          "candidate": 0.06409232727460253,
+          "candidate_minus_control": -0.002806903515327766,
+          "updates": 5
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.9400997942417848,
+          "candidate": 0.9318061348660226,
+          "candidate_minus_control": -0.008293659375762208,
+          "updates": 5
+        }
+      }
     },
     "46-60": {
-      "updates": 0,
+      "updates": 2,
       "complete": false,
-      "metrics": {}
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.359375,
+          "candidate": 0.39453125,
+          "candidate_minus_control": 0.03515625,
+          "updates": 2
+        },
+        "policy/policy_entropy": {
+          "control": 0.16479237377643585,
+          "candidate": 0.15951602905988693,
+          "candidate_minus_control": -0.00527634471654892,
+          "updates": 2
+        },
+        "policy/grad_norm": {
+          "control": 0.036928799003362656,
+          "candidate": 0.030534484423696995,
+          "candidate_minus_control": -0.006394314579665661,
+          "updates": 2
+        },
+        "generate/avg_num_tokens": {
+          "control": 2416.759765625,
+          "candidate": 2976.650390625,
+          "candidate_minus_control": 559.890625,
+          "updates": 2
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.0645422329358176,
+          "candidate": 0.059014463256337475,
+          "candidate_minus_control": -0.00552776967948012,
+          "updates": 2
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.9295061321411722,
+          "candidate": 0.9315590538499534,
+          "candidate_minus_control": 0.0020529217087812413,
+          "updates": 2
+        }
+      }
     },
     "61-80": {
       "updates": 0,
