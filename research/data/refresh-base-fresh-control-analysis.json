@@ -4,7 +4,7 @@
     "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
   },
   "completed_updates": {
-    "control": 24,
+    "control": 40,
     "candidate": 100
   },
   "config_differences": {
@@ -77,44 +77,44 @@
       }
     },
     "21-40": {
-      "updates": 4,
-      "complete": false,
+      "updates": 20,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.171875,
-          "candidate": 0.1904296875,
-          "candidate_minus_control": 0.0185546875,
-          "updates": 4
+          "control": 0.213671875,
+          "candidate": 0.2470703125,
+          "candidate_minus_control": 0.03339843749999999,
+          "updates": 20
         },
         "policy/policy_entropy": {
-          "control": 0.38932226598262787,
-          "candidate": 0.38181231915950775,
-          "candidate_minus_control": -0.007509946823120117,
-          "updates": 4
+          "control": 0.29204503893852235,
+          "candidate": 0.2806504100561142,
+          "candidate_minus_control": -0.011394628882408164,
+          "updates": 20
         },
         "policy/grad_norm": {
-          "control": 0.04523629695177078,
-          "candidate": 0.043137865141034126,
-          "candidate_minus_control": -0.002098431810736656,
-          "updates": 4
+          "control": 0.0403500379063189,
+          "candidate": 0.04646436367183924,
+          "candidate_minus_control": 0.006114325765520338,
+          "updates": 20
         },
         "generate/avg_num_tokens": {
-          "control": 1103.158203125,
-          "candidate": 1205.2333984375,
-          "candidate_minus_control": 102.0751953125,
-          "updates": 4
+          "control": 1443.969921875,
+          "candidate": 1796.73828125,
+          "candidate_minus_control": 352.76835937500005,
+          "updates": 20
         },
         "updates/effective_delta_l2": {
-          "control": 0.08006534165908652,
-          "candidate": 0.08394579271019811,
-          "candidate_minus_control": 0.003880451051111594,
-          "updates": 4
+          "control": 0.07054912995924634,
+          "candidate": 0.08106842359249314,
+          "candidate_minus_control": 0.010519293633246801,
+          "updates": 20
         },
         "updates/cosine_with_previous_delta": {
-          "control": 0.9252609494175499,
-          "candidate": 0.9219502509750218,
-          "candidate_minus_control": -0.0033106984425280706,
-          "updates": 4
+          "control": 0.9277125762666709,
+          "candidate": 0.9273769019622101,
+          "candidate_minus_control": -0.00033567430446079793,
+          "updates": 20
         }
       }
     },
@@ -206,6 +206,48 @@
           "candidate_minus_control": -0.03333333333333333,
           "question_bootstrap_95_interval": [
             -0.23333333333333334,
+            0.16666666666666666
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "40": {
+      "avg@8": {
+        "candidate_minus_control": 0.05,
+        "question_bootstrap_95_interval": [
+          -0.0125,
+          0.125
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.04583333333333333,
+          "question_bootstrap_95_interval": [
+            -0.020833333333333332,
+            0.125
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.06666666666666667,
+          0.16666666666666666
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.03333333333333333,
+          "question_bootstrap_95_interval": [
+            -0.1,
             0.16666666666666666
           ],
           "questions": 30,

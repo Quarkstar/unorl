@@ -11,7 +11,7 @@ Fresh 100-update standard LoRA control for the completed gradual-refresh trial. 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01` |
-| Record | 24 steps logged / 100 planned |
+| Record | 40 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -55,6 +55,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---:|---:|---:|
 | 0 | 2.9% | 13.3% |
 | 20 | 5.4% | 23.3% |
+| 40 | 12.1% | 23.3% |
 
 
 ## Evaluation sample counts
@@ -63,16 +64,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---|---:|---:|---:|
 | aime25 | 0 | 7/240 | 4/30 |
 | aime25 | 20 | 13/240 | 7/30 |
+| aime25 | 40 | 29/240 | 7/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **10.0%** over the first 10 logged updates and **16.2%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **10.0%** over the first 10 logged updates and **24.5%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.7918 at step 1 → 0.3862 at step 24.
-- Policy gradient norm: 0.0311 at step 1 → 0.04031 at step 24.
-- Mean generated response tokens: 1397 at step 1 → 1102 at step 24.
+- Logged entropy: 0.7918 at step 1 → 0.2079 at step 40.
+- Policy gradient norm: 0.0311 at step 1 → 0.03798 at step 40.
+- Mean generated response tokens: 1397 at step 1 → 2090 at step 40.
 
-Best recorded AIME25 pass@8: **23.3% at step 20**. Last recorded: **23.3% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **23.3% at step 20**. Last recorded: **23.3% at step 40**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

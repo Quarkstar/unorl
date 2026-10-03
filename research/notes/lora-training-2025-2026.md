@@ -1924,3 +1924,43 @@ boundary**, and this diagnostic does not observe the next gradient or Adam
 transport. It does not prove that the lost direction caused any learning or
 AIME deficit. Equivalent measurements near 40/80 and matched learning outcomes
 remain necessary. The live control continues with no refresh enabled.
+
+
+## 35. Fresh control step 40: pre-refresh divergence and boundary geometry
+
+Verified at 2026-10-03 22:17 UTC. The fresh standard control completed update
+40 and AIME25 evaluation; the process remains live and continues toward 100.
+Raw evaluation has exactly 30 questions with eight responses each: 29/240
+correct responses and 7/30 questions solved. Therefore avg@8 is **12.0833%**
+and pass@8 is **23.3333%**. The refresh candidate at 40 had 41/240 correct
+responses and 8/30 solved, or **17.0833% / 26.6667%**.
+
+The full pre-refresh training window 21–40 is **21.3672%** correctness for
+the fresh control versus **24.7070%** for the candidate: a **3.3398 percentage
+point advantage already exists before the refresh can affect a subsequent
+training update**. Update 40 is computed before rotation; evaluation 40 is
+after the candidate's compensated rotation. Consequently the AIME gap at 40
+cannot be interpreted as evidence that refresh improves learning. Subsequent
+windows must be interpreted alongside this pre-existing divergence, and a
+shared-prefix intervention would be needed for stronger causal attribution.
+
+The real control checkpoint at the planned first boundary was analyzed on CPU,
+without modifying training or loading dense weights. Saved update factors for
+all 252 projections reconstruct the actual logged weight-update norm; the
+source hash and per-layer scalar diagnostics are retained in
+`../data/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01-refresh-geometry-step40.json`.
+
+| Hypothetical rotation | Global norm fraction outside the new update space |
+|---|---:|
+| 0 degrees | 0.0743% |
+| 2 degrees | 3.1229% |
+| 20 degrees | 30.5967% |
+| 45 degrees | 63.2569% |
+| 60 degrees | 77.4735% |
+
+This confirms a substantial discontinuity in available update directions at a
+real planned refresh boundary, despite compensation preserving effective
+weights in exact arithmetic. It supports testing smaller local rotations;
+it does not establish that the previous update is the desired next update,
+that Adam transport is exact, or that gradual refresh will improve accuracy.
+No new variant is launched. The fair comparison remains 100 steps from base.
