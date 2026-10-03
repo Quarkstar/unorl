@@ -1402,3 +1402,28 @@ points. Step-80 rollout correctness alone was 28.516%, generated before
 the second refresh; it cannot be attributed to that refresh. Recent
 response lengths increased to 4,720 tokens. The final 81-100 window and
 step-100 held-out evaluation remain necessary before deciding parity.
+
+
+### 26. Fifth hourly check: reward recovers after the second refresh
+
+At 19:47:12 UTC, the hourly watcher verified launcher PID 1547444 and its
+original start time with 91 completed updates. Recent ten-update
+correctness was 41.33%, latest entropy 0.13731, gradient norm 0.03368,
+and response length 3,782 tokens. Training remains live with target 100.
+
+The fixed 81-90 window averages 41.094% correctness for gradual refresh
+versus 40.039% for historical standard rank-1 LoRA, a lead of 1.055
+percentage points. Mean entropy is 0.13658 versus 0.13639, gradient norm
+0.03313 versus 0.03643, and response length 3,830 versus 3,636 tokens.
+Thus the low rolling reward around step 82 did not persist throughout
+this window. The decline was already present in pre-refresh batches:
+steps 77-80 scored 34.375%, 33.203%, 38.281%, and 28.516%.
+
+The first post-refresh effective update (81) had norm 0.05256 versus
+0.05612 before compensation at step 80, with cosine 0.84898 against the
+preceding update. Step 82 had norm 0.05354 and cosine 0.88691. All 903
+optimizer-state entries remained. These observations support immediate
+update continuity; neither scalar gradient norms nor this one window
+establish causal improvement or final parity. Finish the original
+100-step trial and inspect the final evaluation before choosing a new
+method or replication.
