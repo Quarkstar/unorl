@@ -90,15 +90,62 @@
     "trainer.export_path": "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports",
     "trainer.log_path": "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/infra"
   },
-  "metrics": [],
-  "evaluation_counts": [],
+  "metrics": [
+    {
+      "step": 0,
+      "metrics": {
+        "eval/aime25/avg_score": -0.9333333333333333,
+        "eval/aime25/pass_at_8": 0.13333333333333333,
+        "eval/aime25/mean_positive_reward": 0.03333333333333333,
+        "eval/aime25/avg@8": 0.03333333333333333,
+        "eval/aime25/pass@8": 0.13333333333333333
+      }
+    }
+  ],
+  "evaluation_counts": [
+    {
+      "step": 0,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 8,
+      "solved_questions": 4
+    }
+  ],
   "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     "sha256": {
+      "metrics.jsonl": "a293dc37209b640038972e673e4d441431ab5f4cbf1418cad42475dee48d259c",
       "config.json": "c484430015274e9980d53f41c13d988bad2b527382fc20f42d0d555249f4fc88",
-      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b"
+      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
+      "initial-adapter-audit.json": "e1f23af92b28679829ae014d8b789c414b06b52093ea4c8b65ec5d8c4479bab8"
     },
     "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
+  },
+  "audits": {
+    "initial-adapter-audit.json": {
+      "method": "gradual A refresh with warm B",
+      "rank": 1,
+      "alpha": 32,
+      "initialization": "kaiming",
+      "optimizer": "AdamW",
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "epsilon": 1e-08,
+      "trainable_parameters": 2064384,
+      "merge_interval": 40,
+      "restart_warmup_updates": 0,
+      "optimizer_reset": "none; preserve A moments and all counters, project B first moment by cosine, retain B variance",
+      "rollout_sync": "base W then adapter after merge/resume; adapter only otherwise",
+      "probe": "one real math response prefix per rank, at most 128 response tokens",
+      "rank_diagnostic": "thin QR / small SVD of accumulated low-rank factors",
+      "refresh_angle_degrees": 20.0,
+      "first_merge_step": 40,
+      "compensation": "W += scale * B @ (A_old - A_new); B unchanged",
+      "moment_transport": "approximate for B; unknown orthogonal-direction variance is not reconstructed"
+    }
   }
 }

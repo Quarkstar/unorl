@@ -168,6 +168,11 @@ def portable(value):
     return value
 
 
+def parse_jsonl(raw):
+    """Split JSONL on literal newlines, preserving Unicode inside JSON strings."""
+    return [json.loads(line) for line in raw.split(b"\n") if line.strip()]
+
+
 def main():
     root = Path(__file__).resolve().parents[2]
     out = root / "research/data"
@@ -203,7 +208,7 @@ def main():
                 continue
             try:
                 raw = f.read_bytes()
-                evalrows = [json.loads(line) for line in raw.decode().splitlines()]
+                evalrows = parse_jsonl(raw)
             except json.JSONDecodeError:
                 omissions.append(str(f.relative_to(p)))
                 continue

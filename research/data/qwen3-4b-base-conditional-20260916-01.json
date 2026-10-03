@@ -17568,6 +17568,14 @@
       "solved_questions": 0
     },
     {
+      "step": 40,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 3,
+      "solved_questions": 2
+    },
+    {
       "step": 60,
       "benchmark": "aime25",
       "responses": 240,
@@ -17648,6 +17656,14 @@
       "solved_questions": 3
     },
     {
+      "step": 220,
+      "benchmark": "aime26",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 23,
+      "solved_questions": 8
+    },
+    {
       "step": 240,
       "benchmark": "aime26",
       "responses": 240,
@@ -17704,10 +17720,7 @@
       "solved_questions": 5
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl",
-    "exports/aime26/dumped_evals/global_step_220_evals/aime26.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-conditional-20260916-01",
     "sha256": {

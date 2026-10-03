@@ -1259,11 +1259,17 @@
       "questions": 30,
       "correct_responses": 4,
       "solved_questions": 3
+    },
+    {
+      "step": 20,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 4,
+      "solved_questions": 4
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-reinforce-batchmean-b256-20260924-01",
     "sha256": {

@@ -1195,3 +1195,24 @@ has no resume path and a target of 100 updates. The hourly watcher and
 so launch is not evidence of successful training or algorithm performance.
 The main ReLoRA figure now includes this base-model trial alongside the
 standard reference and cold-reset variants; missing metrics remain missing.
+
+
+### 18. Corrected trial: verified initialization and step-0 evaluation
+
+The runtime audit confirms rank one, alpha 32, Kaiming initialization,
+native AdamW with betas 0.9/0.999 and epsilon 1e-8, 2,064,384 trainable
+parameters, and first refresh at step 40. The cleaned training-data hash
+matches the reference. Step-0 evaluation completed before training began
+at 14:49:40 UTC: thirty distinct AIME25 questions, eight responses each,
+eight correct responses out of 240 (3.33% avg@8), and four solved questions
+out of thirty (13.33% pass@8). Historical standard LoRA's starting scores
+were 2.50% avg@8 and 13.33% pass@8. Neither run has received a refresh at
+this point; the small sampled starting difference is not a method effect.
+
+A reporting bug initially made this valid response dump appear incomplete:
+Python string `splitlines()` splits Unicode separators inside generated
+JSON strings. Splitting JSONL on literal newline bytes preserves those
+characters. The snapshot parser was corrected and regression tests check
+both Unicode-containing responses and rejection of genuinely partial JSON.
+All 240 saved records now parse and the aggregate scores agree with the
+training logger. No training or reward code was changed.

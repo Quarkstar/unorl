@@ -6049,6 +6049,14 @@
       "solved_questions": 10
     },
     {
+      "step": 20,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 13,
+      "solved_questions": 6
+    },
+    {
       "step": 40,
       "benchmark": "aime25",
       "responses": 240,
@@ -6073,9 +6081,7 @@
       "solved_questions": 10
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-grpo-lorafa-r1-20260930-01",
     "sha256": {

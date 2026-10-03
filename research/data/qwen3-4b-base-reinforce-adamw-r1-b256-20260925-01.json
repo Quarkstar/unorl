@@ -6057,6 +6057,14 @@
       "solved_questions": 8
     },
     {
+      "step": 20,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 13,
+      "solved_questions": 6
+    },
+    {
       "step": 40,
       "benchmark": "aime25",
       "responses": 240,
@@ -6081,9 +6089,7 @@
       "solved_questions": 9
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01",
     "sha256": {

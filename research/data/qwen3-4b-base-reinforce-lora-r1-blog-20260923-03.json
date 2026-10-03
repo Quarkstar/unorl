@@ -5348,6 +5348,14 @@
       "solved_questions": 5
     },
     {
+      "step": 100,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 6,
+      "solved_questions": 5
+    },
+    {
       "step": 20,
       "benchmark": "aime25",
       "responses": 240,
@@ -5380,9 +5388,7 @@
       "solved_questions": 4
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-reinforce-lora-r1-blog-20260923-03",
     "sha256": {

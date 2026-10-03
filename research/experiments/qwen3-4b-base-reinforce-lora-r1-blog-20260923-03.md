@@ -57,10 +57,6 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | 100 | 2.5% | 16.7% |
 
 
-Some raw evaluation dumps were truncated or malformed; aggregated logged metrics above are retained, but per-question counts for these files are unavailable:
-
-- `exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl`
-
 ## Evaluation sample counts
 
 | Benchmark | Step | Correct responses | Questions solved ≥1 time |
@@ -70,6 +66,7 @@ Some raw evaluation dumps were truncated or malformed; aggregated logged metrics
 | aime25 | 40 | 6/240 | 3/30 |
 | aime25 | 60 | 7/240 | 4/30 |
 | aime25 | 80 | 4/240 | 4/30 |
+| aime25 | 100 | 6/240 | 5/30 |
 
 ## Quantitative observations
 

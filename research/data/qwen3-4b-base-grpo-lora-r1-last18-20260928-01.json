@@ -6033,6 +6033,14 @@
   ],
   "evaluation_counts": [
     {
+      "step": 0,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 3,
+      "solved_questions": 3
+    },
+    {
       "step": 100,
       "benchmark": "aime25",
       "responses": 240,
@@ -6073,9 +6081,7 @@
       "solved_questions": 8
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-grpo-lora-r1-last18-20260928-01",
     "sha256": {

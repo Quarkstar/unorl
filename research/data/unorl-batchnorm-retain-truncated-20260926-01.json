@@ -7541,12 +7541,28 @@
   ],
   "evaluation_counts": [
     {
+      "step": 0,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 4,
+      "solved_questions": 3
+    },
+    {
       "step": 100,
       "benchmark": "aime25",
       "responses": 240,
       "questions": 30,
       "correct_responses": 35,
       "solved_questions": 9
+    },
+    {
+      "step": 20,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 20,
+      "solved_questions": 7
     },
     {
       "step": 40,
@@ -7573,10 +7589,7 @@
       "solved_questions": 9
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl",
-    "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/unorl-batchnorm-retain-truncated-20260926-01",
     "sha256": {

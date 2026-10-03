@@ -5568,6 +5568,14 @@
       "solved_questions": 11
     },
     {
+      "step": 20,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 13,
+      "solved_questions": 7
+    },
+    {
       "step": 40,
       "benchmark": "aime25",
       "responses": 240,
@@ -5590,6 +5598,14 @@
       "questions": 30,
       "correct_responses": 40,
       "solved_questions": 11
+    },
+    {
+      "step": 0,
+      "benchmark": "aime26",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 3,
+      "solved_questions": 3
     },
     {
       "step": 100,
@@ -5632,10 +5648,7 @@
       "solved_questions": 8
     }
   ],
-  "unreadable_eval_dumps": [
-    "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl",
-    "exports/aime26/dumped_evals/global_step_0_evals/aime26.jsonl"
-  ],
+  "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-grpo-20260916-01",
     "sha256": {
