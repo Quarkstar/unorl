@@ -472,11 +472,13 @@ def main():
                 "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
                 "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01",
                 "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01",
+                "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
             ]
+            if rid in by_id
         ],
         {"primary", "reference", "ablation"},
         "comparison-relora",
-        "ReLoRA · restart ramp versus constant-LR resets",
+        "100 steps from base · standard LoRA, cold resets and gradual refresh",
     )
     comparison(
         lora_runs,

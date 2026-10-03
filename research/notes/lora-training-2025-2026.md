@@ -1185,3 +1185,13 @@ A promising result requires replication before claiming sustained parity.
 Hourly process checks, ten-second NVML samples and actual training allocator
 peaks remain enabled. The interrupted continuation stays in its own figure
 and will not be counted as a completed main-budget trial.
+
+
+The corrected candidate launched at approximately 14:43 UTC on 2026-10-03
+from source commit `5c9e7bb`, launcher PID 1547444. Its resolved configuration
+has no resume path and a target of 100 updates. The hourly watcher and
+10-second VRAM sampler are running; the startup book snapshot generated
+28 experiment pages. Initialization was still in progress at 14:45 UTC,
+so launch is not evidence of successful training or algorithm performance.
+The main ReLoRA figure now includes this base-model trial alongside the
+standard reference and cold-reset variants; missing metrics remain missing.

@@ -1,5 +1,10 @@
 [
   {
+    "id": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
+    "title": "GRPO \u00b7 compensated gradual refresh, rank 1 (100 steps from base)",
+    "group": "ablation"
+  },
+  {
     "id": "qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
     "title": "GRPO \u00b7 standard rank-1 LoRA continuation (shared step-100 checkpoint)",
     "group": "continuation"
