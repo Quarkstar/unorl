@@ -1308,3 +1308,41 @@ immediate collapse. Four post-refresh updates do not resolve whether the
 method closes the earlier 46-60 reward gap or matches the final standard
 LoRA endpoint. The recent ten-update reward average mixes pre-refresh
 and post-refresh batches and is not an isolated treatment effect.
+
+
+### 23. Step 60: the earlier cold-reset gap is absent so far
+
+The step-60 AIME25 dump contains thirty questions with eight samples
+each: 42 correct responses / 240, and eleven solved questions / thirty.
+This gives **17.50% avg@8 and 36.67% pass@8**, versus historical standard
+rank-1 LoRA's 15.42% and 30.00%. The small thirty-question evaluation is
+preliminary; the final endpoint and replication remain necessary.
+
+| Training window | Standard LoRA | Cold reset, warmup 5 | Cold reset, constant LR | Gradual refresh |
+| --- | ---: | ---: | ---: | ---: |
+| 21-40, before intervention | 23.65% | 23.28% | 22.05% | 24.71% |
+| 41-45 | 35.00% | 33.20% | 33.59% | 38.91% |
+| 46-60 | 36.80% | 32.53% | 32.53% | 37.86% |
+
+Each cell averages actual per-update training correctness over the stated
+window. The new method's 46-60 reward is 1.07 percentage points above
+standard LoRA, while both cold-reset trials were 4.27 points below.
+However, its pre-refresh 21-40 advantage was already 1.05 points. The
+post-window minus pre-window relative difference is only about +0.014
+points. Thus this run is consistent with maintaining its existing lead
+through the boundary, rather than demonstrating a new causal gain.
+It avoids the earlier delayed deficit in this trial; parity across seeds
+and the final 100-step endpoint are not yet established.
+
+For updates 46-60, gradual refresh / standard LoRA averaged entropy
+0.14719 / 0.14447, gradient norm 0.03293 / 0.03476, and response length
+3,352 / 3,038 tokens. These are closer to standard LoRA than the shorter
+cold-reset responses (2,487 and 2,582 tokens) and their higher entropy
+(0.16922 and 0.16793). Response length was already higher before refresh
+(1,797 versus 1,421 tokens in 21-40), so its later excess is also not
+sufficient evidence of a treatment effect.
+
+No optimizer or learning-rate restart occurred. The trial remains at its
+original 100-step budget; the second refresh is scheduled at update 80.
+The next decision uses final reward, held-out performance, update
+continuity, accumulated rank and measured peak training memory together.
