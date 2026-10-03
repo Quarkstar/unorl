@@ -11,7 +11,7 @@ Main-budget trial of the proposed continuity-preserving refresh algorithm. Start
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-relora-refresh-r1-20261003-01` |
-| Record | 20 steps logged / 100 planned |
+| Record | 24 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -66,11 +66,11 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 
 ## Quantitative observations
 
-Training response correctness averaged **9.7%** over the first 10 logged updates and **14.5%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **9.7%** over the first 10 logged updates and **17.3%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.8753 at step 1 → 0.4538 at step 20.
-- Policy gradient norm: 0.02517 at step 1 → 0.04283 at step 20.
-- Mean generated response tokens: 1339 at step 1 → 1125 at step 20.
+- Logged entropy: 0.8753 at step 1 → 0.3885 at step 24.
+- Policy gradient norm: 0.02517 at step 1 → 0.03142 at step 24.
+- Mean generated response tokens: 1339 at step 1 → 1150 at step 24.
 
 Best recorded AIME25 pass@8: **20.0% at step 20**. Last recorded: **20.0% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 

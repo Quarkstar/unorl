@@ -1242,3 +1242,16 @@ sampling prevents exact equality. The runtime has retained a complete
 26-file native checkpoint at step 20. The next evaluation follows the
 first refresh at step 40. The crucial learning-gap comparison remains the
 subsequent 46-60 window and the final 100-step endpoint.
+
+
+### 20. First hourly check of the corrected trial (2026-10-03)
+
+At 15:44:19 UTC, the hourly watcher verified the original launcher PID
+1547444 and its process start time, with 24 completed updates. Recent ten
+updates averaged 17.30% training correctness. Latest entropy was 0.38849,
+gradient norm 0.03142 and response length 1,150 tokens. The snapshot export
+completed and the page/figure refresh was underway. No training failure
+or restart occurred. AIME25 remains at the verified step-20 result; the
+first algorithm intervention is still scheduled after update 40. Rising
+pre-refresh training correctness is ordinary LoRA learning and cannot be
+attributed to the proposed refresh. Ten-second NVML sampling remains live.
