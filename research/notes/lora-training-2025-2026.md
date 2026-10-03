@@ -1216,3 +1216,29 @@ characters. The snapshot parser was corrected and regression tests check
 both Unicode-containing responses and rejection of genuinely partial JSON.
 All 240 saved records now parse and the aggregate scores agree with the
 training logger. No training or reward code was changed.
+
+
+### 19. Corrected trial: step-20 pre-refresh comparison
+
+The step-20 evaluation completed at approximately 15:33 UTC and training
+resumed. Saved responses verify thirty distinct questions with eight
+samples each: fourteen correct responses / 240, giving **5.83% avg@8**,
+and six solved questions / thirty, giving **20.00% pass@8**. Historical
+standard LoRA at step 20 scored 4.17% avg@8 and 23.33% pass@8. These small
+sampled differences do not establish a performance advantage. Neither
+policy has received a refresh in this window.
+
+| First twenty updates, mean | Standard LoRA | Refresh candidate before intervention |
+| --- | ---: | ---: |
+| Training correctness | 12.25% | 12.07% |
+| Policy entropy | 0.6352 | 0.6649 |
+| Gradient norm | 0.04018 | 0.03966 |
+| Response tokens | 1,110 | 1,109 |
+
+Each mean covers twenty actual updates. Correctness differs by -0.18
+percentage points, and response lengths and gradient norms are close.
+This supports a comparable pre-intervention learning trajectory; stochastic
+sampling prevents exact equality. The runtime has retained a complete
+26-file native checkpoint at step 20. The next evaluation follows the
+first refresh at step 40. The crucial learning-gap comparison remains the
+subsequent 46-60 window and the final 100-step endpoint.
