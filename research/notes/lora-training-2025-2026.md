@@ -1594,3 +1594,13 @@ moment transport, rather than simply extending training.
 Monitoring remains hourly, with ten-second NVML sampling and per-update allocator
 high-water records. Final assessment requires complete 30-question/eight-response
 evaluations, successful process exit, all 100 updates and a detailed report.
+
+Launch recorded at approximately **20:35 UTC, October 3** as
+`qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01`, launcher PID
+**1573646**, source commit **4cb4b2a**. The process identity was verified live
+with start ticks **4997680419**. NVML monitor PID **1574240** samples every
+10 seconds; watcher PID **1574241** checks hourly and updates book snapshots.
+The first watcher check at 20:36:03 verified the launcher; initialization was
+still in progress and no training metrics were yet available. Its initial book
+update exported and rendered 29 experiments successfully. Startup model and
+optimizer audit verification remains pending, rather than assumed from launch.
