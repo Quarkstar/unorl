@@ -817,3 +817,28 @@ the portable continuation snapshots; generated response text stays local.
 `scripts/research/analyze_refresh.py` reproduces the analysis from those
 snapshots, and hourly book generation updates it automatically. The current
 analysis can remain pending until the candidate has actually started.
+
+### 8. Continuation control: first twenty updates (2026-10-03)
+
+The standard-LoRA continuation completed update 120 and its AIME25 evaluation
+at 06:02 UTC. The refresh candidate has not started; these are control-only
+observations, not evidence that the proposed intervention works.
+
+| Global step | AIME25 avg@8 | AIME25 pass@8 | Correct responses | Questions with a correct response |
+| --- | ---: | ---: | ---: | ---: |
+| 100, fresh starting evaluation | 16.67% | 33.33% | 40 / 240 | 10 / 30 |
+| 120 | 19.17% | 40.00% | 46 / 240 | 12 / 30 |
+
+Raw response records verify thirty questions with eight samples each in both
+evaluations. The observed gains are 2.50 percentage points in avg@8 and 6.67
+points in pass@8; thirty questions and stochastic decoding are insufficient
+to establish a stable improvement. Historical step-100 evaluation scores
+are not substituted for this continuation's newly sampled starting scores.
+
+Across updates 101–120, mean training correctness is 37.79%, mean gradient
+norm is 0.04219, and mean cosine between successive effective weight updates
+is 0.90199 over nineteen measured pairs. This provides a measured control
+trajectory for the refresh experiment; it does not identify which part of a
+cold reset caused the earlier deficit. The step-120 checkpoint contains all
+eight model, optimizer and extra-state shards plus trainer and data state.
+The shared historical source checkpoint remains retained.
