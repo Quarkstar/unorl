@@ -857,3 +857,20 @@ At update 140, gradient norm is 0.02861, entropy is 0.10828, and recent
 ten-update training correctness is 39.45%. The native step-140 checkpoint
 contains all eight model, optimizer and extra-state shards. The proposed
 refresh candidate remains queued; no intervention comparison is available.
+
+### 10. Continuation control: step-160 evaluation (2026-10-03)
+
+The control completed update 160 and its evaluation before training resumed
+at 09:00 UTC. AIME25 avg@8 is 19.58% (47 correct responses / 240), and
+pass@8 is 40.00% (12 / 30 questions). Saved response records verify thirty
+distinct prompts with exactly eight samples each. Compared with step 140,
+avg@8 increases 1.67 percentage points, while pass@8 remains unchanged.
+Compared with the fresh step-100 starting evaluation, the gains are 2.92
+and 6.67 points respectively. These fluctuations on thirty questions do
+not establish sustained improvement.
+
+The step-160 gradient norm is 0.04839. Its native checkpoint contains all
+eight model, optimizer and extra-state shards plus trainer and data state.
+Raw evaluation responses remain retained. The refresh candidate has not
+started, so these measurements still describe only the standard-LoRA
+control; they do not demonstrate that compensated refresh works.
