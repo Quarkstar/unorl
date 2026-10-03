@@ -1109,3 +1109,79 @@ with the rollout engine. Final comparisons must use the full candidate run.
 No new evidence yet establishes performance parity or improvement. Keep
 the matched recipe and evaluate the subsequent complete windows and
 held-out dumps before deciding whether to refine or replicate this method.
+
+
+### 16. Main comparison scope: 100 updates from the base model
+
+The user clarified that the established comparison budget is 100 updates
+from Qwen3-4B-Base. The currently running 100-to-200 continuation is an
+additional boundary diagnostic: it branches the same learned policy and
+native Adam state, but cannot substitute for a base-model learning-curve
+comparison. Its results must remain in the separate continuation figure.
+The extra diagnostic was chosen without explaining this distinction clearly
+before launch. It is not a change to the main success criterion.
+
+Prepared profiles `configs/qwen3-4b-base-grpo-relora-refresh-r1.json` and
+`configs/qwen3-4b-base-grpo-standard-r1-refresh-control.json` start from the
+base model, with no resume path, and stop after 100 actual updates. Both
+retain the full-layer rank-one, alpha-32, AdamW 1.5e-5 constant-LR GRPO
+recipe, eight rollouts per prompt, 32 prompts per update, all eight GPUs,
+8,192 response tokens, and AIME25 evaluation every twenty updates. The
+candidate performs compensated 20-degree refreshes after updates 40 and 80;
+the matched control disables refresh. Only those two method keys differ.
+Checkpoints every twenty updates allow recovery; dense export is at 100.
+No new experiment has been launched for these prepared profiles. Current
+continuation evidence should inform the design before committing more GPU
+compute. Historical rank-one LoRA remains the main comparison reference;
+a fresh control with the same instrumentation would additionally check
+implementation and sampling variation.
+
+
+The user subsequently rejected the continuation as the experiment direction.
+It was manually stopped at 14:38:51 UTC on 2026-10-03; the queue and
+launcher descendants were terminated, and logs and measurements preserved.
+It must be reported as an interrupted diagnostic, not a completed method
+comparison. No replacement run was launched. The next substantive task is
+reviewing the proposed algorithm against the observed first-merge learning
+gap, then using the established base-model 100-update comparison.
+
+
+### 17. Corrected algorithm experiment: from the base model, 100 updates
+
+Before launch, the causal hypothesis remains specific: cold B=0 removes
+`scale * B.T @ G` from A's gradient, random A changes B's gradient direction,
+and clearing Adam discards accumulated optimization history. Gradual refresh
+keeps B nonzero and the effective weight unchanged in real arithmetic;
+therefore the same-trajectory A gradient remains unchanged. Rotating A by
+20 degrees retains about 94% of its old component, introduces a new input
+direction, and keeps the SGD first-order projector change bounded as derived
+above. This motivates a bounded exploration of new directions while keeping
+useful updates active. It is not an Adam or RL convergence guarantee.
+
+The 20-degree angle is retained from the predeclared proposal rather than
+selected using the interrupted diagnostic. The remaining approximation is
+B's Adam history: unknown gradients along the new direction cannot be
+reconstructed. Preserve counters and variances; multiply its first moment
+by the retained cosine component. Actual optimizer update norms/alignment,
+response-prefix KL and accumulated spectra will be recorded to test whether
+this approximation creates an optimization delay of its own.
+
+The main candidate is `qwen3-4b-base-grpo-relora-refresh-r1-20261003-01`.
+Use the historical standard rank-one LoRA 0-100 trial as the established
+reference. The candidate has the same initial Kaiming-A/zero-B LoRA, data,
+GRPO recipe, optimizer, LR, eight rollouts, prompt batch and response budget.
+Only its later refresh algorithm differs; checkpoint frequency is twenty
+updates for recoverability. The prepared fresh standard-control profile can
+check instrumentation if any pre-refresh mismatch appears; it is not being
+launched as an additional experiment now.
+
+Predeclared assessment: examine the full reward curve, especially the old
+46-60 deficit; compare evaluation at 0/20/40/60/80/100 and the final endpoint,
+not the best observed checkpoint; measure useful update continuity through
+both boundaries and actual accumulated rank after subsequent learning.
+Standard LoRA's historical final AIME25 avg@8/pass@8 is 20.0%/43.33%.
+One sampled run on thirty questions cannot establish precise equivalence.
+A promising result requires replication before claiming sustained parity.
+Hourly process checks, ten-second NVML samples and actual training allocator
+peaks remain enabled. The interrupted continuation stays in its own figure
+and will not be counted as a completed main-budget trial.

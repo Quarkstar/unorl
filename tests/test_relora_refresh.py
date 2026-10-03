@@ -164,6 +164,38 @@ def test_checkpoint_branch_profiles_match_and_boundary_phase_is_correct():
     assert profiles[0] == profiles[1]
 
 
+def test_base_model_refresh_profiles_match_original_budget_and_recipe():
+    import json
+    from pathlib import Path
+
+    from unorl.relora_refresh_config import RefreshTrainConfig, validate_refresh
+    from unorl.relora_refresh_worker import RefreshPolicyWorker
+
+    root = Path(__file__).resolve().parents[1]
+    reference = json.loads((root / "configs/qwen3-4b-base-grpo-lora-r1-blog.json").read_text())
+    profiles = []
+    for name in ("relora-refresh-r1", "standard-r1-refresh-control"):
+        profile = json.loads((root / f"configs/qwen3-4b-base-grpo-{name}.json").read_text())
+        cfg = RefreshTrainConfig.from_cli_overrides(
+            [f"{k}={json.dumps(v)}" for k, v in profile.items()]
+        )
+        validate_refresh(cfg)
+        assert cfg.trainer.max_training_steps == 100
+        assert cfg.trainer.resume_mode is None
+        assert "trainer.resume_path" not in profile
+        worker = RefreshPolicyWorker.__new__(RefreshPolicyWorker)
+        worker.cfg = cfg.trainer
+        expected = [40, 80] if name == "relora-refresh-r1" else []
+        assert [s for s in range(1, 101) if worker._should_merge(s)] == expected
+        for key, value in reference.items():
+            if key != "trainer.ckpt_interval":
+                assert profile[key] == value, key
+        profile.pop("trainer.relora_enable_merge")
+        profile.pop("trainer.relora_refresh_angle_degrees")
+        profiles.append(profile)
+    assert profiles[0] == profiles[1]
+
+
 def test_weight_space_update_telemetry_matches_dense_norm_and_direction():
     from unorl.relora_refresh import factor_inner, update_factors
 

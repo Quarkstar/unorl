@@ -4,14 +4,14 @@ title: "GRPO · gradual A refresh with warm B (shared step-100 checkpoint)"
 
 # GRPO · gradual A refresh with warm B (shared step-100 checkpoint)
 
-Candidate derived from the adapter-gradient discontinuity analysis. Start from exactly the same historical standard-LoRA step-100 checkpoint as the control, restoring native AdamW history and dataloader position. Train global steps 101–200; after optimizer updates 101, 141 and 181, rotate each rank-one A row by 20 degrees toward a fresh orthogonal direction at the same row norm. Keep B unchanged and compensate W += scale * B @ (A_old - A_new), preserving the effective weight in exact arithmetic. Retain A moments and all Adam counters, project B first moments by cos(20 degrees), and retain B variances. The variance and first-moment treatment is approximate; unobserved orthogonal-gradient history is not reconstructed. Constant LR, no reset warmup. All remaining recipe and monitoring settings match the control. Log real response-prefix KL, base corrections, accumulated rank, allocator peaks and hourly health; factor history is checkpointed with model/Adam state. Initial evaluation at global step 100 precedes the first intervention. Curves/tables are updated from retained metrics; outcome analysis follows completion. No guarantee of improvement or exact mixed-precision continuity is claimed.
+Manually stopped after 134 completed updates on 2026-10-03 at 14:38:51 UTC. Exit 143 is intentional, not a training failure. User rejected the extended-budget diagnostic as the main comparison. Logs and measurements retained; no endpoint conclusion is possible. Candidate derived from the adapter-gradient discontinuity analysis. Start from exactly the same historical standard-LoRA step-100 checkpoint as the control, restoring native AdamW history and dataloader position. Train global steps 101–200; after optimizer updates 101, 141 and 181, rotate each rank-one A row by 20 degrees toward a fresh orthogonal direction at the same row norm. Keep B unchanged and compensate W += scale * B @ (A_old - A_new), preserving the effective weight in exact arithmetic. Retain A moments and all Adam counters, project B first moments by cos(20 degrees), and retain B variances. The variance and first-moment treatment is approximate; unobserved orthogonal-gradient history is not reconstructed. Constant LR, no reset warmup. All remaining recipe and monitoring settings match the control. Log real response-prefix KL, base corrections, accumulated rank, allocator peaks and hourly health; factor history is checkpointed with model/Adam state. Initial evaluation at global step 100 precedes the first intervention. Curves/tables are updated from retained metrics; outcome analysis follows completion. No guarantee of improvement or exact mixed-precision continuity is claimed.
 
 ## Configuration and provenance
 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01` |
-| Record | 26 new updates; global step 126 / 200 |
+| Record | 34 new updates; global step 134 / 200 |
 | Group | Matched continuation from the standard-LoRA step-100 checkpoint |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -31,7 +31,7 @@ Candidate derived from the adapter-gradient discontinuity analysis. Start from e
 | Evaluation samples/question | 8 |
 | GPUs (policy) | 8 |
 | KL loss / reward | False / False |
-| Exit status | not retained |
+| Exit status | 143 |
 | Merges enabled | True |
 | First merge global step | 101 |
 | Refresh angle (degrees) | 20.0 |
@@ -66,11 +66,11 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 
 ## Quantitative observations
 
-Training response correctness averaged **36.0%** over the first 10 logged updates and **39.3%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **36.0%** over the first 10 logged updates and **40.0%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.1261 at step 101 → 0.121 at step 126.
-- Policy gradient norm: 0.03747 at step 101 → 0.03664 at step 126.
-- Mean generated response tokens: 3476 at step 101 → 4530 at step 126.
+- Logged entropy: 0.1261 at step 101 → 0.1152 at step 134.
+- Policy gradient norm: 0.03747 at step 101 → 0.04983 at step 134.
+- Mean generated response tokens: 3476 at step 101 → 4418 at step 134.
 
 Best recorded AIME25 pass@8: **43.3% at step 100**. Last recorded: **40.0% at step 120**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 

@@ -61,7 +61,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
 | [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 200 | 200 | 17.1% | 33.3% | AdamW (SkyRL default) |
-| [GRPO · gradual A refresh with warm B (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md) | 126 | 120 | 17.1% | 40.0% | AdamW (SkyRL default) |
+| [GRPO · gradual A refresh with warm B (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md) | 134 | 120 | 17.1% | 40.0% | AdamW (SkyRL default) |
 
 ### Controlled follow-up experiments
 
@@ -147,7 +147,7 @@ The [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-
 
 ## Next method: compensated gradual refresh
 
-The [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The matched branches load the same saved standard-LoRA step-100 checkpoint and each run 100 new updates. Initial evaluation is before intervention; the candidate refreshes after global updates 101, 141 and 181. This continuation will test optimization continuity and useful rank growth, not prove from-scratch superiority.
+The [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The matched branches load the same saved standard-LoRA step-100 checkpoint and each run 100 new updates. Initial evaluation is before intervention; the candidate refreshes after global updates 101, 141 and 181. The continuation candidate was manually stopped after 134 updates because this diagnostic does not answer the original 100-step base-model comparison. A new base-model profile uses refreshes at 40/80 and the original 100-update budget.
 
 ![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)
 

@@ -5,11 +5,17 @@ import json
 from pathlib import Path
 
 PLANNED_REFRESH = {
+    "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     "qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
     "qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01",
 }
 
 NOTES = {
+    "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01": (
+        "GRPO · compensated gradual refresh, rank 1 (100 steps from base)",
+        "ablation",
+        "Main-budget trial of the proposed continuity-preserving refresh algorithm. Start from Qwen3-4B-Base, not a trained checkpoint; train exactly 100 updates with the standard rank-one LoRA GRPO recipe. Refresh after updates 40 and 80: rotate A by 20 degrees, retain B, compensate the frozen backbone, retain Adam counters and A moments, project B first moments by cosine and retain B variances. Moment transport is approximate, not a convergence guarantee. Native AdamW LR 1.5e-5 constant, alpha 32, eight rollouts, 32 prompts per update, 8192 response tokens, all eight GPUs. AIME25 avg@8 and pass@8 every twenty updates; hourly monitoring and ten-second VRAM sampling. Compare the complete 0-100 reward/evaluation curve with the historical standard rank-one reference and cold-reset trials, particularly steps 46-60. No result or superiority is assumed before completion.",
+    ),
     "qwen3-4b-base-grpo-standard-r1-continue-20261003-01": (
         "GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)",
         "continuation",
@@ -18,7 +24,7 @@ NOTES = {
     "qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01": (
         "GRPO · gradual A refresh with warm B (shared step-100 checkpoint)",
         "continuation",
-        "Candidate derived from the adapter-gradient discontinuity analysis. Start from exactly the same historical standard-LoRA step-100 checkpoint as the control, restoring native AdamW history and dataloader position. Train global steps 101–200; after optimizer updates 101, 141 and 181, rotate each rank-one A row by 20 degrees toward a fresh orthogonal direction at the same row norm. Keep B unchanged and compensate W += scale * B @ (A_old - A_new), preserving the effective weight in exact arithmetic. Retain A moments and all Adam counters, project B first moments by cos(20 degrees), and retain B variances. The variance and first-moment treatment is approximate; unobserved orthogonal-gradient history is not reconstructed. Constant LR, no reset warmup. All remaining recipe and monitoring settings match the control. Log real response-prefix KL, base corrections, accumulated rank, allocator peaks and hourly health; factor history is checkpointed with model/Adam state. Initial evaluation at global step 100 precedes the first intervention. Curves/tables are updated from retained metrics; outcome analysis follows completion. No guarantee of improvement or exact mixed-precision continuity is claimed.",
+        "Manually stopped after 134 completed updates on 2026-10-03 at 14:38:51 UTC. Exit 143 is intentional, not a training failure. User rejected the extended-budget diagnostic as the main comparison. Logs and measurements retained; no endpoint conclusion is possible. Candidate derived from the adapter-gradient discontinuity analysis. Start from exactly the same historical standard-LoRA step-100 checkpoint as the control, restoring native AdamW history and dataloader position. Train global steps 101–200; after optimizer updates 101, 141 and 181, rotate each rank-one A row by 20 degrees toward a fresh orthogonal direction at the same row norm. Keep B unchanged and compensate W += scale * B @ (A_old - A_new), preserving the effective weight in exact arithmetic. Retain A moments and all Adam counters, project B first moments by cos(20 degrees), and retain B variances. The variance and first-moment treatment is approximate; unobserved orthogonal-gradient history is not reconstructed. Constant LR, no reset warmup. All remaining recipe and monitoring settings match the control. Log real response-prefix KL, base corrections, accumulated rank, allocator peaks and hourly health; factor history is checkpointed with model/Adam state. Initial evaluation at global step 100 precedes the first intervention. Curves/tables are updated from retained metrics; outcome analysis follows completion. No guarantee of improvement or exact mixed-precision continuity is claimed.",
     ),
     "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01": (
         "GRPO · standard rank-1 ReLoRA, constant-LR resets",
