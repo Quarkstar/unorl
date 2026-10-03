@@ -2046,3 +2046,17 @@ The control had a gradient spike at update 52 (0.0858645 versus 0.0355271 at
 10.59%). Gradient norm returned to 0.0367354 at 53, and training continued.
 No restart or recipe change was justified. The method decision remains
 pending final 100-step results; the gradual-rotation proposal has not launched.
+
+
+## 38. Third hourly control check: 64 completed updates
+
+The scheduled watcher verified the control at **2026-10-03 23:38:20 UTC**.
+The launcher identity was live, 64/100 updates were complete, and no exit
+status was recorded. Last-ten-update correctness was **36.6016%**, latest
+entropy **0.160100**, gradient norm **0.0327450**, and average response length
+**3017.98 tokens**. The watcher exported 29 auditable snapshots and completed
+the experiment-page and comparison-figure rebuild. The latest full held-out
+evaluation remains step 60 (12.9167% avg@8, 26.6667% pass@8); no step-80
+score is available. The 61–80 training window remains incomplete and is
+reported with actual observation counts in the comparison artifact. No
+training restart, recipe change, or new refresh trial has been performed.
