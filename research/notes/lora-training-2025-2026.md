@@ -1368,3 +1368,37 @@ but similar scalar gradient norms cannot prove equal learning directions.
 The next evidence is refresh-80 continuity and the final 81-100 reward
 window, held-out evaluation, accumulated rank and peak training memory.
 Do not change hyperparameters mid-run or extend the budget to 200 steps.
+
+
+### 25. Step 80: second refresh preserves continuity, rank growth is modest
+
+Step 80 completed its second 20-degree refresh on all 252 projections.
+All 903 optimizer-state entries remain; learning rate stays 1.5e-5 and
+restart multiplier stays one. Compensation update norm was 1.10861 with
+relative rounding error 3.2569e-5. The 1,024-token response-prefix probe
+measured mean KL 0.00032672, mean chosen-logprob absolute difference
+0.005274, maximum difference 0.39003, and argmax flips 0.09766%.
+These measurements support a small boundary perturbation on the probe;
+they do not guarantee identical long rollouts.
+
+The step-80 effective optimizer update, measured before compensation,
+had norm 0.05612 and cosine 0.90487 with the preceding update. Mean
+accumulated stable rank was 1.01442, with 1.4194% of update energy outside
+the leading direction. The first refreshed direction therefore produced
+some rank growth, but most accumulated update energy still occupies one
+direction. This is much less rank growth than cold reset; it is not yet
+evidence that the added directions improve learning.
+
+The raw AIME25 dump verifies 240 responses, thirty questions and eight
+responses per question: 41 correct responses and nine solved questions.
+Results are **17.08% avg@8 and 30.00% pass@8**, compared with historical
+standard LoRA's step-80 13.75% and 30.00%. Evaluation follows the second
+refresh and precedes learning with that newly refreshed direction. The
+thirty-question sample remains preliminary.
+
+Over training updates 61-80, mean correctness was 38.457% for gradual
+refresh versus 39.258% for standard LoRA, a deficit of 0.801 percentage
+points. Step-80 rollout correctness alone was 28.516%, generated before
+the second refresh; it cannot be attributed to that refresh. Recent
+response lengths increased to 4,720 tokens. The final 81-100 window and
+step-100 held-out evaluation remain necessary before deciding parity.
