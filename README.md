@@ -14,7 +14,8 @@ Its source is in [research/](research/index.md).
 | GRPO / full-layer rank-1 NoRA-init | 17.9% | 36.7% |
 | GRPO / full NoRA-init with merge/reset | 15.0% | 30.0% |
 | GRPO / full-layer rank-1 LoFT-simple | 3.3% | 20.0% |
-| GRPO / standard rank-1 ReLoRA restart ramp | Running | Running |
+| GRPO / standard rank-1 ReLoRA restart ramp | 15.8% | 40.0% |
+| GRPO / standard rank-1 ReLoRA constant-LR resets | 17.1% | 30.0% |
 | GRPO / full-layer rank-1 LoRA-FA | 17.5% | 33.3% |
 | GRPO / LoRA in final 18 layers | 17.9% | 33.3% |
 | GRPO / NoRA-init in final 18 layers | 15.8% | 30.0% |
@@ -76,7 +77,7 @@ Full-layer rank-one **LoFT-simple** tests gradient and first-moment calibration
 with alternating A/B updates. The 100-step GRPO recipe retains eight rollouts
 and the response budget; unit adapter scaling and Adam epsilon 1e-4 follow the
 authors' implementation. See the [implementation and validation record](research/notes/lora-training-2025-2026.md).
-LoFT-simple completed with 3.3% avg@8 / 20.0% pass@8 and little training-reward improvement. The completed NoRA merge/reset trial did not sustain improvement after resets. ReLoRA is now the main line: compare a short restart ramp against constant-LR resets on the standard LoRA recipe.
+LoFT-simple completed with 3.3% avg@8 / 20.0% pass@8 and little training-reward improvement. The completed NoRA merge/reset trial did not sustain improvement after resets. ReLoRA is the main line. The matched restart-ramp versus constant-LR reset pair completed; both grew accumulated rank, but neither beat standard LoRA in final avg@8.
 
 ## Training
 

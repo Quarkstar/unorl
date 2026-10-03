@@ -6304,7 +6304,8 @@
       "config.json": "1850d77681aaa5765a209fbe80edc847c340d9424a33d7dc669aae29835b059a",
       "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
       "initial-adapter-audit.json": "296374fb280a40f0acff0289ccf1e8f1e9aa98868faebcb9aaf85b77cc830aaa",
-      "comparison-audit.json": "a7c169bf016ca85ee7dfb8df8736d2a85422eaa762480dd16322fd50b21948e0"
+      "comparison-audit.json": "a7c169bf016ca85ee7dfb8df8736d2a85422eaa762480dd16322fd50b21948e0",
+      "merge-audit.jsonl": "bed459363559128bf8dd2d11a69fd200884b6bc707923c4511b44f34591f3433"
     },
     "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
   },
@@ -6361,5 +6362,39 @@
       "training_allocator_peak_window": "policy forward/backward through optimizer, including merge/reset when scheduled"
     }
   },
+  "merge_audits": [
+    {
+      "step": 40,
+      "rank": 0,
+      "utc": "2026-09-30T11:23:52.014603+00:00",
+      "peak_allocated_bytes": 15244905472,
+      "peak_reserved_bytes": 16091447296,
+      "window": "policy forward/backward, optimizer, and merge/reset when scheduled",
+      "merged": true,
+      "relora/merged_layers": 252.0,
+      "relora/delta_l2": 6.8742198890278,
+      "relora/rounding_relative_l2": 5.254330621006407e-06,
+      "relora/retired_optimizer_state_entries": 903.0,
+      "relora/optimizer_state_entries_after_reset": 0.0,
+      "relora/probe_logits_max_abs_diff": 0.25,
+      "relora/probe_logits_rms_diff": 0.050637777894735336
+    },
+    {
+      "step": 80,
+      "rank": 0,
+      "utc": "2026-09-30T14:21:11.000806+00:00",
+      "peak_allocated_bytes": 18797423616,
+      "peak_reserved_bytes": 19784531968,
+      "window": "policy forward/backward, optimizer, and merge/reset when scheduled",
+      "merged": true,
+      "relora/merged_layers": 252.0,
+      "relora/delta_l2": 6.506640141624455,
+      "relora/rounding_relative_l2": 5.5516206471560865e-06,
+      "relora/retired_optimizer_state_entries": 903.0,
+      "relora/optimizer_state_entries_after_reset": 0.0,
+      "relora/probe_logits_max_abs_diff": 0.3125,
+      "relora/probe_logits_rms_diff": 0.055566322058439255
+    }
+  ],
   "exit_status": "0"
 }

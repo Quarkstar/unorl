@@ -5,10 +5,15 @@ import json
 from pathlib import Path
 
 NOTES = {
-    "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01": (
-        "GRPO · standard rank-1 ReLoRA, restart ramp (fixed probe)",
+    "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01": (
+        "GRPO · standard rank-1 ReLoRA, constant-LR resets",
         "ablation",
-        "Restarted from the original base model after correcting the trajectory-prefix diagnostic. Recipe unchanged: standard Kaiming rank-one LoRA, alpha 32, native AdamW LR 1.5e-5, eight rollouts, 32 prompts/update, 8192 response tokens, 100 steps. Merge/reset at steps 40/80, then five-update LR multipliers 0, .25, .5, .75, 1; no initial warmup. Constant-LR control queued after successful completion. Regression tests use native SkyRL left-padding and response-slice construction. Actual eight-GPU tests now exercise the real worker merge method, collective KL aggregation and accumulated-rank diagnostics, plus exact next-update reproduction after checkpoint loading and dense export. All 85 tests passed. The previous attempt failed before any merge and therefore does not measure ReLoRA behavior. Logs/evaluation dumps from that attempt are retained. Outcomes for this restarted comparison are pending.",
+        "Completed all 100 steps with exit status 0. Matched standard rank-one Kaiming LoRA / alpha 32 GRPO settings and complete AdamW state clears at merges 40/80; only post-merge restart ramp differs from the paired trial (disabled here). Successive 20-step training-correctness means: 11.895%, 22.051%, 32.793%, 37.324%, 37.031%. Final AIME25 avg@8 / pass@8: 17.083% / 30.0%, versus 15.833% / 40.0% for the ramp and 20.0% / 43.333% for standard LoRA. Step-80 evaluation peaked at 18.333% / 50.0%; final results fluctuate on 30 questions. Boundary response-prefix KL was 0.0005605 / 0.0005378 at steps 40/80, from 1024 total probe tokens per boundary. Final per-layer mean accumulated stable rank was 2.160, with 53.25% mean update energy outside the leading direction. Peak training allocated/reserved memory across eight ranks was 18.60/19.47 GiB, including scheduled merge diagnostics. Neither pair shows an immediate post-merge reward collapse or a clear improvement over the standard LoRA reference. Checkpoint/model weights and factor cache removed after completion. Cleanup also erroneously removed raw evaluation response dumps under exports; aggregate metrics, evaluation.jsonl, logs, memory traces and rank diagnostics survive. The cleanup rule now targets policy/critic weight directories and preserves benchmark dumps; a regression test verifies this. Response-level regrading is unavailable for this run.",
+    ),
+    "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01": (
+        "GRPO · standard rank-1 ReLoRA, five-update restart ramp",
+        "ablation",
+        "Completed all 100 steps with exit status 0 after fixing the trajectory-prefix diagnostic. Standard Kaiming rank-one LoRA / alpha 32, native AdamW LR 1.5e-5, eight rollouts, 32 prompts/update, 8192 response tokens; merge/reset at 40/80, then five-update LR multipliers 0, .25, .5, .75, 1; no initial warmup. Successive 20-step training-correctness means: 12.656%, 23.281%, 32.695%, 36.348%, 36.309%. Final AIME25 avg@8 / pass@8: 15.833% / 40.0%, versus 17.083% / 30.0% for constant-LR resets and 20.0% / 43.333% for standard LoRA. There is no clear benefit from this ramp in one sampled run per setting. Boundary response-prefix KL was 0.0005664 / 0.0005645 at steps 40/80, using 1024 real response-prefix tokens per boundary. Final mean accumulated stable rank was 1.887, with 46.48% mean update energy outside the leading direction. Rank growth is measurable but did not establish better learning. Peak training allocated/reserved memory across eight ranks was 17.96/18.95 GiB. Neither merge produced an immediate reward collapse. Earlier failed attempt is separately retained and never reached a merge. Checkpoint/model weights and factor cache removed after completion. Cleanup also erroneously removed raw evaluation response dumps under exports; aggregate metrics, evaluation.jsonl, logs, memory traces and rank diagnostics survive. Cleanup was fixed and regression-tested. Response-level regrading is unavailable for this run.",
     ),
     "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01": (
         "GRPO · ReLoRA restart ramp, failed probe attempt",
@@ -213,6 +218,14 @@ def main():
             if (p / name).exists():
                 raw = (p / name).read_bytes()
                 result.setdefault("audits", {})[name] = portable(json.loads(raw))
+                hashes[name] = hashlib.sha256(raw).hexdigest()
+        for name, key in (
+            ("merge-audit.jsonl", "merge_audits"),
+            ("rank-diagnostics.jsonl", "rank_diagnostics"),
+        ):
+            if (p / name).exists():
+                raw = (p / name).read_bytes()
+                result[key] = [portable(json.loads(line)) for line in raw.decode().splitlines()]
                 hashes[name] = hashlib.sha256(raw).hexdigest()
         exitfile = root / "runs/logs" / f"{rid}.exit-status"
         if exitfile.exists():

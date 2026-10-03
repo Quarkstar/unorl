@@ -33,7 +33,8 @@ All rows use Qwen3-4B-Base and eight rollouts per prompt. Full-parameter GRPO is
 | [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 20.0% | 15.0% | 30.0% |
 | [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 2.1% | 3.3% | 20.0% |
 | [GRPO · ReLoRA restart ramp, failed probe attempt](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | — | — | — |
-| [GRPO · standard rank-1 ReLoRA, restart ramp (fixed probe)](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | — | — | — |
+| [GRPO · standard rank-1 ReLoRA, five-update restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | 16.2% | 15.8% | 40.0% |
+| [GRPO · standard rank-1 ReLoRA, constant-LR resets](experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md) | 18.3% | 17.1% | 30.0% |
 
 ```{figure} figures/comparison-lora.svg
 :alt: Google Material palette. Full-parameter GRPO remains visible as a historical reference with different settings.
@@ -59,7 +60,8 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · standard rank-1 ReLoRA, restart ramp (fixed probe)](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | — | — | — | — | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 ReLoRA, constant-LR resets](experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md) | 100 | 100 | 17.1% | 30.0% | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 ReLoRA, five-update restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | 100 | 100 | 15.8% | 40.0% | AdamW (SkyRL default) |
 | [GRPO · ReLoRA restart ramp, failed probe attempt](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | 39 | 20 | 6.2% | 26.7% | AdamW (SkyRL default) |
 | [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 100 | 100 | 3.3% | 20.0% | LoFTSimpleAdamW (Adam-family) |
 | [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 100 | 100 | 15.0% | 30.0% | AdamW (SkyRL default) |
@@ -120,6 +122,22 @@ Earlier research used different objectives, model variants, and response budgets
 Earlier single-rollout trials used stateless SGD and sometimes a different loss reduction. Their failures do not establish that REINFORCE fails with AdamW.
 ```
 
+## ReLoRA restart comparison: completed
+
+Both 100-step runs completed successfully. Five-update restart ramp / constant-LR resets / standard LoRA reached final AIME25 avg@8 **15.8% / 17.1% / 20.0%**, and pass@8 **40.0% / 30.0% / 43.3%**. Final 20-step training correctness was **36.3% / 37.0% / 37.5%**. The ramp showed no clear benefit in this pair. Mean accumulated stable rank at step 100 was **1.89 / 2.16** for ramp / constant-LR resets: useful rank growth occurred, but did not translate into better learning. Both boundary KL probes averaged about **0.00055**, with no immediate post-merge reward collapse. These are one run per setting and 30 evaluation questions. Full Adam history was cleared in both runs; partial moment pruning remains untested.
+
+![Matched ReLoRA comparison](figures/comparison-relora.svg)
+
+**Retention issue:** automatic cleanup mistakenly removed raw evaluation response dumps together with model exports. Aggregate evaluations, training metrics, logs, memory traces and rank diagnostics remain. The cleanup rule now preserves benchmark dump directories and has a filesystem regression test.
+
+
+### Where merging falls behind
+
+The [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-diverge-from-standard-lora) finds the main deficit at **steps 46–60**: both merge runs average **32.5%** training correctness versus **36.8%** for standard LoRA. The gap largely closes by steps 81–90. Response-length growth lags and entropy remains higher; gradient norms do not collapse. This is consistent with a temporary optimization delay after the first restart, not proof of a specific cause.
+
+![Aligned ReLoRA boundary analysis](figures/relora-boundary-analysis.svg)
+
+
 ## Post-step-60 diagnosis
 
 The [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.
@@ -129,7 +147,7 @@ The [truncation analysis](notes/batchnorm-after60.md) examines the loss of quest
 The [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.
 
 1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.
-2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: a matched restart-ramp versus constant-LR merge/reset comparison is underway.
+2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: the matched restart-ramp versus constant-LR merge/reset comparison completed. Both accumulated updates beyond rank one, but neither improved final avg@8 over standard LoRA.
 3. Test QLoRA separately; this direction remains untested.
 
 The current scope is on-policy learning; small batches and single-rollout use remain central.

@@ -449,3 +449,156 @@ passed. The pair restarted from the base model under the `20261002-01` suffix;
 no checkpoint before step 100 existed for the failed attempt. Its logs and
 evaluation records are retained. Before merging, reward increased normally;
 no conclusion about the benefit of ReLoRA follows from that attempt.
+
+
+### October 3: controlled restart comparison completed
+
+Both restarted runs finished 100 updates with successful merges at 40 and 80.
+Final training correctness over steps 81–100: ramp 36.31%, constant resets
+37.03%, standard LoRA 37.48%. Final AIME25 avg@8 / pass@8: ramp 15.83% /
+40.0%, constant resets 17.08% / 30.0%, standard LoRA 20.0% / 43.33%.
+There is no clear benefit from this five-update restart ramp. The initial
+conditions and sampling already differ slightly across runs, so small
+evaluation differences on 30 questions do not establish a reliable ranking.
+
+Accumulated-update mean stable rank at step 100 was 1.887 for ramp and 2.160
+for constant resets. Mean energy outside the leading direction was 46.48%
+and 53.25%. Rank growth is happening, but it does not imply useful policy
+improvement. Mean response-prefix KL at merge boundaries was 0.00054–0.00057,
+with 1024 probed tokens per boundary. No immediate post-merge reward collapse
+appeared. Both pairs and the non-merging reference fell in reward in the last
+ten updates, so that late fall alone is not evidence of reset damage.
+
+The next controlled candidate is partial moment pruning with Adam counters
+retained, compared against the constant-LR full-state-clear recipe. Hold
+initialization, rollout count, schedule, batch and merge interval fixed. This
+is proposed, not launched. A longer matched non-merging control remains needed
+to investigate rank-one ceilings.
+
+Both runs' large weights and factor caches were cleaned up. The cleanup script
+also mistakenly removed raw evaluation response dumps beneath exports. Aggregate
+evaluation records, logs, metrics, memory traces and rank diagnostics are
+retained; per-response regrading is unavailable. Cleanup now removes only
+checkpoint/state files and numeric global-step policy/critic weight directories.
+A filesystem regression test verifies evaluation and diagnostic retention.
+
+
+### Where the merge curves diverge from standard LoRA
+
+![Aligned reward, entropy, response length, gradient and evaluation curves](../figures/relora-boundary-analysis.svg)
+
+The plot uses disjoint five-step means; raw values are faint. Merge markers
+are at 40.5/80.5 because step-40/80 training reward was sampled **before** that
+step's optimizer update and merge. The step-40/80 evaluation is **after**
+the update/merge. Step-41/81 reward is the first rollout under the merged
+policy, before its first fresh-adapter optimizer update. Mixing these
+conventions would make an apparent boundary drop misleading.
+
+| Steps | Standard correctness | Merge + ramp | Merge + constant LR | Interpretation |
+| --- | ---: | ---: | ---: | --- |
+| 1–20 | 12.25% | 12.66% | 11.89% | Similar early learning; no merge yet |
+| 21–40 | 23.65% | 23.28% | 22.05% | Small differences already exist before intervention |
+| 41–45 | 35.00% | 33.20% | 33.59% | No sudden collapse immediately after merging |
+| 46–60 | 36.80% | 32.53% | 32.53% | Main divergence: approximately 4.27 percentage points behind |
+| 61–80 | 39.26% | 36.35% | 37.32% | Gap narrows, especially without ramp |
+| 81–90 | 40.04% | 39.53% | 39.14% | Nearly catches up following second merge |
+| 91–100 | 34.92% | 33.09% | 34.92% | Shared late decline; constant-LR merge matches standard |
+
+**A temporary optimization delay is the strongest descriptive reading.**
+This is not a persistent lower learning slope or a catastrophic reset.
+Linear fits over steps 1–40 are 0.561/0.565/0.517 correctness percentage
+points per update for standard/ramp/constant. Over 41–60 they are
+0.223/0.163/0.105; over the broader 41–80 interval the merging runs catch up,
+with slopes 0.134/0.171 versus standard's 0.100. These noisy local fits depend
+on the chosen window and changing question difficulty; they are not causal
+estimates or a law of learning. Stepwise reward correlation with standard is
+0.957 for ramp and 0.961 for constant resets, consistent with shared batch
+variation. Aggregate reward cannot distinguish question hardness from other
+shared training dynamics.
+
+Subtracting each run's own pre-merge gap over steps 21–40, the additional
+reward deficit over 41–60 is 3.28 percentage points for ramp and 1.95 for
+constant resets. This descriptive correction avoids counting the constant
+run's existing 1.60-point deficit as a new merge effect; it is not a causal
+estimate.
+
+**The accompanying signals:**
+
+| Steps 41–60 mean | Standard | Merge + ramp | Merge + constant LR |
+| --- | ---: | ---: | ---: |
+| Response tokens | 2,859 | 2,403 | 2,460 |
+| Policy entropy | 0.1483 | 0.1696 | 0.1692 |
+| Gradient norm before clipping | 0.0350 | 0.0359 | 0.0389 |
+
+Response-length growth falls behind by approximately 399–456 tokens, while
+entropy stays higher. This accompanies lower reward; it does not prove that
+longer responses would fix accuracy. Gradient norms remain similar or slightly
+higher, without an obvious explosion or disappearance. Reported norm is in
+adapter coordinates; it does not measure useful weight-space learning.
+Rollout/training chosen-token log-probability differences remain near
+0.0066–0.0070 in this interval, with no large synchronization mismatch spike.
+That does not establish exact merged-policy equivalence.
+
+**The ramp does not explain the whole gap.** The identical constant-LR reset
+trial also has the 46–60 deficit. The ramp has a normalized total LR budget
+of 95 base-LR update units versus 100 for constant LR: it sacrifices 2.5
+units at each restart. This arithmetic is not an equivalence in Adam update
+size, but shows that the ramp does consume some optimization budget. It
+failed to yield a clear stabilization advantage here.
+
+**Rank is genuinely growing.** Using accumulated singular-value energies
+and each cycle's update norm, the inferred global Frobenius cosine between
+cycle-1 and cycle-2 updates is about +0.000065 for ramp and −0.000104 for
+constant resets. This estimate uses the polarization identity on float32
+diagnostics and is approximate. The directions are nearly orthogonal in
+aggregate; they are not simply re-adding the same rank-one update. New
+directions are not necessarily good task directions.
+
+**The final weight-change magnitude is also comparable.** The saved standard
+LoRA step-100 adapter gives global delta L2 3.405 (computed without dense
+matrices, as scale times norm(A) times norm(B) per rank-one projection).
+Accumulated-factor diagnostics give 3.407 for ramp and 3.607 for constant
+resets, excluding tiny FP32 merge-rounding corrections. The merging runs are
+not simply ending with a much smaller total weight change. Norms alone cannot
+tell whether those changes point in useful directions. The reference's
+adapter-file hash and extraction method are saved in
+[the portable norm audit](../data/standard-lora-final-update.json).
+
+**What remains unseparated:** each boundary simultaneously merges into the
+BF16 forward backbone, freezes the old accumulated update, replaces A with
+a fresh Kaiming direction, zeros B, and clears all Adam moments/counters.
+Fresh B=0 also starts A's gradient signal at zero. The small but nonzero
+response-prefix KL (~0.00055) leaves some policy drift possible; first-128-token
+probes cannot exclude long-response effects. Saved scalar metrics do not
+identify which mechanism produces the temporary delay. Effective per-update
+weight changes and gradient-direction alignment were not logged, and deleted
+weights cannot be used to recover them.
+
+**Fairness checks:** both merge profiles preserve the algorithm, model
+selection, optimizer LR, rollout count, batch and response budget. The
+training-data audit hashes and SkyRL commit match the reference. Absolute
+asset paths, project/environment names changed during the repository rename;
+the archived and current `score_answer` and `symbolic_score` function ASTs
+are identical, and the baseline system-message serialization is unchanged.
+Sampling nevertheless produces differences before the first merge. One run
+per setting cannot precisely attribute the entire 4.27-point deficit.
+
+The strongest causal comparison would branch the non-merging and merging
+policies from the same checkpoint immediately before a boundary, restoring
+identical optimizer state, data position and RNG state. Current independent
+runs do not share an identical learned policy at step 40. Log effective
+weight-space update norms/direction changes through the first 10–20 fresh
+adapter updates; scalar adapter gradient norm alone cannot explain the lag.
+
+The next diagnostic should target continuity of useful updates after reset,
+not add more warmup or assume that higher rank alone will improve reward.
+Partial moment pruning is a controlled candidate, but fresh A changes
+optimizer coordinates, so preserving moments is not automatically correct
+transport. It remains proposed and untested. A fixed-A/B-only preserved-history
+control already passes tiny-model next-update parity; a live version could
+isolate merge numerics, but it would be a diagnostic rather than the
+full trainable-A method. No new training was launched for this analysis.
+
+Reproduce the numeric windows and plots with
+`python scripts/research/analyze_relora.py` after the portable snapshots have
+been generated. [Download numerical analysis](../data/relora-boundary-analysis.json).

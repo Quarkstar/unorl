@@ -26,6 +26,7 @@ COLORS = [
     "#3F51B5",
     "#E91E63",
     "#00BCD4",
+    "#FFC107",
 ]
 GROUPS = {
     "ablation": "Controlled follow-up experiments",
@@ -396,9 +397,23 @@ def main():
         "qwen3-4b-base-grpo-loft-simple-r1-20261001-01",
         "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01",
         "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01",
+        "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01",
     ]
     by_id = {run["run_id"]: run for run in runs}
     lora_runs = [by_id[rid] for rid in lora_ids]
+    comparison(
+        [
+            by_id[rid]
+            for rid in [
+                "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+                "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01",
+                "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01",
+            ]
+        ],
+        {"primary", "reference", "ablation"},
+        "comparison-relora",
+        "ReLoRA · restart ramp versus constant-LR resets",
+    )
     comparison(
         lora_runs,
         {"reference", "primary", "ablation"},
@@ -470,7 +485,9 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-confounded.svg",
         "Earlier single-rollout trials used stateless SGD and sometimes a different loss reduction. Their failures do not establish that REINFORCE fails with AdamW.",
     )
-    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: a matched restart-ramp versus constant-LR merge/reset comparison is underway.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
+    text += "\n## ReLoRA restart comparison: completed\n\nBoth 100-step runs completed successfully. Five-update restart ramp / constant-LR resets / standard LoRA reached final AIME25 avg@8 **15.8% / 17.1% / 20.0%**, and pass@8 **40.0% / 30.0% / 43.3%**. Final 20-step training correctness was **36.3% / 37.0% / 37.5%**. The ramp showed no clear benefit in this pair. Mean accumulated stable rank at step 100 was **1.89 / 2.16** for ramp / constant-LR resets: useful rank growth occurred, but did not translate into better learning. Both boundary KL probes averaged about **0.00055**, with no immediate post-merge reward collapse. These are one run per setting and 30 evaluation questions. Full Adam history was cleared in both runs; partial moment pruning remains untested.\n\n![Matched ReLoRA comparison](figures/comparison-relora.svg)\n\n**Retention issue:** automatic cleanup mistakenly removed raw evaluation response dumps together with model exports. Aggregate evaluations, training metrics, logs, memory traces and rank diagnostics remain. The cleanup rule now preserves benchmark dump directories and has a filesystem regression test.\n\n"
+    text += "\n### Where merging falls behind\n\nThe [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-diverge-from-standard-lora) finds the main deficit at **steps 46–60**: both merge runs average **32.5%** training correctness versus **36.8%** for standard LoRA. The gap largely closes by steps 81–90. Response-length growth lags and entropy remains higher; gradient norms do not collapse. This is consistent with a temporary optimization delay after the first restart, not proof of a specific cause.\n\n![Aligned ReLoRA boundary analysis](figures/relora-boundary-analysis.svg)\n\n"
+    text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: the matched restart-ramp versus constant-LR merge/reset comparison completed. Both accumulated updates beyond rank one, but neither improved final avg@8 over standard LoRA.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:
         w = csv.DictWriter(f, fieldnames=list(csvrows[0]), lineterminator="\n")

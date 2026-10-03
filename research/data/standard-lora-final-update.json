@@ -1,0 +1,12 @@
+{
+  "run_id": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+  "step": 100,
+  "layers": 252,
+  "rank": 1,
+  "alpha": 32,
+  "total_adapter_delta_l2": 3.404516514495835,
+  "mean_A_l2": 0.5780676841508086,
+  "mean_B_l2": 0.010689923158762101,
+  "adapter_sha256": "9734bff7027a52bda3dfd1bc094a572a815ba51c7249af835512511aa070f337",
+  "method": "Rank-one Frobenius norm per projection is scaling * norm(A) * norm(B); sum squared norms across the 252 disjoint weight matrices."
+}

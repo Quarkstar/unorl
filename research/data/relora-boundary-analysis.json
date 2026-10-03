@@ -1,0 +1,197 @@
+{
+  "windows": {
+    "Standard LoRA": {
+      "1-20": {
+        "reward/mean_positive_reward": 0.1224609375,
+        "policy/policy_entropy": 0.6351817220449447,
+        "generate/avg_num_tokens": 1110.2380859375,
+        "policy/grad_norm": 0.040182055253535506,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.012265046732500196
+      },
+      "21-40": {
+        "reward/mean_positive_reward": 0.2365234375,
+        "policy/policy_entropy": 0.25986804217100146,
+        "generate/avg_num_tokens": 1421.2619140625,
+        "policy/grad_norm": 0.04667234905064106,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.00802568970248103
+      },
+      "41-45": {
+        "reward/mean_positive_reward": 0.35,
+        "policy/policy_entropy": 0.15969296991825105,
+        "generate/avg_num_tokens": 2319.8359375,
+        "policy/grad_norm": 0.03586864396929741,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006769099272787571
+      },
+      "46-60": {
+        "reward/mean_positive_reward": 0.36796875,
+        "policy/policy_entropy": 0.14446916530529658,
+        "generate/avg_num_tokens": 3038.2375,
+        "policy/grad_norm": 0.03475624496738116,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006657674815505743
+      },
+      "41-60": {
+        "reward/mean_positive_reward": 0.3634765625,
+        "policy/policy_entropy": 0.1482751164585352,
+        "generate/avg_num_tokens": 2858.637109375,
+        "policy/grad_norm": 0.035034344717860225,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.0066855309298262
+      },
+      "61-80": {
+        "reward/mean_positive_reward": 0.392578125,
+        "policy/policy_entropy": 0.13624421432614325,
+        "generate/avg_num_tokens": 3469.0140625,
+        "policy/grad_norm": 0.034079101774841546,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006762031163088977
+      },
+      "81-90": {
+        "reward/mean_positive_reward": 0.400390625,
+        "policy/policy_entropy": 0.13639423325657846,
+        "generate/avg_num_tokens": 3635.6546875,
+        "policy/grad_norm": 0.03642741534858942,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006710084388032556
+      },
+      "91-100": {
+        "reward/mean_positive_reward": 0.34921875,
+        "policy/policy_entropy": 0.1308073505759239,
+        "generate/avg_num_tokens": 3947.699609375,
+        "policy/grad_norm": 0.03743147533386946,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006763675622642041
+      }
+    },
+    "Merge + restart ramp": {
+      "1-20": {
+        "reward/mean_positive_reward": 0.1265625,
+        "policy/policy_entropy": 0.6537912845611572,
+        "generate/avg_num_tokens": 1182.409765625,
+        "policy/grad_norm": 0.039189677219837904,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.012491809390485286
+      },
+      "21-40": {
+        "reward/mean_positive_reward": 0.2328125,
+        "policy/policy_entropy": 0.27575782164931295,
+        "generate/avg_num_tokens": 1548.17265625,
+        "policy/grad_norm": 0.04086689036339521,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.008237358927726746
+      },
+      "41-45": {
+        "reward/mean_positive_reward": 0.33203125,
+        "policy/policy_entropy": 0.1706404358148575,
+        "generate/avg_num_tokens": 2149.92578125,
+        "policy/grad_norm": 0.03608769476413727,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.00687361191958189
+      },
+      "46-60": {
+        "reward/mean_positive_reward": 0.32526041666666666,
+        "policy/policy_entropy": 0.16922494371732075,
+        "generate/avg_num_tokens": 2486.7385416666666,
+        "policy/grad_norm": 0.035801824058095615,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006988367003699144
+      },
+      "41-60": {
+        "reward/mean_positive_reward": 0.326953125,
+        "policy/policy_entropy": 0.16957881674170494,
+        "generate/avg_num_tokens": 2402.5353515625,
+        "policy/grad_norm": 0.03587329173460603,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.00695967823266983
+      },
+      "61-80": {
+        "reward/mean_positive_reward": 0.3634765625,
+        "policy/policy_entropy": 0.14890572912991046,
+        "generate/avg_num_tokens": 3252.1822265625,
+        "policy/grad_norm": 0.03724070535972714,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.00692662363871932
+      },
+      "81-90": {
+        "reward/mean_positive_reward": 0.3953125,
+        "policy/policy_entropy": 0.1455303356051445,
+        "generate/avg_num_tokens": 3515.72734375,
+        "policy/grad_norm": 0.03952814172953367,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.007066691480576992
+      },
+      "91-100": {
+        "reward/mean_positive_reward": 0.330859375,
+        "policy/policy_entropy": 0.14136817157268525,
+        "generate/avg_num_tokens": 3779.614453125,
+        "policy/grad_norm": 0.03552945889532566,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006968899862840772
+      }
+    },
+    "Merge + constant LR": {
+      "1-20": {
+        "reward/mean_positive_reward": 0.1189453125,
+        "policy/policy_entropy": 0.6782020062208176,
+        "generate/avg_num_tokens": 1111.916796875,
+        "policy/grad_norm": 0.0408288755454123,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.012628616811707617
+      },
+      "21-40": {
+        "reward/mean_positive_reward": 0.2205078125,
+        "policy/policy_entropy": 0.29997613877058027,
+        "generate/avg_num_tokens": 1497.6513671875,
+        "policy/grad_norm": 0.03873225273564458,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.008391491486690938
+      },
+      "41-45": {
+        "reward/mean_positive_reward": 0.3359375,
+        "policy/policy_entropy": 0.1731262743473053,
+        "generate/avg_num_tokens": 2094.7171875,
+        "policy/grad_norm": 0.03824388906359673,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.0068570304661989216
+      },
+      "46-60": {
+        "reward/mean_positive_reward": 0.32526041666666666,
+        "policy/policy_entropy": 0.167933651804924,
+        "generate/avg_num_tokens": 2581.6809895833335,
+        "policy/grad_norm": 0.03911466461916765,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.0068678346772988634
+      },
+      "41-60": {
+        "reward/mean_positive_reward": 0.3279296875,
+        "policy/policy_entropy": 0.16923180744051933,
+        "generate/avg_num_tokens": 2459.9400390625,
+        "policy/grad_norm": 0.03889697073027491,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006865133624523878
+      },
+      "61-80": {
+        "reward/mean_positive_reward": 0.3732421875,
+        "policy/policy_entropy": 0.14704722352325916,
+        "generate/avg_num_tokens": 3163.7744140625,
+        "policy/grad_norm": 0.033830467239022256,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.00678800130262971
+      },
+      "81-90": {
+        "reward/mean_positive_reward": 0.39140625,
+        "policy/policy_entropy": 0.14056301563978196,
+        "generate/avg_num_tokens": 3343.258984375,
+        "policy/grad_norm": 0.03433759361505508,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.0068008412141352895
+      },
+      "91-100": {
+        "reward/mean_positive_reward": 0.34921875,
+        "policy/policy_entropy": 0.14146195203065873,
+        "generate/avg_num_tokens": 3631.844140625,
+        "policy/grad_norm": 0.03675826024264097,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006889053108170629
+      }
+    }
+  },
+  "update_alignment": {
+    "Merge + restart ramp": {
+      "cycle1_l2": 2.447400015465539,
+      "cycle2_l2": 2.014169015807116,
+      "inferred_global_frobenius_cosine_cycles1_and2": 6.481133801715403e-05,
+      "method": "Polarization identity from accumulated spectra and per-cycle delta norms; approximate due to float32 diagnostics"
+    },
+    "Merge + constant LR": {
+      "cycle1_l2": 2.396928613391748,
+      "cycle2_l2": 2.214196835485248,
+      "inferred_global_frobenius_cosine_cycles1_and2": -0.00010427161770057823,
+      "method": "Polarization identity from accumulated spectra and per-cycle delta norms; approximate due to float32 diagnostics"
+    }
+  },
+  "final_delta_l2": {
+    "Standard LoRA": 3.404516514495835,
+    "Merge + restart ramp": 3.4074189271742483,
+    "Merge + constant LR": 3.606941595594083
+  }
+}

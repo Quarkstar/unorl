@@ -10,6 +10,29 @@ from pathlib import Path
 from train import PYTHON, ROOT, environment
 
 
+def cleanup_artifacts(run):
+    """Remove training weights/state while retaining benchmark dumps and diagnostics."""
+    removed = []
+    paths = [run / "checkpoints", run / "relora-rank-factors.pt"]
+    for step in (run / "exports").glob("global_step_*"):
+        if step.name.removeprefix("global_step_").isdigit():
+            paths.extend(step / model for model in ("policy", "critic"))
+    for path in paths:
+        if not path.exists():
+            continue
+        size = (
+            sum(p.stat().st_size for p in path.rglob("*") if p.is_file())
+            if path.is_dir()
+            else path.stat().st_size
+        )
+        removed.append({"path": str(path.relative_to(run)), "bytes": size})
+        if path.is_dir():
+            shutil.rmtree(path)
+        else:
+            path.unlink()
+    return removed
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--tag", required=True, help="Unique date/suffix, e.g. 20261001-01")
@@ -64,20 +87,7 @@ def main():
             raise RuntimeError(
                 f"{run_id} exited {status}; control not started, diagnostics retained"
             )
-        removed = []
-        for path in (run / "checkpoints", run / "exports", run / "relora-rank-factors.pt"):
-            if not path.exists():
-                continue
-            size = (
-                sum(p.stat().st_size for p in path.rglob("*") if p.is_file())
-                if path.is_dir()
-                else path.stat().st_size
-            )
-            removed.append({"path": str(path.relative_to(run)), "bytes": size})
-            if path.is_dir():
-                shutil.rmtree(path)
-            else:
-                path.unlink()
+        removed = cleanup_artifacts(run)
         (run / "checkpoint-cleanup.json").write_text(
             json.dumps({"removed": removed, "measurements_retained": True}, indent=2) + "\n"
         )

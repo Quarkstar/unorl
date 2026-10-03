@@ -63,3 +63,34 @@ def test_baseline_prompt_is_unchanged():
     )
     assert wrapped.chat_template == expected
     assert original.chat_template == "ORIGINAL_TEMPLATE"
+
+
+def test_relora_cleanup_retains_evaluations_and_diagnostics(tmp_path, monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / "scripts"))
+    spec = importlib.util.spec_from_file_location(
+        "relora_comparison", ROOT / "scripts/run_relora_comparison.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    deleted = [
+        "checkpoints/model.pt",
+        "exports/global_step_100/policy/model.safetensors",
+        "exports/global_step_100/critic/model.safetensors",
+        "relora-rank-factors.pt",
+    ]
+    retained = [
+        "exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl",
+        "exports/aime25/dumped_evals/global_step_100_evals/aggregated_results.jsonl",
+        "metrics.jsonl",
+        "rank-diagnostics.jsonl",
+        "exports/global_step_notes/report.txt",
+    ]
+    for name in deleted + retained:
+        file = tmp_path / name
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text("retained-or-deleted")
+    removed = module.cleanup_artifacts(tmp_path)
+    assert len(removed) == 4
+    assert all(not (tmp_path / name).exists() for name in deleted)
+    assert all((tmp_path / name).read_text() == "retained-or-deleted" for name in retained)
+    assert module.cleanup_artifacts(tmp_path) == []
