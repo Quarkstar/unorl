@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "world_size": 8,
+  "optimizer": "AdamW",
+  "updates": 8,
+  "merge_after_updates": [
+    4,
+    7
+  ],
+  "grad_norms": [
+    5.789613723754883,
+    4.653574466705322,
+    3.943572759628296,
+    3.640787363052368,
+    2.9278383255004883,
+    2.719346284866333,
+    3.112868547439575,
+    2.2554657459259033
+  ],
+  "probe_logits_max_abs_diff": 0.00146484375,
+  "merge_metrics": {
+    "relora/merged_layers": 14.0,
+    "relora/delta_l2": 0.5473639158981959,
+    "relora/rounding_relative_l2": 7.731300389091947e-08,
+    "refresh/angle_degrees": 20.0,
+    "refresh/b_first_moment_projection": 0.9396926207859084,
+    "refresh/optimizer_state_entries": 28.0,
+    "relora/probe_response_tokens": 16.0,
+    "relora/probe_response_kl_mean": 1.250637069460936e-07,
+    "relora/probe_chosen_logprob_mean_abs_diff": 5.841255187988281e-05,
+    "relora/probe_chosen_logprob_max_abs_diff": 7.843971252441406e-05,
+    "relora/probe_argmax_flip_fraction": 0.0,
+    "relora/mean_accumulated_stable_rank": 1.0043545690031237,
+    "relora/mean_energy_outside_first_direction": 0.00433116868567085
+  },
+  "response_prefix_probe": {
+    "relora/probe_response_tokens": 2.0,
+    "relora/probe_response_kl_mean": 1.250637069460936e-07,
+    "relora/probe_chosen_logprob_mean_abs_diff": 5.841255187988281e-05,
+    "relora/probe_chosen_logprob_max_abs_diff": 7.843971252441406e-05,
+    "relora/probe_argmax_flip_fraction": 0.0
+  },
+  "next_lr": 0.001,
+  "parameter_identity_preserved": true,
+  "scheduler_preserved": true,
+  "adam_history_preserved": true,
+  "diagnostic_factor_history_checkpointed": true,
+  "actual_worker_optimizer_and_weight_step_telemetry_verified": true,
+  "checkpoint_resume_verified": true,
+  "next_update_reproduced_exactly": true,
+  "actual_refresh_worker_boundary_and_collective_rank_diagnostics_verified": true,
+  "applied_lrs": [
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001,
+    0.001
+  ],
+  "dense_export_includes_prior_merge_and_current_adapter": true,
+  "scope": "Tiny-model implementation validation; not language-model performance evidence",
+  "implementation_commit": "33a7526fd5208b008e034d153ec78816fc88cc3a",
+  "unit_tests": {
+    "passed": 94,
+    "warnings": 7
+  },
+  "validation_script": "scripts/check_relora_refresh_fsdp.py"
+}

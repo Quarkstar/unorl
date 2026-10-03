@@ -737,6 +737,10 @@ Mixed-precision probes remain necessary: exact matrix identities do not
 ensure identical BF16 logits. The tiny-model proof is an implementation
 check, not evidence of language-model training success.
 
+[Portable validation results](../data/relora-refresh-validation.json) record
+94 passing tests and the eight-GPU fixture's exact checkpoint next-update
+replay, preserved native Adam history and measured boundary drift.
+
 ### 6. Predeclared matched experiment
 
 The old step-40 checkpoint was never retained; the standard-LoRA step-100
