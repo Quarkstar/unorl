@@ -44,9 +44,46 @@
       }
     },
     "121-140": {
-      "paired_updates": 0,
+      "paired_updates": 6,
       "complete": false,
-      "metrics": {}
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.3821614583333333,
+          "candidate": 0.3932291666666667,
+          "candidate_minus_control": 0.01106770833333337,
+          "paired_updates": 6
+        },
+        "policy/policy_entropy": {
+          "control": 0.1141093522310257,
+          "candidate": 0.11325675000747044,
+          "candidate_minus_control": -0.0008526022235552516,
+          "paired_updates": 6
+        },
+        "policy/grad_norm": {
+          "control": 0.053339047357439995,
+          "candidate": 0.035299966422220073,
+          "candidate_minus_control": -0.01803908093521992,
+          "paired_updates": 6
+        },
+        "generate/avg_num_tokens": {
+          "control": 4480.018880208333,
+          "candidate": 4548.2109375,
+          "candidate_minus_control": 68.19205729166697,
+          "paired_updates": 6
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.07616217847484044,
+          "candidate": 0.06586779637804252,
+          "candidate_minus_control": -0.010294382096797922,
+          "paired_updates": 6
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.8890257805287576,
+          "candidate": 0.9263747086936084,
+          "candidate_minus_control": 0.0373489281648508,
+          "paired_updates": 6
+        }
+      }
     },
     "141-160": {
       "paired_updates": 0,

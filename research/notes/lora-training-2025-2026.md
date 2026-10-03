@@ -1085,3 +1085,27 @@ whether the training curves continue to track standard over updates 121–140,
 whether the held-out result recovers, and whether rank growth accompanies
 useful updates. No recipe is changed mid-run, and parity or superiority
 remains unproven.
+
+
+### 15. Second hourly refresh check: step 126 (2026-10-03)
+
+At 14:03:43 UTC, the hourly watcher verified the original launcher PID
+1529014 with its recorded process start time, still running with 126
+completed updates. Both the snapshot export and research-page/figure build
+completed successfully. No restart was needed. The latest ten updates have
+39.26% training correctness; step 126 has entropy 0.12097, gradient norm
+0.03664 and mean response length 4,530 tokens. These changing-batch values
+are descriptive, not a new held-out result. Evaluation remains at step
+120; the next evaluation is scheduled for 140 and the next refresh for 141.
+
+Through update 123, all eight ranks contributed 184 trainer-memory records.
+The observed maximum was 17.864 GiB allocated and 18.730 GiB reserved, both
+at update 110 on rank 5. The completed control's corresponding maxima over
+all 100 new updates were 17.955 and 18.828 GiB. These observation windows
+are unequal: the candidate's interim peak does not establish memory saving.
+This measurement covers training allocator memory, not total GPU usage
+with the rollout engine. Final comparisons must use the full candidate run.
+
+No new evidence yet establishes performance parity or improvement. Keep
+the matched recipe and evaluate the subsequent complete windows and
+held-out dumps before deciding whether to refine or replicate this method.
