@@ -1668,6 +1668,1067 @@
         "timing/sync_weights_only_transfer": 0.6944608092308044,
         "timing/step": 133.51259231567383
       }
+    },
+    {
+      "step": 25,
+      "metrics": {
+        "generate/min_num_tokens": 2,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1540.12890625,
+        "generate/std_num_tokens": 1711.2514138348954,
+        "generate/avg_tokens_non_zero_rewards": 1298.9777777777779,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1540.12890625,
+        "generate/min_assistant_tokens": 2,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1711.2514138348954,
+        "generate/tokens_per_turn_mean": 1540.12890625,
+        "generate/tokens_per_turn_std": 1711.2514138348954,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.53125,
+        "reward/avg_raw_reward": -0.6484375,
+        "reward/mean_positive_reward": 0.17578125,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8381,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.7273292541503906,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.008150726556777954,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.030233604833483696,
+        "loss/avg_final_rewards": -0.6484375,
+        "loss/avg_raw_advantages": -0.02015291526913643,
+        "loss/avg_raw_advantages_abs": 0.40021443367004395,
+        "policy/policy_entropy": 0.30161920189857483,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9999231696128845,
+        "policy/loss_metrics/is_ratio_std": 0.3374482989311218,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.009952491149306297,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.959970235824585,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.7273292541503906,
+        "policy/final_loss": -0.04813480004668236,
+        "policy/policy_loss": -0.04813480004668236,
+        "policy/grad_norm": 0.04059401899576187,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.03287420514889895,
+        "updates/effective_delta_l2": 0.08086005510659657,
+        "updates/cosine_with_previous_delta": 0.9256179747396113,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1548.0823223510704,
+        "trainer/epoch": 0,
+        "trainer/global_step": 25,
+        "timing/generate": 95.9490897655487,
+        "timing/postprocess_generator_output": 0.001538991928100586,
+        "timing/convert_to_training_input": 0.08344578742980957,
+        "timing/fwd_logprobs_values_reward": 11.329407453536987,
+        "timing/compute_advantages_and_returns": 0.02051854133605957,
+        "timing/policy_train": 35.20470356941223,
+        "timing/train_critic_and_policy": 35.6680805683136,
+        "timing/sync_weights": 1.6377456188201904,
+        "timing/sync_weights_only_transfer": 0.654868096113205,
+        "timing/step": 145.74188494682312
+      }
+    },
+    {
+      "step": 26,
+      "metrics": {
+        "generate/min_num_tokens": 189,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1375.0234375,
+        "generate/std_num_tokens": 1553.0278765650614,
+        "generate/avg_tokens_non_zero_rewards": 1147.3076923076924,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1375.0234375,
+        "generate/min_assistant_tokens": 189,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1553.0278765650614,
+        "generate/tokens_per_turn_mean": 1375.0234375,
+        "generate/tokens_per_turn_std": 1553.0278765650614,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.59375,
+        "reward/avg_raw_reward": -0.59375,
+        "reward/mean_positive_reward": 0.203125,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8502,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.6116418838500977,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.00916942860931158,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.03127891197800636,
+        "loss/avg_final_rewards": -0.59375,
+        "loss/avg_raw_advantages": -0.008191621862351894,
+        "loss/avg_raw_advantages_abs": 0.3902234733104706,
+        "policy/policy_entropy": 0.37082409858703613,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 1.0000863075256348,
+        "policy/loss_metrics/is_ratio_std": 0.33250269293785095,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.010531870648264885,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.8177920579910278,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.6116418838500977,
+        "policy/final_loss": -0.003834194503724575,
+        "policy/policy_loss": -0.003834194503724575,
+        "policy/grad_norm": 0.041740261018276215,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.03312586090839657,
+        "updates/effective_delta_l2": 0.07929012180316496,
+        "updates/cosine_with_previous_delta": 0.9283976929209695,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1567.9496123094737,
+        "trainer/epoch": 0,
+        "trainer/global_step": 26,
+        "timing/generate": 87.69018411636353,
+        "timing/postprocess_generator_output": 0.0014603137969970703,
+        "timing/convert_to_training_input": 0.07719135284423828,
+        "timing/fwd_logprobs_values_reward": 10.29348349571228,
+        "timing/compute_advantages_and_returns": 0.020272493362426758,
+        "timing/policy_train": 31.54819631576538,
+        "timing/train_critic_and_policy": 31.98875117301941,
+        "timing/sync_weights": 1.703822374343872,
+        "timing/sync_weights_only_transfer": 0.6514387056231499,
+        "timing/step": 132.84146761894226
+      }
+    },
+    {
+      "step": 27,
+      "metrics": {
+        "generate/min_num_tokens": 143,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1367.74609375,
+        "generate/std_num_tokens": 1499.991779269262,
+        "generate/avg_tokens_non_zero_rewards": 1324.8545454545454,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1367.74609375,
+        "generate/min_assistant_tokens": 143,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1499.991779269262,
+        "generate/tokens_per_turn_mean": 1367.74609375,
+        "generate/tokens_per_turn_std": 1499.991779269262,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.5625,
+        "reward/avg_raw_reward": -0.5703125,
+        "reward/mean_positive_reward": 0.21484375,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8594,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.7438259124755859,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.008035032078623772,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.02972947061061859,
+        "loss/avg_final_rewards": -0.5703125,
+        "loss/avg_raw_advantages": 0.045693472027778625,
+        "loss/avg_raw_advantages_abs": 0.4147298336029053,
+        "policy/policy_entropy": 0.30284827947616577,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 1.0000642538070679,
+        "policy/loss_metrics/is_ratio_std": 0.32651036977767944,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.009611011482775211,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 2.1039698123931885,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.7438259124755859,
+        "policy/final_loss": -0.07828590273857117,
+        "policy/policy_loss": -0.07828590273857117,
+        "policy/grad_norm": 0.04137146845459938,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.03220812041997935,
+        "updates/effective_delta_l2": 0.07947653458406652,
+        "updates/cosine_with_previous_delta": 0.9306789560966878,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1551.2576801574542,
+        "trainer/epoch": 0,
+        "trainer/global_step": 27,
+        "timing/generate": 102.67433905601501,
+        "timing/postprocess_generator_output": 0.0015137195587158203,
+        "timing/convert_to_training_input": 0.07802844047546387,
+        "timing/fwd_logprobs_values_reward": 10.237565994262695,
+        "timing/compute_advantages_and_returns": 0.020878314971923828,
+        "timing/policy_train": 31.648788452148438,
+        "timing/train_critic_and_policy": 32.109349489212036,
+        "timing/sync_weights": 1.7261502742767334,
+        "timing/sync_weights_only_transfer": 0.6849361583590508,
+        "timing/step": 147.92119550704956
+      }
+    },
+    {
+      "step": 28,
+      "metrics": {
+        "generate/min_num_tokens": 40,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1538.57421875,
+        "generate/std_num_tokens": 1622.5279689782167,
+        "generate/avg_tokens_non_zero_rewards": 1278.9166666666667,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1538.57421875,
+        "generate/min_assistant_tokens": 40,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1622.5279689782167,
+        "generate/tokens_per_turn_mean": 1538.57421875,
+        "generate/tokens_per_turn_std": 1622.5279689782167,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.71875,
+        "reward/avg_raw_reward": -0.4375,
+        "reward/mean_positive_reward": 0.28125,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8387,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.7079935073852539,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.0078014652244746685,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.02937386929988861,
+        "loss/avg_final_rewards": -0.4375,
+        "loss/avg_raw_advantages": 0.0011958108516409993,
+        "loss/avg_raw_advantages_abs": 0.4404646158218384,
+        "policy/policy_entropy": 0.302582710981369,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 1.0000487565994263,
+        "policy/loss_metrics/is_ratio_std": 0.3481782376766205,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.009099939838051796,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 2.029914140701294,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.7079935073852539,
+        "policy/final_loss": -0.04198436439037323,
+        "policy/policy_loss": -0.04198436439037323,
+        "policy/grad_norm": 0.040463950484991074,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.031139629487610725,
+        "updates/effective_delta_l2": 0.07931806687112355,
+        "updates/cosine_with_previous_delta": 0.9330777855824196,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1561.0518826456703,
+        "trainer/epoch": 0,
+        "trainer/global_step": 28,
+        "timing/generate": 105.60969138145447,
+        "timing/postprocess_generator_output": 0.001413106918334961,
+        "timing/convert_to_training_input": 0.07921314239501953,
+        "timing/fwd_logprobs_values_reward": 11.062049388885498,
+        "timing/compute_advantages_and_returns": 0.0191342830657959,
+        "timing/policy_train": 34.412113904953,
+        "timing/train_critic_and_policy": 34.865192890167236,
+        "timing/sync_weights": 1.7046082019805908,
+        "timing/sync_weights_only_transfer": 0.72283885627985,
+        "timing/step": 154.40325570106506
+      }
+    },
+    {
+      "step": 29,
+      "metrics": {
+        "generate/min_num_tokens": 98,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1351.9765625,
+        "generate/std_num_tokens": 1693.148045546574,
+        "generate/avg_tokens_non_zero_rewards": 916.8181818181819,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1351.9765625,
+        "generate/min_assistant_tokens": 98,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1693.148045546574,
+        "generate/tokens_per_turn_mean": 1351.9765625,
+        "generate/tokens_per_turn_std": 1693.148045546574,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.5,
+        "reward/avg_raw_reward": -0.5703125,
+        "reward/mean_positive_reward": 0.21484375,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8449,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.6368839740753174,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.009384055621922016,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.03220036253333092,
+        "loss/avg_final_rewards": -0.5703125,
+        "loss/avg_raw_advantages": 0.015765400603413582,
+        "loss/avg_raw_advantages_abs": 0.27445492148399353,
+        "policy/policy_entropy": 0.3433763384819031,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 1.0000730752944946,
+        "policy/loss_metrics/is_ratio_std": 0.31252461671829224,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.010892344638705254,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.5933765172958374,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.6368839740753174,
+        "policy/final_loss": -0.04258955270051956,
+        "policy/policy_loss": -0.04258955270051956,
+        "policy/grad_norm": 0.04031959921121597,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.0342142218700734,
+        "updates/effective_delta_l2": 0.07900961599603219,
+        "updates/cosine_with_previous_delta": 0.931507624396758,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1540.360674997249,
+        "trainer/epoch": 0,
+        "trainer/global_step": 29,
+        "timing/generate": 98.80798077583313,
+        "timing/postprocess_generator_output": 0.0014872550964355469,
+        "timing/convert_to_training_input": 0.07504940032958984,
+        "timing/fwd_logprobs_values_reward": 10.14102578163147,
+        "timing/compute_advantages_and_returns": 0.02075958251953125,
+        "timing/policy_train": 31.28177762031555,
+        "timing/train_critic_and_policy": 31.724550485610962,
+        "timing/sync_weights": 1.634577989578247,
+        "timing/sync_weights_only_transfer": 0.6924000009894371,
+        "timing/step": 143.55518126487732
+      }
+    },
+    {
+      "step": 30,
+      "metrics": {
+        "generate/min_num_tokens": 105,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1558.4453125,
+        "generate/std_num_tokens": 1700.785449563459,
+        "generate/avg_tokens_non_zero_rewards": 1242.1454545454546,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1558.4453125,
+        "generate/min_assistant_tokens": 105,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1700.785449563459,
+        "generate/tokens_per_turn_mean": 1558.4453125,
+        "generate/tokens_per_turn_std": 1700.785449563459,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.53125,
+        "reward/avg_raw_reward": -0.5703125,
+        "reward/mean_positive_reward": 0.21484375,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8419,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.729013204574585,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.007912375032901764,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.03002769500017166,
+        "loss/avg_final_rewards": -0.5703125,
+        "loss/avg_raw_advantages": 0.03248931095004082,
+        "loss/avg_raw_advantages_abs": 0.3313749134540558,
+        "policy/policy_entropy": 0.254392147064209,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 1.0000213384628296,
+        "policy/loss_metrics/is_ratio_std": 0.3411808907985687,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.008823879994452,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.7173815965652466,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.729013204574585,
+        "policy/final_loss": -0.037941206246614456,
+        "policy/policy_loss": -0.037941206246614456,
+        "policy/grad_norm": 0.03802027925848961,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.031210711340879247,
+        "updates/effective_delta_l2": 0.07788196170885918,
+        "updates/cosine_with_previous_delta": 0.9404279401941977,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1471.8541704688766,
+        "trainer/epoch": 0,
+        "trainer/global_step": 30,
+        "timing/generate": 105.89626121520996,
+        "timing/postprocess_generator_output": 0.0015499591827392578,
+        "timing/convert_to_training_input": 0.08479499816894531,
+        "timing/fwd_logprobs_values_reward": 12.153452634811401,
+        "timing/compute_advantages_and_returns": 0.020069122314453125,
+        "timing/policy_train": 37.24273920059204,
+        "timing/train_critic_and_policy": 37.68325090408325,
+        "timing/sync_weights": 1.570554494857788,
+        "timing/sync_weights_only_transfer": 0.6540566757321358,
+        "timing/step": 158.4899673461914
+      }
+    },
+    {
+      "step": 31,
+      "metrics": {
+        "generate/min_num_tokens": 9,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1902.4296875,
+        "generate/std_num_tokens": 2136.739461494113,
+        "generate/avg_tokens_non_zero_rewards": 1045.6805555555557,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1902.4296875,
+        "generate/min_assistant_tokens": 9,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2136.739461494113,
+        "generate/tokens_per_turn_mean": 1902.4296875,
+        "generate/tokens_per_turn_std": 2136.739461494113,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.59375,
+        "reward/avg_raw_reward": -0.4375,
+        "reward/mean_positive_reward": 0.28125,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8406,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.8062810897827148,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.008558696135878563,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.03077387437224388,
+        "loss/avg_final_rewards": -0.4375,
+        "loss/avg_raw_advantages": -0.056370142847299576,
+        "loss/avg_raw_advantages_abs": 0.3165072500705719,
+        "policy/policy_entropy": 0.288327693939209,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9688706398010254,
+        "policy/loss_metrics/is_ratio_std": 0.3338801860809326,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.0093916617333889,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 2.2395637035369873,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.8062810897827148,
+        "policy/final_loss": 0.00789524707943201,
+        "policy/policy_loss": 0.00789524707943201,
+        "policy/grad_norm": 0.04621662199497223,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.0321469449348452,
+        "updates/effective_delta_l2": 0.07785162172843074,
+        "updates/cosine_with_previous_delta": 0.9072361431295451,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1512.989464513518,
+        "trainer/epoch": 0,
+        "trainer/global_step": 31,
+        "timing/generate": 100.99282884597778,
+        "timing/postprocess_generator_output": 0.0014758110046386719,
+        "timing/convert_to_training_input": 0.09521484375,
+        "timing/fwd_logprobs_values_reward": 13.91493034362793,
+        "timing/compute_advantages_and_returns": 0.021315336227416992,
+        "timing/policy_train": 43.651057720184326,
+        "timing/train_critic_and_policy": 44.15480184555054,
+        "timing/sync_weights": 1.5690772533416748,
+        "timing/sync_weights_only_transfer": 0.6146834120154381,
+        "timing/step": 161.820463180542
+      }
+    },
+    {
+      "step": 32,
+      "metrics": {
+        "generate/min_num_tokens": 20,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1669.69921875,
+        "generate/std_num_tokens": 1835.332141517412,
+        "generate/avg_tokens_non_zero_rewards": 1087.3098591549297,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1669.69921875,
+        "generate/min_assistant_tokens": 20,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1835.332141517412,
+        "generate/tokens_per_turn_mean": 1669.69921875,
+        "generate/tokens_per_turn_std": 1835.332141517412,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.5625,
+        "reward/avg_raw_reward": -0.4453125,
+        "reward/mean_positive_reward": 0.27734375,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8469,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.697995662689209,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.008382485248148441,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.030877841636538506,
+        "loss/avg_final_rewards": -0.4453125,
+        "loss/avg_raw_advantages": -0.02032025344669819,
+        "loss/avg_raw_advantages_abs": 0.354015052318573,
+        "policy/policy_entropy": 0.25509893894195557,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9922171235084534,
+        "policy/loss_metrics/is_ratio_std": 0.34566864371299744,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.009300852194428444,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.9869616031646729,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.697995662689209,
+        "policy/final_loss": 0.0013049617409706116,
+        "policy/policy_loss": 0.0013049617409706116,
+        "policy/grad_norm": 0.18285757303237915,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.03233419382807446,
+        "updates/effective_delta_l2": 0.09328891545526806,
+        "updates/cosine_with_previous_delta": 0.7276198211678386,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1588.0038190824862,
+        "trainer/epoch": 0,
+        "trainer/global_step": 32,
+        "timing/generate": 111.98661303520203,
+        "timing/postprocess_generator_output": 0.001440286636352539,
+        "timing/convert_to_training_input": 0.08955812454223633,
+        "timing/fwd_logprobs_values_reward": 11.715892791748047,
+        "timing/compute_advantages_and_returns": 0.020776748657226562,
+        "timing/policy_train": 36.6892614364624,
+        "timing/train_critic_and_policy": 37.22495770454407,
+        "timing/sync_weights": 1.6760683059692383,
+        "timing/sync_weights_only_transfer": 0.6338518783450127,
+        "timing/step": 163.7509684562683
+      }
+    },
+    {
+      "step": 33,
+      "metrics": {
+        "generate/min_num_tokens": 146,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 2305.9921875,
+        "generate/std_num_tokens": 2283.8421505631613,
+        "generate/avg_tokens_non_zero_rewards": 1499.4285714285713,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 2305.9921875,
+        "generate/min_assistant_tokens": 146,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2283.8421505631613,
+        "generate/tokens_per_turn_mean": 2305.9921875,
+        "generate/tokens_per_turn_std": 2283.8421505631613,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.5625,
+        "reward/avg_raw_reward": -0.5625,
+        "reward/mean_positive_reward": 0.21875,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8459,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.6236796379089355,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.007406418677419424,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.029294969514012337,
+        "loss/avg_final_rewards": -0.5625,
+        "loss/avg_raw_advantages": -0.02065991424024105,
+        "loss/avg_raw_advantages_abs": 0.2918682396411896,
+        "policy/policy_entropy": 0.2343968152999878,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.984320342540741,
+        "policy/loss_metrics/is_ratio_std": 0.3640906810760498,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.00841373298317194,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.6508184671401978,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.6236796379089355,
+        "policy/final_loss": -0.004879421554505825,
+        "policy/policy_loss": -0.004879421554505825,
+        "policy/grad_norm": 0.03391546756029129,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.030858111687636674,
+        "updates/effective_delta_l2": 0.08865327950870963,
+        "updates/cosine_with_previous_delta": 0.9663280612493222,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1566.73976621319,
+        "trainer/epoch": 0,
+        "trainer/global_step": 33,
+        "timing/generate": 109.04690885543823,
+        "timing/postprocess_generator_output": 0.0017211437225341797,
+        "timing/convert_to_training_input": 0.11739063262939453,
+        "timing/fwd_logprobs_values_reward": 15.62938642501831,
+        "timing/compute_advantages_and_returns": 0.02165508270263672,
+        "timing/policy_train": 50.36222863197327,
+        "timing/train_critic_and_policy": 50.95278215408325,
+        "timing/sync_weights": 1.6413161754608154,
+        "timing/sync_weights_only_transfer": 0.620366059243679,
+        "timing/step": 178.50946688652039
+      }
+    },
+    {
+      "step": 34,
+      "metrics": {
+        "generate/min_num_tokens": 122,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 2300.73046875,
+        "generate/std_num_tokens": 2297.821813698607,
+        "generate/avg_tokens_non_zero_rewards": 1673.6301369863013,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 2300.73046875,
+        "generate/min_assistant_tokens": 122,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2297.821813698607,
+        "generate/tokens_per_turn_mean": 2300.73046875,
+        "generate/tokens_per_turn_std": 2297.821813698607,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.65625,
+        "reward/avg_raw_reward": -0.4296875,
+        "reward/mean_positive_reward": 0.28515625,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8429,
+        "policy/rollout_train_logprobs_abs_diff_max": 1.1807482242584229,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.007748470176011324,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.029872367158532143,
+        "loss/avg_final_rewards": -0.4296875,
+        "loss/avg_raw_advantages": 0.0024868969339877367,
+        "loss/avg_raw_advantages_abs": 0.4225216209888458,
+        "policy/policy_entropy": 0.2566913962364197,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9843424558639526,
+        "policy/loss_metrics/is_ratio_std": 0.3613317012786865,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.008948197588324547,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.8270483016967773,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 1.1807482242584229,
+        "policy/final_loss": -0.08976420760154724,
+        "policy/policy_loss": -0.08976420760154724,
+        "policy/grad_norm": 0.04165736585855484,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.031690792860220085,
+        "updates/effective_delta_l2": 0.08618671292616199,
+        "updates/cosine_with_previous_delta": 0.9509434608837668,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1528.3308887537746,
+        "trainer/epoch": 0,
+        "trainer/global_step": 34,
+        "timing/generate": 114.04506206512451,
+        "timing/postprocess_generator_output": 0.0016720294952392578,
+        "timing/convert_to_training_input": 0.11072778701782227,
+        "timing/fwd_logprobs_values_reward": 15.874469518661499,
+        "timing/compute_advantages_and_returns": 0.02054119110107422,
+        "timing/policy_train": 51.07164692878723,
+        "timing/train_critic_and_policy": 51.62388300895691,
+        "timing/sync_weights": 1.9517812728881836,
+        "timing/sync_weights_only_transfer": 0.9752963408827782,
+        "timing/step": 184.6803843975067
+      }
+    },
+    {
+      "step": 35,
+      "metrics": {
+        "generate/min_num_tokens": 9,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 2132.93359375,
+        "generate/std_num_tokens": 2199.631646960227,
+        "generate/avg_tokens_non_zero_rewards": 1593.6382978723404,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 2132.93359375,
+        "generate/min_assistant_tokens": 9,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2199.631646960227,
+        "generate/tokens_per_turn_mean": 2132.93359375,
+        "generate/tokens_per_turn_std": 2199.631646960227,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.4375,
+        "reward/avg_raw_reward": -0.6328125,
+        "reward/mean_positive_reward": 0.18359375,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8778,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.748316764831543,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.0077172452583909035,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.03001326136291027,
+        "loss/avg_final_rewards": -0.6328125,
+        "loss/avg_raw_advantages": 0.012135299853980541,
+        "loss/avg_raw_advantages_abs": 0.2507481276988983,
+        "policy/policy_entropy": 0.22238470613956451,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.992233157157898,
+        "policy/loss_metrics/is_ratio_std": 0.36516061425209045,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.008936788886785507,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.977329969406128,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.748316764831543,
+        "policy/final_loss": -0.05337400734424591,
+        "policy/policy_loss": -0.05337400734424591,
+        "policy/grad_norm": 0.03093140199780464,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.03192244723734505,
+        "updates/effective_delta_l2": 0.08322568761797737,
+        "updates/cosine_with_previous_delta": 0.9679106291368035,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1744.3434680714295,
+        "trainer/epoch": 0,
+        "trainer/global_step": 35,
+        "timing/generate": 99.60747218132019,
+        "timing/postprocess_generator_output": 0.0015993118286132812,
+        "timing/convert_to_training_input": 0.10652565956115723,
+        "timing/fwd_logprobs_values_reward": 13.404608726501465,
+        "timing/compute_advantages_and_returns": 0.021372318267822266,
+        "timing/policy_train": 42.09628248214722,
+        "timing/train_critic_and_policy": 42.61596202850342,
+        "timing/sync_weights": 1.7795655727386475,
+        "timing/sync_weights_only_transfer": 0.6642427667975426,
+        "timing/step": 158.58326482772827
+      }
+    },
+    {
+      "step": 36,
+      "metrics": {
+        "generate/min_num_tokens": 336,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 2682.40234375,
+        "generate/std_num_tokens": 2315.6952735276413,
+        "generate/avg_tokens_non_zero_rewards": 1723.8666666666666,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 2682.40234375,
+        "generate/min_assistant_tokens": 336,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2315.6952735276413,
+        "generate/tokens_per_turn_mean": 2682.40234375,
+        "generate/tokens_per_turn_std": 2315.6952735276413,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.59375,
+        "reward/avg_raw_reward": -0.4140625,
+        "reward/mean_positive_reward": 0.29296875,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8406,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.5093817710876465,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006866507697850466,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.028460929170250893,
+        "loss/avg_final_rewards": -0.4140625,
+        "loss/avg_raw_advantages": -0.010289138182997704,
+        "loss/avg_raw_advantages_abs": 0.3328624665737152,
+        "policy/policy_entropy": 0.15887264907360077,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9686968922615051,
+        "policy/loss_metrics/is_ratio_std": 0.38466253876686096,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.007055974565446377,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.6642619371414185,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.5093817710876465,
+        "policy/final_loss": -0.014134993776679039,
+        "policy/policy_loss": -0.014134993776679039,
+        "policy/grad_norm": 0.03232637420296669,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.028749585012294146,
+        "updates/effective_delta_l2": 0.07877761086244335,
+        "updates/cosine_with_previous_delta": 0.9622473453598032,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1597.9655409227992,
+        "trainer/epoch": 0,
+        "trainer/global_step": 36,
+        "timing/generate": 130.00819325447083,
+        "timing/postprocess_generator_output": 0.0016210079193115234,
+        "timing/convert_to_training_input": 0.12753963470458984,
+        "timing/fwd_logprobs_values_reward": 17.793896913528442,
+        "timing/compute_advantages_and_returns": 0.021998167037963867,
+        "timing/policy_train": 56.3114595413208,
+        "timing/train_critic_and_policy": 56.91228795051575,
+        "timing/sync_weights": 1.6085634231567383,
+        "timing/sync_weights_only_transfer": 0.6246577352285385,
+        "timing/step": 207.5355522632599
+      }
+    },
+    {
+      "step": 37,
+      "metrics": {
+        "generate/min_num_tokens": 24,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1791.20703125,
+        "generate/std_num_tokens": 1696.1763202809464,
+        "generate/avg_tokens_non_zero_rewards": 1282.5849056603774,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1791.20703125,
+        "generate/min_assistant_tokens": 24,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1696.1763202809464,
+        "generate/tokens_per_turn_mean": 1791.20703125,
+        "generate/tokens_per_turn_std": 1696.1763202809464,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.75,
+        "reward/avg_raw_reward": -0.171875,
+        "reward/mean_positive_reward": 0.4140625,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8460,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.6036252975463867,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.007931091822683811,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.03038593754172325,
+        "loss/avg_final_rewards": -0.171875,
+        "loss/avg_raw_advantages": 0.018293028697371483,
+        "loss/avg_raw_advantages_abs": 0.39339688420295715,
+        "policy/policy_entropy": 0.20234282314777374,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9999904036521912,
+        "policy/loss_metrics/is_ratio_std": 0.36432012915611267,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.008302825503051281,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.641588807106018,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.6036252975463867,
+        "policy/final_loss": -0.020425202324986458,
+        "policy/policy_loss": -0.020425202324986458,
+        "policy/grad_norm": 0.03991398960351944,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.030822127762025277,
+        "updates/effective_delta_l2": 0.07770824879858707,
+        "updates/cosine_with_previous_delta": 0.9396545172113582,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1710.4589935362014,
+        "trainer/epoch": 0,
+        "trainer/global_step": 37,
+        "timing/generate": 106.26199913024902,
+        "timing/postprocess_generator_output": 0.0016531944274902344,
+        "timing/convert_to_training_input": 0.09372711181640625,
+        "timing/fwd_logprobs_values_reward": 11.409570455551147,
+        "timing/compute_advantages_and_returns": 0.02108621597290039,
+        "timing/policy_train": 36.102805852890015,
+        "timing/train_critic_and_policy": 36.53675723075867,
+        "timing/sync_weights": 1.5867466926574707,
+        "timing/sync_weights_only_transfer": 0.6472353488206863,
+        "timing/step": 157.03166913986206
+      }
+    },
+    {
+      "step": 38,
+      "metrics": {
+        "generate/min_num_tokens": 332,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 2299.53515625,
+        "generate/std_num_tokens": 2125.077551602891,
+        "generate/avg_tokens_non_zero_rewards": 1593.0104166666667,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 2299.53515625,
+        "generate/min_assistant_tokens": 332,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2125.077551602891,
+        "generate/tokens_per_turn_mean": 2299.53515625,
+        "generate/tokens_per_turn_std": 2125.077551602891,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.75,
+        "reward/avg_raw_reward": -0.25,
+        "reward/mean_positive_reward": 0.375,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8400,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.6177825927734375,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.007239786442369223,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.029291855171322823,
+        "loss/avg_final_rewards": -0.25,
+        "loss/avg_raw_advantages": -0.04576629772782326,
+        "loss/avg_raw_advantages_abs": 0.3647446632385254,
+        "policy/policy_entropy": 0.17026811838150024,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9686612486839294,
+        "policy/loss_metrics/is_ratio_std": 0.37172651290893555,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.007677895948290825,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.6430940628051758,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.6177825927734375,
+        "policy/final_loss": -0.00385226309299469,
+        "policy/policy_loss": -0.00385226309299469,
+        "policy/grad_norm": 0.0378975048661232,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.03011252069815496,
+        "updates/effective_delta_l2": 0.07583643655812773,
+        "updates/cosine_with_previous_delta": 0.9462748164035955,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1648.9314506410476,
+        "trainer/epoch": 0,
+        "trainer/global_step": 38,
+        "timing/generate": 117.28963494300842,
+        "timing/postprocess_generator_output": 0.00171661376953125,
+        "timing/convert_to_training_input": 0.1143350601196289,
+        "timing/fwd_logprobs_values_reward": 15.010998487472534,
+        "timing/compute_advantages_and_returns": 0.020479440689086914,
+        "timing/policy_train": 47.49350929260254,
+        "timing/train_critic_and_policy": 48.00813579559326,
+        "timing/sync_weights": 1.609079360961914,
+        "timing/sync_weights_only_transfer": 0.6637816801667213,
+        "timing/step": 183.1148064136505
+      }
+    },
+    {
+      "step": 39,
+      "metrics": {
+        "generate/min_num_tokens": 3,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 2532.86328125,
+        "generate/std_num_tokens": 2269.3964163603578,
+        "generate/avg_tokens_non_zero_rewards": 1911.1379310344828,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 2532.86328125,
+        "generate/min_assistant_tokens": 3,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2269.3964163603578,
+        "generate/tokens_per_turn_mean": 2532.86328125,
+        "generate/tokens_per_turn_std": 2269.3964163603578,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.59375,
+        "reward/avg_raw_reward": -0.546875,
+        "reward/mean_positive_reward": 0.2265625,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8446,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.7362070083618164,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.007860150188207626,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.030179131776094437,
+        "loss/avg_final_rewards": -0.546875,
+        "loss/avg_raw_advantages": 0.007831428200006485,
+        "loss/avg_raw_advantages_abs": 0.34413406252861023,
+        "policy/policy_entropy": 0.22656354308128357,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9765186905860901,
+        "policy/loss_metrics/is_ratio_std": 0.37914758920669556,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.008459345437586308,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.7303235530853271,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.7362070083618164,
+        "policy/final_loss": -0.031039012596011162,
+        "policy/policy_loss": -0.031039012596011162,
+        "policy/grad_norm": 0.03522638976573944,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.03087954391902259,
+        "updates/effective_delta_l2": 0.0747743203402059,
+        "updates/cosine_with_previous_delta": 0.9483159498549381,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1695.3090903607215,
+        "trainer/epoch": 0,
+        "trainer/global_step": 39,
+        "timing/generate": 117.56691122055054,
+        "timing/postprocess_generator_output": 0.0016176700592041016,
+        "timing/convert_to_training_input": 0.12101221084594727,
+        "timing/fwd_logprobs_values_reward": 15.691176891326904,
+        "timing/compute_advantages_and_returns": 0.02161121368408203,
+        "timing/policy_train": 50.606597900390625,
+        "timing/train_critic_and_policy": 51.14561438560486,
+        "timing/sync_weights": 1.681731939315796,
+        "timing/sync_weights_only_transfer": 0.6502028554677963,
+        "timing/step": 187.30330753326416
+      }
+    },
+    {
+      "step": 40,
+      "metrics": {
+        "generate/min_num_tokens": 217,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 2764.14453125,
+        "generate/std_num_tokens": 2433.818036135193,
+        "generate/avg_tokens_non_zero_rewards": 1567.3292682926829,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 2764.14453125,
+        "generate/min_assistant_tokens": 217,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 2433.818036135193,
+        "generate/tokens_per_turn_mean": 2764.14453125,
+        "generate/tokens_per_turn_std": 2433.818036135193,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.75,
+        "reward/avg_raw_reward": -0.359375,
+        "reward/mean_positive_reward": 0.3203125,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8457,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.8649916648864746,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.006983740720897913,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.028634680435061455,
+        "loss/avg_final_rewards": -0.359375,
+        "loss/avg_raw_advantages": -0.07100552320480347,
+        "loss/avg_raw_advantages_abs": 0.4106343686580658,
+        "policy/policy_entropy": 0.19516946375370026,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9921655654907227,
+        "policy/loss_metrics/is_ratio_std": 0.38639500737190247,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.007736414670944214,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.647499918937683,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.8649916648864746,
+        "policy/final_loss": -0.02940685860812664,
+        "policy/policy_loss": -0.02940685860812664,
+        "policy/grad_norm": 0.033283546566963196,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.029803499594549983,
+        "relora/merged_layers": 252.0,
+        "relora/delta_l2": 0.8528530458511369,
+        "relora/rounding_relative_l2": 4.2334645986511114e-05,
+        "refresh/angle_degrees": 20.0,
+        "refresh/b_first_moment_projection": 0.9396926207859084,
+        "refresh/optimizer_state_entries": 903.0,
+        "relora/probe_response_tokens": 1024.0,
+        "relora/probe_response_kl_mean": 0.0004757209480885649,
+        "relora/probe_chosen_logprob_mean_abs_diff": 0.008415764394158032,
+        "relora/probe_chosen_logprob_max_abs_diff": 0.388130784034729,
+        "relora/probe_argmax_flip_fraction": 0.001953125,
+        "relora/mean_accumulated_stable_rank": 1.0000000032998886,
+        "relora/mean_energy_outside_first_direction": 1.2488200900633083e-08,
+        "updates/effective_delta_l2": 0.0734461111433155,
+        "updates/cosine_with_previous_delta": 0.9534983170165003,
+        "relora/completed_cycles": 1.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1729.7789801140295,
+        "trainer/epoch": 0,
+        "trainer/global_step": 40,
+        "eval/aime25/avg_score": -0.6583333333333333,
+        "eval/aime25/pass_at_8": 0.26666666666666666,
+        "eval/aime25/mean_positive_reward": 0.17083333333333334,
+        "eval/aime25/avg@8": 0.17083333333333334,
+        "eval/aime25/pass@8": 0.26666666666666666,
+        "timing/generate": 143.3436987400055,
+        "timing/postprocess_generator_output": 0.0018835067749023438,
+        "timing/convert_to_training_input": 0.13650059700012207,
+        "timing/fwd_logprobs_values_reward": 16.141801357269287,
+        "timing/compute_advantages_and_returns": 0.021542787551879883,
+        "timing/policy_train": 53.75445747375488,
+        "timing/train_critic_and_policy": 54.36626648902893,
+        "timing/cleanup_old_checkpoints": 0.009731531143188477,
+        "timing/save_checkpoints": 6.076000213623047,
+        "timing/sync_weights": 4.6777002811431885,
+        "timing/sync_weights_only_transfer": 3.7362138479948044,
+        "timing/step": 225.86984086036682,
+        "timing/eval": 164.2263445854187
+      }
     }
   ],
   "evaluation_counts": [
@@ -1686,16 +2747,26 @@
       "questions": 30,
       "correct_responses": 14,
       "solved_questions": 6
+    },
+    {
+      "step": 40,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 41,
+      "solved_questions": 8
     }
   ],
   "unreadable_eval_dumps": [],
   "provenance": {
     "source": "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     "sha256": {
-      "metrics.jsonl": "8af2efdd3745d3fce01120e3db4ac104bfadc20fdb960c2f7bfd08471f325ca9",
+      "metrics.jsonl": "5cbaae418431ee7f3a65c6a459e06d28d2b512fd68ba3c6e938459a5b56e6882",
       "config.json": "c484430015274e9980d53f41c13d988bad2b527382fc20f42d0d555249f4fc88",
       "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
-      "initial-adapter-audit.json": "e1f23af92b28679829ae014d8b789c414b06b52093ea4c8b65ec5d8c4479bab8"
+      "initial-adapter-audit.json": "e1f23af92b28679829ae014d8b789c414b06b52093ea4c8b65ec5d8c4479bab8",
+      "merge-audit.jsonl": "7454ba3344e7e62ba41b8985540debe9537102353f63d5446771a354dfd04a14",
+      "rank-diagnostics.jsonl": "b0ef0f022be213ad4447545688d0d84098c04635cfbd39bbd5855b729c2865e4"
     },
     "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
   },
@@ -1723,5 +2794,2307 @@
       "compensation": "W += scale * B @ (A_old - A_new); B unchanged",
       "moment_transport": "approximate for B; unknown orthogonal-direction variance is not reconstructed"
     }
-  }
+  },
+  "merge_audits": [
+    {
+      "step": 40,
+      "rank": 0,
+      "utc": "2026-10-03T16:26:56.486940+00:00",
+      "peak_allocated_bytes": 14088028672,
+      "peak_reserved_bytes": 14835253248,
+      "window": "policy forward/backward, optimizer, and merge/reset when scheduled",
+      "merged": true,
+      "relora/merged_layers": 252.0,
+      "relora/delta_l2": 0.8528530458511369,
+      "relora/rounding_relative_l2": 4.2334645986511114e-05,
+      "refresh/angle_degrees": 20.0,
+      "refresh/b_first_moment_projection": 0.9396926207859084,
+      "refresh/optimizer_state_entries": 903.0,
+      "relora/probe_response_tokens": 1024.0,
+      "relora/probe_response_kl_mean": 0.0004757209480885649,
+      "relora/probe_chosen_logprob_mean_abs_diff": 0.008415764394158032,
+      "relora/probe_chosen_logprob_max_abs_diff": 0.388130784034729,
+      "relora/probe_argmax_flip_fraction": 0.001953125,
+      "relora/mean_accumulated_stable_rank": 1.0000000032998886,
+      "relora/mean_energy_outside_first_direction": 1.2488200900633083e-08,
+      "updates/effective_delta_l2": 0.0734461111433155,
+      "updates/cosine_with_previous_delta": 0.9534983170165003
+    }
+  ],
+  "rank_diagnostics": [
+    {
+      "step": 40,
+      "committed_merge": false,
+      "layers": {
+        "base_model.model.model.layers.0.self_attn.q_proj": {
+          "singular_values": [
+            0.18567870557308197,
+            1.4092703004564555e-08
+          ],
+          "stable_rank": 1.000000007472355,
+          "energy_outside_first_direction": 7.472354957016591e-09,
+          "update_l2": 0.18567870626681057
+        },
+        "base_model.model.model.layers.0.self_attn.k_proj": {
+          "singular_values": [
+            0.10691192001104355,
+            1.5326373059565412e-08
+          ],
+          "stable_rank": 0.9999999684508669,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10691191832455434
+        },
+        "base_model.model.model.layers.0.self_attn.v_proj": {
+          "singular_values": [
+            0.10440964996814728,
+            1.0623115720420628e-09
+          ],
+          "stable_rank": 0.9999999757753208,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10440964870350214
+        },
+        "base_model.model.model.layers.0.self_attn.o_proj": {
+          "singular_values": [
+            0.1631859987974167,
+            1.4872603149029828e-09
+          ],
+          "stable_rank": 0.9999999770284048,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.16318599692309532
+        },
+        "base_model.model.model.layers.0.mlp.gate_proj": {
+          "singular_values": [
+            0.2741435766220093,
+            1.4709259588130408e-08
+          ],
+          "stable_rank": 0.9999999837942098,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.2741435744006526
+        },
+        "base_model.model.model.layers.0.mlp.up_proj": {
+          "singular_values": [
+            0.27233046293258667,
+            6.646663219811444e-09
+          ],
+          "stable_rank": 1.000000038878862,
+          "energy_outside_first_direction": 3.887886046438638e-08,
+          "update_l2": 0.27233046822653584
+        },
+        "base_model.model.model.layers.0.mlp.down_proj": {
+          "singular_values": [
+            0.15165072679519653,
+            5.336814989931327e-09
+          ],
+          "stable_rank": 1.0000000324788785,
+          "energy_outside_first_direction": 3.247887736534949e-08,
+          "update_l2": 0.15165072925791928
+        },
+        "base_model.model.model.layers.1.self_attn.q_proj": {
+          "singular_values": [
+            0.16020673513412476,
+            1.2017845385514647e-08
+          ],
+          "stable_rank": 0.9999999914111809,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.16020673444613143
+        },
+        "base_model.model.model.layers.1.self_attn.k_proj": {
+          "singular_values": [
+            0.08156099170446396,
+            8.893114022967552e-10
+          ],
+          "stable_rank": 1.0000000157022766,
+          "energy_outside_first_direction": 1.5702276368045887e-08,
+          "update_l2": 0.08156099234481058
+        },
+        "base_model.model.model.layers.1.self_attn.v_proj": {
+          "singular_values": [
+            0.08666916936635971,
+            7.73738295656301e-10
+          ],
+          "stable_rank": 1.0000000071893882,
+          "energy_outside_first_direction": 7.189388195882884e-09,
+          "update_l2": 0.08666916967790886
+        },
+        "base_model.model.model.layers.1.self_attn.o_proj": {
+          "singular_values": [
+            0.13255901634693146,
+            2.6000797070935278e-09
+          ],
+          "stable_rank": 0.9999999871649929,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.1325590154962335
+        },
+        "base_model.model.model.layers.1.mlp.gate_proj": {
+          "singular_values": [
+            0.17435181140899658,
+            1.752373712804456e-08
+          ],
+          "stable_rank": 0.9999999702525549,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.1743518088157361
+        },
+        "base_model.model.model.layers.1.mlp.up_proj": {
+          "singular_values": [
+            0.21008123457431793,
+            3.0989331101238804e-09
+          ],
+          "stable_rank": 0.999999999846324,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.2100812345581757
+        },
+        "base_model.model.model.layers.1.mlp.down_proj": {
+          "singular_values": [
+            0.1279154270887375,
+            2.300271084720862e-09
+          ],
+          "stable_rank": 0.9999999715631545,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12791542526998187
+        },
+        "base_model.model.model.layers.2.self_attn.q_proj": {
+          "singular_values": [
+            0.17544132471084595,
+            1.757784851008637e-08
+          ],
+          "stable_rank": 0.9999999827527573,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.17544132319790637
+        },
+        "base_model.model.model.layers.2.self_attn.k_proj": {
+          "singular_values": [
+            0.07682263106107712,
+            6.605616942323422e-09
+          ],
+          "stable_rank": 1.0000000010820491,
+          "energy_outside_first_direction": 1.0820491169738489e-09,
+          "update_l2": 0.07682263110264005
+        },
+        "base_model.model.model.layers.2.self_attn.v_proj": {
+          "singular_values": [
+            0.07889773696660995,
+            3.184300600977963e-09
+          ],
+          "stable_rank": 1.0000000141660226,
+          "energy_outside_first_direction": 1.4166022355155405e-08,
+          "update_l2": 0.07889773752544352
+        },
+        "base_model.model.model.layers.2.self_attn.o_proj": {
+          "singular_values": [
+            0.12458313256502151,
+            4.248374096960106e-09
+          ],
+          "stable_rank": 1.0000000244097778,
+          "energy_outside_first_direction": 2.4409777088507667e-08,
+          "update_l2": 0.12458313408554479
+        },
+        "base_model.model.model.layers.2.mlp.gate_proj": {
+          "singular_values": [
+            0.2154136300086975,
+            9.887592078428042e-09
+          ],
+          "stable_rank": 0.9999999957479705,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.21541362955072496
+        },
+        "base_model.model.model.layers.2.mlp.up_proj": {
+          "singular_values": [
+            0.22215548157691956,
+            3.855788133222404e-09
+          ],
+          "stable_rank": 1.000000028094987,
+          "energy_outside_first_direction": 2.8094986226356866e-08,
+          "update_l2": 0.2221554846976472
+        },
+        "base_model.model.model.layers.2.mlp.down_proj": {
+          "singular_values": [
+            0.14726188778877258,
+            1.3597448722535432e-09
+          ],
+          "stable_rank": 1.000000022331892,
+          "energy_outside_first_direction": 2.2331891447180396e-08,
+          "update_l2": 0.14726188943309085
+        },
+        "base_model.model.model.layers.3.self_attn.q_proj": {
+          "singular_values": [
+            0.1619160771369934,
+            1.2229551593634369e-08
+          ],
+          "stable_rank": 1.0000000046409063,
+          "energy_outside_first_direction": 4.640906214881113e-09,
+          "update_l2": 0.1619160775127121
+        },
+        "base_model.model.model.layers.3.self_attn.k_proj": {
+          "singular_values": [
+            0.07247725129127502,
+            9.052250060648248e-10
+          ],
+          "stable_rank": 0.9999999621890889,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07247724992105956
+        },
+        "base_model.model.model.layers.3.self_attn.v_proj": {
+          "singular_values": [
+            0.07404579222202301,
+            7.434937665529162e-10
+          ],
+          "stable_rank": 1.000000000792435,
+          "energy_outside_first_direction": 7.924351175248034e-10,
+          "update_l2": 0.07404579225136125
+        },
+        "base_model.model.model.layers.3.self_attn.o_proj": {
+          "singular_values": [
+            0.11683972179889679,
+            6.582246747655063e-09
+          ],
+          "stable_rank": 1.0000000260108886,
+          "energy_outside_first_direction": 2.6010887888006096e-08,
+          "update_l2": 0.11683972331844927
+        },
+        "base_model.model.model.layers.3.mlp.gate_proj": {
+          "singular_values": [
+            0.23571078479290009,
+            8.60405968694522e-09
+          ],
+          "stable_rank": 1.00000002681849,
+          "energy_outside_first_direction": 2.6818489318181093e-08,
+          "update_l2": 0.23571078795360373
+        },
+        "base_model.model.model.layers.3.mlp.up_proj": {
+          "singular_values": [
+            0.26331377029418945,
+            1.1715606262896472e-08
+          ],
+          "stable_rank": 1.000000004089399,
+          "energy_outside_first_direction": 4.08939904161798e-09,
+          "update_l2": 0.263313770832587
+        },
+        "base_model.model.model.layers.3.mlp.down_proj": {
+          "singular_values": [
+            0.13755673170089722,
+            9.011333013120293e-09
+          ],
+          "stable_rank": 0.9999999755958874,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13755673002242222
+        },
+        "base_model.model.model.layers.4.self_attn.q_proj": {
+          "singular_values": [
+            0.1930495947599411,
+            1.2249440572986714e-08
+          ],
+          "stable_rank": 1.000000022419762,
+          "energy_outside_first_direction": 2.241976160277659e-08,
+          "update_l2": 0.19304959692400409
+        },
+        "base_model.model.model.layers.4.self_attn.k_proj": {
+          "singular_values": [
+            0.07464222609996796,
+            2.86049250952658e-09
+          ],
+          "stable_rank": 0.9999999696979078,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07464222496906014
+        },
+        "base_model.model.model.layers.4.self_attn.v_proj": {
+          "singular_values": [
+            0.08465446531772614,
+            8.523215022648856e-09
+          ],
+          "stable_rank": 1.0000000233709898,
+          "energy_outside_first_direction": 2.337098925497827e-08,
+          "update_l2": 0.08465446630695546
+        },
+        "base_model.model.model.layers.4.self_attn.o_proj": {
+          "singular_values": [
+            0.12281989306211472,
+            2.9428526282515577e-09
+          ],
+          "stable_rank": 0.999999978311681,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12281989173023619
+        },
+        "base_model.model.model.layers.4.mlp.gate_proj": {
+          "singular_values": [
+            0.22988110780715942,
+            1.275971506231599e-08
+          ],
+          "stable_rank": 1.00000003016941,
+          "energy_outside_first_direction": 3.016940908207033e-08,
+          "update_l2": 0.2298811112748481
+        },
+        "base_model.model.model.layers.4.mlp.up_proj": {
+          "singular_values": [
+            0.2240409553050995,
+            4.115188634301603e-09
+          ],
+          "stable_rank": 0.9999999897579553,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.22404095415778075
+        },
+        "base_model.model.model.layers.4.mlp.down_proj": {
+          "singular_values": [
+            0.12270192801952362,
+            3.838820372692453e-09
+          ],
+          "stable_rank": 1.0000000262685584,
+          "energy_outside_first_direction": 2.626855777343451e-08,
+          "update_l2": 0.12270192963112499
+        },
+        "base_model.model.model.layers.5.self_attn.q_proj": {
+          "singular_values": [
+            0.15517105162143707,
+            9.863969196999278e-09
+          ],
+          "stable_rank": 0.9999999623014443,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.15517104869657478
+        },
+        "base_model.model.model.layers.5.self_attn.k_proj": {
+          "singular_values": [
+            0.0785197764635086,
+            1.0950932383124723e-09
+          ],
+          "stable_rank": 1.000000024017287,
+          "energy_outside_first_direction": 2.401728649292778e-08,
+          "update_l2": 0.0785197774064246
+        },
+        "base_model.model.model.layers.5.self_attn.v_proj": {
+          "singular_values": [
+            0.07979507744312286,
+            3.6242844281275666e-09
+          ],
+          "stable_rank": 1.0000000239420221,
+          "energy_outside_first_direction": 2.3942021587508577e-08,
+          "update_l2": 0.07979507839835061
+        },
+        "base_model.model.model.layers.5.self_attn.o_proj": {
+          "singular_values": [
+            0.12339719384908676,
+            1.6291591409256512e-09
+          ],
+          "stable_rank": 0.9999999737374337,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12339719222872327
+        },
+        "base_model.model.model.layers.5.mlp.gate_proj": {
+          "singular_values": [
+            0.22982363402843475,
+            1.5000230391137848e-08
+          ],
+          "stable_rank": 0.9999999825599594,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.22982363202436798
+        },
+        "base_model.model.model.layers.5.mlp.up_proj": {
+          "singular_values": [
+            0.24919679760932922,
+            9.807870959832599e-09
+          ],
+          "stable_rank": 0.9999999893901951,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.24919679628736452
+        },
+        "base_model.model.model.layers.5.mlp.down_proj": {
+          "singular_values": [
+            0.12362372130155563,
+            1.2959099349174608e-09
+          ],
+          "stable_rank": 1.0000000109312894,
+          "energy_outside_first_direction": 1.093128920715003e-08,
+          "update_l2": 0.12362372197723896
+        },
+        "base_model.model.model.layers.6.self_attn.q_proj": {
+          "singular_values": [
+            0.14326873421669006,
+            1.2866269827327415e-08
+          ],
+          "stable_rank": 1.000000011951419,
+          "energy_outside_first_direction": 1.1951418854572182e-08,
+          "update_l2": 0.1432687350728224
+        },
+        "base_model.model.model.layers.6.self_attn.k_proj": {
+          "singular_values": [
+            0.07201573997735977,
+            3.1747491302525077e-09
+          ],
+          "stable_rank": 0.9999999859213045,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07201573947041594
+        },
+        "base_model.model.model.layers.6.self_attn.v_proj": {
+          "singular_values": [
+            0.0749918669462204,
+            5.610132358668807e-09
+          ],
+          "stable_rank": 1.0000000147347596,
+          "energy_outside_first_direction": 1.4734759412604603e-08,
+          "update_l2": 0.07499186749871396
+        },
+        "base_model.model.model.layers.6.self_attn.o_proj": {
+          "singular_values": [
+            0.12348761409521103,
+            1.2063413601381967e-09
+          ],
+          "stable_rank": 1.0000000011225678,
+          "energy_outside_first_direction": 1.1225678164805686e-09,
+          "update_l2": 0.12348761416452264
+        },
+        "base_model.model.model.layers.6.mlp.gate_proj": {
+          "singular_values": [
+            0.233409121632576,
+            6.577494993109667e-09
+          ],
+          "stable_rank": 1.000000013396895,
+          "energy_outside_first_direction": 1.339689470469807e-08,
+          "update_l2": 0.23340912319605472
+        },
+        "base_model.model.model.layers.6.mlp.up_proj": {
+          "singular_values": [
+            0.24122127890586853,
+            2.314238223277698e-08
+          ],
+          "stable_rank": 0.999999985157616,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.2412212771157191
+        },
+        "base_model.model.model.layers.6.mlp.down_proj": {
+          "singular_values": [
+            0.1277311146259308,
+            8.175191190673559e-09
+          ],
+          "stable_rank": 1.0000000555752062,
+          "energy_outside_first_direction": 5.557520310617292e-08,
+          "update_l2": 0.12773111817527225
+        },
+        "base_model.model.model.layers.7.self_attn.q_proj": {
+          "singular_values": [
+            0.16965700685977936,
+            7.960940351381396e-09
+          ],
+          "stable_rank": 1.0000000075713635,
+          "energy_outside_first_direction": 7.571363425107336e-09,
+          "update_l2": 0.1696570075020468
+        },
+        "base_model.model.model.layers.7.self_attn.k_proj": {
+          "singular_values": [
+            0.06923728436231613,
+            1.8602868134820483e-09
+          ],
+          "stable_rank": 0.9999999580839761,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06923728291124029
+        },
+        "base_model.model.model.layers.7.self_attn.v_proj": {
+          "singular_values": [
+            0.07408598810434341,
+            2.5755158006290912e-09
+          ],
+          "stable_rank": 1.0000000232504707,
+          "energy_outside_first_direction": 2.325047010476311e-08,
+          "update_l2": 0.07408598896561046
+        },
+        "base_model.model.model.layers.7.self_attn.o_proj": {
+          "singular_values": [
+            0.12616562843322754,
+            1.3449577451751793e-08
+          ],
+          "stable_rank": 0.9999999484016432,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12616562517825794
+        },
+        "base_model.model.model.layers.7.mlp.gate_proj": {
+          "singular_values": [
+            0.23383887112140656,
+            4.311096812870119e-09
+          ],
+          "stable_rank": 1.0000000318483044,
+          "energy_outside_first_direction": 3.184830343894163e-08,
+          "update_l2": 0.2338388748450923
+        },
+        "base_model.model.model.layers.7.mlp.up_proj": {
+          "singular_values": [
+            0.237206369638443,
+            2.5727877606129823e-09
+          ],
+          "stable_rank": 1.0000000195855132,
+          "energy_outside_first_direction": 1.9585512878173006e-08,
+          "update_l2": 0.23720637196134722
+        },
+        "base_model.model.model.layers.7.mlp.down_proj": {
+          "singular_values": [
+            0.12634068727493286,
+            1.5969323641229494e-09
+          ],
+          "stable_rank": 1.0000000006390088,
+          "energy_outside_first_direction": 6.390089568597546e-10,
+          "update_l2": 0.12634068731529927
+        },
+        "base_model.model.model.layers.8.self_attn.q_proj": {
+          "singular_values": [
+            0.1402883529663086,
+            7.0477366165278e-09
+          ],
+          "stable_rank": 1.0000000147417019,
+          "energy_outside_first_direction": 1.4741701637177584e-08,
+          "update_l2": 0.14028835400035314
+        },
+        "base_model.model.model.layers.8.self_attn.k_proj": {
+          "singular_values": [
+            0.07393604516983032,
+            6.0095421972050644e-09
+          ],
+          "stable_rank": 1.000000031413006,
+          "energy_outside_first_direction": 3.141300508602285e-08,
+          "update_l2": 0.07393604633110704
+        },
+        "base_model.model.model.layers.8.self_attn.v_proj": {
+          "singular_values": [
+            0.07893253117799759,
+            2.6952056142448555e-09
+          ],
+          "stable_rank": 1.0000000083509726,
+          "energy_outside_first_direction": 8.350972580117855e-09,
+          "update_l2": 0.0789325315075793
+        },
+        "base_model.model.model.layers.8.self_attn.o_proj": {
+          "singular_values": [
+            0.12125494331121445,
+            3.977071560967715e-09
+          ],
+          "stable_rank": 1.0000000182531354,
+          "energy_outside_first_direction": 1.8253135003476473e-08,
+          "update_l2": 0.12125494441785589
+        },
+        "base_model.model.model.layers.8.mlp.gate_proj": {
+          "singular_values": [
+            0.2350192815065384,
+            8.457050171273295e-09
+          ],
+          "stable_rank": 1.00000001334086,
+          "energy_outside_first_direction": 1.3340859861266097e-08,
+          "update_l2": 0.23501928307421804
+        },
+        "base_model.model.model.layers.8.mlp.up_proj": {
+          "singular_values": [
+            0.24945592880249023,
+            1.9076255242111984e-08
+          ],
+          "stable_rank": 0.999999972431587,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.24945592536393818
+        },
+        "base_model.model.model.layers.8.mlp.down_proj": {
+          "singular_values": [
+            0.14043523371219635,
+            2.7876412289629116e-09
+          ],
+          "stable_rank": 1.0000000393466966,
+          "energy_outside_first_direction": 3.934669512428712e-08,
+          "update_l2": 0.1404352364750276
+        },
+        "base_model.model.model.layers.9.self_attn.q_proj": {
+          "singular_values": [
+            0.1616012006998062,
+            1.0663264937704753e-08
+          ],
+          "stable_rank": 1.0000000010060175,
+          "energy_outside_first_direction": 1.0060174915338393e-09,
+          "update_l2": 0.16160120078109302
+        },
+        "base_model.model.model.layers.9.self_attn.k_proj": {
+          "singular_values": [
+            0.07134262472391129,
+            5.286558302231015e-09
+          ],
+          "stable_rank": 0.9999999938526967,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.0713426245046289
+        },
+        "base_model.model.model.layers.9.self_attn.v_proj": {
+          "singular_values": [
+            0.07745761424303055,
+            5.796277680047979e-09
+          ],
+          "stable_rank": 1.0000000002121285,
+          "energy_outside_first_direction": 2.1212864798059172e-10,
+          "update_l2": 0.07745761425124603
+        },
+        "base_model.model.model.layers.9.self_attn.o_proj": {
+          "singular_values": [
+            0.13611580431461334,
+            1.442921337968528e-09
+          ],
+          "stable_rank": 0.9999999634629094,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13611580182797559
+        },
+        "base_model.model.model.layers.9.mlp.gate_proj": {
+          "singular_values": [
+            0.23361490666866302,
+            1.4179646790069e-08
+          ],
+          "stable_rank": 0.9999999855698758,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.23361490498311696
+        },
+        "base_model.model.model.layers.9.mlp.up_proj": {
+          "singular_values": [
+            0.21390575170516968,
+            4.036120326844639e-09
+          ],
+          "stable_rank": 0.9999999751298159,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.21390574904523194
+        },
+        "base_model.model.model.layers.9.mlp.down_proj": {
+          "singular_values": [
+            0.12439125776290894,
+            1.1975985758638785e-09
+          ],
+          "stable_rank": 1.0000000064158399,
+          "energy_outside_first_direction": 6.4158398593860966e-09,
+          "update_l2": 0.12439125816194613
+        },
+        "base_model.model.model.layers.10.self_attn.q_proj": {
+          "singular_values": [
+            0.16619521379470825,
+            5.8453766271782115e-09
+          ],
+          "stable_rank": 0.9999999703123431,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.166195211327735
+        },
+        "base_model.model.model.layers.10.self_attn.k_proj": {
+          "singular_values": [
+            0.07140558958053589,
+            9.764625774622004e-10
+          ],
+          "stable_rank": 1.0000000082436062,
+          "energy_outside_first_direction": 8.24360624207543e-09,
+          "update_l2": 0.07140558987485568
+        },
+        "base_model.model.model.layers.10.self_attn.v_proj": {
+          "singular_values": [
+            0.07741762697696686,
+            7.750909358783531e-10
+          ],
+          "stable_rank": 1.000000034919584,
+          "energy_outside_first_direction": 3.4919582669878935e-08,
+          "update_l2": 0.0774176283286625
+        },
+        "base_model.model.model.layers.10.self_attn.o_proj": {
+          "singular_values": [
+            0.1312825232744217,
+            4.1126106964384235e-09
+          ],
+          "stable_rank": 0.9999999624033854,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13128252080653247
+        },
+        "base_model.model.model.layers.10.mlp.gate_proj": {
+          "singular_values": [
+            0.2363170087337494,
+            3.2890670187413207e-09
+          ],
+          "stable_rank": 1.0000000248869134,
+          "energy_outside_first_direction": 2.4886912752819512e-08,
+          "update_l2": 0.23631701167434982
+        },
+        "base_model.model.model.layers.10.mlp.up_proj": {
+          "singular_values": [
+            0.25510892271995544,
+            5.459604768276449e-09
+          ],
+          "stable_rank": 0.9999999737628658,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.2551089193732919
+        },
+        "base_model.model.model.layers.10.mlp.down_proj": {
+          "singular_values": [
+            0.14102613925933838,
+            1.2779995950396028e-09
+          ],
+          "stable_rank": 0.9999999635353487,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.14102613668810385
+        },
+        "base_model.model.model.layers.11.self_attn.q_proj": {
+          "singular_values": [
+            0.13816344738006592,
+            7.723460093700396e-09
+          ],
+          "stable_rank": 0.999999997033378,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13816344717512657
+        },
+        "base_model.model.model.layers.11.self_attn.k_proj": {
+          "singular_values": [
+            0.07205986976623535,
+            9.625485963837832e-10
+          ],
+          "stable_rank": 1.0000000076957078,
+          "energy_outside_first_direction": 7.695707737731539e-09,
+          "update_l2": 0.0720598700435112
+        },
+        "base_model.model.model.layers.11.self_attn.v_proj": {
+          "singular_values": [
+            0.08349144458770752,
+            5.806443770239866e-09
+          ],
+          "stable_rank": 1.000000013599633,
+          "energy_outside_first_direction": 1.3599632864291777e-08,
+          "update_l2": 0.08349144515543402
+        },
+        "base_model.model.model.layers.11.self_attn.o_proj": {
+          "singular_values": [
+            0.11342467367649078,
+            1.001726879223952e-08
+          ],
+          "stable_rank": 1.0000000208308097,
+          "energy_outside_first_direction": 2.083080929971004e-08,
+          "update_l2": 0.11342467485785468
+        },
+        "base_model.model.model.layers.11.mlp.gate_proj": {
+          "singular_values": [
+            0.23001784086227417,
+            9.181809978997535e-09
+          ],
+          "stable_rank": 1.0000000209089421,
+          "energy_outside_first_direction": 2.0908941689157245e-08,
+          "update_l2": 0.230017843266989
+        },
+        "base_model.model.model.layers.11.mlp.up_proj": {
+          "singular_values": [
+            0.2576044797897339,
+            2.0643144083010156e-08
+          ],
+          "stable_rank": 1.0000000496340788,
+          "energy_outside_first_direction": 4.963407640445894e-08,
+          "update_l2": 0.25760448618271437
+        },
+        "base_model.model.model.layers.11.mlp.down_proj": {
+          "singular_values": [
+            0.1323213428258896,
+            7.196520712682286e-09
+          ],
+          "stable_rank": 0.9999999588030527,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13232134010027186
+        },
+        "base_model.model.model.layers.12.self_attn.q_proj": {
+          "singular_values": [
+            0.18460550904273987,
+            1.1097881724708714e-08
+          ],
+          "stable_rank": 1.0000000029337426,
+          "energy_outside_first_direction": 2.933742471178391e-09,
+          "update_l2": 0.1846055093135324
+        },
+        "base_model.model.model.layers.12.self_attn.k_proj": {
+          "singular_values": [
+            0.07231026142835617,
+            3.3762406204118633e-09
+          ],
+          "stable_rank": 0.9999999584841337,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07231025992734458
+        },
+        "base_model.model.model.layers.12.self_attn.v_proj": {
+          "singular_values": [
+            0.0950169637799263,
+            8.110163651764424e-10
+          ],
+          "stable_rank": 0.999999993048212,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.0950169634496574
+        },
+        "base_model.model.model.layers.12.self_attn.o_proj": {
+          "singular_values": [
+            0.12765000760555267,
+            6.347012249108275e-09
+          ],
+          "stable_rank": 0.9999999774097803,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12765000616373182
+        },
+        "base_model.model.model.layers.12.mlp.gate_proj": {
+          "singular_values": [
+            0.2875250577926636,
+            3.435952411479093e-09
+          ],
+          "stable_rank": 0.9999999996147784,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.28752505773728315
+        },
+        "base_model.model.model.layers.12.mlp.up_proj": {
+          "singular_values": [
+            0.3053940236568451,
+            2.6257035656840344e-08
+          ],
+          "stable_rank": 1.0000000151203396,
+          "energy_outside_first_direction": 1.5120339313945408e-08,
+          "update_l2": 0.3053940259656758
+        },
+        "base_model.model.model.layers.12.mlp.down_proj": {
+          "singular_values": [
+            0.14730596542358398,
+            1.3645595764444352e-09
+          ],
+          "stable_rank": 0.9999999662068068,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.14730596293461448
+        },
+        "base_model.model.model.layers.13.self_attn.q_proj": {
+          "singular_values": [
+            0.1349995881319046,
+            3.1835634128896118e-09
+          ],
+          "stable_rank": 1.00000003384045,
+          "energy_outside_first_direction": 3.384044888754545e-08,
+          "update_l2": 0.134999590416128
+        },
+        "base_model.model.model.layers.13.self_attn.k_proj": {
+          "singular_values": [
+            0.07883812487125397,
+            3.726299269146693e-09
+          ],
+          "stable_rank": 0.9999999927670142,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07883812458613645
+        },
+        "base_model.model.model.layers.13.self_attn.v_proj": {
+          "singular_values": [
+            0.09206946194171906,
+            7.603829565994147e-09
+          ],
+          "stable_rank": 0.9999999483154222,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.09206945956243338
+        },
+        "base_model.model.model.layers.13.self_attn.o_proj": {
+          "singular_values": [
+            0.11286056786775589,
+            1.0895968571844605e-09
+          ],
+          "stable_rank": 1.0000000119690424,
+          "energy_outside_first_direction": 1.1969042201798175e-08,
+          "update_l2": 0.11286056854317235
+        },
+        "base_model.model.model.layers.13.mlp.gate_proj": {
+          "singular_values": [
+            0.23043915629386902,
+            1.8733862461317585e-08
+          ],
+          "stable_rank": 1.0000000317378468,
+          "energy_outside_first_direction": 3.1737845795909436e-08,
+          "update_l2": 0.2304391599506903
+        },
+        "base_model.model.model.layers.13.mlp.up_proj": {
+          "singular_values": [
+            0.2438867688179016,
+            2.07346548819487e-08
+          ],
+          "stable_rank": 1.0000000086883292,
+          "energy_outside_first_direction": 8.688329167227948e-09,
+          "update_l2": 0.2438867698773859
+        },
+        "base_model.model.model.layers.13.mlp.down_proj": {
+          "singular_values": [
+            0.11920920014381409,
+            9.053208849252314e-09
+          ],
+          "stable_rank": 0.9999999885754204,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.11920919946285659
+        },
+        "base_model.model.model.layers.14.self_attn.q_proj": {
+          "singular_values": [
+            0.16037121415138245,
+            1.295330065431699e-08
+          ],
+          "stable_rank": 0.9999999685985776,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.1603712116334403
+        },
+        "base_model.model.model.layers.14.self_attn.k_proj": {
+          "singular_values": [
+            0.08132323622703552,
+            8.280584218312015e-09
+          ],
+          "stable_rank": 1.0000000001320153,
+          "energy_outside_first_direction": 1.3201539861285028e-10,
+          "update_l2": 0.08132323623240348
+        },
+        "base_model.model.model.layers.14.self_attn.v_proj": {
+          "singular_values": [
+            0.08194070309400558,
+            2.1673740580041567e-09
+          ],
+          "stable_rank": 1.0000000012716188,
+          "energy_outside_first_direction": 1.2716189212724771e-09,
+          "update_l2": 0.08194070314610426
+        },
+        "base_model.model.model.layers.14.self_attn.o_proj": {
+          "singular_values": [
+            0.13964317739009857,
+            2.1531219029924387e-09
+          ],
+          "stable_rank": 0.9999999732088174,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13964317551949562
+        },
+        "base_model.model.model.layers.14.mlp.gate_proj": {
+          "singular_values": [
+            0.24182990193367004,
+            6.650572537125754e-09
+          ],
+          "stable_rank": 0.9999999871610163,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.24182990038124497
+        },
+        "base_model.model.model.layers.14.mlp.up_proj": {
+          "singular_values": [
+            0.2135252207517624,
+            9.188969585238738e-09
+          ],
+          "stable_rank": 0.9999999929329476,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.21352521999726543
+        },
+        "base_model.model.model.layers.14.mlp.down_proj": {
+          "singular_values": [
+            0.11635781824588776,
+            9.796556454944039e-09
+          ],
+          "stable_rank": 1.000000008006429,
+          "energy_outside_first_direction": 8.00642896425785e-09,
+          "update_l2": 0.11635781871169305
+        },
+        "base_model.model.model.layers.15.self_attn.q_proj": {
+          "singular_values": [
+            0.15908420085906982,
+            6.390641349440784e-09
+          ],
+          "stable_rank": 1.0000000353258554,
+          "energy_outside_first_direction": 3.5325854130796586e-08,
+          "update_l2": 0.15908420366896253
+        },
+        "base_model.model.model.layers.15.self_attn.k_proj": {
+          "singular_values": [
+            0.07912503182888031,
+            6.298058075060453e-09
+          ],
+          "stable_rank": 1.0000000282371568,
+          "energy_outside_first_direction": 2.8237156057819846e-08,
+          "update_l2": 0.07912503294601327
+        },
+        "base_model.model.model.layers.15.self_attn.v_proj": {
+          "singular_values": [
+            0.10014355182647705,
+            2.2552408829312753e-09
+          ],
+          "stable_rank": 1.0000000105184967,
+          "energy_outside_first_direction": 1.0518496629252638e-08,
+          "update_l2": 0.10014355235315686
+        },
+        "base_model.model.model.layers.15.self_attn.o_proj": {
+          "singular_values": [
+            0.11489661037921906,
+            9.435892955877989e-09
+          ],
+          "stable_rank": 1.0000000045665438,
+          "energy_outside_first_direction": 4.5665438097586275e-09,
+          "update_l2": 0.11489661064155926
+        },
+        "base_model.model.model.layers.15.mlp.gate_proj": {
+          "singular_values": [
+            0.24384567141532898,
+            2.4423369993087363e-09
+          ],
+          "stable_rank": 0.9999999876580078,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.24384566991055828
+        },
+        "base_model.model.model.layers.15.mlp.up_proj": {
+          "singular_values": [
+            0.27086418867111206,
+            2.8810458019279395e-08
+          ],
+          "stable_rank": 1.000000009590535,
+          "energy_outside_first_direction": 9.590535032799608e-09,
+          "update_l2": 0.2708641899699783
+        },
+        "base_model.model.model.layers.15.mlp.down_proj": {
+          "singular_values": [
+            0.13755404949188232,
+            4.8952122355672145e-09
+          ],
+          "stable_rank": 0.9999999912989939,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13755404889345302
+        },
+        "base_model.model.model.layers.16.self_attn.q_proj": {
+          "singular_values": [
+            0.16353987157344818,
+            1.8396919543306467e-08
+          ],
+          "stable_rank": 0.99999999887355,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.16353987148133842
+        },
+        "base_model.model.model.layers.16.self_attn.k_proj": {
+          "singular_values": [
+            0.07596265524625778,
+            2.3711401730963644e-09
+          ],
+          "stable_rank": 1.0000000351769553,
+          "energy_outside_first_direction": 3.5176954016336026e-08,
+          "update_l2": 0.07596265658232523
+        },
+        "base_model.model.model.layers.16.self_attn.v_proj": {
+          "singular_values": [
+            0.07013732194900513,
+            3.3707636681867825e-09
+          ],
+          "stable_rank": 1.0000000094110828,
+          "energy_outside_first_direction": 9.411082690924388e-09,
+          "update_l2": 0.0701373222790392
+        },
+        "base_model.model.model.layers.16.self_attn.o_proj": {
+          "singular_values": [
+            0.12479054927825928,
+            1.6835631777567528e-09
+          ],
+          "stable_rank": 0.9999999937426427,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12479054888782974
+        },
+        "base_model.model.model.layers.16.mlp.gate_proj": {
+          "singular_values": [
+            0.2207338809967041,
+            9.48683176460463e-09
+          ],
+          "stable_rank": 1.0000000379290985,
+          "energy_outside_first_direction": 3.7929097085331875e-08,
+          "update_l2": 0.2207338851828226
+        },
+        "base_model.model.model.layers.16.mlp.up_proj": {
+          "singular_values": [
+            0.23428694903850555,
+            1.2605680943522657e-08
+          ],
+          "stable_rank": 1.0000000199414314,
+          "energy_outside_first_direction": 1.9941431061987203e-08,
+          "update_l2": 0.2342869513745141
+        },
+        "base_model.model.model.layers.16.mlp.down_proj": {
+          "singular_values": [
+            0.10645723342895508,
+            9.134280887224122e-09
+          ],
+          "stable_rank": 0.9999999874607994,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10645723276151077
+        },
+        "base_model.model.model.layers.17.self_attn.q_proj": {
+          "singular_values": [
+            0.14047737419605255,
+            1.446386788117593e-09
+          ],
+          "stable_rank": 1.0000000046976294,
+          "energy_outside_first_direction": 4.697629285566052e-09,
+          "update_l2": 0.14047737452600786
+        },
+        "base_model.model.model.layers.17.self_attn.k_proj": {
+          "singular_values": [
+            0.06893020123243332,
+            2.6895545790495134e-09
+          ],
+          "stable_rank": 0.9999999946950759,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06893020104959857
+        },
+        "base_model.model.model.layers.17.self_attn.v_proj": {
+          "singular_values": [
+            0.06976225227117538,
+            3.5432168310478573e-09
+          ],
+          "stable_rank": 1.0000000048674966,
+          "energy_outside_first_direction": 4.86749651695817e-09,
+          "update_l2": 0.06976225244095914
+        },
+        "base_model.model.model.layers.17.self_attn.o_proj": {
+          "singular_values": [
+            0.11206523329019547,
+            9.397022715518233e-09
+          ],
+          "stable_rank": 1.0000000147629562,
+          "energy_outside_first_direction": 1.4762955857783311e-08,
+          "update_l2": 0.11206523411740252
+        },
+        "base_model.model.model.layers.17.mlp.gate_proj": {
+          "singular_values": [
+            0.21653972566127777,
+            2.598311343859905e-09
+          ],
+          "stable_rank": 1.0000000285116697,
+          "energy_outside_first_direction": 2.8511668914710242e-08,
+          "update_l2": 0.21653972874823232
+        },
+        "base_model.model.model.layers.17.mlp.up_proj": {
+          "singular_values": [
+            0.2160772979259491,
+            9.000904910294594e-09
+          ],
+          "stable_rank": 0.9999999980246194,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.21607729771253165
+        },
+        "base_model.model.model.layers.17.mlp.down_proj": {
+          "singular_values": [
+            0.12041305750608444,
+            1.323731169122766e-08
+          ],
+          "stable_rank": 1.00000002746085,
+          "energy_outside_first_direction": 2.7460849261196074e-08,
+          "update_l2": 0.1204130591594069
+        },
+        "base_model.model.model.layers.18.self_attn.q_proj": {
+          "singular_values": [
+            0.14224949479103088,
+            6.038799682528406e-09
+          ],
+          "stable_rank": 0.9999999729936054,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.14224949287020788
+        },
+        "base_model.model.model.layers.18.self_attn.k_proj": {
+          "singular_values": [
+            0.07046224176883698,
+            2.851437308493132e-09
+          ],
+          "stable_rank": 1.00000003262386,
+          "energy_outside_first_direction": 3.2623858947644635e-08,
+          "update_l2": 0.07046224291821213
+        },
+        "base_model.model.model.layers.18.self_attn.v_proj": {
+          "singular_values": [
+            0.07764769345521927,
+            1.0557423824053558e-09
+          ],
+          "stable_rank": 1.0000000198472692,
+          "energy_outside_first_direction": 1.9847268717398947e-08,
+          "update_l2": 0.0776476942257666
+        },
+        "base_model.model.model.layers.18.self_attn.o_proj": {
+          "singular_values": [
+            0.12179950624704361,
+            7.820129432900558e-09
+          ],
+          "stable_rank": 1.0000000307874484,
+          "energy_outside_first_direction": 3.078744748030715e-08,
+          "update_l2": 0.1217995081219916
+        },
+        "base_model.model.model.layers.18.mlp.gate_proj": {
+          "singular_values": [
+            0.2357168197631836,
+            1.801442373050577e-08
+          ],
+          "stable_rank": 0.9999999790314618,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.235716817291865
+        },
+        "base_model.model.model.layers.18.mlp.up_proj": {
+          "singular_values": [
+            0.21551784873008728,
+            3.690467931249941e-09
+          ],
+          "stable_rank": 1.0000000166812648,
+          "energy_outside_first_direction": 1.6681264480844504e-08,
+          "update_l2": 0.2155178505276424
+        },
+        "base_model.model.model.layers.18.mlp.down_proj": {
+          "singular_values": [
+            0.12166804075241089,
+            1.925697112881153e-08
+          ],
+          "stable_rank": 1.0000000232373025,
+          "energy_outside_first_direction": 2.323730208253494e-08,
+          "update_l2": 0.12166804216602942
+        },
+        "base_model.model.model.layers.19.self_attn.q_proj": {
+          "singular_values": [
+            0.16492213308811188,
+            6.831436749621389e-09
+          ],
+          "stable_rank": 0.9999999756216187,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.16492213107784454
+        },
+        "base_model.model.model.layers.19.self_attn.k_proj": {
+          "singular_values": [
+            0.07414326071739197,
+            6.316577261245016e-10
+          ],
+          "stable_rank": 1.000000022217454,
+          "energy_outside_first_direction": 2.2217453654604924e-08,
+          "update_l2": 0.07414326154102921
+        },
+        "base_model.model.model.layers.19.self_attn.v_proj": {
+          "singular_values": [
+            0.06865853071212769,
+            9.327602024100656e-10
+          ],
+          "stable_rank": 1.0000000308990027,
+          "energy_outside_first_direction": 3.0899001690620764e-08,
+          "update_l2": 0.06865853177286774
+        },
+        "base_model.model.model.layers.19.self_attn.o_proj": {
+          "singular_values": [
+            0.12913259863853455,
+            5.3487427820186895e-09
+          ],
+          "stable_rank": 1.0000000133051303,
+          "energy_outside_first_direction": 1.3305130108776098e-08,
+          "update_l2": 0.12913259949759756
+        },
+        "base_model.model.model.layers.19.mlp.gate_proj": {
+          "singular_values": [
+            0.2615852952003479,
+            1.6844653671910237e-08
+          ],
+          "stable_rank": 1.000000045955259,
+          "energy_outside_first_direction": 4.595525682216106e-08,
+          "update_l2": 0.2615853012109578
+        },
+        "base_model.model.model.layers.19.mlp.up_proj": {
+          "singular_values": [
+            0.22492314875125885,
+            1.4476962739706778e-08
+          ],
+          "stable_rank": 0.9999999834016089,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.22492314688457765
+        },
+        "base_model.model.model.layers.19.mlp.down_proj": {
+          "singular_values": [
+            0.12428652495145798,
+            7.26157978192532e-09
+          ],
+          "stable_rank": 1.000000025040455,
+          "energy_outside_first_direction": 2.5040454487701425e-08,
+          "update_l2": 0.12428652650755354
+        },
+        "base_model.model.model.layers.20.self_attn.q_proj": {
+          "singular_values": [
+            0.14017139375209808,
+            5.638973732402519e-09
+          ],
+          "stable_rank": 0.9999999795399007,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.14017139231813774
+        },
+        "base_model.model.model.layers.20.self_attn.k_proj": {
+          "singular_values": [
+            0.07677629590034485,
+            7.940982871268432e-10
+          ],
+          "stable_rank": 0.999999977986596,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07677629505529103
+        },
+        "base_model.model.model.layers.20.self_attn.v_proj": {
+          "singular_values": [
+            0.06642939150333405,
+            4.638825323866058e-09
+          ],
+          "stable_rank": 0.9999999577863246,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06642939010121965
+        },
+        "base_model.model.model.layers.20.self_attn.o_proj": {
+          "singular_values": [
+            0.12417808920145035,
+            1.1411987799192502e-08
+          ],
+          "stable_rank": 0.9999999786971491,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12417808787877668
+        },
+        "base_model.model.model.layers.20.mlp.gate_proj": {
+          "singular_values": [
+            0.21454213559627533,
+            1.9215512736536766e-08
+          ],
+          "stable_rank": 0.9999999837192843,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.21454213384982557
+        },
+        "base_model.model.model.layers.20.mlp.up_proj": {
+          "singular_values": [
+            0.2174617052078247,
+            1.328144350054572e-08
+          ],
+          "stable_rank": 1.0000000375558649,
+          "energy_outside_first_direction": 3.755586330811411e-08,
+          "update_l2": 0.21746170929130587
+        },
+        "base_model.model.model.layers.20.mlp.down_proj": {
+          "singular_values": [
+            0.11996299028396606,
+            1.2512729741231965e-09
+          ],
+          "stable_rank": 0.9999999737823205,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.11996298871139044
+        },
+        "base_model.model.model.layers.21.self_attn.q_proj": {
+          "singular_values": [
+            0.12886251509189606,
+            1.1043708170177524e-09
+          ],
+          "stable_rank": 1.0000000460575118,
+          "energy_outside_first_direction": 4.605750980601897e-08,
+          "update_l2": 0.12886251805943943
+        },
+        "base_model.model.model.layers.21.self_attn.k_proj": {
+          "singular_values": [
+            0.07710516452789307,
+            3.6429494976175647e-09
+          ],
+          "stable_rank": 1.0000000374967095,
+          "energy_outside_first_direction": 3.749670818287143e-08,
+          "update_l2": 0.07710516597348803
+        },
+        "base_model.model.model.layers.21.self_attn.v_proj": {
+          "singular_values": [
+            0.08873007446527481,
+            4.9877693086841646e-09
+          ],
+          "stable_rank": 0.9999999502336812,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.0887300722573902
+        },
+        "base_model.model.model.layers.21.self_attn.o_proj": {
+          "singular_values": [
+            0.1305423378944397,
+            2.7646807065906387e-09
+          ],
+          "stable_rank": 0.9999999631377828,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13054233548839966
+        },
+        "base_model.model.model.layers.21.mlp.gate_proj": {
+          "singular_values": [
+            0.2145732194185257,
+            1.5089527849454498e-08
+          ],
+          "stable_rank": 1.0000000210627582,
+          "energy_outside_first_direction": 2.1062757760148543e-08,
+          "update_l2": 0.2145732216782776
+        },
+        "base_model.model.model.layers.21.mlp.up_proj": {
+          "singular_values": [
+            0.23614613711833954,
+            9.552832302972547e-09
+          ],
+          "stable_rank": 1.0000000208862772,
+          "energy_outside_first_direction": 2.0886276708154128e-08,
+          "update_l2": 0.23614613958444636
+        },
+        "base_model.model.model.layers.21.mlp.down_proj": {
+          "singular_values": [
+            0.11097173392772675,
+            1.5120777963062437e-09
+          ],
+          "stable_rank": 0.99999999482831,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.11097173364077104
+        },
+        "base_model.model.model.layers.22.self_attn.q_proj": {
+          "singular_values": [
+            0.1594235599040985,
+            2.355399608688913e-08
+          ],
+          "stable_rank": 0.9999999936990943,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.1594235594018421
+        },
+        "base_model.model.model.layers.22.self_attn.k_proj": {
+          "singular_values": [
+            0.07989218086004257,
+            3.329880593483381e-09
+          ],
+          "stable_rank": 1.0000000045797157,
+          "energy_outside_first_direction": 4.579715606745083e-09,
+          "update_l2": 0.0798921810429843
+        },
+        "base_model.model.model.layers.22.self_attn.v_proj": {
+          "singular_values": [
+            0.07917876541614532,
+            7.053224670983127e-10
+          ],
+          "stable_rank": 1.0000000288100155,
+          "energy_outside_first_direction": 2.8810014707225662e-08,
+          "update_l2": 0.07917876655671605
+        },
+        "base_model.model.model.layers.22.self_attn.o_proj": {
+          "singular_values": [
+            0.10347342491149902,
+            1.3941835463882057e-09
+          ],
+          "stable_rank": 1.0000000076398237,
+          "energy_outside_first_direction": 7.63982366258631e-09,
+          "update_l2": 0.10347342530675839
+        },
+        "base_model.model.model.layers.22.mlp.gate_proj": {
+          "singular_values": [
+            0.20839282870292664,
+            3.517482971560071e-09
+          ],
+          "stable_rank": 1.0000000138048808,
+          "energy_outside_first_direction": 1.3804880572010347e-08,
+          "update_l2": 0.20839283014134571
+        },
+        "base_model.model.model.layers.22.mlp.up_proj": {
+          "singular_values": [
+            0.20062586665153503,
+            1.4082968569084642e-08
+          ],
+          "stable_rank": 0.9999999714382727,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.20062586378642436
+        },
+        "base_model.model.model.layers.22.mlp.down_proj": {
+          "singular_values": [
+            0.11260612308979034,
+            9.36744459778538e-09
+          ],
+          "stable_rank": 1.0000000343293833,
+          "energy_outside_first_direction": 3.432938211478387e-08,
+          "update_l2": 0.11260612502263971
+        },
+        "base_model.model.model.layers.23.self_attn.q_proj": {
+          "singular_values": [
+            0.14020472764968872,
+            2.9428526282515577e-09
+          ],
+          "stable_rank": 1.0000000164030494,
+          "energy_outside_first_direction": 1.6403049141189285e-08,
+          "update_l2": 0.14020472879958126
+        },
+        "base_model.model.model.layers.23.self_attn.k_proj": {
+          "singular_values": [
+            0.07272680103778839,
+            9.368529285680438e-10
+          ],
+          "stable_rank": 1.0000000124145358,
+          "energy_outside_first_direction": 1.2414535621729783e-08,
+          "update_l2": 0.07272680148922313
+        },
+        "base_model.model.model.layers.23.self_attn.v_proj": {
+          "singular_values": [
+            0.0725468099117279,
+            6.363992000046892e-09
+          ],
+          "stable_rank": 1.0000000406380336,
+          "energy_outside_first_direction": 4.063803182852155e-08,
+          "update_l2": 0.07254681138580774
+        },
+        "base_model.model.model.layers.23.self_attn.o_proj": {
+          "singular_values": [
+            0.10231120139360428,
+            5.360929478115395e-09
+          ],
+          "stable_rank": 1.00000004314837,
+          "energy_outside_first_direction": 4.3148368211731736e-08,
+          "update_l2": 0.10231120360088504
+        },
+        "base_model.model.model.layers.23.mlp.gate_proj": {
+          "singular_values": [
+            0.20466084778308868,
+            9.663055244857333e-09
+          ],
+          "stable_rank": 0.9999999717014418,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.2046608448872852
+        },
+        "base_model.model.model.layers.23.mlp.up_proj": {
+          "singular_values": [
+            0.20668986439704895,
+            3.0701814424105578e-09
+          ],
+          "stable_rank": 1.0000000351353426,
+          "energy_outside_first_direction": 3.513534130306084e-08,
+          "update_l2": 0.20668986802810851
+        },
+        "base_model.model.model.layers.23.mlp.down_proj": {
+          "singular_values": [
+            0.1416267603635788,
+            5.5412319177605696e-09
+          ],
+          "stable_rank": 1.0000000452470028,
+          "energy_outside_first_direction": 4.5247000923787084e-08,
+          "update_l2": 0.14162676356767198
+        },
+        "base_model.model.model.layers.24.self_attn.q_proj": {
+          "singular_values": [
+            0.14347554743289948,
+            3.915257007491846e-09
+          ],
+          "stable_rank": 1.0000000308210069,
+          "energy_outside_first_direction": 3.082100585860559e-08,
+          "update_l2": 0.14347554964392986
+        },
+        "base_model.model.model.layers.24.self_attn.k_proj": {
+          "singular_values": [
+            0.0650879293680191,
+            5.452216012002964e-09
+          ],
+          "stable_rank": 1.0000000537908171,
+          "energy_outside_first_direction": 5.379081424727872e-08,
+          "update_l2": 0.06508793111858553
+        },
+        "base_model.model.model.layers.24.self_attn.v_proj": {
+          "singular_values": [
+            0.06813251227140427,
+            6.91522394902222e-10
+          ],
+          "stable_rank": 0.9999999662552334,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06813251112184639
+        },
+        "base_model.model.model.layers.24.self_attn.o_proj": {
+          "singular_values": [
+            0.11454886198043823,
+            1.795644410940156e-09
+          ],
+          "stable_rank": 1.0000000119628278,
+          "energy_outside_first_direction": 1.1962827617395533e-08,
+          "update_l2": 0.11454886266560238
+        },
+        "base_model.model.model.layers.24.mlp.gate_proj": {
+          "singular_values": [
+            0.20713923871517181,
+            2.2853349435081327e-08
+          ],
+          "stable_rank": 1.0000000022463853,
+          "energy_outside_first_direction": 2.2463852999976552e-09,
+          "update_l2": 0.2071392389478291
+        },
+        "base_model.model.model.layers.24.mlp.up_proj": {
+          "singular_values": [
+            0.20655331015586853,
+            1.2949787908667076e-08
+          ],
+          "stable_rank": 1.0000000213689204,
+          "energy_outside_first_direction": 2.1368919966846533e-08,
+          "update_l2": 0.20655331236277916
+        },
+        "base_model.model.model.layers.24.mlp.down_proj": {
+          "singular_values": [
+            0.10561661422252655,
+            7.570934101863713e-09
+          ],
+          "stable_rank": 1.0000000333036774,
+          "energy_outside_first_direction": 3.3303676372220536e-08,
+          "update_l2": 0.10561661598123737
+        },
+        "base_model.model.model.layers.25.self_attn.q_proj": {
+          "singular_values": [
+            0.14617088437080383,
+            4.7529971070048305e-09
+          ],
+          "stable_rank": 1.0000000044263162,
+          "energy_outside_first_direction": 4.426316091432625e-09,
+          "update_l2": 0.14617088469430312
+        },
+        "base_model.model.model.layers.25.self_attn.k_proj": {
+          "singular_values": [
+            0.06765300035476685,
+            4.152855392902666e-09
+          ],
+          "stable_rank": 0.9999999980183046,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06765300028773302
+        },
+        "base_model.model.model.layers.25.self_attn.v_proj": {
+          "singular_values": [
+            0.07042036950588226,
+            6.118117124032096e-10
+          ],
+          "stable_rank": 0.9999999541989398,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07042036789321846
+        },
+        "base_model.model.model.layers.25.self_attn.o_proj": {
+          "singular_values": [
+            0.10373345762491226,
+            2.855652159183819e-09
+          ],
+          "stable_rank": 1.000000023244516,
+          "energy_outside_first_direction": 2.3244515534592836e-08,
+          "update_l2": 0.10373345883052927
+        },
+        "base_model.model.model.layers.25.mlp.gate_proj": {
+          "singular_values": [
+            0.2073579877614975,
+            8.874277312997947e-09
+          ],
+          "stable_rank": 0.9999999782303427,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.20735798550444132
+        },
+        "base_model.model.model.layers.25.mlp.up_proj": {
+          "singular_values": [
+            0.19965116679668427,
+            1.1681506428828925e-08
+          ],
+          "stable_rank": 0.999999979022225,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.19965116470256564
+        },
+        "base_model.model.model.layers.25.mlp.down_proj": {
+          "singular_values": [
+            0.13790388405323029,
+            1.5353839311060824e-09
+          ],
+          "stable_rank": 0.9999999514557766,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13790388070601176
+        },
+        "base_model.model.model.layers.26.self_attn.q_proj": {
+          "singular_values": [
+            0.12966547906398773,
+            7.664965551157366e-09
+          ],
+          "stable_rank": 1.0000000104868836,
+          "energy_outside_first_direction": 1.0486883472715647e-08,
+          "update_l2": 0.12966547974388112
+        },
+        "base_model.model.model.layers.26.self_attn.k_proj": {
+          "singular_values": [
+            0.0684012919664383,
+            4.9552277836539815e-09
+          ],
+          "stable_rank": 1.0000000350138818,
+          "energy_outside_first_direction": 3.5013880461676194e-08,
+          "update_l2": 0.06840129316393566
+        },
+        "base_model.model.model.layers.26.self_attn.v_proj": {
+          "singular_values": [
+            0.07151173055171967,
+            5.847818229653967e-09
+          ],
+          "stable_rank": 1.0000000080113907,
+          "energy_outside_first_direction": 8.011390661977202e-09,
+          "update_l2": 0.07151173083817387
+        },
+        "base_model.model.model.layers.26.self_attn.o_proj": {
+          "singular_values": [
+            0.10426908731460571,
+            5.424584781366093e-09
+          ],
+          "stable_rank": 1.0000000154966595,
+          "energy_outside_first_direction": 1.549665917810472e-08,
+          "update_l2": 0.10426908812251698
+        },
+        "base_model.model.model.layers.26.mlp.gate_proj": {
+          "singular_values": [
+            0.22306787967681885,
+            1.1479857953133887e-08
+          ],
+          "stable_rank": 1.0000000199568873,
+          "energy_outside_first_direction": 1.9956886809779917e-08,
+          "update_l2": 0.22306788190268909
+        },
+        "base_model.model.model.layers.26.mlp.up_proj": {
+          "singular_values": [
+            0.2051401436328888,
+            1.578433739268803e-08
+          ],
+          "stable_rank": 0.9999999722269585,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.20514014078420592
+        },
+        "base_model.model.model.layers.26.mlp.down_proj": {
+          "singular_values": [
+            0.10203507542610168,
+            2.0008110723779282e-09
+          ],
+          "stable_rank": 0.9999999735114219,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10203507407471965
+        },
+        "base_model.model.model.layers.27.self_attn.q_proj": {
+          "singular_values": [
+            0.13784430921077728,
+            2.695168754840438e-09
+          ],
+          "stable_rank": 1.000000003389837,
+          "energy_outside_first_direction": 3.3898370777052378e-09,
+          "update_l2": 0.13784430944441217
+        },
+        "base_model.model.model.layers.27.self_attn.k_proj": {
+          "singular_values": [
+            0.06303658336400986,
+            7.84230902439731e-09
+          ],
+          "stable_rank": 0.9999999640047852,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06303658222950216
+        },
+        "base_model.model.model.layers.27.self_attn.v_proj": {
+          "singular_values": [
+            0.0694631040096283,
+            1.093812818098172e-09
+          ],
+          "stable_rank": 0.9999999659667896,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06946310282760207
+        },
+        "base_model.model.model.layers.27.self_attn.o_proj": {
+          "singular_values": [
+            0.10989807546138763,
+            7.320306583125102e-09
+          ],
+          "stable_rank": 0.9999999780781826,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10989807425680485
+        },
+        "base_model.model.model.layers.27.mlp.gate_proj": {
+          "singular_values": [
+            0.20052264630794525,
+            1.88382482946281e-08
+          ],
+          "stable_rank": 0.9999999735394804,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.20052264365497852
+        },
+        "base_model.model.model.layers.27.mlp.up_proj": {
+          "singular_values": [
+            0.2099543958902359,
+            1.4739184983625364e-08
+          ],
+          "stable_rank": 1.0000000313808624,
+          "energy_outside_first_direction": 3.138086135390239e-08,
+          "update_l2": 0.20995439918451086
+        },
+        "base_model.model.model.layers.27.mlp.down_proj": {
+          "singular_values": [
+            0.10082519799470901,
+            2.0744155282415022e-09
+          ],
+          "stable_rank": 0.999999970101476,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.1008251964874467
+        },
+        "base_model.model.model.layers.28.self_attn.q_proj": {
+          "singular_values": [
+            0.1303359717130661,
+            6.552760556388648e-09
+          ],
+          "stable_rank": 0.9999999882047444,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13033597094439306
+        },
+        "base_model.model.model.layers.28.self_attn.k_proj": {
+          "singular_values": [
+            0.0649215430021286,
+            2.5217723464976416e-09
+          ],
+          "stable_rank": 1.0000000479452371,
+          "energy_outside_first_direction": 4.7945234671331605e-08,
+          "update_l2": 0.06492154455846796
+        },
+        "base_model.model.model.layers.28.self_attn.v_proj": {
+          "singular_values": [
+            0.06768710911273956,
+            5.36541699958093e-09
+          ],
+          "stable_rank": 0.9999999581436315,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06768710769617126
+        },
+        "base_model.model.model.layers.28.self_attn.o_proj": {
+          "singular_values": [
+            0.11098293960094452,
+            1.0180737364251513e-09
+          ],
+          "stable_rank": 1.0000000282018455,
+          "energy_outside_first_direction": 2.8201844637365525e-08,
+          "update_l2": 0.11098294116590636
+        },
+        "base_model.model.model.layers.28.mlp.gate_proj": {
+          "singular_values": [
+            0.2021370530128479,
+            3.0142786044962122e-09
+          ],
+          "stable_rank": 1.0000000452638673,
+          "energy_outside_first_direction": 4.526386521153114e-08,
+          "update_l2": 0.20213705758760023
+        },
+        "base_model.model.model.layers.28.mlp.up_proj": {
+          "singular_values": [
+            0.20399954915046692,
+            6.858513756924367e-09
+          ],
+          "stable_rank": 1.0000000394624564,
+          "energy_outside_first_direction": 3.946245485941802e-08,
+          "update_l2": 0.20399955317562854
+        },
+        "base_model.model.model.layers.28.mlp.down_proj": {
+          "singular_values": [
+            0.11501120775938034,
+            5.7708571254977414e-09
+          ],
+          "stable_rank": 1.0000000258764374,
+          "energy_outside_first_direction": 2.5876436660077218e-08,
+          "update_l2": 0.11501120924742049
+        },
+        "base_model.model.model.layers.29.self_attn.q_proj": {
+          "singular_values": [
+            0.1484321653842926,
+            1.661092241533879e-08
+          ],
+          "stable_rank": 1.00000001984391,
+          "energy_outside_first_direction": 1.984390962661564e-08,
+          "update_l2": 0.14843216685702987
+        },
+        "base_model.model.model.layers.29.self_attn.k_proj": {
+          "singular_values": [
+            0.0704919695854187,
+            9.795622091246514e-10
+          ],
+          "stable_rank": 0.9999999841615212,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07049196902717592
+        },
+        "base_model.model.model.layers.29.self_attn.v_proj": {
+          "singular_values": [
+            0.06659526377916336,
+            2.017107814111796e-09
+          ],
+          "stable_rank": 1.000000016122636,
+          "energy_outside_first_direction": 1.612263567096761e-08,
+          "update_l2": 0.06659526431600896
+        },
+        "base_model.model.model.layers.29.self_attn.o_proj": {
+          "singular_values": [
+            0.1284254640340805,
+            4.7242436629346685e-09
+          ],
+          "stable_rank": 1.0000000521788739,
+          "energy_outside_first_direction": 5.2178871223773626e-08,
+          "update_l2": 0.1284254673846285
+        },
+        "base_model.model.model.layers.29.mlp.gate_proj": {
+          "singular_values": [
+            0.20897012948989868,
+            7.879430441448676e-09
+          ],
+          "stable_rank": 1.0000000220117093,
+          "energy_outside_first_direction": 2.201170890003823e-08,
+          "update_l2": 0.20897013178979354
+        },
+        "base_model.model.model.layers.29.mlp.up_proj": {
+          "singular_values": [
+            0.2093587964773178,
+            9.009820445271544e-09
+          ],
+          "stable_rank": 1.0000000139829708,
+          "energy_outside_first_direction": 1.3982970670234351e-08,
+          "update_l2": 0.20935879794104678
+        },
+        "base_model.model.model.layers.29.mlp.down_proj": {
+          "singular_values": [
+            0.1441156268119812,
+            5.701382921330378e-09
+          ],
+          "stable_rank": 0.9999999560110937,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.14411562364223676
+        },
+        "base_model.model.model.layers.30.self_attn.q_proj": {
+          "singular_values": [
+            0.1308119297027588,
+            3.084785316076477e-09
+          ],
+          "stable_rank": 1.000000031727389,
+          "energy_outside_first_direction": 3.1727387828084375e-08,
+          "update_l2": 0.13081193177791925
+        },
+        "base_model.model.model.layers.30.self_attn.k_proj": {
+          "singular_values": [
+            0.07386351376771927,
+            6.800970897558045e-10
+          ],
+          "stable_rank": 0.9999999682550214,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07386351259532142
+        },
+        "base_model.model.model.layers.30.self_attn.v_proj": {
+          "singular_values": [
+            0.0710596814751625,
+            3.015342864287618e-09
+          ],
+          "stable_rank": 0.9999999863968788,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07105968099184577
+        },
+        "base_model.model.model.layers.30.self_attn.o_proj": {
+          "singular_values": [
+            0.10767297446727753,
+            1.6197226893055472e-09
+          ],
+          "stable_rank": 0.9999999989609928,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10767297441134104
+        },
+        "base_model.model.model.layers.30.mlp.gate_proj": {
+          "singular_values": [
+            0.21607276797294617,
+            5.536532121652726e-09
+          ],
+          "stable_rank": 1.0000000374801588,
+          "energy_outside_first_direction": 3.748015742210953e-08,
+          "update_l2": 0.21607277202216696
+        },
+        "base_model.model.model.layers.30.mlp.up_proj": {
+          "singular_values": [
+            0.22623449563980103,
+            1.4433703121596864e-08
+          ],
+          "stable_rank": 0.9999999905286275,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.22623449456842545
+        },
+        "base_model.model.model.layers.30.mlp.down_proj": {
+          "singular_values": [
+            0.10365398973226547,
+            2.6350823745247e-09
+          ],
+          "stable_rank": 1.0000000194755403,
+          "energy_outside_first_direction": 1.9475539958513366e-08,
+          "update_l2": 0.1036539907416242
+        },
+        "base_model.model.model.layers.31.self_attn.q_proj": {
+          "singular_values": [
+            0.13130559027194977,
+            1.8064330031819509e-09
+          ],
+          "stable_rank": 0.9999999741709795,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.13130558857620236
+        },
+        "base_model.model.model.layers.31.self_attn.k_proj": {
+          "singular_values": [
+            0.06305262446403503,
+            1.2813453631466132e-09
+          ],
+          "stable_rank": 1.000000020124145,
+          "energy_outside_first_direction": 2.0124144572974956e-08,
+          "update_l2": 0.0630526250984751
+        },
+        "base_model.model.model.layers.31.self_attn.v_proj": {
+          "singular_values": [
+            0.07890576869249344,
+            5.993082474731182e-09
+          ],
+          "stable_rank": 1.0000000295054612,
+          "energy_outside_first_direction": 2.9505460297230002e-08,
+          "update_l2": 0.07890576985656898
+        },
+        "base_model.model.model.layers.31.self_attn.o_proj": {
+          "singular_values": [
+            0.12881805002689362,
+            9.446753601594082e-09
+          ],
+          "stable_rank": 0.9999999731790065,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.12881804829937957
+        },
+        "base_model.model.model.layers.31.mlp.gate_proj": {
+          "singular_values": [
+            0.20202191174030304,
+            1.7662474149915397e-08
+          ],
+          "stable_rank": 1.0000000220655398,
+          "energy_outside_first_direction": 2.2065539284632507e-08,
+          "update_l2": 0.2020219139691643
+        },
+        "base_model.model.model.layers.31.mlp.up_proj": {
+          "singular_values": [
+            0.21567963063716888,
+            7.721502548463377e-09
+          ],
+          "stable_rank": 1.0000000131218565,
+          "energy_outside_first_direction": 1.3121856268227816e-08,
+          "update_l2": 0.21567963205222745
+        },
+        "base_model.model.model.layers.31.mlp.down_proj": {
+          "singular_values": [
+            0.11470849812030792,
+            1.906154345476807e-09
+          ],
+          "stable_rank": 0.9999999733135351,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.11470849658972576
+        },
+        "base_model.model.model.layers.32.self_attn.q_proj": {
+          "singular_values": [
+            0.13389351963996887,
+            7.227115794705696e-09
+          ],
+          "stable_rank": 1.0000000374860625,
+          "energy_outside_first_direction": 3.748606103304297e-08,
+          "update_l2": 0.13389352214953926
+        },
+        "base_model.model.model.layers.32.self_attn.k_proj": {
+          "singular_values": [
+            0.07064070552587509,
+            3.3527203235905745e-09
+          ],
+          "stable_rank": 0.9999999930473417,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07064070528030475
+        },
+        "base_model.model.model.layers.32.self_attn.v_proj": {
+          "singular_values": [
+            0.07507915049791336,
+            8.89834872452866e-10
+          ],
+          "stable_rank": 0.9999999889667713,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07507915008373064
+        },
+        "base_model.model.model.layers.32.self_attn.o_proj": {
+          "singular_values": [
+            0.10750697553157806,
+            2.2798112286892547e-09
+          ],
+          "stable_rank": 0.9999999727119178,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10750697406474846
+        },
+        "base_model.model.model.layers.32.mlp.gate_proj": {
+          "singular_values": [
+            0.21426470577716827,
+            1.0073805789545531e-08
+          ],
+          "stable_rank": 0.9999999920423402,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.21426470492464547
+        },
+        "base_model.model.model.layers.32.mlp.up_proj": {
+          "singular_values": [
+            0.21076537668704987,
+            6.190016943463661e-09
+          ],
+          "stable_rank": 1.0000000301661207,
+          "energy_outside_first_direction": 3.0166119824315274e-08,
+          "update_l2": 0.21076537986603675
+        },
+        "base_model.model.model.layers.32.mlp.down_proj": {
+          "singular_values": [
+            0.10831555724143982,
+            1.2754491685029734e-08
+          ],
+          "stable_rank": 0.9999999850620209,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.10831555643243206
+        },
+        "base_model.model.model.layers.33.self_attn.q_proj": {
+          "singular_values": [
+            0.15310987830162048,
+            1.6031408422989557e-09
+          ],
+          "stable_rank": 1.000000020438803,
+          "energy_outside_first_direction": 2.0438802539324286e-08,
+          "update_l2": 0.1531098798663118
+        },
+        "base_model.model.model.layers.33.self_attn.k_proj": {
+          "singular_values": [
+            0.06765014678239822,
+            2.4518849173205126e-09
+          ],
+          "stable_rank": 1.0000000120275958,
+          "energy_outside_first_direction": 1.2027595697183813e-08,
+          "update_l2": 0.06765014718923254
+        },
+        "base_model.model.model.layers.33.self_attn.v_proj": {
+          "singular_values": [
+            0.06462422013282776,
+            1.983609498878991e-09
+          ],
+          "stable_rank": 0.9999999872377874,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.06462421972045373
+        },
+        "base_model.model.model.layers.33.self_attn.o_proj": {
+          "singular_values": [
+            0.1362873762845993,
+            1.3306525881162656e-09
+          ],
+          "stable_rank": 1.0000000034896304,
+          "energy_outside_first_direction": 3.4896303624520897e-09,
+          "update_l2": 0.1362873765223956
+        },
+        "base_model.model.model.layers.33.mlp.gate_proj": {
+          "singular_values": [
+            0.19621673226356506,
+            1.0559162433310121e-08
+          ],
+          "stable_rank": 0.999999989599564,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.19621673124319527
+        },
+        "base_model.model.model.layers.33.mlp.up_proj": {
+          "singular_values": [
+            0.18880651891231537,
+            1.924571257916341e-08
+          ],
+          "stable_rank": 1.0000000295650953,
+          "energy_outside_first_direction": 2.9565094372685508e-08,
+          "update_l2": 0.1888065217033567
+        },
+        "base_model.model.model.layers.33.mlp.down_proj": {
+          "singular_values": [
+            0.1104954406619072,
+            2.4338291382264288e-09
+          ],
+          "stable_rank": 0.9999999838420018,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.11049543976921462
+        },
+        "base_model.model.model.layers.34.self_attn.q_proj": {
+          "singular_values": [
+            0.15254344046115875,
+            1.3548973054611224e-09
+          ],
+          "stable_rank": 0.9999999723106733,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.15254343834924616
+        },
+        "base_model.model.model.layers.34.self_attn.k_proj": {
+          "singular_values": [
+            0.07979017496109009,
+            3.601858589163953e-09
+          ],
+          "stable_rank": 1.0000000322493958,
+          "energy_outside_first_direction": 3.224939482127098e-08,
+          "update_l2": 0.07979017624768255
+        },
+        "base_model.model.model.layers.34.self_attn.v_proj": {
+          "singular_values": [
+            0.07503572851419449,
+            6.336348334912145e-09
+          ],
+          "stable_rank": 0.9999999816956159,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.07503572782745309
+        },
+        "base_model.model.model.layers.34.self_attn.o_proj": {
+          "singular_values": [
+            0.15323448181152344,
+            1.6480701248156038e-08
+          ],
+          "stable_rank": 1.0000000035634855,
+          "energy_outside_first_direction": 3.563485506674624e-09,
+          "update_l2": 0.15323448208454787
+        },
+        "base_model.model.model.layers.34.mlp.gate_proj": {
+          "singular_values": [
+            0.20377804338932037,
+            6.291574816685852e-09
+          ],
+          "stable_rank": 0.9999999907143675,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.20377804244321637
+        },
+        "base_model.model.model.layers.34.mlp.up_proj": {
+          "singular_values": [
+            0.21482034027576447,
+            5.781211953603815e-09
+          ],
+          "stable_rank": 1.0000000007380945,
+          "energy_outside_first_direction": 7.380944744284079e-10,
+          "update_l2": 0.21482034035504333
+        },
+        "base_model.model.model.layers.34.mlp.down_proj": {
+          "singular_values": [
+            0.13977843523025513,
+            1.6495009802497407e-09
+          ],
+          "stable_rank": 1.0000000228515113,
+          "energy_outside_first_direction": 2.2851510905752548e-08,
+          "update_l2": 0.13977843682732938
+        },
+        "base_model.model.model.layers.35.self_attn.q_proj": {
+          "singular_values": [
+            0.13050666451454163,
+            5.893074472851367e-09
+          ],
+          "stable_rank": 1.0000000298822265,
+          "energy_outside_first_direction": 2.98822256938891e-08,
+          "update_l2": 0.13050666646445647
+        },
+        "base_model.model.model.layers.35.self_attn.k_proj": {
+          "singular_values": [
+            0.06802910566329956,
+            1.0147148676864504e-09
+          ],
+          "stable_rank": 1.0000000258725505,
+          "energy_outside_first_direction": 2.587254999131261e-08,
+          "update_l2": 0.0680291065433428
+        },
+        "base_model.model.model.layers.35.self_attn.v_proj": {
+          "singular_values": [
+            0.07520725578069687,
+            6.968684518326995e-10
+          ],
+          "stable_rank": 1.0000000391002108,
+          "energy_outside_first_direction": 3.9100209292541876e-08,
+          "update_l2": 0.07520725725100663
+        },
+        "base_model.model.model.layers.35.self_attn.o_proj": {
+          "singular_values": [
+            0.10632689297199249,
+            9.154181412895923e-09
+          ],
+          "stable_rank": 1.000000033896296,
+          "energy_outside_first_direction": 3.3896294882040934e-08,
+          "update_l2": 0.1063268947740364
+        },
+        "base_model.model.model.layers.35.mlp.gate_proj": {
+          "singular_values": [
+            0.19520510733127594,
+            5.961831917034033e-09
+          ],
+          "stable_rank": 0.999999984512675,
+          "energy_outside_first_direction": 0.0,
+          "update_l2": 0.19520510581967346
+        },
+        "base_model.model.model.layers.35.mlp.up_proj": {
+          "singular_values": [
+            0.19455380737781525,
+            5.090152299658257e-09
+          ],
+          "stable_rank": 1.0000000169439371,
+          "energy_outside_first_direction": 1.6943936920199576e-08,
+          "update_l2": 0.194553809026069
+        },
+        "base_model.model.model.layers.35.mlp.down_proj": {
+          "singular_values": [
+            0.09947546571493149,
+            3.1917861686991955e-09
+          ],
+          "stable_rank": 1.00000002021044,
+          "energy_outside_first_direction": 2.0210439655166113e-08,
+          "update_l2": 0.09947546672015295
+        }
+      }
+    }
+  ]
 }

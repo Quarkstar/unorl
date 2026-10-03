@@ -1255,3 +1255,38 @@ or restart occurred. AIME25 remains at the verified step-20 result; the
 first algorithm intervention is still scheduled after update 40. Rising
 pre-refresh training correctness is ordinary LoRA learning and cannot be
 attributed to the proposed refresh. Ten-second NVML sampling remains live.
+
+
+### 21. Corrected trial: first refresh and step-40 evaluation
+
+At step 40, all 252 adapter projections received the compensated 20-degree
+A refresh. B stayed warm; 903 optimizer-state entries were retained,
+B first moments were multiplied by 0.9396926208, and the next-update
+learning rate remained 1.5e-5. The compensation norm was 0.85285, with
+relative rounding error 4.2335e-5. On 1,024 real trajectory-prefix tokens,
+mean before/after KL was 0.00047572; chosen-token absolute log-probability
+change averaged 0.008416 (maximum 0.38813). Argmax changed on 0.1953%
+of probe tokens. This verifies a small, nonzero numerical boundary shift;
+it does not guarantee identical long-response sampling.
+
+The rank record's `committed_merge=false` does **not** mean the refresh
+was skipped: the refresh worker separately appends the compensation
+factors and then measures rank without appending the active adapter.
+An interim status message misinterpreted this flag; the authoritative
+step-40 metrics show one completed cycle and 252 refreshed projections.
+
+Saved AIME25 responses verify 41 correct / 240 samples and eight solved
+questions / thirty (eight samples per question): **17.08% avg@8 and
+26.67% pass@8**, versus historical standard LoRA's 11.25% and 26.67%.
+This evaluation follows compensation but precedes learning in the fresh
+direction. Its higher avg@8 cannot establish a refresh advantage: policies
+already differ through stochastic pre-boundary training, and boundary
+rounding can also change sampled outputs. Recent ten-update training
+correctness was 28.75%; those rollouts were generated before the refresh.
+
+The step-40 effective optimizer update, measured before compensation,
+had norm 0.07345 and cosine 0.95350 with the previous update. Accumulated
+stable rank remained approximately one immediately after compensation,
+as expected from retaining B and preserving the effective weight. Rank
+growth requires subsequent B updates. The decisive comparisons remain
+the 46-60 learning window and the final step-100 evaluation.
