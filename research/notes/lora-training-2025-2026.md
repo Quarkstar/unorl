@@ -1427,3 +1427,39 @@ update continuity; neither scalar gradient norms nor this one window
 establish causal improvement or final parity. Finish the original
 100-step trial and inspect the final evaluation before choosing a new
 method or replication.
+
+## 27. Question-level uncertainty for the original 100-step comparison
+
+At 20:18 UTC on October 3, the gradual-refresh trial had completed 98 of its
+100 updates and remained live. The final evaluation was still pending.
+Research snapshots now retain hashed question identities, eight-response counts
+and raw evaluation-file hashes for all available experiments. The reproducible
+comparison command is:
+
+```bash
+.venv-docs/bin/python scripts/research/snapshot.py
+.venv-docs/bin/python -m scripts.research.analyze_refresh_base
+```
+
+The output, `research/data/refresh-base-comparison-analysis.json`, records actual
+common-update counts, incomplete windows, all configuration differences, paired
+question uncertainty, and differences in improvement from each run's step-zero
+evaluation. Missing historical evaluation dumps remain missing; the script does
+not reconstruct them from aggregate scores. The reference is historical, not a
+fresh training-seed replication. Configuration differences include the project
+and environment rename, checkpoint frequency, run paths and refresh settings;
+these are exposed rather than labelled an exactly matched runtime comparison.
+
+At step 80, candidate-minus-standard AIME25 avg@8 is **+3.33 percentage points**,
+with a descriptive 10,000-draw paired-question bootstrap interval of
+**[−1.25, +7.92] points**. The difference in improvement from step zero is
+**+2.50 points**, with interval **[−1.67, +7.08] points**. Pass@8 is tied, with
+an endpoint difference interval of **[−10, +10] points**. Questions, not individual
+responses, are the resampling units. These intervals describe question-level
+uncertainty on this small benchmark; they do not establish equivalence,
+superiority or uncertainty across independent training runs.
+
+This analysis is prepared before the final result to avoid deciding the
+comparison rule after observing step 100. The final assessment still requires
+successful process exit, complete eight-response evaluation groups, the full
+81–100 training window, accumulated rank and measured training memory.

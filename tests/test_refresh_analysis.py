@@ -70,3 +70,32 @@ def test_partial_windows_and_initial_adjustment_do_not_fabricate_completion():
     candidate["config"]["trainer.policy.optimizer_config.lr"] = 1e-3
     with pytest.raises(ValueError, match="recipe differs"):
         analysis.analyze(control, candidate)
+
+
+def test_base_comparison_exposes_recipe_differences_and_incomplete_final_window():
+    from scripts.research.analyze_refresh_base import analyze
+
+    control = {
+        "run_id": "historical",
+        "config": {"trainer.ckpt_interval": 100},
+        "metrics": [{"step": 91, "metrics": {"reward/mean_positive_reward": 0.4}}],
+        "evaluation_question_scores": [evaluation([0, 4, 8], 0), evaluation([1, 5, 8], 80)],
+    }
+    candidate = {
+        "run_id": "refresh",
+        "config": {"trainer.ckpt_interval": 20},
+        "metrics": [{"step": 91, "metrics": {"reward/mean_positive_reward": 0.5}}],
+        "evaluation_question_scores": [evaluation([1, 5, 8], 0), evaluation([2, 6, 8], 80)],
+    }
+    report = analyze(control, candidate)
+    window = report["windows"]["91-100"]
+    assert window["updates"] == 1
+    assert window["complete"] is False
+    assert window["metrics"]["reward/mean_positive_reward"]["candidate"] == 0.5
+    assert report["config_differences"]["trainer.ckpt_interval"] == {
+        "control": 100,
+        "candidate": 20,
+    }
+    assert "100" not in report["evaluations"]
+    gain = report["evaluations"]["80"]["avg@8"]["difference_in_improvement_from_step0"]
+    assert gain["candidate_minus_control"] == 0

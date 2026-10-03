@@ -215,22 +215,21 @@ def main():
             qs = {}
             for r in evalrows:
                 qs.setdefault(r["input_prompt"], []).append(r["score"] > 0)
-            if group == "continuation":
-                hashes[str(f.relative_to(p))] = hashlib.sha256(raw).hexdigest()
-                question_scores.append(
-                    {
-                        "step": int(f.parent.name.split("_")[2]),
-                        "benchmark": f.stem,
-                        "questions": [
-                            {
-                                "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
-                                "samples": len(scores),
-                                "correct": sum(scores),
-                            }
-                            for prompt, scores in sorted(qs.items())
-                        ],
-                    }
-                )
+            hashes[str(f.relative_to(p))] = hashlib.sha256(raw).hexdigest()
+            question_scores.append(
+                {
+                    "step": int(f.parent.name.split("_")[2]),
+                    "benchmark": f.stem,
+                    "questions": [
+                        {
+                            "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
+                            "samples": len(scores),
+                            "correct": sum(scores),
+                        }
+                        for prompt, scores in sorted(qs.items())
+                    ],
+                }
+            )
             summary.append(
                 {
                     "step": int(f.parent.name.split("_")[2]),
@@ -260,8 +259,7 @@ def main():
                 else None,
             },
         }
-        if group == "continuation":
-            result["evaluation_question_scores"] = question_scores
+        result["evaluation_question_scores"] = question_scores
         for name in (
             "initial-adapter-audit.json",
             "comparison-audit.json",
