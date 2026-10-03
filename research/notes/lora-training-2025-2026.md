@@ -1562,3 +1562,35 @@ checkpoint/model weights and the factor cache: **35,450,884,601 bytes**. All
 and after cleanup. Logs, curves, metrics, evaluation outputs, rank diagnostics
 and memory traces remain. The shared standard-LoRA step-100 checkpoint was
 preserved. `research/data/refresh-base-cleanup.json` records the scoped removal.
+
+## 29. Fresh standard-LoRA control: rationale and launch criteria
+
+The next run uses `configs/qwen3-4b-base-grpo-standard-r1-refresh-control.json`
+and the same worker as the completed gradual-refresh candidate. It starts from
+the same Qwen3-4B-Base and initial rank-one adapter for **100 updates**, with
+all eight GPUs. The GPU devices were verified idle before launch. There is no
+resume, no merge, no learning-rate restart and no change to batch size, rollout
+count, response budget, optimizer, evaluation or checkpoint cadence.
+
+This control follows directly from the compensated-refresh equations: disabling
+refresh leaves `W` fixed and trains the original `scale * B @ A` adapter; zero
+angle also gives `A_new == A_old` and zero compensation. It therefore tests
+ordinary LoRA under the same runtime and diagnostic overhead. The profile pair
+has exactly two differences: `trainer.relora_enable_merge` and
+`trainer.relora_refresh_angle_degrees`. The existing profile validation checks
+100 updates, no resume, historical training settings and zero scheduled merges
+for this branch. Native optimizer defaults and effective model/data identity
+must also be verified in the startup audit.
+
+Why spend this run: the historical reference is insufficient to distinguish a
+method effect from run-to-run sampling or runtime differences. The completed
+candidate's advantage in training reward and deficit on AIME point in different
+directions. A fresh control supplies matched actual-update telemetry and memory
+measurements without adding another algorithmic variable. This is one additional
+control, not proof of training-seed robustness. If the candidate still trails,
+the next algorithm change must address direction exploration and approximate
+moment transport, rather than simply extending training.
+
+Monitoring remains hourly, with ten-second NVML sampling and per-update allocator
+high-water records. Final assessment requires complete 30-question/eight-response
+evaluations, successful process exit, all 100 updates and a detailed report.

@@ -5,12 +5,18 @@ import json
 from pathlib import Path
 
 PLANNED_REFRESH = {
+    "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
     "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     "qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
     "qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01",
 }
 
 NOTES = {
+    "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01": (
+        "GRPO · fresh standard rank-1 LoRA control (100 steps from base)",
+        "ablation",
+        "Fresh 100-update standard LoRA control for the completed gradual-refresh trial. Same refresh worker, model, dataset, initial adapter, AdamW, constant LR 1.5e-5, alpha 32, eight rollouts, 32 prompts/update, 8192 response budget, eight GPUs, checkpoint/evaluation cadence and telemetry. Only method flags differ: refresh disabled and angle zero. No resumed checkpoint and no merge or optimizer-state reset. AIME25 sampled avg@8/pass@8 every twenty updates. Hourly monitoring and ten-second NVML sampling, plus actual training allocator peaks on each rank. This tests the original budget and runtime rather than extending the candidate. Performance parity remains unproven until complete held-out results and replication; no outcome is assumed at launch.",
+    ),
     "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01": (
         "GRPO · compensated gradual refresh, rank 1 (100 steps from base)",
         "ablation",
