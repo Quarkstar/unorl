@@ -1994,3 +1994,55 @@ from independently diverged runs; the change in gap does not identify a causal
 merge benefit. The longer 46–60 window and step-60 AIME evaluation are pending.
 The control's latest completed AIME evaluation remains step 40, and no new
 refresh variant has been launched.
+
+
+## 37. Fresh control step 60: the early reward lead narrows
+
+Verified at **2026-10-03 23:24 UTC**. The control finished update 60 and
+its AIME25 evaluation and remains live toward 100. Each raw evaluation has
+exactly 30 questions with eight scored responses per question.
+
+| AIME25 at step 60 | Fresh standard control | Warm refresh |
+|---|---:|---:|
+| Correct responses / 240 | 31 | 42 |
+| Questions solved / 30 | 8 | 11 |
+| avg@8 | 12.9167% | 17.5000% |
+| pass@8 | 26.6667% | 36.6667% |
+
+Whole-question bootstrap (10,000 draws, seed 42) gives candidate-minus-control
+avg@8 **+4.5833 points**, 95% interval **[-0.4167, +10.4167] points**.
+Pass@8 difference is **+10 points**, interval **[0, +20] points**. Adjusting
+for step-zero scores gives avg@8 improvement difference **+4.1667 points**,
+interval **[0, +8.75]**, and pass@8 improvement difference **+10 points**,
+interval **[-3.3333, +23.3333]**. These are question-level intervals from one
+training pair and several repeated evaluation checkpoints, not evidence of
+training-seed robustness or a causal refresh benefit.
+
+| Mean training correctness window | Fresh standard control | Warm refresh | Refresh minus control |
+|---|---:|---:|---:|
+| 21–40, before refresh affects training | 21.3672% | 24.7070% | +3.3398 points |
+| 41–45 | 31.4063% | 38.9063% | +7.5000 points |
+| 46–60 | 35.4427% | 37.8646% | +2.4219 points |
+| 41–60 | 34.4336% | 38.1250% | +3.6914 points |
+
+The candidate shows no cold-reset-style reward collapse, but the larger
+five-update lead does not persist: in 46–60 the gap is smaller than before
+refresh. The aggregate 41–60 gap is only 0.3516 points wider than the
+pre-refresh 21–40 gap. Neither calculation identifies a causal effect;
+rollouts and responses had already diverged before update 40. They do argue
+against treating the first five post-refresh updates as a reliable sustained
+improvement in learning rate.
+
+For 46–60, control/candidate mean entropy is **0.149305 / 0.147187**,
+gradient norm **0.0398784 / 0.0329327**, response length
+**2836.10 / 3351.92 tokens**, and actual weight-update norm
+**0.0619404 / 0.0567733**. The candidate is generating longer responses with
+similar entropy and smaller actual updates, not gaining through an obvious
+larger-step burst. These are descriptive associations, not explanations of
+the held-out score difference.
+
+The control had a gradient spike at update 52 (0.0858645 versus 0.0355271 at
+51), but actual update norm rose only from 0.0592536 to 0.0655276 (about
+10.59%). Gradient norm returned to 0.0367354 at 53, and training continued.
+No restart or recipe change was justified. The method decision remains
+pending final 100-step results; the gradual-rotation proposal has not launched.

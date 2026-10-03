@@ -4,7 +4,7 @@
     "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
   },
   "completed_updates": {
-    "control": 47,
+    "control": 60,
     "candidate": 100
   },
   "config_differences": {
@@ -161,44 +161,44 @@
       }
     },
     "46-60": {
-      "updates": 2,
-      "complete": false,
+      "updates": 15,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.359375,
-          "candidate": 0.39453125,
-          "candidate_minus_control": 0.03515625,
-          "updates": 2
+          "control": 0.35442708333333334,
+          "candidate": 0.37864583333333335,
+          "candidate_minus_control": 0.02421875000000001,
+          "updates": 15
         },
         "policy/policy_entropy": {
-          "control": 0.16479237377643585,
-          "candidate": 0.15951602905988693,
-          "candidate_minus_control": -0.00527634471654892,
-          "updates": 2
+          "control": 0.14930464526017506,
+          "candidate": 0.14718681176503498,
+          "candidate_minus_control": -0.0021178334951400812,
+          "updates": 15
         },
         "policy/grad_norm": {
-          "control": 0.036928799003362656,
-          "candidate": 0.030534484423696995,
-          "candidate_minus_control": -0.006394314579665661,
-          "updates": 2
+          "control": 0.039878361175457636,
+          "candidate": 0.03293272045751413,
+          "candidate_minus_control": -0.006945640717943506,
+          "updates": 15
         },
         "generate/avg_num_tokens": {
-          "control": 2416.759765625,
-          "candidate": 2976.650390625,
-          "candidate_minus_control": 559.890625,
-          "updates": 2
+          "control": 2836.10234375,
+          "candidate": 3351.915625,
+          "candidate_minus_control": 515.8132812500003,
+          "updates": 15
         },
         "updates/effective_delta_l2": {
-          "control": 0.0645422329358176,
-          "candidate": 0.059014463256337475,
-          "candidate_minus_control": -0.00552776967948012,
-          "updates": 2
+          "control": 0.06194037585459661,
+          "candidate": 0.05677332386616971,
+          "candidate_minus_control": -0.005167051988426895,
+          "updates": 15
         },
         "updates/cosine_with_previous_delta": {
-          "control": 0.9295061321411722,
-          "candidate": 0.9315590538499534,
-          "candidate_minus_control": 0.0020529217087812413,
-          "updates": 2
+          "control": 0.9176230936990204,
+          "candidate": 0.9112605122687637,
+          "candidate_minus_control": -0.006362581430256697,
+          "updates": 15
         }
       }
     },
@@ -323,6 +323,48 @@
           "question_bootstrap_95_interval": [
             -0.1,
             0.16666666666666666
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "60": {
+      "avg@8": {
+        "candidate_minus_control": 0.04583333333333333,
+        "question_bootstrap_95_interval": [
+          -0.004166666666666667,
+          0.10416666666666667
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.041666666666666664,
+          "question_bootstrap_95_interval": [
+            0.0,
+            0.0875
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.1,
+        "question_bootstrap_95_interval": [
+          0.0,
+          0.2
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.1,
+          "question_bootstrap_95_interval": [
+            -0.03333333333333333,
+            0.23333333333333334
           ],
           "questions": 30,
           "bootstrap_draws": 10000,
