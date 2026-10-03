@@ -88,6 +88,11 @@ def status(run):
         return "No retained metrics"
     last = run["metrics"][-1]["step"]
     planned = run["config"].get("trainer.max_training_steps")
+    if run["config"].get("trainer.resume_mode") == "from_path":
+        source = Path(run["config"]["trainer.resume_path"]).name
+        if source.startswith("global_step_"):
+            initial = int(source.removeprefix("global_step_"))
+            return f"{max(0, last - initial)} new updates; global step {last} / {planned}"
     return f"{last} steps logged" + (f" / {planned} planned" if planned else "")
 
 
@@ -134,9 +139,10 @@ def run_plot(run):
         interval = run["config"].get(
             "trainer.relora_merge_interval", run["config"].get("trainer.nora_merge_interval")
         )
-        if interval:
+        if interval and run["config"].get("trainer.relora_enable_merge", True):
             last_step = max((r["step"] for r in run["metrics"]), default=0)
-            for boundary in range(interval, last_step + 1, interval):
+            first = run["config"].get("trainer.relora_first_merge_step") or interval
+            for boundary in range(first, last_step + 1, interval):
                 ax.axvline(boundary, color="#607D8B", ls=":", alpha=0.6, lw=1)
         if percent:
             ax.yaxis.set_major_formatter(PercentFormatter(1))
@@ -400,6 +406,14 @@ def main():
         "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01",
     ]
     by_id = {run["run_id"]: run for run in runs}
+    refresh_runs = [run for run in runs if run["group"] == "continuation"]
+    if refresh_runs:
+        comparison(
+            refresh_runs,
+            {"continuation"},
+            "comparison-refresh",
+            "Shared step-100 checkpoint · standard versus gradual refresh",
+        )
     lora_runs = [by_id[rid] for rid in lora_ids]
     comparison(
         [
@@ -487,6 +501,9 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
     )
     text += "\n## ReLoRA restart comparison: completed\n\nBoth 100-step runs completed successfully. Five-update restart ramp / constant-LR resets / standard LoRA reached final AIME25 avg@8 **15.8% / 17.1% / 20.0%**, and pass@8 **40.0% / 30.0% / 43.3%**. Final 20-step training correctness was **36.3% / 37.0% / 37.5%**. The ramp showed no clear benefit in this pair. Mean accumulated stable rank at step 100 was **1.89 / 2.16** for ramp / constant-LR resets: useful rank growth occurred, but did not translate into better learning. Both boundary KL probes averaged about **0.00055**, with no immediate post-merge reward collapse. These are one run per setting and 30 evaluation questions. Full Adam history was cleared in both runs; partial moment pruning remains untested.\n\n![Matched ReLoRA comparison](figures/comparison-relora.svg)\n\n**Retention issue:** automatic cleanup mistakenly removed raw evaluation response dumps together with model exports. Aggregate evaluations, training metrics, logs, memory traces and rank diagnostics remain. The cleanup rule now preserves benchmark dump directories and has a filesystem regression test.\n\n"
     text += "\n### Where merging falls behind\n\nThe [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-diverge-from-standard-lora) finds the main deficit at **steps 46–60**: both merge runs average **32.5%** training correctness versus **36.8%** for standard LoRA. The gap largely closes by steps 81–90. Response-length growth lags and entropy remains higher; gradient norms do not collapse. This is consistent with a temporary optimization delay after the first restart, not proof of a specific cause.\n\n![Aligned ReLoRA boundary analysis](figures/relora-boundary-analysis.svg)\n\n"
+    text += "\n## Next method: compensated gradual refresh\n\nThe [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The matched branches load the same saved standard-LoRA step-100 checkpoint and each run 100 new updates. Initial evaluation is before intervention; the candidate refreshes after global updates 101, 141 and 181. This continuation will test optimization continuity and useful rank growth, not prove from-scratch superiority.\n\n"
+    if refresh_runs:
+        text += "![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)\n\n"
     text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: the matched restart-ramp versus constant-LR merge/reset comparison completed. Both accumulated updates beyond rank one, but neither improved final avg@8 over standard LoRA.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:

@@ -11,6 +11,8 @@ from unorl.relora import restart_multiplier
 @dataclass
 class ReLoRATrainerConfig(TrainerConfig):
     relora_merge_interval: int = 40
+    relora_first_merge_step: int | None = None
+    relora_enable_merge: bool = True
     relora_restart_warmup_updates: int = 5
     relora_probe_response_tokens: int = 128
 
@@ -23,7 +25,9 @@ class ReLoRATrainConfig(SkyRLTrainConfig):
 def validate_relora(cfg):
     t, g = cfg.trainer, cfg.generator
     lora, algo, opt = t.policy.model.lora, t.algorithm, t.policy.optimizer_config
-    restart_multiplier(0, t.relora_merge_interval, t.relora_restart_warmup_updates)
+    restart_multiplier(
+        0, t.relora_merge_interval, t.relora_restart_warmup_updates, t.relora_first_merge_step
+    )
     conditions = {
         "standard full-layer rank-one LoRA": lora.rank == 1
         and lora.alpha == 32

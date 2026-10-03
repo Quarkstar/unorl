@@ -172,3 +172,15 @@ caches, retaining logs, evaluations and diagnostic JSON records.
 Validation: `scripts/check_relora_fsdp.py --output OUTPUT` under eight-process
 `torch.distributed.run` checks reset scheduling, merge behavior, exact
 next-update reproduction after checkpoint loading, and dense export.
+
+### Gradual-refresh checkpoint comparison
+
+`python scripts/run_relora_refresh_pair.py --tag 20261003-01` runs the standard
+control then the candidate, each from the retained standard-LoRA step-100
+checkpoint through global step 200. The candidate rotates A by 20 degrees
+while keeping B warm and compensating in W; native AdamW counters remain.
+B first-moment projection is approximate. See the research book for the
+derivation, limits and validation. Hourly verified-process checks update
+local book snapshots; ten-second VRAM sampling remains enabled. Checkpoints
+are saved every 20 updates and cleaned on success; evaluation dumps survive.
+The original shared source checkpoint is retained.

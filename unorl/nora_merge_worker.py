@@ -32,6 +32,9 @@ class NoRAMergePolicyWorker(NoRAInitPolicyWorker):
     def merge_interval(self):
         return self.cfg.nora_merge_interval
 
+    def _should_merge(self, step):
+        return step > 0 and step % self.merge_interval == 0
+
     @property
     def merge_label(self):
         return "NoRA"
@@ -118,7 +121,7 @@ class NoRAMergePolicyWorker(NoRAInitPolicyWorker):
         norm = super().optim_step()
         step = self.scheduler.last_epoch
         self.merge_metrics = {}
-        if step > 0 and step % self.merge_interval == 0 and (norm is None or math.isfinite(norm)):
+        if self._should_merge(step) and (norm is None or math.isfinite(norm)):
             self.merge_metrics = self._merge_with_probe(step)
             self._pending_base_sync = True
         root = Path(self.cfg.export_path).parent

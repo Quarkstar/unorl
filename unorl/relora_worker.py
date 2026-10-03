@@ -24,17 +24,20 @@ from unorl.relora import (
 
 
 class ReLoRAStrategy(MergedExportStrategy):
-    def __init__(self, *args, merge_interval, restart_warmup_updates, **kwargs):
+    def __init__(
+        self, *args, merge_interval, restart_warmup_updates, first_merge_step=None, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         self.merge_interval = merge_interval
         self.restart_warmup_updates = restart_warmup_updates
+        self.first_merge_step = first_merge_step
 
     def _fsdp_init_train_model(self, model, optimizer, scheduler):
         wrapped, optimizer, _ = super()._fsdp_init_train_model(model, optimizer, scheduler)
         scheduler = torch.optim.lr_scheduler.LambdaLR(
             optimizer,
             lambda completed: restart_multiplier(
-                completed, self.merge_interval, self.restart_warmup_updates
+                completed, self.merge_interval, self.restart_warmup_updates, self.first_merge_step
             ),
         )
         return wrapped, optimizer, scheduler
@@ -45,6 +48,15 @@ class ReLoRAPolicyWorker(NoRAMergePolicyWorker):
     def merge_interval(self):
         return self.cfg.relora_merge_interval
 
+    def _should_merge(self, step):
+        first = self.cfg.relora_first_merge_step
+        first = self.merge_interval if first is None else first
+        return (
+            self.cfg.relora_enable_merge
+            and step >= first
+            and (step - first) % self.merge_interval == 0
+        )
+
     @property
     def merge_label(self):
         return "ReLoRA"
@@ -54,6 +66,7 @@ class ReLoRAPolicyWorker(NoRAMergePolicyWorker):
             ReLoRAStrategy,
             merge_interval=self.merge_interval,
             restart_warmup_updates=self.cfg.relora_restart_warmup_updates,
+            first_merge_step=self.cfg.relora_first_merge_step,
         )
         with patch.object(fsdp_worker, "FSDPStrategy", factory):
             # Standard Kaiming wrapper; no NoRA/FA/LoFT optimizer substitution.
@@ -96,7 +109,7 @@ class ReLoRAPolicyWorker(NoRAMergePolicyWorker):
         return result
 
     def forward_backward(self, data, *args, **kwargs):
-        if (self.scheduler.last_epoch + 1) % self.merge_interval == 0:
+        if self._should_merge(self.scheduler.last_epoch + 1):
             self._math_probe = trajectory_prefix(data, self.cfg.relora_probe_response_tokens)
         return super().forward_backward(data, *args, **kwargs)
 
@@ -179,9 +192,8 @@ class ReLoRAPolicyWorker(NoRAMergePolicyWorker):
 
     def optim_step(self):
         norm = super().optim_step()
-        if (
-            self.scheduler.last_epoch == self.cfg.max_training_steps
-            and self.scheduler.last_epoch % self.merge_interval
+        if self.scheduler.last_epoch == self.cfg.max_training_steps and not self._should_merge(
+            self.scheduler.last_epoch
         ):
             self.merge_metrics.update(
                 self._rank_diagnostics(self.scheduler.last_epoch, commit=False)
@@ -196,6 +208,7 @@ class ReLoRAPolicyWorker(NoRAMergePolicyWorker):
                 self.scheduler.last_epoch,
                 self.merge_interval,
                 self.cfg.relora_restart_warmup_updates,
+                self.cfg.relora_first_merge_step,
             ),
         }
 

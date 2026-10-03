@@ -60,7 +60,7 @@ def environment(gpus="0"):
 def load_config(profile):
     """Resolve local asset paths without embedding a machine-specific project root."""
     cfg = json.loads((CODE / "configs" / profile).read_text())
-    for key in ("trainer.policy.model.path", "trainer.critic.model.path"):
+    for key in ("trainer.policy.model.path", "trainer.critic.model.path", "trainer.resume_path"):
         if cfg.get(key) and not Path(cfg[key]).is_absolute():
             cfg[key] = str(ROOT / cfg[key])
     for key in ("data.train_data", "data.val_data"):
@@ -76,7 +76,9 @@ def load_config(profile):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--mode", choices=["grpo", "reinforce", "ppo", "nora-merge", "relora"], default="reinforce"
+        "--mode",
+        choices=["grpo", "reinforce", "ppo", "nora-merge", "relora", "relora-refresh"],
+        default="reinforce",
     )
     parser.add_argument("--config", help="Profile in configs/; defaults depend on --mode")
     parser.add_argument("--gpus", default="0", help="Explicit comma-separated device IDs")
@@ -91,6 +93,7 @@ def main():
             "ppo": "qwen3-4b-base-ppo-lora-r1-valuewarmup.json",
             "nora-merge": "qwen3-4b-base-grpo-nora-merge-r1.json",
             "relora": "qwen3-4b-base-grpo-relora-r1-warmup5.json",
+            "relora-refresh": "qwen3-4b-base-grpo-relora-refresh-r1-continue.json",
         }[args.mode]
     run_id = args.run_id or f"unorl-{args.mode}-{datetime.now(timezone.utc):%Y%m%d-%H%M%S}"
     if Path(run_id).name != run_id or run_id in {".", ".."}:
@@ -111,6 +114,7 @@ def main():
         "ppo": "unorl.ppo_train",
         "nora-merge": "unorl.nora_merge_train",
         "relora": "unorl.relora_train",
+        "relora-refresh": "unorl.relora_refresh_train",
     }[args.mode]
     command = [str(PYTHON), "-m", module] + [f"{k}={json.dumps(v)}" for k, v in cfg.items()]
     if args.dry_run:

@@ -5,7 +5,7 @@ import math
 import torch
 
 
-def restart_multiplier(completed_updates, merge_interval, warmup_updates):
+def restart_multiplier(completed_updates, merge_interval, warmup_updates, first_merge_step=None):
     """LR for the next update; initial training has no warmup.
 
     With interval 40 / warmup 5, updates 41..45 use 0, .25, .5, .75, 1.
@@ -15,9 +15,12 @@ def restart_multiplier(completed_updates, merge_interval, warmup_updates):
         raise ValueError("Restart warmup must be nonnegative and shorter than the cycle")
     if warmup_updates == 1:
         raise ValueError("A restart ramp needs at least two updates, or zero to disable")
-    if warmup_updates == 0 or completed_updates < merge_interval:
+    first = merge_interval if first_merge_step is None else first_merge_step
+    if first <= 0:
+        raise ValueError("First merge step must be positive")
+    if warmup_updates == 0 or completed_updates < first:
         return 1.0
-    position = completed_updates % merge_interval
+    position = (completed_updates - first) % merge_interval
     return min(1.0, position / (warmup_updates - 1))
 
 

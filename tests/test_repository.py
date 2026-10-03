@@ -94,3 +94,44 @@ def test_relora_cleanup_retains_evaluations_and_diagnostics(tmp_path, monkeypatc
     assert all(not (tmp_path / name).exists() for name in deleted)
     assert all((tmp_path / name).read_text() == "retained-or-deleted" for name in retained)
     assert module.cleanup_artifacts(tmp_path) == []
+
+
+def test_hourly_monitor_verifies_process_and_terminal_training_step(tmp_path):
+    import time
+
+    spec = importlib.util.spec_from_file_location("watch", ROOT / "scripts/watch_experiment.py")
+    watch = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(watch)
+    run_id = "monitor-unit-fixture"
+    run = tmp_path / "runs" / run_id
+    logs = tmp_path / "runs/logs"
+    run.mkdir(parents=True)
+    logs.mkdir()
+    (run / "config.json").write_text(json.dumps({"trainer.max_training_steps": 200}))
+    (run / "metrics.jsonl").write_text(
+        json.dumps(
+            {
+                "step": 101,
+                "metrics": {"reward/mean_positive_reward": 0.4, "policy/grad_norm": 0.035},
+            }
+        )
+        + "\n"
+        + '{"step":'
+    )
+    child = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)", run_id])
+    try:
+        (logs / f"{run_id}.pid").write_text(str(child.pid))
+        time.sleep(0.05)
+        live = watch.collect_status(tmp_path, run_id)
+        assert live["status"] == "running" and live["verified_alive"]
+        assert live["global_step"] == 101 and live["grad_norm"] == 0.035
+        (logs / f"{run_id}.exit-status").write_text("0")
+        assert watch.collect_status(tmp_path, run_id)["status"] == "failed_or_early_exit"
+        (run / "metrics.jsonl").write_text(json.dumps({"step": 200, "metrics": {}}) + "\n")
+        assert watch.collect_status(tmp_path, run_id)["status"] == "complete"
+    finally:
+        child.terminate()
+        child.wait(timeout=5)
+    (logs / f"{run_id}.exit-status").unlink()
+    missing = watch.collect_status(tmp_path, run_id)
+    assert missing["status"] == "launcher_missing" and not missing["verified_alive"]

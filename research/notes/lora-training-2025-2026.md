@@ -602,3 +602,184 @@ full trainable-A method. No new training was launched for this analysis.
 Reproduce the numeric windows and plots with
 `python scripts/research/analyze_relora.py` after the portable snapshots have
 been generated. [Download numerical analysis](../data/relora-boundary-analysis.json).
+
+
+## First-principles design: gradual A refresh with warm B
+
+### Evidence motivating this trial
+
+The cold-reset runs grow rank but temporarily lose reward progress at steps
+46–60; gradient norms do not disappear, and final weight-change norms are
+comparable to standard LoRA. A five-update LR ramp does not fix the gap.
+The local optimization geometry is a more specific hypothesis than simply
+asking for more rank. This is our proposed extension, not a claim that a
+published method guarantees success in RL.
+
+[LoRA-Pro](https://arxiv.org/abs/2407.18242) connects the adapter gradients
+to the induced low-rank weight update. [ReLoRA](https://arxiv.org/abs/2307.05695)
+uses repeated merge/reinitialization with optimizer/schedule stabilization.
+Our derivation below targets the discontinuity caused by a cold rank-one
+reset, rather than implementing either paper's complete method.
+
+### 1. Why function preservation is insufficient
+
+For a projection matrix, let `G` be the gradient of its effective weight.
+For ordinary LoRA with no dropout/DoRA/weight decay:
+
+```python
+W_effective = W + scale * B @ A
+grad_A = scale * B.T @ G
+grad_B = scale * G @ A.T
+delta_W_first_order = scale * (delta_B @ A + B @ delta_A)
+```
+
+`W += scale * B @ A; B.zero_(); A = fresh_random_A` can preserve the
+current effective weight in exact arithmetic, while changing both terms
+of its next update. The A gradient becomes zero because B is zero; the B
+gradient samples a new input direction. Clearing all Adam state also removes
+its previous first/second moments and resets bias correction. Holding the
+policy close at the boundary does not preserve its optimization path.
+
+As a diagnostic, for plain SGD with equal factor LR (not our AdamW optimizer),
+the first-order induced weight step is:
+
+```python
+delta_W = -lr * scale**2 * (G @ A.T @ A + B @ B.T @ G)
+```
+
+The cold reset removes the second term and replaces the first projector.
+The formula is a local first-order calculation, not a description of Adam.
+
+### 2. Compensated gradual refresh
+
+Keep B nonzero and rotate A by a fixed angle toward a random row direction
+orthogonal to the current A. Preserve A's row norm and the existing scale.
+The initial trial uses **20 degrees**, chosen before observing its results;
+`cos(angle)=0.93969`, `sin(angle)=0.34202`.
+
+```python
+# q is orthogonal to A_old and has the same row norm.
+A_new = cos(angle) * A_old + sin(angle) * q
+W_new = W_old + scale * B_old @ (A_old - A_new)
+B_new = B_old
+# Therefore, in exact arithmetic:
+W_new + scale * B_new @ A_new == W_old + scale * B_old @ A_old
+```
+
+This can also be viewed as merging the old adapter, initializing a warm
+new adapter, then subtracting that new adapter from the frozen base to
+compensate its nonzero initialization. It is a partial merge, not a full
+merge followed by zero B. Each correction is rank one, and only one active
+rank-one adapter is trainable. No dense optimizer moments or extra learned
+modules are added. The native base remains FP32 in storage, BF16 in forward
+computation, exactly as in the working recipe.
+
+On the same trajectory in exact arithmetic, `G` is unchanged and B is
+unchanged, so `grad_A` is unchanged. B's gradient becomes:
+
+```python
+grad_B_new = cos(angle) * grad_B_old + sin(angle) * scale * G @ q.T
+```
+
+For normalized rank-one rows, the spectral norm of the input-projector
+change is `norm(A)**2 * sin(angle)`. Thus the first-order SGD weight-step
+change is bounded by `lr * scale**2 * norm(G) * norm(A)**2 * sin(angle)`.
+The B-related output projector is unchanged. This gives a tunable local
+discontinuity rather than removing a whole update term. It is not an Adam
+convergence theorem or a guarantee of RL reward improvement.
+
+### 3. Adam history: exact parts and approximation
+
+Keep all Adam bias-correction counters. Keep A's first/second moments and
+B's second moments. Project B's first moment by the retained row component:
+
+```python
+m_A_new = m_A_old
+v_A_new = v_A_old
+m_B_new = cos(angle) * m_B_old
+v_B_new = v_B_old
+step_new = step_old
+```
+
+A's current gradient continuity is exact in real arithmetic, but the complete
+B gradient history along q was never measured. Its mean, variance and cross
+terms cannot be reconstructed from old diagonal Adam state. Keeping B's
+variance avoids artificially shrinking it by `cos(angle)**2`; it is a
+heuristic, not an upper bound on the unknown variance. The first-moment
+projection also omits unseen-direction history. We explicitly do **not**
+claim exact optimizer transport. Angle zero reduces to the original method
+with identical next-update behavior in our control test.
+
+### 4. What rank growth means here
+
+The total effective weight is unchanged immediately at refresh, so its
+accumulated update does not instantly gain rank. The frozen compensation
+and the newly trained active adapter can acquire different B directions
+after subsequent learning, creating higher-rank accumulated updates. If B
+directions remain collinear, rank may remain one. We measure the full
+compensation history plus the current adapter, not only base-matrix rank.
+
+### 5. Validation completed before launching
+
+- Float64 gradient checks verify exact compensation, unchanged A gradient,
+  the rotated B-gradient relation, row norm and rotation angle.
+- A warm tiny-model test checks unchanged B, Parameter identities, frozen
+  effective weights, preserved Adam counters/variances and projected B moments.
+- Continued tiny-model learning creates nonzero update energy outside rank one.
+- A zero-angle control reproduces the standard optimizer's next update exactly.
+- A factor-only telemetry test agrees with dense weight-update norm and dot
+  product without constructing a dense training gradient.
+- Actual eight-GPU FSDP2 tests exercise compensation and collective probes,
+  native Adam continuation, factor-history checkpointing, exact next-update
+  replay after reload, base-only sampler extraction, and dense final export.
+
+Mixed-precision probes remain necessary: exact matrix identities do not
+ensure identical BF16 logits. The tiny-model proof is an implementation
+check, not evidence of language-model training success.
+
+### 6. Predeclared matched experiment
+
+The old step-40 checkpoint was never retained; the standard-LoRA step-100
+checkpoint is available with all eight model, Adam and RNG shards plus
+dataloader/trainer state. Both branches start from **that same checkpoint**
+and train 100 new updates, global steps **101–200**. The control performs
+standard LoRA throughout. The candidate refreshes after **101, 141, 181**.
+The first update supplies a real rollout for boundary probes; the initial
+evaluation at step 100 occurs before any intervention. Branch sampling
+can differ due to nondeterministic kernels/request scheduling, and historical
+vLLM sampler RNG is not restored; matching configuration and a common
+policy checkpoint do not imply bitwise rollout identity.
+
+Both use full-layer rank one, alpha 32, native AdamW LR 1.5e-5, no initial or
+restart warmup, eight rollouts, 32 prompts per update, 8192 response tokens,
+no KL, the existing GRPO recipe, all eight A100s, and AIME25 sampled avg@8
+and pass@8 every 20 global steps. Resume audits require all Adam counters
+to equal the saved scheduler step. Save resumable checkpoints every 20
+steps (newest retained) and keep the shared source checkpoint untouched.
+
+Both record effective optimizer weight-step norms and successive-step
+cosines, excluding the compensation itself; boundary KL; accumulated spectra;
+allocator peaks and ten-second NVML samples. Telemetry uses optional constant
+CPU factor buffers, not dense GPU matrices; it can be disabled outside this
+research comparison. Compensation factors and previous-update telemetry are
+saved in the checkpoint client state, avoiding stale diagnostics after
+rollback/resume.
+
+A detached watcher verifies each launcher via `/proc` and records a health
+snapshot at startup, hourly, and at terminal state. It records gradient norm,
+entropy, response length and recent correctness, and updates each experiment's
+book page/plots. Successful exit requires the actual target step; the queued
+candidate starts only after the control completes successfully. Failed runs
+retain checkpoints for diagnosis. Completion cleans up only weights/state,
+preserving evaluation dumps, logs and diagnostic records. Debugging or
+method selection still requires this active research agent; the watcher
+does not pretend to autonomously reason about and fix arbitrary errors.
+
+**Decision criteria:** an actual nonzero refresh must occur; subsequent
+accumulated updates must show useful energy beyond the leading direction;
+reward after the intervention should track or improve the matched standard
+control, without a persistent AIME25 loss. A single pair on 30 evaluation
+questions gives preliminary evidence only. A successful advanced-policy
+continuation must be followed by a matched from-base test and replication
+before declaring general equivalence or superiority. The goal remains
+active until empirical evidence supports the requested performance.

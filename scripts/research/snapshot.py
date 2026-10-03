@@ -4,7 +4,22 @@ import hashlib
 import json
 from pathlib import Path
 
+PLANNED_REFRESH = {
+    "qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
+    "qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01",
+}
+
 NOTES = {
+    "qwen3-4b-base-grpo-standard-r1-continue-20261003-01": (
+        "GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)",
+        "continuation",
+        "Matched control for the gradual-refresh candidate. Load the historical standard rank-one LoRA global-step-100 model, native AdamW moments/counters, training RNG shards and dataloader position. Train 100 additional updates, global steps 101–200. Disable all merges and refreshes; use the same worker, native optimizer, scheduler, rollout synchronization, monitoring and diagnostic plumbing as the candidate. Rank one / alpha 32, LR 1.5e-5, eight rollouts, 32 prompts/update, 8192 response tokens, no KL, no warmup. AIME25 sampled avg@8/pass@8 every 20 steps. Save resumable checkpoints every 20 steps, retaining the newest; preserve the shared source checkpoint. Initial evaluation is at global step 100. Fresh inference engines are initialized with matching configuration, but their historical sampling RNG is not restored, so sampling is not bitwise continuation. Hourly process/metric checks and ten-second NVML samples are enabled. Curves and tables below reflect the latest retained metrics; outcome analysis follows completion. This is an advanced-policy continuation, not a new 0–100 trial.",
+    ),
+    "qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01": (
+        "GRPO · gradual A refresh with warm B (shared step-100 checkpoint)",
+        "continuation",
+        "Candidate derived from the adapter-gradient discontinuity analysis. Start from exactly the same historical standard-LoRA step-100 checkpoint as the control, restoring native AdamW history and dataloader position. Train global steps 101–200; after optimizer updates 101, 141 and 181, rotate each rank-one A row by 20 degrees toward a fresh orthogonal direction at the same row norm. Keep B unchanged and compensate W += scale * B @ (A_old - A_new), preserving the effective weight in exact arithmetic. Retain A moments and all Adam counters, project B first moments by cos(20 degrees), and retain B variances. The variance and first-moment treatment is approximate; unobserved orthogonal-gradient history is not reconstructed. Constant LR, no reset warmup. All remaining recipe and monitoring settings match the control. Log real response-prefix KL, base corrections, accumulated rank, allocator peaks and hourly health; factor history is checkpointed with model/Adam state. Initial evaluation at global step 100 precedes the first intervention. Curves/tables are updated from retained metrics; outcome analysis follows completion. No guarantee of improvement or exact mixed-precision continuity is claimed.",
+    ),
     "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01": (
         "GRPO · standard rank-1 ReLoRA, constant-LR resets",
         "ablation",
@@ -154,6 +169,8 @@ def main():
     registry = []
     for rid, (title, group, note) in NOTES.items():
         p = root / "runs" / rid
+        if rid in PLANNED_REFRESH and not p.exists():
+            continue
         cfg = json.loads((p / "config.json").read_text())
         rows = []
         hashes = {}
