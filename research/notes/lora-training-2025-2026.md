@@ -1290,3 +1290,21 @@ stable rank remained approximately one immediately after compensation,
 as expected from retaining B and preserving the effective weight. Rank
 growth requires subsequent B updates. The decisive comparisons remain
 the 46-60 learning window and the final step-100 evaluation.
+
+
+### 22. Second hourly check: early post-refresh learning
+
+At 16:45:03 UTC, the hourly watcher verified the original launcher PID
+1547444 and its start time, with 44 completed updates. Recent ten-update
+training correctness was 33.87%; latest entropy was 0.15467, gradient norm
+0.03239 and response length 2,854 tokens. The hourly snapshot/page refresh
+completed successfully. Both memory and hourly monitoring remained live.
+
+The first post-refresh update (41) had effective update norm 0.06705
+versus 0.07345 immediately before the boundary, and cosine 0.89861 with
+the preceding update. Update 42 had norm 0.06651 and cosine 0.93898.
+This supports continuity of the first optimizer updates rather than an
+immediate collapse. Four post-refresh updates do not resolve whether the
+method closes the earlier 46-60 reward gap or matches the final standard
+LoRA endpoint. The recent ten-update reward average mixes pre-refresh
+and post-refresh batches and is not an isolated treatment effect.
