@@ -56,6 +56,12 @@ Full-layer and final-half NoRA-init, compared with standard full-layer rank-1 Lo
 
 Final columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.
 
+### Matched continuation from the standard-LoRA step-100 checkpoint
+
+| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
+|---|---:|---:|---:|---:|---|
+| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | — | — | — | — | AdamW (SkyRL default) |
+
 ### Controlled follow-up experiments
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
@@ -136,6 +142,13 @@ Both 100-step runs completed successfully. Five-update restart ramp / constant-L
 The [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-diverge-from-standard-lora) finds the main deficit at **steps 46–60**: both merge runs average **32.5%** training correctness versus **36.8%** for standard LoRA. The gap largely closes by steps 81–90. Response-length growth lags and entropy remains higher; gradient norms do not collapse. This is consistent with a temporary optimization delay after the first restart, not proof of a specific cause.
 
 ![Aligned ReLoRA boundary analysis](figures/relora-boundary-analysis.svg)
+
+
+## Next method: compensated gradual refresh
+
+The [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The matched branches load the same saved standard-LoRA step-100 checkpoint and each run 100 new updates. Initial evaluation is before intervention; the candidate refreshes after global updates 101, 141 and 181. This continuation will test optimization continuity and useful rank growth, not prove from-scratch superiority.
+
+![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)
 
 
 ## Post-step-60 diagnosis

@@ -29,6 +29,7 @@ COLORS = [
     "#FFC107",
 ]
 GROUPS = {
+    "continuation": "Matched continuation from the standard-LoRA step-100 checkpoint",
     "ablation": "Controlled follow-up experiments",
     "primary": "Current algorithm comparison",
     "reference": "Full-parameter reference",
