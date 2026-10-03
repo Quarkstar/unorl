@@ -1714,3 +1714,20 @@ checks whether the completed trial's apparent endpoint deficit persists under
 the same runtime. Any subsequent trial must state its update-space criterion,
 optimizer approximation, rank-growth target and full 100-step comparison before
 launch. Extending to 200 steps is not a substitute for that design.
+
+### Low-rank diagnostic implementation and validation
+
+`unorl/refresh_geometry.py` implements `update_space_residual(a, b, factors)`
+for the existing `(row, column)` update-factor representation. It projects each
+column perpendicular to B and each row perpendicular to A, then evaluates the
+residual Frobenius norm through factor inner products. No full output-by-input
+matrix is formed. Zero A/B factors and zero target updates have defined behavior.
+This diagnostic is prepared for a future boundary study; it is **not inserted
+into the currently running control** and makes no optimizer changes.
+
+Two CPU tests pass: parity with an independently formed dense projection for
+small matrices (including degenerate adapters), and a 6144-by-8192 example that
+rejects any attempted dense weight-sized matrix multiplication before allocation.
+The large test reproduces the 20-degree sine law. A dense float64 matrix of that
+shape alone would occupy 384 MiB. This check establishes the diagnostic's
+allocation behavior, not an end-to-end training-memory saving. Ruff passes.
