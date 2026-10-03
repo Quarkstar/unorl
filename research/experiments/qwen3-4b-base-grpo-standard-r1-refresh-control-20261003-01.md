@@ -11,7 +11,7 @@ Fresh 100-update standard LoRA control for the completed gradual-refresh trial. 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01` |
-| Record | No retained metrics |
+| Record | 20 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -41,14 +41,38 @@ Fresh 100-update standard LoRA control for the completed gradual-refresh trial. 
 
 ## Learning curves
 
-No metric records survived, so no curve or score is fabricated.
+```{figure} ../figures/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.svg
+:alt: Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+
+Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+```
 
 ## Evaluation results
 
-No AIME25 checkpoint evaluation is retained.
+### AIME25
+
+| Step | Sample accuracy | Pass@8 |
+|---:|---:|---:|
+| 0 | 2.9% | 13.3% |
+| 20 | 5.4% | 23.3% |
+
+
+## Evaluation sample counts
+
+| Benchmark | Step | Correct responses | Questions solved ≥1 time |
+|---|---:|---:|---:|
+| aime25 | 0 | 7/240 | 4/30 |
+| aime25 | 20 | 13/240 | 7/30 |
 
 ## Quantitative observations
 
+Training response correctness averaged **10.0%** over the first 10 logged updates and **14.5%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+
+- Logged entropy: 0.7918 at step 1 → 0.3989 at step 20.
+- Policy gradient norm: 0.0311 at step 1 → 0.05805 at step 20.
+- Mean generated response tokens: 1397 at step 1 → 1106 at step 20.
+
+Best recorded AIME25 pass@8: **23.3% at step 20**. Last recorded: **23.3% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

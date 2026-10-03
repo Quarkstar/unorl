@@ -465,6 +465,16 @@ def main():
         )
         refresh_update_plot(refresh_runs)
     lora_runs = [by_id[rid] for rid in lora_ids]
+    fresh_control_id = "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01"
+    base_refresh_id = "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
+    fresh_base_runs = [by_id[rid] for rid in (fresh_control_id, base_refresh_id) if rid in by_id]
+    if len(fresh_base_runs) == 2:
+        comparison(
+            fresh_base_runs,
+            {"ablation"},
+            "comparison-refresh-base-fresh",
+            "100 steps from base · fresh standard control versus gradual refresh",
+        )
     comparison(
         [
             by_id[rid]
@@ -553,7 +563,10 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
     )
     text += "\n## ReLoRA restart comparison: completed\n\nBoth 100-step runs completed successfully. Five-update restart ramp / constant-LR resets / standard LoRA reached final AIME25 avg@8 **15.8% / 17.1% / 20.0%**, and pass@8 **40.0% / 30.0% / 43.3%**. Final 20-step training correctness was **36.3% / 37.0% / 37.5%**. The ramp showed no clear benefit in this pair. Mean accumulated stable rank at step 100 was **1.89 / 2.16** for ramp / constant-LR resets: useful rank growth occurred, but did not translate into better learning. Both boundary KL probes averaged about **0.00055**, with no immediate post-merge reward collapse. These are one run per setting and 30 evaluation questions. Full Adam history was cleared in both runs; partial moment pruning remains untested.\n\n![Matched ReLoRA comparison](figures/comparison-relora.svg)\n\n**Retention issue:** automatic cleanup mistakenly removed raw evaluation response dumps together with model exports. Aggregate evaluations, training metrics, logs, memory traces and rank diagnostics remain. The cleanup rule now preserves benchmark dump directories and has a filesystem regression test.\n\n"
     text += "\n### Where merging falls behind\n\nThe [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-diverge-from-standard-lora) finds the main deficit at **steps 46–60**: both merge runs average **32.5%** training correctness versus **36.8%** for standard LoRA. The gap largely closes by steps 81–90. Response-length growth lags and entropy remains higher; gradient norms do not collapse. This is consistent with a temporary optimization delay after the first restart, not proof of a specific cause.\n\n![Aligned ReLoRA boundary analysis](figures/relora-boundary-analysis.svg)\n\n"
-    text += "\n## Next method: compensated gradual refresh\n\nThe [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The matched branches load the same saved standard-LoRA step-100 checkpoint and each run 100 new updates. Initial evaluation is before intervention; the candidate refreshes after global updates 101, 141 and 181. The continuation candidate was manually stopped after 134 updates because this diagnostic does not answer the original 100-step base-model comparison. A new base-model profile uses refreshes at 40/80 and the original 100-update budget.\n\n"
+    text += "\n## Compensated gradual refresh: completed 100-step trial\n\nThe [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The trial from base completed all 100 updates with refreshes at 40/80. Final AIME25 avg@8 / pass@8 was **17.08% / 36.67%**, versus historical standard LoRA's **20.00% / 43.33%**. Final-window training correctness was higher (**38.63% versus 37.48%**), but additional effective rank was modest. Performance parity remains unproven; see the [final analysis](notes/lora-training-2025-2026.md#final-result-gradual-refresh-preserves-learning-but-does-not-establish-parity).\n\nThe earlier shared-step-100 continuation candidate was manually stopped after 134 global updates. It does not answer the original base-model budget comparison and is retained separately as a diagnostic.\n\n"
+    if len(fresh_base_runs) == 2:
+        current = max((row["step"] for row in by_id[fresh_control_id]["metrics"]), default=0)
+        text += f"### Fresh standard-LoRA control\n\nThe fresh control snapshot contains **{current}/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Partial control curves are not a final endpoint comparison. Both sampled starting evaluations are retained, and question-level uncertainty is reported separately.\n\n![Fresh control versus gradual refresh](figures/comparison-refresh-base-fresh.svg)\n\n"
     if refresh_runs:
         text += "![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)\n\n"
         text += "![Optimizer update geometry and refresh diagnostics](figures/refresh-update-geometry.svg)\n\nEffective weight-step norms and cosines exclude the compensating base correction. Boundary KL probes only the recorded response prefix; rank energy describes the accumulated update and is not a performance score. Missing measurements are labeled explicitly.\n\n"

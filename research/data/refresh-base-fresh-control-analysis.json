@@ -4,7 +4,7 @@
     "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
   },
   "completed_updates": {
-    "control": 0,
+    "control": 20,
     "candidate": 100
   },
   "config_differences": {
@@ -35,9 +35,46 @@
   },
   "windows": {
     "1-20": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 20,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.1220703125,
+          "candidate": 0.120703125,
+          "candidate_minus_control": -0.0013671875000000056,
+          "updates": 20
+        },
+        "policy/policy_entropy": {
+          "control": 0.6365350469946861,
+          "candidate": 0.6648786872625351,
+          "candidate_minus_control": 0.02834364026784897,
+          "updates": 20
+        },
+        "policy/grad_norm": {
+          "control": 0.0516103707253933,
+          "candidate": 0.03966311439871788,
+          "candidate_minus_control": -0.01194725632667542,
+          "updates": 20
+        },
+        "generate/avg_num_tokens": {
+          "control": 1132.1072265625,
+          "candidate": 1109.2322265625,
+          "candidate_minus_control": -22.875,
+          "updates": 20
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.11980651988635159,
+          "candidate": 0.12319387402765461,
+          "candidate_minus_control": 0.00338735414130302,
+          "updates": 20
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.8626328300534102,
+          "candidate": 0.8584485574288017,
+          "candidate_minus_control": -0.0041842726246085205,
+          "updates": 19
+        }
+      }
     },
     "21-40": {
       "updates": 0,
@@ -75,6 +112,71 @@
       "metrics": {}
     }
   },
-  "evaluations": {},
+  "evaluations": {
+    "0": {
+      "avg@8": {
+        "candidate_minus_control": 0.004166666666666667,
+        "question_bootstrap_95_interval": [
+          -0.029166666666666667,
+          0.05
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.0,
+        "question_bootstrap_95_interval": [
+          -0.13333333333333333,
+          0.13333333333333333
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      }
+    },
+    "20": {
+      "avg@8": {
+        "candidate_minus_control": 0.004166666666666667,
+        "question_bootstrap_95_interval": [
+          -0.03333333333333333,
+          0.0375
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.0,
+          "question_bootstrap_95_interval": [
+            -0.058333333333333334,
+            0.05416666666666667
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.16666666666666666,
+          0.1
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.03333333333333333,
+          "question_bootstrap_95_interval": [
+            -0.23333333333333334,
+            0.16666666666666666
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    }
+  },
   "limitations": "One control/candidate pair, not a multi-seed replication. Recipe differences are exposed explicitly. On-policy training windows contain different trajectories and are descriptive; no independent-sample confidence interval is assigned to them. Question bootstrap preserves eight-response groups but does not measure training-seed uncertainty or establish equivalence. Completion counts do not prove process success."
 }

@@ -1731,3 +1731,40 @@ rejects any attempted dense weight-sized matrix multiplication before allocation
 The large test reproduces the 20-degree sine law. A dense float64 matrix of that
 shape alone would occupy 384 MiB. This check establishes the diagnostic's
 allocation behavior, not an end-to-end training-memory saving. Ruff passes.
+
+## 31. Fresh control at step 20: similar learning before any refresh
+
+The control completed update 20 at **21:24:43 UTC**; AIME evaluation finished
+by **21:26:35 UTC** on October 3. Raw scoring records verify all **240 responses,
+30 questions and eight samples per question**. Correct responses / solved
+questions are **13/240 and 7/30**, giving **5.417% avg@8 / 23.333% pass@8**.
+The control started with 7/240 and 4/30 (**2.917% / 13.333%**).
+
+| Steps 1–20 mean | Fresh standard control | Gradual-refresh trial |
+|---|---:|---:|
+| Training correctness | 12.207% | 12.070% |
+| Entropy | 0.63654 | 0.66488 |
+| Gradient norm | 0.05161 | 0.03966 |
+| Actual optimizer weight-update L2 | 0.11981 | 0.12319 |
+| Response tokens | 1132 | 1109 |
+
+The mean gradient norm is higher in the control, but actual update magnitudes
+are close. The step-7 gradient spike (0.22846) did not produce an update spike:
+weight-step L2 was 0.12393 versus 0.12387 at step 6, and the next gradient norm
+returned to 0.04334. No optimizer or learning-rate changes were made.
+
+At step 20, refresh's avg@8 is **5.833%**, a difference of **+0.417 points**
+versus this control. Its descriptive question-bootstrap interval is
+**[−3.333, +3.750] points**. Both runs gain **2.500 points avg@8** from their
+own step-zero evaluations; the difference in gains is zero, with interval
+**[−5.833, +5.417] points**. Pass@8 is **20.000% versus 23.333%**, one solved
+question lower in the candidate; the difference interval is
+**[−16.667, +10.000] points**. These intervals use 10,000 whole-question
+resamples with seed 42 and do not capture training-seed uncertainty.
+
+This milestone precedes the first refresh at 40. Therefore it provides a check
+of early learning and sampling variation, not a causal test of merging. The
+first informative post-refresh window remains 41–60. The control continues to
+100 with unchanged settings, hourly monitoring and complete eight-rank memory
+records. The main page now plots the fresh control separately against the
+completed candidate and explicitly labels its curve as partial.
