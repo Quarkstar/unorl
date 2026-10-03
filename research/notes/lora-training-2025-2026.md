@@ -874,3 +874,31 @@ eight model, optimizer and extra-state shards plus trainer and data state.
 Raw evaluation responses remain retained. The refresh candidate has not
 started, so these measurements still describe only the standard-LoRA
 control; they do not demonstrate that compensated refresh works.
+
+### 11. Continuation control: step-180 evaluation (2026-10-03)
+
+Evaluation completed before training resumed at 10:28:57 UTC. Saved records
+verify thirty questions with eight samples each: 36 / 240 responses are
+correct, giving 15.00% avg@8; 8 / 30 questions have a correct response,
+giving 26.67% pass@8. Compared with step 160, these scores fall 4.58 and
+13.33 percentage points respectively. This is an observed evaluation
+decline, but one stochastic evaluation on thirty questions cannot establish
+its persistence or attribute it to an optimizer mechanism.
+
+There is an accompanying length signal. Responses stopped at the length cap
+increase from 81 / 240 (33.75%) at step 160 to 116 / 240 (48.33%) at step
+180. Mean evaluation length increases from 5,370 to 5,718 tokens. This is
+consistent with more difficulty finishing solutions within the fixed 8,192
+token budget; it does not prove that extending the cap would recover
+accuracy. The matched trial's response budget remains unchanged.
+
+Meanwhile, mean training correctness rises slightly from 40.27% over updates
+141–160 to 40.96% over 161–180. Mean response length rises from 4,078 to
+4,269 tokens, entropy changes from 0.1194 to 0.1176, and gradient norm from
+0.03828 to 0.04188. The evaluation decline therefore does not coincide with
+vanishing gradients or a decrease in this training-window correctness.
+The step-180 native checkpoint contains all 26 state files. Automatic
+checkpoint retention has removed the prior step-160 checkpoint; its raw
+evaluation responses are preserved. The shared source checkpoint remains
+retained. The refresh candidate has not started, so no method comparison
+can yet be made.
