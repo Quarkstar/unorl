@@ -19,6 +19,8 @@ project:
     children:
     - file: research/experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md
       title: GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)
+    - file: research/experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md
+      title: GRPO · gradual A refresh with warm B (shared step-100 checkpoint)
   - title: Controlled follow-up experiments
     children:
     - file: research/experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md

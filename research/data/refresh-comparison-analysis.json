@@ -1,5 +1,5 @@
 {
-  "status": "candidate not started",
+  "status": "paired branches available",
   "windows": {
     "101-120": {
       "paired_updates": 0,
@@ -28,6 +28,6 @@
     }
   },
   "evaluations": {},
-  "matched_recipe_verified": false,
+  "matched_recipe_verified": true,
   "limitations": "Question bootstrap treats questions as sampling units and retains response grouping. It does not measure training-seed uncertainty, prove equivalence, or establish superiority from a single pair. Training reward windows use changing on-policy samples, not fixed test questions. No confidence interval is assigned to serial training rewards."
 }

@@ -902,3 +902,75 @@ checkpoint retention has removed the prior step-160 checkpoint; its raw
 evaluation responses are preserved. The shared source checkpoint remains
 retained. The refresh candidate has not started, so no method comparison
 can yet be made.
+
+
+### 12. Completed continuation control and refresh launch (2026-10-03)
+
+The standard rank-one control reached global step 200 and exited with status
+zero. The final evaluation completed at approximately 12:01 UTC. All 100
+new updates, numbered 101–200, are present. This is a continuation from the
+shared historical step-100 checkpoint, not a new run from the base model.
+
+| Global evaluation step | Correct responses / 240 | AIME25 avg@8 | Solved questions / 30 | Pass@8 |
+| --- | ---: | ---: | ---: | ---: |
+| 100, fresh starting evaluation | 40 | 16.67% | 10 | 33.33% |
+| 120 | 46 | 19.17% | 12 | 40.00% |
+| 140 | 43 | 17.92% | 12 | 40.00% |
+| 160 | 47 | 19.58% | 12 | 40.00% |
+| 180 | 36 | 15.00% | 8 | 26.67% |
+| 200 | 41 | 17.08% | 10 | 33.33% |
+
+The final dump contains exactly thirty distinct questions with eight
+responses each. Relative to its fresh starting evaluation, final avg@8
+increases only 0.42 percentage points and pass@8 is unchanged. The observed
+step-160 peak is not the endpoint: selecting it would overstate sustained
+improvement. One stochastic evaluation per checkpoint on thirty questions
+cannot establish a precise learning trend or statistical equivalence.
+
+| Update window | Training correctness | Entropy | Gradient norm | Response tokens | Effective update L2 | Successive-update cosine |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 101–120 | 37.79% | 0.1261 | 0.04219 | 4,036 | 0.06714 | 0.9020 |
+| 121–140 | 39.39% | 0.1207 | 0.04452 | 4,249 | 0.06944 | 0.9043 |
+| 141–160 | 40.27% | 0.1194 | 0.03828 | 4,078 | 0.06035 | 0.9020 |
+| 161–180 | 40.96% | 0.1176 | 0.04188 | 4,269 | 0.06362 | 0.8951 |
+| 181–200 | 39.61% | 0.1105 | 0.04382 | 4,466 | 0.06713 | 0.9016 |
+
+Each window has twenty updates. The first cosine mean has nineteen pairs
+because the historical previous-update diagnostic was unavailable at the
+resume boundary. Training batches change over time; these means are
+descriptive and are not repeated measurements of fixed questions.
+
+Training correctness rises modestly and then retreats, while response
+length grows and entropy falls. Weight-space update norms remain nonzero
+and successive updates remain strongly aligned. These signals argue against
+vanishing updates as an explanation for the control's weak final evaluation
+gain. They do not establish that accumulated updates improve held-out math.
+At step 200, 115 / 240 evaluation responses (47.92%) stop at the length cap,
+compared with 116 at step 180 and 81 at step 160. Persistent truncation is
+an accompanying signal; changing the response budget would invalidate this
+matched comparison and is deferred.
+
+The control reports zero merge cycles and mean accumulated stable rank
+approximately one. The largest recorded trainer allocator peaks across all
+eight ranks and all new updates are **17.955 GiB allocated** (rank 6,
+step 162) and **18.828 GiB reserved** (rank 7, step 131). These cover policy
+forward/backward and optimizer work, not total device memory during rollout.
+Ten-second NVML records include vLLM's resident cache and all device
+processes, so they answer a different memory question.
+
+On successful completion, the queue removed the completed control's native
+checkpoints (17,760,116,591 bytes) and dense policy export
+(17,657,172,362 bytes). Metrics, logs, rank and memory diagnostics, and all
+raw evaluation response dumps remain available. The original shared
+step-100 checkpoint is retained for the candidate. Cleanup accounting is
+saved in the run's `checkpoint-cleanup.json`.
+
+The queue then launched `qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01`.
+Its launcher PID 1529014 was verified live at 12:02 UTC. Launch does not
+prove successful resume or refresh: the native optimizer audit and actual
+step-101 boundary diagnostics must be checked when produced. No candidate
+reward or evaluation result exists yet, so there is still no evidence that
+the proposed refresh matches or exceeds standard LoRA. The fixed comparison
+uses the endpoint and aligned windows above; the control's plateau does not
+lower the requirement to demonstrate useful candidate learning and repeat
+any promising result from the base model.
