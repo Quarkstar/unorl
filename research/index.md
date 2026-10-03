@@ -60,7 +60,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 101 | 100 | 16.7% | 33.3% | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 103 | 100 | 16.7% | 33.3% | AdamW (SkyRL default) |
 
 ### Controlled follow-up experiments
 
@@ -153,6 +153,8 @@ The [first-principles design](notes/lora-training-2025-2026.md#first-principles-
 ![Optimizer update geometry and refresh diagnostics](figures/refresh-update-geometry.svg)
 
 Effective weight-step norms and cosines exclude the compensating base correction. Boundary KL probes only the recorded response prefix; rank energy describes the accumulated update and is not a performance score. Missing measurements are labeled explicitly.
+
+[Download matched windows and question-level uncertainty](data/refresh-comparison-analysis.json). Bootstrap intervals resample whole questions with their eight responses. They do not measure training-seed uncertainty or prove equivalence.
 
 
 ## Post-step-60 diagnosis

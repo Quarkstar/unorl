@@ -787,3 +787,33 @@ questions gives preliminary evidence only. A successful advanced-policy
 continuation must be followed by a matched from-base test and replication
 before declaring general equivalence or superiority. The goal remains
 active until empirical evidence supports the requested performance.
+
+### 7. Predeclared analysis and uncertainty
+
+Compare global-update windows 101–120, 121–140, 141–160, 161–180 and
+181–200. Partial windows must show their actual paired-update count and
+remain labeled incomplete. The analysis rejects recipe differences beyond
+the declared refresh settings and run-specific output paths. Training rewards
+use changing on-policy batches, so their window differences are descriptive;
+we do not assign independent-sample confidence intervals to serial rewards.
+
+For each shared AIME25 evaluation, pair the two branches by question, retaining
+all eight scoring records. Compare per-question correct-response fractions
+for avg@8 and the per-question any-correct indicator for pass@8. A deterministic
+10,000-draw bootstrap resamples whole questions and reports the 2.5/97.5
+percentiles of the mean candidate-minus-control difference. This is a
+question-bootstrap interval, not training-seed uncertainty or a guarantee of
+equivalence. Shared questions do not imply paired generated trajectories.
+
+Also report each branch's improvement relative to its new step-100 evaluation,
+and the difference of those improvements. This descriptive adjustment includes
+noise from both starting evaluations; it is not automatically a stronger
+causal estimate than the final-score difference. Missing branch/evaluation
+records remain missing, and non-eight-sample or mismatched-question records
+cannot produce a paired result.
+
+Only hashed prompt identifiers, sample counts and correctness counts enter
+the portable continuation snapshots; generated response text stays local.
+`scripts/research/analyze_refresh.py` reproduces the analysis from those
+snapshots, and hourly book generation updates it automatically. The current
+analysis can remain pending until the candidate has actually started.

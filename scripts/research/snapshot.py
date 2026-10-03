@@ -190,18 +190,36 @@ def main():
         if cfg.get("trainer.policy.model.lora.init_method") == "loft_simple":
             optimizer = "LoFTSimpleAdamW (Adam-family)"
         summary = []
+        question_scores = []
         omissions = []
         for f in sorted(p.glob("exports/*/dumped_evals/global_step_*_evals/*.jsonl")):
             if f.name == "aggregated_results.jsonl":
                 continue
             try:
-                evalrows = [json.loads(line) for line in f.read_text().splitlines()]
+                raw = f.read_bytes()
+                evalrows = [json.loads(line) for line in raw.decode().splitlines()]
             except json.JSONDecodeError:
                 omissions.append(str(f.relative_to(p)))
                 continue
             qs = {}
             for r in evalrows:
                 qs.setdefault(r["input_prompt"], []).append(r["score"] > 0)
+            if group == "continuation":
+                hashes[str(f.relative_to(p))] = hashlib.sha256(raw).hexdigest()
+                question_scores.append(
+                    {
+                        "step": int(f.parent.name.split("_")[2]),
+                        "benchmark": f.stem,
+                        "questions": [
+                            {
+                                "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
+                                "samples": len(scores),
+                                "correct": sum(scores),
+                            }
+                            for prompt, scores in sorted(qs.items())
+                        ],
+                    }
+                )
             summary.append(
                 {
                     "step": int(f.parent.name.split("_")[2]),
@@ -231,6 +249,8 @@ def main():
                 else None,
             },
         }
+        if group == "continuation":
+            result["evaluation_question_scores"] = question_scores
         for name in (
             "initial-adapter-audit.json",
             "comparison-audit.json",

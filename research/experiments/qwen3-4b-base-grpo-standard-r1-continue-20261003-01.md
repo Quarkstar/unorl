@@ -11,7 +11,7 @@ Matched control for the gradual-refresh candidate. Load the historical standard 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-standard-r1-continue-20261003-01` |
-| Record | 1 new updates; global step 101 / 200 |
+| Record | 3 new updates; global step 103 / 200 |
 | Group | Matched continuation from the standard-LoRA step-100 checkpoint |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -64,11 +64,11 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 
 ## Quantitative observations
 
-Training response correctness averaged **44.9%** over the first 1 logged updates and **44.9%** over the last 1. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **45.4%** over the first 3 logged updates and **45.4%** over the last 3. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.1225 at step 101 → 0.1225 at step 101.
-- Policy gradient norm: 0.04803 at step 101 → 0.04803 at step 101.
-- Mean generated response tokens: 3865 at step 101 → 3865 at step 101.
+- Logged entropy: 0.1225 at step 101 → 0.1294 at step 103.
+- Policy gradient norm: 0.04803 at step 101 → 0.03743 at step 103.
+- Mean generated response tokens: 3865 at step 101 → 3654 at step 103.
 
 Best recorded AIME25 pass@8: **33.3% at step 100**. Last recorded: **33.3% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 

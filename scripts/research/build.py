@@ -451,6 +451,12 @@ def main():
     by_id = {run["run_id"]: run for run in runs}
     refresh_runs = [run for run in runs if run["group"] == "continuation"]
     if refresh_runs:
+        from analyze_refresh import IDS, analyze
+
+        refresh_analysis = analyze(by_id[IDS["control"]], by_id.get(IDS["candidate"]))
+        (BOOK / "data/refresh-comparison-analysis.json").write_text(
+            json.dumps(refresh_analysis, indent=2) + "\n"
+        )
         comparison(
             refresh_runs,
             {"continuation"},
@@ -549,6 +555,14 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
     if refresh_runs:
         text += "![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)\n\n"
         text += "![Optimizer update geometry and refresh diagnostics](figures/refresh-update-geometry.svg)\n\nEffective weight-step norms and cosines exclude the compensating base correction. Boundary KL probes only the recorded response prefix; rank energy describes the accumulated update and is not a performance score. Missing measurements are labeled explicitly.\n\n"
+        text += "[Download matched windows and question-level uncertainty](data/refresh-comparison-analysis.json). Bootstrap intervals resample whole questions with their eight responses. They do not measure training-seed uncertainty or prove equivalence.\n\n"
+        if refresh_analysis["evaluations"]:
+            text += "| Global step | AIME25 metric | Candidate − control (percentage points) | Question-bootstrap 95% interval |\n|---:|---|---:|---|\n"
+            for step, metrics in refresh_analysis["evaluations"].items():
+                for metric, result in metrics.items():
+                    lower, upper = result["question_bootstrap_95_interval"]
+                    text += f"| {step} | {metric} | {100 * result['candidate_minus_control']:+.2f} | [{100 * lower:+.2f}, {100 * upper:+.2f}] |\n"
+            text += "\nStep 100 precedes intervention; its difference reflects sampled starting evaluations.\n\n"
     text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: the matched restart-ramp versus constant-LR merge/reset comparison completed. Both accumulated updates beyond rank one, but neither improved final avg@8 over standard LoRA.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:

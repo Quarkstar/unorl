@@ -1,0 +1,33 @@
+{
+  "status": "candidate not started",
+  "windows": {
+    "101-120": {
+      "paired_updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "121-140": {
+      "paired_updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "141-160": {
+      "paired_updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "161-180": {
+      "paired_updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "181-200": {
+      "paired_updates": 0,
+      "complete": false,
+      "metrics": {}
+    }
+  },
+  "evaluations": {},
+  "matched_recipe_verified": false,
+  "limitations": "Question bootstrap treats questions as sampling units and retains response grouping. It does not measure training-seed uncertainty, prove equivalence, or establish superiority from a single pair. Training reward windows use changing on-policy samples, not fixed test questions. No confidence interval is assigned to serial training rewards."
+}
