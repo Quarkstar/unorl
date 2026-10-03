@@ -974,3 +974,58 @@ the proposed refresh matches or exceeds standard LoRA. The fixed comparison
 uses the endpoint and aligned windows above; the control's plateau does not
 lower the requirement to demonstrate useful candidate learning and repeat
 any promising result from the base model.
+
+
+### 13. First actual compensated refresh: step 101 (2026-10-03)
+
+The candidate restored the exact shared native policy checkpoint with AdamW,
+all Adam counters at 100, scheduler counter 100 and constant LR 1.5e-5.
+Its fresh starting evaluation contains thirty questions with eight responses
+each: 45 / 240 correct responses (18.75% avg@8), and 13 / 30 questions
+solved at least once (43.33% pass@8). The control's fresh starting evaluation
+was 16.67% / 33.33%. Neither policy had received a new update or refresh at
+these evaluations. The difference is sampling variation, not a method gain;
+paired-question analyses must retain both starting evaluations.
+
+Step 101 completed and refreshed all 252 LoRA projections. The rollout
+correctness was 50.00%, entropy 0.1261, gradient norm 0.03747 and mean
+response length 3,476 tokens. These responses were sampled **before** the
+optimizer update and refresh. They do not measure the intervention's effect.
+The actual optimizer weight-space update L2 was 0.05901, excluding the
+compensation itself. The first update has no successive-update cosine
+because the source checkpoint did not contain this diagnostic history.
+
+| Actual first-boundary diagnostic | Value |
+| --- | ---: |
+| A rotation | 20 degrees |
+| B first-moment projection multiplier | 0.9396926 |
+| Optimizer state entries retained | 903 |
+| Base compensation L2 | 1.18603 |
+| Relative FP32 storage-rounding L2 | 0.00003044 |
+| Real response-prefix probe tokens | 1,024 |
+| Mean response-prefix KL | 0.00042585 |
+| Mean absolute chosen-token log-probability change | 0.006893 |
+| Maximum absolute chosen-token log-probability change | 0.249574 |
+| Argmax flip fraction | 0.1953% |
+| Mean accumulated stable rank | approximately 1 |
+
+The probe covers the first 128 response tokens on each of eight ranks.
+Measured KL is small but nonzero, and the maximum token difference is not
+negligible. This is not exact numerical policy preservation and does not
+exclude larger effects later in a long response. CPU algebraic tests and
+BF16 fixture checks are separate evidence from this real-model measurement.
+
+The rank-one result immediately after refresh is expected. With B held
+fixed, the compensation plus active update sum to the original `scale * B @ A`
+in real arithmetic. Rotating A creates an opportunity for subsequent B
+updates to introduce independent directions; it cannot instantly increase
+the effective rank without changing the function. Rank growth and useful
+reward progress therefore require later updates. State-entry count confirms
+states were not wholesale cleared, but by itself does not prove correct
+moment transport; that behavior is covered by the implementation and state
+identity tests, while the native resume audit independently verifies counters.
+
+The trial resumed rollout for step 102 after this boundary. At this point,
+the evidence supports successful execution of the proposed refresh, not
+successful learning or parity with standard LoRA. The first aligned reward
+window and held-out comparison are still pending at step 120.

@@ -2,9 +2,40 @@
   "status": "paired branches available",
   "windows": {
     "101-120": {
-      "paired_updates": 0,
+      "paired_updates": 1,
       "complete": false,
-      "metrics": {}
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.44921875,
+          "candidate": 0.5,
+          "candidate_minus_control": 0.05078125,
+          "paired_updates": 1
+        },
+        "policy/policy_entropy": {
+          "control": 0.12248796969652176,
+          "candidate": 0.1260758936405182,
+          "candidate_minus_control": 0.0035879239439964294,
+          "paired_updates": 1
+        },
+        "policy/grad_norm": {
+          "control": 0.04803420603275299,
+          "candidate": 0.03747206926345825,
+          "candidate_minus_control": -0.010562136769294739,
+          "paired_updates": 1
+        },
+        "generate/avg_num_tokens": {
+          "control": 3864.78125,
+          "candidate": 3475.54296875,
+          "candidate_minus_control": -389.23828125,
+          "paired_updates": 1
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.061674686462011005,
+          "candidate": 0.05900520302611367,
+          "candidate_minus_control": -0.0026694834358973324,
+          "paired_updates": 1
+        }
+      }
     },
     "121-140": {
       "paired_updates": 0,
@@ -27,7 +58,30 @@
       "metrics": {}
     }
   },
-  "evaluations": {},
+  "evaluations": {
+    "100": {
+      "avg@8": {
+        "candidate_minus_control": 0.020833333333333332,
+        "question_bootstrap_95_interval": [
+          -0.03333333333333333,
+          0.07083333333333333
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.1,
+        "question_bootstrap_95_interval": [
+          -0.03333333333333333,
+          0.26666666666666666
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      }
+    }
+  },
   "matched_recipe_verified": true,
   "limitations": "Question bootstrap treats questions as sampling units and retains response grouping. It does not measure training-seed uncertainty, prove equivalence, or establish superiority from a single pair. Training reward windows use changing on-policy samples, not fixed test questions. No confidence interval is assigned to serial training rewards."
 }

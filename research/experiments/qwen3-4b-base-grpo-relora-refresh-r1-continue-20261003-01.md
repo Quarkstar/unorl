@@ -11,7 +11,7 @@ Candidate derived from the adapter-gradient discontinuity analysis. Start from e
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01` |
-| Record | No retained metrics |
+| Record | 1 new updates; global step 101 / 200 |
 | Group | Matched continuation from the standard-LoRA step-100 checkpoint |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -41,14 +41,36 @@ Candidate derived from the adapter-gradient discontinuity analysis. Start from e
 
 ## Learning curves
 
-No metric records survived, so no curve or score is fabricated.
+```{figure} ../figures/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.svg
+:alt: Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+
+Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+```
 
 ## Evaluation results
 
-No AIME25 checkpoint evaluation is retained.
+### AIME25
+
+| Step | Sample accuracy | Pass@8 |
+|---:|---:|---:|
+| 100 | 18.8% | 43.3% |
+
+
+## Evaluation sample counts
+
+| Benchmark | Step | Correct responses | Questions solved ≥1 time |
+|---|---:|---:|---:|
+| aime25 | 100 | 45/240 | 13/30 |
 
 ## Quantitative observations
 
+Training response correctness averaged **50.0%** over the first 1 logged updates and **50.0%** over the last 1. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+
+- Logged entropy: 0.1261 at step 101 → 0.1261 at step 101.
+- Policy gradient norm: 0.03747 at step 101 → 0.03747 at step 101.
+- Mean generated response tokens: 3476 at step 101 → 3476 at step 101.
+
+Best recorded AIME25 pass@8: **43.3% at step 100**. Last recorded: **43.3% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
