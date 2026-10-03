@@ -1346,3 +1346,25 @@ No optimizer or learning-rate restart occurred. The trial remains at its
 original 100-step budget; the second refresh is scheduled at update 80.
 The next decision uses final reward, held-out performance, update
 continuity, accumulated rank and measured peak training memory together.
+
+
+### 24. Fourth hourly check: the lead is not sustained in every window
+
+At 18:46:28 UTC, the hourly watcher verified launcher PID 1547444 and its
+original start time, with 76 completed updates. Recent ten-update training
+correctness was 40.23%; latest entropy was 0.13014, gradient norm 0.03623,
+and response length 4,133 tokens. The run is live and retains its 100-step
+budget. The second refresh has not occurred yet.
+
+For the fixed training window 61-70, gradual refresh averaged 39.61%
+correctness versus standard rank-1 LoRA's 40.74%, a deficit of 1.13
+percentage points. Mean entropy was 0.14063 versus 0.13629, gradient norm
+0.03103 versus 0.03398, and response length 3,597 versus 3,346 tokens.
+These values come from ten actual per-update records for each run.
+
+The earlier 46-60 advantage therefore does not establish sustained
+superiority. This later window has no obvious gradient-norm collapse,
+but similar scalar gradient norms cannot prove equal learning directions.
+The next evidence is refresh-80 continuity and the final 81-100 reward
+window, held-out evaluation, accumulated rank and peak training memory.
+Do not change hyperparameters mid-run or extend the budget to 200 steps.
