@@ -1,0 +1,80 @@
+{
+  "run_ids": {
+    "control": "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
+    "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
+  },
+  "completed_updates": {
+    "control": 0,
+    "candidate": 100
+  },
+  "config_differences": {
+    "trainer.ckpt_path": {
+      "control": "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/checkpoints",
+      "candidate": "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/checkpoints"
+    },
+    "trainer.export_path": {
+      "control": "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/exports",
+      "candidate": "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports"
+    },
+    "trainer.log_path": {
+      "control": "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/infra",
+      "candidate": "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/infra"
+    },
+    "trainer.relora_enable_merge": {
+      "control": false,
+      "candidate": true
+    },
+    "trainer.relora_refresh_angle_degrees": {
+      "control": 0.0,
+      "candidate": 20.0
+    },
+    "trainer.run_name": {
+      "control": "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
+      "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
+    }
+  },
+  "windows": {
+    "1-20": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "21-40": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "41-45": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "46-60": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "61-80": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "81-90": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "91-100": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "81-100": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    }
+  },
+  "evaluations": {},
+  "limitations": "One control/candidate pair, not a multi-seed replication. Recipe differences are exposed explicitly. On-policy training windows contain different trajectories and are descriptive; no independent-sample confidence interval is assigned to them. Question bootstrap preserves eight-response groups but does not measure training-seed uncertainty or establish equivalence. Completion counts do not prove process success."
+}

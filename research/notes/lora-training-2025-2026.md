@@ -1604,3 +1604,27 @@ The first watcher check at 20:36:03 verified the launcher; initialization was
 still in progress and no training metrics were yet available. Its initial book
 update exported and rendered 29 experiments successfully. Startup model and
 optimizer audit verification remains pending, rather than assumed from launch.
+
+At **20:40 UTC**, the startup audit verified rank one, alpha 32, Kaiming
+initialization, **2,064,384 trainable parameters**, native AdamW with betas
+0.9/0.999 and epsilon 1e-8. The saved configuration verifies no resume, refresh
+disabled and angle zero. The audit's generic text “standard LoRA continuation”
+does not imply a resumed checkpoint; likewise the listed compensation/moment
+transport formulas are inactive when refresh is disabled. The dataset audit
+records the same 7,492 rows and SHA256
+`f6f0b8c36f79b642249d524e910811f891013340120cff355802e59c369d8249`.
+Model revision is `906bfd4b4dc7f14ee4320094d8b41684abff8539`.
+Step-zero evaluation began at **20:39:53 UTC** after successful weight sync.
+
+The same question-level analysis can now target the fresh control explicitly,
+while retaining the historical comparison separately:
+
+```bash
+.venv-docs/bin/python -m scripts.research.analyze_refresh_base \
+  --control-run qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01 \
+  --output refresh-base-fresh-control-analysis.json
+```
+
+Until completed updates and evaluations exist in both branches, this artifact
+records zero common-update counts and no paired evaluation result. It never
+fills missing control results from the historical run.

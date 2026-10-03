@@ -1,5 +1,6 @@
 """Compare the original 100-step LoRA reference with gradual refresh from base."""
 
+import argparse
 import json
 import statistics
 from pathlib import Path
@@ -29,7 +30,7 @@ def analyze(control, candidate):
         "windows": {},
         "evaluations": {},
         "limitations": (
-            "Historical reference, not a fresh paired training-seed replication. Recipe differences "
+            "One control/candidate pair, not a multi-seed replication. Recipe differences "
             "are exposed explicitly. On-policy training windows contain different trajectories and "
             "are descriptive; no independent-sample confidence interval is assigned to them. "
             "Question bootstrap preserves eight-response groups but does not measure training-seed "
@@ -83,13 +84,17 @@ def analyze(control, candidate):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--control-run", default=IDS["control"])
+    parser.add_argument("--candidate-run", default=IDS["candidate"])
+    parser.add_argument("--output", default="refresh-base-comparison-analysis.json")
+    args = parser.parse_args()
+    ids = {"control": args.control_run, "candidate": args.candidate_run}
     runs = {
-        name: json.loads((ROOT / "data" / f"{rid}.json").read_text()) for name, rid in IDS.items()
+        name: json.loads((ROOT / "data" / f"{rid}.json").read_text()) for name, rid in ids.items()
     }
     report = analyze(runs["control"], runs["candidate"])
-    (ROOT / "data/refresh-base-comparison-analysis.json").write_text(
-        json.dumps(report, indent=2) + "\n"
-    )
+    (ROOT / "data" / args.output).write_text(json.dumps(report, indent=2) + "\n")
     print(
         json.dumps(
             {
