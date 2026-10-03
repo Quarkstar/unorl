@@ -60,7 +60,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | — | — | — | — | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 101 | 100 | 16.7% | 33.3% | AdamW (SkyRL default) |
 
 ### Controlled follow-up experiments
 
@@ -149,6 +149,10 @@ The [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-
 The [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The matched branches load the same saved standard-LoRA step-100 checkpoint and each run 100 new updates. Initial evaluation is before intervention; the candidate refreshes after global updates 101, 141 and 181. This continuation will test optimization continuity and useful rank growth, not prove from-scratch superiority.
 
 ![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)
+
+![Optimizer update geometry and refresh diagnostics](figures/refresh-update-geometry.svg)
+
+Effective weight-step norms and cosines exclude the compensating base correction. Boundary KL probes only the recorded response prefix; rank energy describes the accumulated update and is not a performance score. Missing measurements are labeled explicitly.
 
 
 ## Post-step-60 diagnosis

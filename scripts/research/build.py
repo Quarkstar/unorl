@@ -179,6 +179,39 @@ def comparison(runs, groups, name, title):
     save(fig, name)
 
 
+def refresh_update_plot(runs):
+    """Separate optimizer updates from compensated refresh and policy drift."""
+    fig, axes = plt.subplots(2, 2, figsize=(12, 7), layout="constrained")
+    specs = [
+        ("updates/effective_delta_l2", "Effective optimizer weight-step L2"),
+        ("updates/cosine_with_previous_delta", "Successive optimizer update cosine"),
+        ("relora/probe_response_kl_mean", "Refresh response-prefix KL"),
+        ("relora/mean_energy_outside_first_direction", "Mean energy outside leading direction"),
+    ]
+    for ax, (key, title) in zip(axes.flat, specs):
+        recorded = False
+        for run, color in zip(runs, COLORS):
+            recorded |= line(ax, run, key, color, run["title"])
+            cfg = run["config"]
+            interval = cfg.get("trainer.relora_merge_interval")
+            if interval and cfg.get("trainer.relora_enable_merge", True):
+                first = cfg.get("trainer.relora_first_merge_step") or interval
+                last = max((row["step"] for row in run["metrics"]), default=0)
+                for boundary in range(first, last + 1, interval):
+                    ax.axvline(boundary, color=color, ls=":", alpha=0.5, lw=1)
+        ax.set(title=title, xlabel="Global training step")
+        if key.endswith("cosine_with_previous_delta"):
+            ax.set_ylim(-1.05, 1.05)
+        if key.endswith("mean_energy_outside_first_direction"):
+            ax.yaxis.set_major_formatter(PercentFormatter(1))
+        if not recorded:
+            ax.text(0.5, 0.5, "Not recorded yet", ha="center", transform=ax.transAxes)
+    handles, labels = axes.flat[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="outside lower center", ncol=1, frameon=False, fontsize=9)
+    fig.suptitle("Gradual refresh · optimization continuity and accumulated rank", fontsize=15)
+    save(fig, "refresh-update-geometry")
+
+
 def figure(path, caption):
     return f"```{{figure}} {path}\n:alt: {caption}\n\n{caption}\n```\n"
 
@@ -223,6 +256,15 @@ def experiment_page(run):
         "KL loss / reward": f"{cfg.get('trainer.algorithm.use_kl_loss')} / {cfg.get('trainer.algorithm.use_kl_in_reward')}",
         "Exit status": run.get("exit_status", "not retained"),
     }
+    if "trainer.relora_enable_merge" in cfg:
+        fields.update(
+            {
+                "Merges enabled": cfg["trainer.relora_enable_merge"],
+                "First merge global step": cfg.get("trainer.relora_first_merge_step"),
+                "Refresh angle (degrees)": cfg.get("trainer.relora_refresh_angle_degrees"),
+                "Resume checkpoint": cfg.get("trainer.resume_path"),
+            }
+        )
     text = f'---\ntitle: "{run["title"]}"\n---\n\n# {run["title"]}\n\n{run["analysis"]}\n\n'
     text += "## Configuration and provenance\n\n| Setting | Value |\n|---|---|\n"
     text += "".join(f"| {k} | {v} |\n" for k, v in fields.items())
@@ -415,6 +457,7 @@ def main():
             "comparison-refresh",
             "Shared step-100 checkpoint · standard versus gradual refresh",
         )
+        refresh_update_plot(refresh_runs)
     lora_runs = [by_id[rid] for rid in lora_ids]
     comparison(
         [
@@ -505,6 +548,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
     text += "\n## Next method: compensated gradual refresh\n\nThe [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The matched branches load the same saved standard-LoRA step-100 checkpoint and each run 100 new updates. Initial evaluation is before intervention; the candidate refreshes after global updates 101, 141 and 181. This continuation will test optimization continuity and useful rank growth, not prove from-scratch superiority.\n\n"
     if refresh_runs:
         text += "![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)\n\n"
+        text += "![Optimizer update geometry and refresh diagnostics](figures/refresh-update-geometry.svg)\n\nEffective weight-step norms and cosines exclude the compensating base correction. Boundary KL probes only the recorded response prefix; rank energy describes the accumulated update and is not a performance score. Missing measurements are labeled explicitly.\n\n"
     text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: the matched restart-ramp versus constant-LR merge/reset comparison completed. Both accumulated updates beyond rank one, but neither improved final avg@8 over standard LoRA.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:

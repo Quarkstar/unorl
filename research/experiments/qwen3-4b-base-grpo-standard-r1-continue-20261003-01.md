@@ -11,7 +11,7 @@ Matched control for the gradual-refresh candidate. Load the historical standard 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-standard-r1-continue-20261003-01` |
-| Record | No retained metrics |
+| Record | 1 new updates; global step 101 / 200 |
 | Group | Matched continuation from the standard-LoRA step-100 checkpoint |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -32,19 +32,45 @@ Matched control for the gradual-refresh candidate. Load the historical standard 
 | GPUs (policy) | 8 |
 | KL loss / reward | False / False |
 | Exit status | not retained |
+| Merges enabled | False |
+| First merge global step | 101 |
+| Refresh angle (degrees) | 0.0 |
+| Resume checkpoint | runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/checkpoints/global_step_100 |
 
 [Download the metric/configuration snapshot](../data/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.json). The snapshot includes hashes of the original local source files and the recorded SkyRL revision. Machine-specific root paths are made relative; original run identifiers remain unchanged.
 
 ## Learning curves
 
-No metric records survived, so no curve or score is fabricated.
+```{figure} ../figures/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.svg
+:alt: Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+
+Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.
+```
 
 ## Evaluation results
 
-No AIME25 checkpoint evaluation is retained.
+### AIME25
+
+| Step | Sample accuracy | Pass@8 |
+|---:|---:|---:|
+| 100 | 16.7% | 33.3% |
+
+
+## Evaluation sample counts
+
+| Benchmark | Step | Correct responses | Questions solved ≥1 time |
+|---|---:|---:|---:|
+| aime25 | 100 | 40/240 | 10/30 |
 
 ## Quantitative observations
 
+Training response correctness averaged **44.9%** over the first 1 logged updates and **44.9%** over the last 1. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+
+- Logged entropy: 0.1225 at step 101 → 0.1225 at step 101.
+- Policy gradient norm: 0.04803 at step 101 → 0.04803 at step 101.
+- Mean generated response tokens: 3865 at step 101 → 3865 at step 101.
+
+Best recorded AIME25 pass@8: **33.3% at step 100**. Last recorded: **33.3% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
