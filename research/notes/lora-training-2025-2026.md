@@ -1463,3 +1463,102 @@ This analysis is prepared before the final result to avoid deciding the
 comparison rule after observing step 100. The final assessment still requires
 successful process exit, complete eight-response evaluation groups, the full
 81–100 training window, accumulated rank and measured training memory.
+
+## 28. Final result: gradual refresh preserves learning, but does not establish parity
+
+The 100-update trial finished with exit status **0** at approximately 20:28 UTC
+on October 3. Update 100 and the dense model export completed before the final
+AIME evaluation. The saved evaluation contains **240 responses, 30 questions,
+and exactly eight responses per question**. Both refreshes completed; there was
+no initial warmup or learning-rate restart.
+
+### Learning and held-out evaluation
+
+| Window | Standard rank-1 LoRA correctness | Gradual refresh correctness |
+|---|---:|---:|
+| 1–20 | 12.25% | 12.07% |
+| 21–40 | 23.65% | 24.71% |
+| 41–45 | 35.00% | 38.91% |
+| 46–60 | 36.80% | 37.86% |
+| 61–80 | 39.26% | 38.46% |
+| 81–90 | 40.04% | 41.09% |
+| 91–100 | 34.92% | 36.17% |
+| 81–100 | 37.48% | 38.63% |
+
+| AIME25 step | Standard avg@8 / pass@8 | Gradual refresh avg@8 / pass@8 |
+|---|---:|---:|
+| 0 | 2.50% / 13.33% | 3.33% / 13.33% |
+| 20 | 4.17% / 23.33% | 5.83% / 20.00% |
+| 40 | 11.25% / 26.67% | 17.08% / 26.67% |
+| 60 | 15.42% / 30.00% | 17.50% / 36.67% |
+| 80 | 13.75% / 30.00% | 17.08% / 30.00% |
+| 100 | 20.00% / 43.33% | 17.08% / 36.67% |
+
+The endpoint is lower by **2.92 points avg@8** and **6.67 points pass@8**.
+The descriptive paired-question 95% intervals are **[−7.50, +1.25] points**
+and **[−23.33, +10.00] points**, respectively. Accounting for the different
+sampled initial evaluations gives an avg@8 difference in improvement of
+**−3.75 points**, interval **[−9.17, +1.25] points**. All intervals resample
+whole questions, with 10,000 draws and seed 42. They neither prove equivalence
+nor measure variation across training seeds. The research goal is **not met**.
+
+Training reward does not show the same endpoint deficit: refresh leads by
+**1.15 points** over the final twenty updates. Entropy is nearly equal
+(**0.13337 versus 0.13360**), gradient norm is lower
+(**0.03340 versus 0.03693**), and responses are longer
+(**4001 versus 3792 tokens**). Both runs dip in the last ten updates.
+Consequently, neither an entropy collapse nor a refresh-specific late reward
+collapse explains the held-out result. Higher on-policy training correctness
+is not sufficient evidence of better generalization.
+
+### Continuity, rank and memory
+
+Both boundaries retained all **903 optimizer-state entries** and refreshed
+all **252 adapted projections**. Response-prefix KL was **0.000476** at 40
+and **0.000327** at 80, on 1024 sampled prefix tokens each. Actual subsequent
+weight-update norms remained nonzero; update 81 had norm **0.05256**, versus
+**0.05612** immediately before the second refresh. These are direct checks of
+boundary continuity, not a guarantee for every long response.
+
+At 100, mean accumulated stable rank is **1.02375**, with **2.315%** mean
+energy outside the first direction. Total accumulated update L2 is
+**3.37918**, versus the standard adapter's **3.40452**. Thus the conservative
+rotation preserves learning while introducing only modest additional effective
+rank. The cold-reset alternatives achieved much more rank growth (mean stable
+rank 1.887/2.160), yet also failed to beat the reference. Increasing rank alone
+is therefore not the success criterion.
+
+All eight ranks recorded all 100 training-memory windows. The largest measured
+training peaks are **18.002 GiB allocated / 18.947 GiB reserved**, including
+forward/backward, optimizer and scheduled refresh diagnostics. This is CUDA
+allocator memory, not total device usage including vLLM. The historical
+standard run lacks matched allocator measurements; no memory-saving claim is
+made. Measurements are preserved in `research/data/refresh-base-final-audit.json`.
+
+### What the result changes about the next experiment
+
+The first-principles compensation and warm-B design removes the cold-start
+mechanism: B stays nonzero, A's gradient path remains active, and Adam counters
+are retained. The earlier 46–60 cold-reset deficit is absent here. However,
+the pre-refresh training lead is already about one point, so retaining that
+lead does not establish a causal improvement from refreshing.
+
+There are two distinct unresolved questions: whether this method reliably
+matches standard LoRA, and whether stronger direction exploration improves
+its capacity. The next useful control is a **fresh 100-step standard LoRA run
+from base using the same refresh worker with refresh disabled and angle zero**.
+At angle zero, the compensation is zero and the mathematical update reduces
+to ordinary LoRA. The prepared control profile differs from the candidate in
+only the enable flag and angle. It also supplies the missing matched memory
+measurement. This is a control for the original budget, not a 200-step extension
+or a new unanalysed algorithm. A stronger rotation should only be selected after
+that comparison, because approximate B moment transport remains a confound.
+
+### Retention and cleanup
+
+After verifying successful exit and complete evaluation, removed only completed
+checkpoint/model weights and the factor cache: **35,450,884,601 bytes**. All
+**twelve** benchmark evaluation JSONL files were hash-checked unchanged before
+and after cleanup. Logs, curves, metrics, evaluation outputs, rank diagnostics
+and memory traces remain. The shared standard-LoRA step-100 checkpoint was
+preserved. `research/data/refresh-base-cleanup.json` records the scoped removal.

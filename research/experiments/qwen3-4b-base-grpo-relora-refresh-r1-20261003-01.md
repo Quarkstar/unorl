@@ -4,14 +4,14 @@ title: "GRPO · compensated gradual refresh, rank 1 (100 steps from base)"
 
 # GRPO · compensated gradual refresh, rank 1 (100 steps from base)
 
-Main-budget trial of the proposed continuity-preserving refresh algorithm. Start from Qwen3-4B-Base, not a trained checkpoint; train exactly 100 updates with the standard rank-one LoRA GRPO recipe. Refresh after updates 40 and 80: rotate A by 20 degrees, retain B, compensate the frozen backbone, retain Adam counters and A moments, project B first moments by cosine and retain B variances. Moment transport is approximate, not a convergence guarantee. Native AdamW LR 1.5e-5 constant, alpha 32, eight rollouts, 32 prompts per update, 8192 response tokens, all eight GPUs. AIME25 avg@8 and pass@8 every twenty updates; hourly monitoring and ten-second VRAM sampling. Compare the complete 0-100 reward/evaluation curve with the historical standard rank-one reference and cold-reset trials, particularly steps 46-60. No result or superiority is assumed before completion.
+Completed all 100 updates from base with exit status 0. Refresh at 40/80 rotates A by 20 degrees, retains B, compensates frozen backbone weights and approximately transports native AdamW moments; rank one, alpha 32, constant LR 1.5e-5, eight rollouts, 32 prompts/update, response budget 8192. Final AIME25 avg@8 / pass@8 is 17.083% / 36.667% (41/240 correct responses, 11/30 solved questions), versus historical standard LoRA 20.0% / 43.333%. The final 81-100 training correctness is higher, 38.633% versus 37.480%, with similar entropy and longer responses. The first-refresh 46-60 cold-reset deficit is absent, but the existing pre-refresh lead confounds attribution. Final mean accumulated stable rank is only 1.024, with 2.315% mean energy outside the leading direction; total update L2 is 3.379. Peak training allocated/reserved memory across all eight ranks is 18.002/18.947 GiB, measured for all 100 updates. Question-bootstrap endpoint avg@8 difference is -2.917 points with descriptive interval [-7.50,+1.25]; this is not proof of equivalence or superiority. Goal remains unmet. Completed weights, optimizer checkpoints and factor cache removed (35,450,884,601 bytes); all twelve evaluation JSONL files hash-verified unchanged, logs/metrics/diagnostics preserved, shared standard step-100 checkpoint untouched.
 
 ## Configuration and provenance
 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-relora-refresh-r1-20261003-01` |
-| Record | 98 steps logged / 100 planned |
+| Record | 100 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -31,7 +31,7 @@ Main-budget trial of the proposed continuity-preserving refresh algorithm. Start
 | Evaluation samples/question | 8 |
 | GPUs (policy) | 8 |
 | KL loss / reward | False / False |
-| Exit status | not retained |
+| Exit status | 0 |
 | Merges enabled | True |
 | First merge global step | 40 |
 | Refresh angle (degrees) | 20.0 |
@@ -58,6 +58,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | 40 | 17.1% | 26.7% |
 | 60 | 17.5% | 36.7% |
 | 80 | 17.1% | 30.0% |
+| 100 | 17.1% | 36.7% |
 
 
 ## Evaluation sample counts
@@ -69,16 +70,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | aime25 | 40 | 41/240 | 8/30 |
 | aime25 | 60 | 42/240 | 11/30 |
 | aime25 | 80 | 41/240 | 9/30 |
+| aime25 | 100 | 41/240 | 11/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **9.7%** over the first 10 logged updates and **37.2%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **9.7%** over the first 10 logged updates and **36.2%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.8753 at step 1 → 0.126 at step 98.
-- Policy gradient norm: 0.02517 at step 1 → 0.03145 at step 98.
-- Mean generated response tokens: 1339 at step 1 → 4394 at step 98.
+- Logged entropy: 0.8753 at step 1 → 0.1227 at step 100.
+- Policy gradient norm: 0.02517 at step 1 → 0.03505 at step 100.
+- Mean generated response tokens: 1339 at step 1 → 4213 at step 100.
 
-Best recorded AIME25 pass@8: **36.7% at step 60**. Last recorded: **30.0% at step 80**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **36.7% at step 60**. Last recorded: **36.7% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

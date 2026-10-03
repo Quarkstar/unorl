@@ -1,0 +1,32 @@
+{
+  "removed": [
+    {
+      "path": "checkpoints",
+      "bytes": 17776894528
+    },
+    {
+      "path": "relora-rank-factors.pt",
+      "bytes": 16817711
+    },
+    {
+      "path": "exports/global_step_100/policy",
+      "bytes": 17657172362
+    }
+  ],
+  "measurements_retained": true,
+  "evaluation_hashes_verified": {
+    "exports/aime25/dumped_evals/global_step_60_evals/aggregated_results.jsonl": "d5165e33da193c2945f31ecdd4ce2d28b9ddf0c27790222945f89e438f006b66",
+    "exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "3fbda4f01c21cd1633fdd0647b5c306e7d9653f5c04ff85b2eebad71ff8e3d50",
+    "exports/aime25/dumped_evals/global_step_80_evals/aggregated_results.jsonl": "3286ecd65092f745c4c418796243d3f8be1838a9ccb3c65366386aba0fac9006",
+    "exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "6c2620368b9ca776ee6d200c3347e4e2a4f897e60facc9193b2e3acac7e147ba",
+    "exports/aime25/dumped_evals/global_step_40_evals/aggregated_results.jsonl": "49340b1322eede305dc2af56c9bef858fed41e202b832469b55cb9e2495378c8",
+    "exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "9809ba988b69dbf13482aa53368f4d8079db53ef22ccafa6c2b460e16c6d2a61",
+    "exports/aime25/dumped_evals/global_step_0_evals/aggregated_results.jsonl": "f3c81d2e3fb5bc0930aff8c92b124942f73f77be6354d6c3b78254d5ce4ccd26",
+    "exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "db5aa48e5a2ab41eed2866ba22c9985fe764be22c23ad875b2a4d6ac3a317d53",
+    "exports/aime25/dumped_evals/global_step_100_evals/aggregated_results.jsonl": "88aef9147820c8f399b76bedb215fce572997b289a82c02b53cd1007fdbd9393",
+    "exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "5d53fbbcc0fd1b295b642821f3646c8a6a4d09a3e8cb73376122821b36c5dfdf",
+    "exports/aime25/dumped_evals/global_step_20_evals/aggregated_results.jsonl": "d3ca76c47a4807d6f45c2a86fc2241aa0138d4a16cd7bd5ceefc9cc468aac501",
+    "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "b04b81dfa4bd0eb036d4b8aadc87fd8f8346b46b3b7cfb2f5debc38f632422ab"
+  },
+  "shared_standard_step100_preserved": true
+}

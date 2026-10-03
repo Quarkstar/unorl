@@ -1,0 +1,64 @@
+{
+  "run_id": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
+  "exit_status": 0,
+  "training_updates": 100,
+  "memory_ranks": [
+    {
+      "rank": 0,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 19242193408,
+      "peak_reserved_bytes": 20162019328
+    },
+    {
+      "rank": 1,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 19098039808,
+      "peak_reserved_bytes": 20113784832
+    },
+    {
+      "rank": 2,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 19329692672,
+      "peak_reserved_bytes": 20344471552
+    },
+    {
+      "rank": 3,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 18953532928,
+      "peak_reserved_bytes": 20006830080
+    },
+    {
+      "rank": 4,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 18886097920,
+      "peak_reserved_bytes": 19881000960
+    },
+    {
+      "rank": 5,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 19261821440,
+      "peak_reserved_bytes": 20174602240
+    },
+    {
+      "rank": 6,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 19041841152,
+      "peak_reserved_bytes": 20050870272
+    },
+    {
+      "rank": 7,
+      "records": 100,
+      "last_step": 100,
+      "peak_allocated_bytes": 19067532800,
+      "peak_reserved_bytes": 20069744640
+    }
+  ],
+  "memory_scope": "Policy forward/backward, optimizer, and scheduled refresh diagnostics; CUDA allocator, not whole-device NVML or rollout memory."
+}
