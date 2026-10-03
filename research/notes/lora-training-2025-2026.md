@@ -1768,3 +1768,28 @@ first informative post-refresh window remains 41–60. The control continues to
 100 with unchanged settings, hourly monitoring and complete eight-rank memory
 records. The main page now plots the fresh control separately against the
 completed candidate and explicitly labels its curve as partial.
+
+## 32. Fresh control: first hourly check verified
+
+The scheduled watcher checked the control at **21:36:47.240747 UTC on October
+3**, verified launcher PID **1573646** with start ticks **4997680419**, and
+recorded **24/100 completed updates**. Its snapshot and plot updates both
+completed successfully for all **29 experiments**. Training subsequently
+reached step 25; no restart or recipe change was needed.
+
+At the scheduled check, latest entropy / gradient norm / response tokens were
+**0.38620 / 0.04031 / 1102.4**. Over its last ten completed updates (15–24),
+training correctness was **16.211%**, versus **17.305%** for the completed
+refresh trial on the same update indices. Their mean entropies are almost
+identical (**0.44445 / 0.44469**), with mean actual optimizer weight-step L2
+**0.08164 / 0.08800** and response lengths **1118 / 1132 tokens**. This
+approximately one-point reward difference occurs **before any refresh**, so
+later analyses must account for pre-intervention variation. It does not show
+a benefit from merging. The latest held-out evaluation remains step 20,
+reported in section 31; no new evaluation is inferred from training rewards.
+
+The fresh-control comparison artifact now includes 24 common update indices
+where available, and explicitly marks the 21–40 window incomplete. Hourly
+monitoring remains active. The next check is due roughly one hour after this
+book update finishes; step-40 evaluation and the 41–60 window are the next
+relevant milestones for the merge comparison.

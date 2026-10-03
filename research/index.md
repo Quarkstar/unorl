@@ -67,7 +67,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · fresh standard rank-1 LoRA control (100 steps from base)](experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md) | 20 | 20 | 5.4% | 23.3% | AdamW (SkyRL default) |
+| [GRPO · fresh standard rank-1 LoRA control (100 steps from base)](experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md) | 24 | 20 | 5.4% | 23.3% | AdamW (SkyRL default) |
 | [GRPO · compensated gradual refresh, rank 1 (100 steps from base)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md) | 100 | 100 | 17.1% | 36.7% | AdamW (SkyRL default) |
 | [GRPO · standard rank-1 ReLoRA, constant-LR resets](experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md) | 100 | 100 | 17.1% | 30.0% | AdamW (SkyRL default) |
 | [GRPO · standard rank-1 ReLoRA, five-update restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | 100 | 100 | 15.8% | 40.0% | AdamW (SkyRL default) |
@@ -155,7 +155,7 @@ The earlier shared-step-100 continuation candidate was manually stopped after 13
 
 ### Fresh standard-LoRA control
 
-The fresh control snapshot contains **20/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Partial control curves are not a final endpoint comparison. Both sampled starting evaluations are retained, and question-level uncertainty is reported separately.
+The fresh control snapshot contains **24/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Partial control curves are not a final endpoint comparison. Both sampled starting evaluations are retained, and question-level uncertainty is reported separately.
 
 ![Fresh control versus gradual refresh](figures/comparison-refresh-base-fresh.svg)
 
