@@ -11,7 +11,7 @@ Matched control for the gradual-refresh candidate. Load the historical standard 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-standard-r1-continue-20261003-01` |
-| Record | 26 new updates; global step 126 / 200 |
+| Record | 40 new updates; global step 140 / 200 |
 | Group | Matched continuation from the standard-LoRA step-100 checkpoint |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -55,6 +55,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---:|---:|---:|
 | 100 | 16.7% | 33.3% |
 | 120 | 19.2% | 40.0% |
+| 140 | 17.9% | 40.0% |
 
 
 ## Evaluation sample counts
@@ -63,16 +64,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---|---:|---:|---:|
 | aime25 | 100 | 40/240 | 10/30 |
 | aime25 | 120 | 46/240 | 12/30 |
+| aime25 | 140 | 43/240 | 12/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **36.2%** over the first 10 logged updates and **38.2%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **36.2%** over the first 10 logged updates and **39.5%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.1225 at step 101 → 0.1101 at step 126.
-- Policy gradient norm: 0.04803 at step 101 → 0.03874 at step 126.
-- Mean generated response tokens: 3865 at step 101 → 4604 at step 126.
+- Logged entropy: 0.1225 at step 101 → 0.1083 at step 140.
+- Policy gradient norm: 0.04803 at step 101 → 0.02861 at step 140.
+- Mean generated response tokens: 3865 at step 101 → 4969 at step 140.
 
-Best recorded AIME25 pass@8: **40.0% at step 120**. Last recorded: **40.0% at step 120**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **40.0% at step 120**. Last recorded: **40.0% at step 140**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

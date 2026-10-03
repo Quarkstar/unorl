@@ -842,3 +842,18 @@ trajectory for the refresh experiment; it does not identify which part of a
 cold reset caused the earlier deficit. The step-120 checkpoint contains all
 eight model, optimizer and extra-state shards plus trainer and data state.
 The shared historical source checkpoint remains retained.
+
+### 9. Continuation control: step-140 evaluation (2026-10-03)
+
+The control completed update 140 and evaluation at 07:32 UTC. AIME25 avg@8
+is 17.92% (43 correct responses / 240), and pass@8 is 40.00% (12 / 30
+questions). Raw records verify eight samples for each of thirty questions.
+Compared with step 120, avg@8 falls 1.25 percentage points, while pass@8
+is unchanged. Compared with the fresh step-100 starting evaluation, the
+scores remain 1.25 and 6.67 points higher respectively. These small sampled
+changes do not establish sustained improvement or deterioration.
+
+At update 140, gradient norm is 0.02861, entropy is 0.10828, and recent
+ten-update training correctness is 39.45%. The native step-140 checkpoint
+contains all eight model, optimizer and extra-state shards. The proposed
+refresh candidate remains queued; no intervention comparison is available.
