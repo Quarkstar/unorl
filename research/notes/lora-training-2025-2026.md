@@ -1874,3 +1874,53 @@ increments preserve norms and compensated effective weights, reproduce a single
 component residual **0.0348995**. The example deliberately has no intervening
 training updates. It verifies the geometry, not Adam adaptation, distributed
 execution or a learning benefit; those launch gates remain outstanding.
+
+## 34. Real-checkpoint geometry supports testing a smaller local transition
+
+The fresh control's step-20 checkpoint saves the most recent **actual optimizer
+weight update** as two low-rank factor terms per projection in rank-zero extra
+state. This allows a CPU-only analysis without loading model weights or changing
+the live process. Source extra-state size is **33,333,989 bytes**; its SHA256 is
+retained in the output artifact. The scheduler step is verified as 20, all
+**252 adapted projections** are present, and reconstructed global update L2
+**0.08290147** matches the recorded training metric.
+
+Reproduce while this checkpoint is retained:
+
+```bash
+PYTHONPATH=.:.deps:../SciBuddy/third_party/SkyRL \
+  ../SciBuddy/.venv-skyrl/bin/python \
+  scripts/research/analyze_checkpoint_refresh_geometry.py \
+  --run-id qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01 \
+  --step 20
+```
+
+The portable scalar results are in
+`research/data/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01-refresh-geometry-step20.json`.
+No adapter weights, responses or full gradient matrices are published.
+
+| Hypothetical rotation | Global norm fraction outside the new update space |
+|---|---:|
+| 0 degrees | 0.0655% |
+| 2 degrees | 2.8835% |
+| 20 degrees | 28.2528% |
+| 45 degrees | 58.4111% |
+| 60 degrees | 71.5387% |
+
+For each layer, the saved factor representation reconstructs the current A/B
+rows and columns; the existing seeded refresh rotation is applied hypothetically
+and the closest first-order update residual is evaluated through low-rank inner
+products. The global ratio uses sums of layer energies, not an unweighted mean
+of per-layer percentages. The zero-angle residual is small but nonzero because
+an actual finite update need not lie exactly in its **post-update** tangent
+space; finite factor updates contain a cross term.
+
+This real-update result shows that the synthetic example's geometric issue is
+not merely an artificial construction. In this particular warm adapter state,
+a one-shot 20-degree rotation cannot represent a substantial fraction of the
+preceding actual update direction. It strengthens the case for comparing local
+transition size in section 33. However, step 20 is **not an actual refresh
+boundary**, and this diagnostic does not observe the next gradient or Adam
+transport. It does not prove that the lost direction caused any learning or
+AIME deficit. Equivalent measurements near 40/80 and matched learning outcomes
+remain necessary. The live control continues with no refresh enabled.
