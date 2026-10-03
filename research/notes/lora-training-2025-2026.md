@@ -1029,3 +1029,59 @@ The trial resumed rollout for step 102 after this boundary. At this point,
 the evidence supports successful execution of the proposed refresh, not
 successful learning or parity with standard LoRA. The first aligned reward
 window and held-out comparison are still pending at step 120.
+
+
+### 14. First matched learning window: updates 101–120 (2026-10-03)
+
+The candidate completed evaluation before resuming training at 13:34:22 UTC.
+The saved response dump verifies thirty questions with eight samples each:
+41 / 240 responses are correct (17.08% avg@8), and 12 / 30 questions have
+at least one correct sample (40.00% pass@8). Eighty-eight responses (36.67%)
+stop at the length cap. The native step-120 checkpoint contains all 26
+model, optimizer, extra-state, trainer and data files.
+
+| Measurement | Standard continuation | Compensated refresh | Refresh minus standard |
+| --- | ---: | ---: | ---: |
+| Step-100 avg@8, before new training | 16.67% | 18.75% | +2.08 points |
+| Step-120 avg@8 | 19.17% | 17.08% | −2.08 points |
+| Step-100 pass@8, before new training | 33.33% | 43.33% | +10.00 points |
+| Step-120 pass@8 | 40.00% | 40.00% | 0.00 points |
+| Mean training correctness, 101–120 | 37.79% | 37.32% | −0.47 points |
+| Mean entropy, 101–120 | 0.12611 | 0.12603 | −0.00008 |
+| Mean gradient norm, 101–120 | 0.04219 | 0.04326 | +0.00107 |
+| Mean response tokens, 101–120 | 4,036 | 4,099 | +63 |
+| Mean effective update L2, 101–120 | 0.06714 | 0.06446 | −0.00268 |
+| Mean successive-update cosine, 101–120 | 0.90199 | 0.88692 | −0.01507 |
+
+Each training window contains twenty updates; cosine means contain nineteen
+pairs. The optimizer-update diagnostic excludes compensation. Training
+correctness closely tracks the control, entropy and response length are
+similar, and effective update magnitude is only about 4% smaller. There is
+no immediate collapse in update magnitude or training correctness in this
+window. These diagnostics cannot determine whether updates are useful for
+held-out math, and this single window cannot exclude a later delayed deficit.
+
+The evaluation does **not** show improvement over the control. A paired
+question bootstrap with 10,000 resamples and seed 42 gives a step-120 avg@8
+difference of −2.08 percentage points, with a 95% interval of [−5.42, +1.25].
+The pass@8 difference is zero, with interval [−13.33, +13.33]. Whole questions
+are the sampling units, retaining their eight-response groups. These
+intervals cover question sampling uncertainty, not training-seed uncertainty;
+including zero does not prove equivalence.
+
+The candidate also started with higher stochastic scores before any refresh.
+Its observed avg@8 change is −1.67 points, versus +2.50 for the control;
+the difference in changes is −4.17 points, with descriptive paired-question
+interval [−11.25, +2.93]. Pass@8 changes are −3.33 and +6.67 points, giving
+−10.00 points with interval [−26.67, +6.67]. This starting-score adjustment
+is not a causal estimate and does not remove decode noise. Both raw endpoint
+and starting evaluations remain visible in the comparison.
+
+Only the first-boundary spectrum has been logged so far, where accumulated
+rank was approximately one as expected from compensation. This evaluation
+does not establish subsequent rank growth; the next boundary at step 141
+will supply another accumulated-spectrum measurement. The next checks are
+whether the training curves continue to track standard over updates 121–140,
+whether the held-out result recovers, and whether rank growth accompanies
+useful updates. No recipe is changed mid-run, and parity or superiority
+remains unproven.

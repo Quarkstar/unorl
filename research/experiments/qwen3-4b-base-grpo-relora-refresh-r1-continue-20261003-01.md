@@ -11,7 +11,7 @@ Candidate derived from the adapter-gradient discontinuity analysis. Start from e
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01` |
-| Record | 13 new updates; global step 113 / 200 |
+| Record | 20 new updates; global step 120 / 200 |
 | Group | Matched continuation from the standard-LoRA step-100 checkpoint |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -54,6 +54,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | Step | Sample accuracy | Pass@8 |
 |---:|---:|---:|
 | 100 | 18.8% | 43.3% |
+| 120 | 17.1% | 40.0% |
 
 
 ## Evaluation sample counts
@@ -61,16 +62,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | Benchmark | Step | Correct responses | Questions solved ≥1 time |
 |---|---:|---:|---:|
 | aime25 | 100 | 45/240 | 13/30 |
+| aime25 | 120 | 41/240 | 12/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **36.0%** over the first 10 logged updates and **34.0%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **36.0%** over the first 10 logged updates and **38.6%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.1261 at step 101 → 0.1277 at step 113.
-- Policy gradient norm: 0.03747 at step 101 → 0.03779 at step 113.
-- Mean generated response tokens: 3476 at step 101 → 3248 at step 113.
+- Logged entropy: 0.1261 at step 101 → 0.118 at step 120.
+- Policy gradient norm: 0.03747 at step 101 → 0.03688 at step 120.
+- Mean generated response tokens: 3476 at step 101 → 4527 at step 120.
 
-Best recorded AIME25 pass@8: **43.3% at step 100**. Last recorded: **43.3% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **43.3% at step 100**. Last recorded: **40.0% at step 120**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

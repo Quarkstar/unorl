@@ -61,7 +61,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
 | [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 200 | 200 | 17.1% | 33.3% | AdamW (SkyRL default) |
-| [GRPO · gradual A refresh with warm B (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md) | 113 | 100 | 18.8% | 43.3% | AdamW (SkyRL default) |
+| [GRPO · gradual A refresh with warm B (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md) | 120 | 120 | 17.1% | 40.0% | AdamW (SkyRL default) |
 
 ### Controlled follow-up experiments
 
@@ -161,6 +161,8 @@ Effective weight-step norms and cosines exclude the compensating base correction
 |---:|---|---:|---|
 | 100 | avg@8 | +2.08 | [-3.33, +7.08] |
 | 100 | pass@8 | +10.00 | [-3.33, +26.67] |
+| 120 | avg@8 | -2.08 | [-5.42, +1.25] |
+| 120 | pass@8 | +0.00 | [-13.33, +13.33] |
 
 Step 100 precedes intervention; its difference reflects sampled starting evaluations.
 
