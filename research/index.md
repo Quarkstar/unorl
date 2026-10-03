@@ -60,7 +60,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 180 | 180 | 15.0% | 26.7% | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 181 | 180 | 15.0% | 26.7% | AdamW (SkyRL default) |
 
 ### Controlled follow-up experiments
 
