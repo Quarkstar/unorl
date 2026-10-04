@@ -7,6 +7,7 @@ import statistics
 from pathlib import Path
 
 import torch
+from safetensors.torch import load
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -58,6 +59,7 @@ def main():
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--step", type=int, required=True)
     args = parser.parse_args()
+    torch.set_num_threads(2)
     run = ROOT / "runs" / args.run_id
     config = json.loads((run / "config.json").read_text())
     source = run / f"checkpoints/global_step_{args.step}/policy/extra_state_world_size_8_rank_0.pt"
@@ -66,26 +68,37 @@ def main():
     if state["lr_scheduler"]["last_epoch"] != args.step:
         raise ValueError("Requested step differs from checkpoint scheduler")
     client = state["client_state"]
-    history = client["relora_factor_history"]
-    deltas = client["relora_previous_delta"]
+    if "relora_factor_history" not in client and config.get("trainer.relora_enable_merge"):
+        raise ValueError("Merged checkpoints require their saved correction history")
+    history = client.get("relora_factor_history", {})
+    if config["trainer.policy.model.lora.rank"] != 1:
+        raise ValueError("Active-direction diagnostics require rank-one adapters")
     scale = config["trainer.policy.model.lora.alpha"] / config["trainer.policy.model.lora.rank"]
-    if history.keys() != deltas.keys():
-        raise ValueError("Correction history and current update names differ")
+    if scale <= 0:
+        raise ValueError("Adapter scale must be positive")
+    adapter_source = source.parent / "lora_adapter/adapter_model.safetensors"
+    adapter_raw = adapter_source.read_bytes()
+    adapter = load(adapter_raw)
+    suffixes = (".lora_A.weight", ".lora_B.weight")
+    if any(not name.endswith(suffixes) for name in adapter):
+        raise ValueError("Expected only A/B tensors in the checkpoint adapter export")
+    names = {name.removesuffix(suffixes[0]) for name in adapter if name.endswith(suffixes[0])}
+    if not names or len(adapter) != 2 * len(names) or not history.keys() <= names:
+        raise ValueError("Correction history and saved adapter names differ")
     layers = {}
-    for name, terms in deltas.items():
-        if len(terms) != 2:
-            raise ValueError("Expected two actual finite-update factor pairs")
-        active_a = terms[0][0] + terms[1][0]
-        active_scaled_b = terms[1][1]
-        # update_factors saves scale*new_B; A above is the post-optimizer A.
-        # A checkpoint inside a refresh would instead require reconstructing
-        # the current rotated A from its saved transition.
-        transition = client.get("gradual_refresh_transition", {})
-        if transition.get("count"):
-            raise ValueError("Only closed-transition checkpoints are supported")
-        if scale <= 0:
-            raise ValueError("Adapter scale must be positive")
-        layers[name] = factor_geometry(history[name] + [(active_a, active_scaled_b)])
+    for name in sorted(names):
+        active_a = adapter[name + suffixes[0]]
+        active_b = adapter[name + suffixes[1]]
+        if (
+            active_a.ndim != 2
+            or active_a.shape[0] != 1
+            or active_b.ndim != 2
+            or active_b.shape[1] != 1
+        ):
+            raise ValueError("Expected saved rank-one factors")
+        # The latest optimizer delta precedes a scheduled reparameterization.
+        # Read the actual saved adapter, which is valid at the boundary too.
+        layers[name] = factor_geometry(history.get(name, []) + [(active_a, active_b * scale)])
     means = {
         key: statistics.mean(row[key] for row in layers.values())
         for key in next(iter(layers.values()))
@@ -95,6 +108,8 @@ def main():
         "step": args.step,
         "source_sha256": hashlib.sha256(raw).hexdigest(),
         "source": str(source.relative_to(ROOT)),
+        "active_factor_source": str(adapter_source.relative_to(ROOT)),
+        "active_factor_source_sha256": hashlib.sha256(adapter_raw).hexdigest(),
         "layers": layers,
         "mean_layer_metrics": means,
         "global_update_l2": sum(row["accumulated_update_l2"] ** 2 for row in layers.values())

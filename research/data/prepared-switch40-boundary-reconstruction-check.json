@@ -1,0 +1,16 @@
+{
+  "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+  "step": 40,
+  "legacy_pre_switch_reconstruction_mean_stable_rank": 1.0964294727528288,
+  "correct_saved_adapter_mean_stable_rank": 1.0,
+  "negative_old_new_adapter_inner_product_layers": 130,
+  "layers": 252,
+  "actual_base_correction_l2": 3.480762455763518,
+  "sign_aligned_candidate_correction_l2": 3.006201249583168,
+  "candidate_correction_norm_ratio": 0.8636617085447581,
+  "source_sha256": {
+    "extra_state": "1c60c7c56e42e867945f00725f6f454ef6c201e65c75fe88e88b4b9f0bac4ab4",
+    "saved_adapter": "d236dc4bf4e2c90e73a5b6fa311e4e03438fca4080d96be1ea029b2ac43ddb17"
+  },
+  "scope": "Legacy reconstruction is a negative control, not the native diagnostic or a physical learned update. Sign alignment is a candidate geometric calculation only; no live weights or optimizer state were changed. First-order Adam invariance and second-order terms require separate validation before any new experiment."
+}

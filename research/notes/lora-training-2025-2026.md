@@ -4348,3 +4348,52 @@ different update direction without an immediate magnitude spike. It is
 not proof of useful accumulated rank or lasting accuracy improvement.
 The matched run remains unchanged. Subsequent checkpoints and the final
 100-update comparison must establish both performance and learned rank.
+
+## 71. Independently checking the saved factors at a switch
+
+The generic factor-span helper previously reconstructed the active A/B from
+the latest optimizer delta. That delta is measured **before** a scheduled
+reparameterization. At a transfer checkpoint its reconstructed factors are
+therefore stale. This affects that helper's boundary interpretation, not
+the native worker's rank diagnostic or the running optimization.
+
+`scripts/research/analyze_refresh_factor_span.py` now reads the actual FP32
+adapter export alongside the saved correction history, hashes both sources
+and supports rank-one checkpoints with empty history. It checks the exported
+factor names and dimensions and does not infer active factors from an earlier
+update. Lint/format checks and real prepared-40 and standard-100 checkpoints
+pass. This is read-only; no checkpoint weights or training settings change.
+
+The independent prepared-40 calculation gives mean stable rank **1.0**
+and global accumulated update L2 **2.42819**, agreeing with the native
+boundary diagnostic. As a negative control, adding the pre-switch factors
+instead would give mean stable rank **1.09643**: an analysis artifact, not
+learned rank. The actual saved active directions differ substantially from
+the accumulated rank-one update: mean residual energy outside their output
+and input directions is **52.6007% / 82.4873%**. Those residuals compare
+against the new active directions, not the accumulated leading singular
+direction; they cannot be read as evidence of higher accumulated rank.
+
+The independently loaded historical standard checkpoint at 100 remains
+rank **1.0**, global update L2 **3.40452**, and effectively zero energy
+outside its active directions. Evidence is retained in the respective
+`*-factor-span-step40.json` and `*-factor-span-step100.json` records. The
+negative-control reconstruction and source hashes are in
+`research/data/prepared-switch40-boundary-reconstruction-check.json`.
+
+A separate geometric candidate calculation finds that **130/252** switched
+layers have a negative inner product between old and new adapter products.
+Choosing the opposite product sign when that inner product is negative
+would reduce the total compensation L2 from **3.48076 to 3.00620**, a
+ratio of **0.863662**. This is only a calculation on the saved factors;
+it does not establish smaller forward KL, preserved optimizer dynamics,
+improved learning or a production method. Factor signs do not change the
+available input/output spans. Any sign-based refinement needs a separate
+Adam derivation and numerical validation before a new experiment. The
+matched running trial remains unchanged.
+
+The second hourly monitor report, at **11:49 UTC**, verifies the live run
+at update **43**, with last-ten correctness **31.0156%**, entropy
+**0.163384**, gradient norm **0.0363908**, and mean generated length
+**2353.63 tokens**. This is a descriptive on-policy window spanning the
+first transfer, not a final performance or learned-rank conclusion.
