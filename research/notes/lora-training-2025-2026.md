@@ -4896,3 +4896,49 @@ are required before claiming this helps. In particular, a stable run with
 negligible additional learned rank would fail the user's ReLoRA objective.
 The current two-sided experiment should finish unchanged before deciding
 whether this alternative or a constrained two-sided selector is justified.
+
+## 77. Native-Adam validation of the one-sided local mechanism
+
+`scripts/research/diagnose_one_sided_transport.py` runs eight CPU float64
+linear-adapter cases: four seeds, each with an inactive-clipping fresh update
+and an active-clipping counterexample. The native optimizer is AdamW with
+LR 1.5e-5, scale 32, betas 0.9/0.999, epsilon 1e-8, zero weight decay, and
+global norm clipping at 1. Forty actual factor updates are performed, with
+some historical gradients large enough to clip. A fixed two-column input
+basis observes only updates 21–40 using their actual clipping coefficients.
+
+At the switch, A rotates within that observed basis by 0.25 radians, B stays
+unchanged, the base is compensated, A's entire native state is retained,
+and B's state receives the mapped 20-update history. A single subsequent
+native step tests the local claim. This fixture does not select the rotation
+from reward or predicted descent and does not implement a production worker.
+
+All eight cases pass:
+
+- The mapped B moments agree with an independent direct replay of the fixed
+  selected A on the observed clipped gradients, with maximum absolute error
+  **1.0408e-17**. This is observed-history replay, not a counterfactual native
+  training trajectory or recovery of the discarded history.
+- Effective-weight compensation has maximum absolute error **2.2204e-16**.
+  Raw A gradients agree exactly for the same fresh effective-weight gradient.
+- In all four inactive-clipping cases, A's next native first and second
+  moments are **exactly equal** to the unswitched branch. Its parameter
+  increment agrees within the `1e-12` check tolerance. A and B counters
+  advance to **41 and 21**, respectively.
+- In all four active-clipping cases, different common clipping coefficients
+  break next-state equality for A. Maximum A-moment differences range from
+  **0.00043172 to 0.00196142** in this fixture. This is the expected
+  counterexample, not a failure hidden by skipping the clipped cases.
+- All eight switched steps have a nonzero first-order component normal to
+  the old rank-one product, with norm **1.6148e-5 to 3.2763e-5**. This checks
+  local access to a rank-increasing direction, not meaningful retained rank
+  after training or a useful reward-aligned direction.
+
+The portable cases and analysis-source hash are in
+`research/data/one-sided-native-adam-validation.json`. They cover isolated
+CPU float64 algebra, observed-window moments, native local updates, and the
+clipping caveat. They do not cover full-model BF16/FSDP, inference weight
+sync, long-trajectory optimizer continuity, actual rank spectra, or accuracy.
+They cannot establish that this alternative works better than the running
+prepared method or standard LoRA. The current experiment remains unchanged;
+its 100-update endpoint and rank evidence still determine the next action.

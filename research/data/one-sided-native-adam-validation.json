@@ -1,0 +1,135 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "seed": 17,
+      "fresh_gradient_clips": false,
+      "observed_window_moment_max_error": 6.938893903907228e-18,
+      "forward_compensation_max_error": 1.1102230246251565e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 1.0,
+      "switched_clip_scale": 1.0,
+      "A_moment_max_difference_after_fresh_update": 0.0,
+      "A_parameter_increment_max_difference": 3.469446951953614e-18,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 2.6819114435818076e-05
+    },
+    {
+      "seed": 17,
+      "fresh_gradient_clips": true,
+      "observed_window_moment_max_error": 6.938893903907228e-18,
+      "forward_compensation_max_error": 1.1102230246251565e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 0.003290820860718315,
+      "switched_clip_scale": 0.0031879363345380983,
+      "A_moment_max_difference_after_fresh_update": 0.0019614241758437526,
+      "A_parameter_increment_max_difference": 1.356100431046392e-07,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 3.220451638271802e-05
+    },
+    {
+      "seed": 29,
+      "fresh_gradient_clips": false,
+      "observed_window_moment_max_error": 1.0408340855860843e-17,
+      "forward_compensation_max_error": 1.1102230246251565e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 1.0,
+      "switched_clip_scale": 1.0,
+      "A_moment_max_difference_after_fresh_update": 0.0,
+      "A_parameter_increment_max_difference": 0.0,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 1.932878711071521e-05
+    },
+    {
+      "seed": 29,
+      "fresh_gradient_clips": true,
+      "observed_window_moment_max_error": 1.0408340855860843e-17,
+      "forward_compensation_max_error": 1.1102230246251565e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 0.0030438454007532326,
+      "switched_clip_scale": 0.003078819529246492,
+      "A_moment_max_difference_after_fresh_update": 0.0004317197692363037,
+      "A_parameter_increment_max_difference": 3.8685768352642036e-08,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 2.2241079206975e-05
+    },
+    {
+      "seed": 43,
+      "fresh_gradient_clips": false,
+      "observed_window_moment_max_error": 8.673617379884035e-18,
+      "forward_compensation_max_error": 1.1102230246251565e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 1.0,
+      "switched_clip_scale": 1.0,
+      "A_moment_max_difference_after_fresh_update": 0.0,
+      "A_parameter_increment_max_difference": 1.3877787807814457e-17,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 1.6148286290172425e-05
+    },
+    {
+      "seed": 43,
+      "fresh_gradient_clips": true,
+      "observed_window_moment_max_error": 8.673617379884035e-18,
+      "forward_compensation_max_error": 1.1102230246251565e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 0.003977969835144164,
+      "switched_clip_scale": 0.003943637326536114,
+      "A_moment_max_difference_after_fresh_update": 0.0004990753279473376,
+      "A_parameter_increment_max_difference": 3.3387067291390515e-08,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 1.760029386190812e-05
+    },
+    {
+      "seed": 71,
+      "fresh_gradient_clips": false,
+      "observed_window_moment_max_error": 6.938893903907228e-18,
+      "forward_compensation_max_error": 2.220446049250313e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 1.0,
+      "switched_clip_scale": 1.0,
+      "A_moment_max_difference_after_fresh_update": 0.0,
+      "A_parameter_increment_max_difference": 2.7755575615628914e-17,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 3.091611108155487e-05
+    },
+    {
+      "seed": 71,
+      "fresh_gradient_clips": true,
+      "observed_window_moment_max_error": 6.938893903907228e-18,
+      "forward_compensation_max_error": 2.220446049250313e-16,
+      "raw_A_gradient_max_error": 0.0,
+      "reference_clip_scale": 0.0022128252224853004,
+      "switched_clip_scale": 0.0022695816970041537,
+      "A_moment_max_difference_after_fresh_update": 0.001076936344724994,
+      "A_parameter_increment_max_difference": 9.280754333096386e-08,
+      "switched_native_counters_A_B": [
+        41.0,
+        21.0
+      ],
+      "normal_first_order_update_norm": 3.2763381628246736e-05
+    }
+  ],
+  "scope": "CPU float64 linear adapter, native AdamW, 40 observed updates and last-20 candidate moments; one fresh update. Local raw-gradient/state/window identities and active-clipping counterexamples only. No full-model BF16/FSDP, counterfactual native history, learned rank spectra, or RL-performance claim; running experiment unchanged.",
+  "source_sha256": "765a3fbc5946768f184d34a10f80512f26107a7c87069971e3a134caf8c536d6"
+}
