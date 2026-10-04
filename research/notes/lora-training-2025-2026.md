@@ -3073,3 +3073,108 @@ Keep the running 100-step trial unchanged. At completion, assess accuracy,
 learning through the second transition, output diversity and memory together.
 A good score with effectively rank-one accumulation is a continuity result,
 not proof of a useful ReLoRA rank advantage.
+
+
+## 59. Revised success requirement and a candidate without a fixed rank ceiling
+
+The user explicitly clarified the purpose of ReLoRA: successive cycles must
+retain the capacity to learn additional rank, rather than become a stable
+approximation to ordinary rank-one LoRA. A plateau of rank-one training is a
+hypothesis to test, not an established result of these 100-step trials.
+Nevertheless, a method that removes rank-growth capacity does not meet the
+research goal, even if short-run scores match standard LoRA.
+
+Require both retained learning through merges and appreciable additional
+learned singular-value energy. Report the full accumulated spectrum, stable
+rank, output/input diversity and accuracy. Nominal factor count alone is
+insufficient. A fixed global input/output basis imposes a finite rank ceiling;
+that version of the earlier exact directional-statistics proposal cannot be
+the final solution. Model dimensions impose a natural ceiling, but the method
+must not impose a constant adapter-sized ceiling across arbitrary cycles.
+
+### Candidate: prepare the next adapter's moments before merging
+
+This is a first-principles proposal, not implemented production code, an
+approved next experiment, or a proven performance improvement.
+
+At the start of each cycle, choose a fresh pair of rank-one directions
+`A_next` and `B_next`, held fixed during preparation. They need not belong to
+one global plane. Keep training the current adapter normally. Alongside its
+backward pass, accumulate the gradients that these prepared coordinates would
+have received on the *observed* losses. For a linear layer, the projections
+can be obtained without constructing its dense weight gradient:
+
+```python
+# x: [tokens, in_features]; dy: [tokens, out_features]
+# dy is the loss gradient at the complete layer output.
+g_b_next = scale * dy.T @ (x @ A_next.T)
+g_a_next = scale * (dy @ B_next).T @ x
+```
+
+Accumulate all microbatches before forming Adam's second moment; averaging
+squares of individual microbatch gradients is not the same quantity. Apply
+the actual update's global clipping multiplier and loss-normalization rules
+consistently. Maintain first and diagonal second moments for both prepared
+projections, and their own number of observed updates.
+
+At a boundary, compensate the base weight to preserve the effective layer,
+then replace the active adapter with the prepared pair:
+
+```python
+W += scale * (B_old @ A_old - B_next @ A_next)
+A.copy_(A_next)
+B.copy_(B_next)
+# Initialize native Adam entries from the prepared projected-gradient
+# history, with its matching observation count and bias correction.
+```
+
+Prepare another fresh pair during the next cycle. Only the current adapter
+is trainable; the next pair is an observer, not an extra model branch.
+Previous learned changes remain merged into the base. Future directions are
+not confined to a global fixed plane, so accumulated rank capacity can grow
+with the number of cycles, up to the layer dimensions. Initialization and
+compensation cancel at each boundary: random prepared factors alone cannot
+be counted as a learned rank advantage. Measure the net trained update.
+
+### What this does and does not recover
+
+For fixed prepared factors, the two projected gradients above are exact
+projections of each observed layer-weight gradient. Their EMA moments can be
+verified against a dense oracle in a small fixture. They capture directions
+missing from the native current-adapter moments; they cannot be recovered
+merely by rotating the old moments after the fact.
+
+They are not the optimizer history of a counterfactual training run using
+the prepared adapter. That run would take different updates and visit
+different policies. The clipping multiplier is also the observed current
+adapter's multiplier, not a hypothetical optimizer's. The proposal provides
+an explicit observed-gradient warm start, not exact transport of the entire
+training algorithm or guaranteed absence of a boundary learning deficit.
+
+A prepared adapter observed for one cycle has only that cycle's history.
+Its Adam counter must match those observations. Setting its counter to the
+global training step while starting moments from zero at the cycle start
+would silently apply inconsistent bias correction. This is a replacement
+with warmed projected moments, not preservation of all historical native
+optimizer states. It needs to be compared with existing cold-reset and warm-B
+results under the same budget and constant global learning-rate schedule.
+
+### Resource cost and validation gates
+
+The observer stores two fixed factor vectors, their two first moments and
+two second moments: six additional factor-sized vectors, excluding temporary
+microbatch accumulators. For the current 2,064,384 total adapter parameters,
+that is approximately 23.625 MiB of FP32 persistent storage if kept fully
+replicated, plus about 7.88 MiB for two gradient accumulators. Actual FSDP
+placement, reductions, retained activations and peak VRAM must be measured.
+There is no dense weight-gradient or second model by construction, but an
+incorrect hook could retain full activations and erase this advantage.
+
+First validate observed projection moments, correct microbatch aggregation,
+clip scaling and bias correction against a native AdamW/dense-gradient oracle.
+Then validate forward compensation, all-rank synchronization, hook lifetime,
+checkpoint/resume and inference transfer in the real worker. Random prepared
+directions may still be inefficient; useful selection, norms and local
+update-space coverage need analysis. No guarantee of improved accuracy,
+rank growth or lower memory follows from the projection identities alone.
+Finish the current 100-step trial before selecting or launching this candidate.
