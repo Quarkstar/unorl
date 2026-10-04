@@ -11,7 +11,7 @@ title: "GRPO · ten-increment compensated refresh, rank 1"
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01` |
-| Record | 80 steps logged / 100 planned |
+| Record | 92 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -72,11 +72,11 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 
 ## Quantitative observations
 
-Training response correctness averaged **10.2%** over the first 10 logged updates and **37.5%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **10.2%** over the first 10 logged updates and **41.7%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.845 at step 1 → 0.1329 at step 80.
-- Policy gradient norm: 0.03881 at step 1 → 0.0213 at step 80.
-- Mean generated response tokens: 1218 at step 1 → 4494 at step 80.
+- Logged entropy: 0.845 at step 1 → 0.13 at step 92.
+- Policy gradient norm: 0.03881 at step 1 → 0.02992 at step 92.
+- Mean generated response tokens: 1218 at step 1 → 3975 at step 92.
 
 Best recorded AIME25 pass@8: **36.7% at step 80**. Last recorded: **36.7% at step 80**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
@@ -103,6 +103,7 @@ Historical and fresh standard LoRA, one-shot refresh, and the current ten-increm
 | 41-50 | 34.77% | 34.06% | -0.70 pp |
 | 51-60 | 37.93% | 37.50% | -0.43 pp |
 | 61-80 | 39.26% | 38.75% | -0.51 pp |
+| 81-90 | 40.04% | 40.04% | +0.00 pp |
 
 Latest common AIME25 evaluation: **step 80**.
 
@@ -124,6 +125,7 @@ Latest common AIME25 evaluation: **step 80**.
 | 41-50 | 32.54% | 34.06% | +1.52 pp |
 | 51-60 | 36.33% | 37.50% | +1.17 pp |
 | 61-80 | 38.44% | 38.75% | +0.31 pp |
+| 81-90 | 41.25% | 40.04% | -1.21 pp |
 
 Latest common AIME25 evaluation: **step 80**.
 
@@ -145,6 +147,7 @@ Latest common AIME25 evaluation: **step 80**.
 | 41-50 | 37.73% | 34.06% | -3.67 pp |
 | 51-60 | 38.52% | 37.50% | -1.02 pp |
 | 61-80 | 38.46% | 38.75% | +0.29 pp |
+| 81-90 | 41.09% | 40.04% | -1.05 pp |
 
 Latest common AIME25 evaluation: **step 80**.
 

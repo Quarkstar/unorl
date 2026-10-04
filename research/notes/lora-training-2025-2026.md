@@ -3369,6 +3369,37 @@ meaningful additional learned directions would not satisfy the rank-growth
 objective clarified by the user.
 
 
+
+The [hourly observation at 07:14:29 UTC](../data/gradual-refresh-hour92-health.json)
+reports 92/100 updates, latest-ten correctness 41.7188%, latest entropy
+0.130036, gradient norm 0.029920 and response length 3975 tokens. Both cycles
+have finished: all twenty scheduled increments at 40-49 and 80-89 and their
+awaited transfers are recorded. The launcher identity remains unchanged.
+This is a runtime observation, not inspection or resumption of a step-92
+checkpoint.
+
+| Complete transition window 81-90 | Correctness | Entropy | Gradient norm | Response tokens |
+| --- | ---: | ---: | ---: | ---: |
+| Gradual refresh | 40.039% | 0.14072 | 0.03239 | 3776 |
+| Historical standard | 40.039% | 0.13639 | 0.03643 | 3636 |
+| Fresh standard | 41.250% | 0.13643 | 0.03998 | 3639 |
+| One-shot warm-B | 41.094% | 0.13658 | 0.03313 | 3830 |
+
+Gradual refresh matches historical standard's mean correctness in this
+completed transition window, while remaining below both other retained
+references. These are descriptive changing-policy batches, not proof of
+identical learning or a paired trajectory experiment. Final 91-100 results
+remain pending.
+
+The latest measured spectrum is from step 89 after the last scheduled
+increment: mean stable rank 1.017115, mean energy outside the leading
+direction 1.6813%, and global update L2 3.230916. The portable hourly record
+retains that full per-layer spectrum and its source hash. This gradual
+increase from 1.4067% at 80 is still a weak rank advantage; it is not a new
+measurement at 92. Keep the run at 100 updates and audit final held-out
+scores and accumulated singular values before deciding on another method.
+
+
 ## 62. Adaptive prepared directions: moment identities and the normal gradient
 
 This extends the fixed prepared-pair proposal with a mathematical direction
