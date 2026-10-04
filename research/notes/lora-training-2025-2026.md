@@ -3786,3 +3786,139 @@ base-then-adapter inference synchronization, useful direction selection and
 model-scale peak VRAM remain gates before the matched 100-update trial.
 No new full-model RL experiment has started, and the ReLoRA performance goal
 remains unachieved.
+
+## 66. A rank-aware direction objective with an explicit progress tradeoff
+
+The [CPU selector validation](../data/prepared-direction-selection-validation.json)
+records reproducible sources, a dominant-old-gradient counterexample and a
+rank-one stationary quadratic example. `unorl/prepared_selection.py` implements
+the isolated selection calculation. It is not integrated into the RL worker.
+Seven targeted tests pass, including an independent dense score oracle and
+an exhaustive discrete search oracle under the declared constraints.
+
+### First-order objective
+
+Let `u = qout[:, 0]` and `v = qin[:, 0]` be the reference directions fixed at
+the beginning of the observation window. For the bias-corrected observed
+mean gradient `M`, the gradient outside that rank-one tangent space is:
+
+```python
+M_normal = (I_out - u @ u.T) @ M @ (I_in - v @ v.T)
+```
+
+This dense expression defines the quantity; the selector does not allocate
+it. After mapping the prepared moments for a candidate A/B, define proposed
+positive factor directions from the warmed diagonal preconditioner:
+
+```python
+dA = mA_hat / (vA_hat.sqrt() + epsilon)
+dB = mB_hat / (vB_hat.sqrt() + epsilon)
+weight_direction = scale * (B @ dA + dB @ A)
+
+total_gain = inner(M, weight_direction)
+normal_gain = inner(M_normal, weight_direction)
+```
+
+Subtracting a small LR times these factor directions changes the observed
+mean loss by `-lr * total_gain + O(lr**2)`. Its normal component contributes
+`-lr * normal_gain`. The exact product includes the second-order
+`scale * lr**2 * dB @ dA` term. These are local loss predictions, not claims
+that the next native Adam step, using fresh rollout gradients and updated
+moments, equals the proposed frozen-history direction.
+
+The normal score is computable from the stored projections. If `ac` and `bc`
+are the coefficients of A/B in their two fixed bases:
+
+```python
+row_fresh = mean_qout_t_G[1]
+col_fresh = mean_G_qin[:, 1]
+gA_normal = scale * bc[1] * (row_fresh - (row_fresh @ v) * v)
+gB_normal = scale * ac[1] * (col_fresh - u * (u @ col_fresh))
+normal_gain = inner(gA_normal, dA) + inner(gB_normal, dB)
+```
+
+Selecting B controls `dA`; selecting A controls `dB`. The two terms separate
+into independent one-dimensional angular searches. The implementation uses
+256 angles on each unit circle, norm-matched factors and bounded candidate
+chunks. It does not build a dense weight gradient or a 256-by-256 angle-pair
+grid. Cross moments and the window's own bias-correction count are retained.
+
+### Why a normal-only objective is insufficient
+
+With observed mean gradient `diag(100, 1)` and reference directions both
+`e1`, ordinary leading-SVD selection chooses only the old direction. A
+normal-only objective selects `e2` on both sides. It exposes the missing
+normal component, but retains only about **1%** of the best total local
+descent score in the prepared grid. That is an unacceptable automatic policy
+for a method intended to match standard LoRA's learning performance.
+
+The selector therefore accepts an explicit constraint on each factor side:
+
+```python
+total_gain_side >= rho * maximum_total_gain_side_in_grid
+# Among feasible candidates, maximize normal_gain_side.
+```
+
+Their sum retains at least `rho` of the best total score in this prepared
+grid. The optimization is exact on the discrete product of the two per-side
+feasible sets, rather than a continuous global optimum or the more permissive
+single constraint on their joint sum. `rho` is a declared tradeoff parameter,
+not a value uniquely determined by theory. No value is yet selected for an
+RL experiment. The unconstrained calculation remains available for diagnosis.
+
+| Minimum retained fraction per side | Actual total fraction retained | Predicted normal descent per LR |
+|---|---:|---:|
+| 0 | 0.01000 | 8.0000 |
+| 0.5 | 0.50158 | 6.9607 |
+| 0.9 | 0.90302 | 3.5089 |
+| 0.99 | 0.99060 | 1.1738 |
+| 1 | 1.00000 | 0.09817 |
+
+This bound compares directions using the observed-gradient prepared
+preconditioners. It is **not** a bound against the actual historical standard
+LoRA optimizer trajectory, whose moving factors and moments differ. It is
+also not a reward bound. The score and its denominator should be logged,
+rather than relabeling this local constraint as preserved baseline accuracy.
+
+### Capacity example and remaining gaps
+
+For squared-error target `diag(2, 1)`, the rank-one optimum `diag(2, 0)` has
+zero old-adapter gradients but nonzero normal gradient. Prepared normal
+selection with `rho=0.9`, compensation and the proposed factor step at
+LR 0.001 changes the weight to approximately `diag(2, 0.008004)`. Its rank
+becomes two and loss decreases from **0.5 to 0.492028**. This illustrates
+escape from a rank-one stationary point, not RL performance or a native
+optimizer run. A separate test reports no benefit when the observed normal
+gradient is zero rather than forcing a novel switch without signal.
+
+The reference is the fixed window's first basis column, not necessarily the
+adapter at the switch and not the full accumulated update span. Reference
+drift and overlap with other accumulated directions must be measured. Fresh
+random basis directions can miss useful gradient signal. Replacing candidate
+bases each cycle preserves rank-growth capacity without a fixed global
+adapter rank ceiling, but this criterion does not guarantee substantial
+learned rank on a long RL run.
+
+### Native selector check
+
+The [additional native validation](../data/prepared-selection-native-validation.json)
+substitutes the new selector at the existing tiny fixture's selection call,
+using `rho=0.9` and otherwise unchanged precision, numerical gates, native
+AdamW, clipping, data-parallel reduction and checkpoint replay. It passes on
+all eight ranks. Maximum relative warmed-moment error is **0.000713729** and
+maximum boundary BF16 logit difference is **0.001953125**. Effective weights
+and all populated native optimizer states replay bitwise exactly. This
+validates the new selection/transfer combination, not production integration.
+
+All 28 recorded rank-zero selections (14 layers, repeated after checkpoint
+reload) have positive observed normal-descent scores. Their minimum retained
+total-descent fraction is **0.9005047**, above the declared 0.9 bound.
+Those counts are not independent trials or evidence of useful cumulative
+rank growth. The native wrapper's explicit call substitution leaves the
+actual RL worker untouched. Source hashes and scope are preserved in the
+portable record; the fixture-only model/checkpoint files can be removed.
+
+Production lifecycle and inference-sync checks, activation-lifetime handling
+and full-model memory measurement remain necessary before a matched
+100-update trial. The final success criteria remain both meaningful rank
+growth and performance matching or exceeding standard rank-one LoRA.

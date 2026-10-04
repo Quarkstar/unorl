@@ -1,0 +1,196 @@
+{
+  "source_sha256": {
+    "unorl/prepared_selection.py": "2f97c6eb6f3107729c9ccade147d47e1a7936e432c86e08458296c3579820033",
+    "unorl/prepared_moments.py": "bf4eb12c45378089add57dbdd64dabdd589b72c9ea32a42b3dfa27708da61eaa",
+    "tests/test_prepared_selection.py": "d50e4b3bf446304bc584fbffdc48ed1606f851e68527a69817fcbe57debd42f0",
+    "scripts/research/diagnose_prepared_selection.py": "e8c184da1c2a33827c4341a9f85319f728a904b21c48b81f2127863257446bd3"
+  },
+  "torch_version": "2.11.0+cu130",
+  "precision": "CPU float64",
+  "tests_passed": 7,
+  "observed_history_updates": 5,
+  "dominant_old_gradient_example": {
+    "mean_gradient_diagonal": [
+      100,
+      1
+    ],
+    "leading_svd_selects_only_old_direction": true,
+    "grid_tradeoffs": [
+      {
+        "a_coeff": [
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "b_coeff": [
+          [
+            0.0
+          ],
+          [
+            1.0
+          ]
+        ],
+        "predicted_normal_descent_per_lr": 7.999999979999986,
+        "predicted_total_descent_per_lr": 7.999999979999986,
+        "maximum_total_descent_per_lr_in_grid": 800.0379337375999,
+        "total_descent_retained_fraction": 0.009999525825763985,
+        "has_positive_normal_descent": true,
+        "a_grid_index": 128,
+        "b_grid_index": 128,
+        "angles_per_factor": 256,
+        "minimum_total_descent_fraction_per_factor": 0.0,
+        "reference": "first columns of fixed per-window qin/qout",
+        "scope": "first-order observed-mean loss prediction, no reward or cumulative-rank guarantee"
+      },
+      {
+        "a_coeff": [
+          [
+            -0.492898192229784,
+            0.8700869911087115
+          ]
+        ],
+        "b_coeff": [
+          [
+            -0.492898192229784
+          ],
+          [
+            0.8700869911087115
+          ]
+        ],
+        "predicted_normal_descent_per_lr": 6.9606959088696785,
+        "predicted_total_descent_per_lr": 401.2792496726963,
+        "maximum_total_descent_per_lr_in_grid": 800.0379337375999,
+        "total_descent_retained_fraction": 0.5015752788096042,
+        "has_positive_normal_descent": true,
+        "a_grid_index": 170,
+        "b_grid_index": 170,
+        "angles_per_factor": 256,
+        "minimum_total_descent_fraction_per_factor": 0.5,
+        "reference": "first columns of fixed per-window qin/qout",
+        "scope": "first-order observed-mean loss prediction, no reward or cumulative-rank guarantee"
+      },
+      {
+        "a_coeff": [
+          [
+            0.8986744656939538,
+            0.43861623853852766
+          ]
+        ],
+        "b_coeff": [
+          [
+            0.8986744656939538
+          ],
+          [
+            0.43861623853852766
+          ]
+        ],
+        "predicted_normal_descent_per_lr": 3.5089298883082147,
+        "predicted_total_descent_per_lr": 722.4485024234701,
+        "maximum_total_descent_per_lr_in_grid": 800.0379337375999,
+        "total_descent_retained_fraction": 0.9030178094785466,
+        "has_positive_normal_descent": true,
+        "a_grid_index": 37,
+        "b_grid_index": 37,
+        "angles_per_factor": 256,
+        "minimum_total_descent_fraction_per_factor": 0.9,
+        "reference": "first columns of fixed per-window qin/qout",
+        "scope": "first-order observed-mean loss prediction, no reward or cumulative-rank guarantee"
+      },
+      {
+        "a_coeff": [
+          [
+            -0.989176509964781,
+            0.1467304744553618
+          ]
+        ],
+        "b_coeff": [
+          [
+            -0.989176509964781
+          ],
+          [
+            0.1467304744553618
+          ]
+        ],
+        "predicted_normal_descent_per_lr": 1.1738437756428923,
+        "predicted_total_descent_per_lr": 792.5150517274665,
+        "maximum_total_descent_per_lr_in_grid": 800.0379337375999,
+        "total_descent_retained_fraction": 0.990596843358429,
+        "has_positive_normal_descent": true,
+        "a_grid_index": 244,
+        "b_grid_index": 244,
+        "angles_per_factor": 256,
+        "minimum_total_descent_fraction_per_factor": 0.99,
+        "reference": "first columns of fixed per-window qin/qout",
+        "scope": "first-order observed-mean loss prediction, no reward or cumulative-rank guarantee"
+      },
+      {
+        "a_coeff": [
+          [
+            -0.9999247018391445,
+            0.012271538285720007
+          ]
+        ],
+        "b_coeff": [
+          [
+            -0.9999247018391445
+          ],
+          [
+            0.012271538285720007
+          ]
+        ],
+        "predicted_normal_descent_per_lr": 0.09817228628576392,
+        "predicted_total_descent_per_lr": 800.0379337375999,
+        "maximum_total_descent_per_lr_in_grid": 800.0379337375999,
+        "total_descent_retained_fraction": 1.0,
+        "has_positive_normal_descent": true,
+        "a_grid_index": 255,
+        "b_grid_index": 255,
+        "angles_per_factor": 256,
+        "minimum_total_descent_fraction_per_factor": 1.0,
+        "reference": "first columns of fixed per-window qin/qout",
+        "scope": "first-order observed-mean loss prediction, no reward or cumulative-rank guarantee"
+      }
+    ]
+  },
+  "stationary_rank_one_quadratic_example": {
+    "target_diagonal": [
+      2,
+      1
+    ],
+    "initial_diagonal": [
+      2,
+      0
+    ],
+    "initial_loss": 0.5,
+    "next_loss": 0.4920280320278605,
+    "next_weight": [
+      [
+        2.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.008003999979979248
+      ]
+    ],
+    "rank_before": 1,
+    "rank_after": 2,
+    "proposed_factor_step_lr": 0.001,
+    "diagnostics": {
+      "predicted_normal_descent_per_lr": 7.999999979999986,
+      "predicted_total_descent_per_lr": 7.999999979999986,
+      "maximum_total_descent_per_lr_in_grid": 7.999999979999986,
+      "total_descent_retained_fraction": 1.0,
+      "has_positive_normal_descent": true,
+      "a_grid_index": 128,
+      "b_grid_index": 128,
+      "angles_per_factor": 256,
+      "minimum_total_descent_fraction_per_factor": 0.9,
+      "reference": "first columns of fixed per-window qin/qout",
+      "scope": "first-order observed-mean loss prediction, no reward or cumulative-rank guarantee"
+    }
+  },
+  "production_integrated": false,
+  "limitations": "Isolated CPU direction selection against a fixed-window observed mean with warmed diagonal Adam preconditioning. Numerical angular grid optimum under per-factor total-descent constraints, not a continuous optimum. The example applies a proposed direction from frozen moments, not a subsequent native Adam update with fresh rollout gradients. Reference is the first basis column at preparation, not the full accumulated-rank span or necessarily the adapter at the switch. No reward, long-run rank growth, worker memory or native selector integration evidence; the earlier native fixture validated transfer with a different SVD selector."
+}
