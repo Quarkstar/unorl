@@ -3004,6 +3004,18 @@ existing standards rather than launch another control. The goal remains
 matching or improving standard rank-1 LoRA, not merely surviving a refresh.
 
 
+
+The next [hourly observation](../data/gradual-refresh-hour77-health.json) at
+06:13:41 UTC reports 77/100 updates, latest-ten correctness 39.8828%, latest
+entropy 0.160331, gradient norm 0.030752 and mean response length 3390 tokens.
+Launcher identity was reverified before retaining the record. The complete
+61-80 window and step-80 evaluation are still pending. These latest-ten
+changing batches do not establish a learning slope or a new rank result;
+the most recent audited checkpoint spectrum remains the step-60 measurement.
+Both the training process and hourly watcher remain live. The research-book
+publication and GitHub checks for the mathematical analysis also passed.
+
+
 ## 58. Is gradual refresh actually gaining rank?
 
 The user's objection is valid: continuity and a standard-LoRA-like reward

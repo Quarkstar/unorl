@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 61
+    "candidate": 77
   },
   "config_differences": {
     "environment.env_class": {
@@ -247,32 +247,32 @@
       }
     },
     "61-80": {
-      "updates": 1,
+      "updates": 17,
       "complete": false,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.34765625,
-          "candidate": 0.3515625,
-          "candidate_minus_control": 0.00390625,
-          "updates": 1
+          "control": 0.4053308823529412,
+          "candidate": 0.3986672794117647,
+          "candidate_minus_control": -0.006663602941176461,
+          "updates": 17
         },
         "policy/policy_entropy": {
-          "control": 0.13131044805049896,
-          "candidate": 0.13606522977352142,
-          "candidate_minus_control": 0.004754781723022461,
-          "updates": 1
+          "control": 0.13757243226556218,
+          "candidate": 0.13917261099114137,
+          "candidate_minus_control": 0.0016001787255791877,
+          "updates": 17
         },
         "policy/grad_norm": {
-          "control": 0.02625788375735283,
-          "candidate": 0.030262375250458717,
-          "candidate_minus_control": 0.004004491493105888,
-          "updates": 1
+          "control": 0.03454338112736449,
+          "candidate": 0.03428196282509495,
+          "candidate_minus_control": -0.0002614183022695421,
+          "updates": 17
         },
         "generate/avg_num_tokens": {
-          "control": 3720.6640625,
-          "candidate": 3793.6484375,
-          "candidate_minus_control": 72.984375,
-          "updates": 1
+          "control": 3365.5179227941176,
+          "candidate": 3607.2185202205883,
+          "candidate_minus_control": 241.70059742647072,
+          "updates": 17
         }
       }
     },

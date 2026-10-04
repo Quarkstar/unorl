@@ -1,0 +1,19 @@
+{
+  "health": {
+    "utc": "2026-10-04T06:13:41.297449+00:00",
+    "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+    "status": "running",
+    "pid": 1612104,
+    "verified_alive": true,
+    "process_start_ticks": "4999687432",
+    "exit_status": null,
+    "global_step": 77,
+    "target_global_step": 100,
+    "last10_mean_correctness": 0.398828125,
+    "entropy": 0.1603309065103531,
+    "grad_norm": 0.030751744285225868,
+    "response_tokens": 3389.84375
+  },
+  "identity_reverified": true,
+  "scope": "Hourly partial observation; evaluation at 80 is not yet recorded, and there is no new saved spectrum measurement after the step-60 checkpoint audit."
+}
