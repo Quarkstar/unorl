@@ -241,6 +241,38 @@ def refresh_update_plot(
     save(fig, name)
 
 
+def tangent_budget_plot(run_id):
+    """Plot hypothetical geometry separately from observed training curves."""
+    reports = [
+        json.loads(path.read_text())
+        for path in (BOOK / "data").glob(f"{run_id}-tangent-budget-step*.json")
+    ]
+    if not reports:
+        return
+    report = max(reports, key=lambda row: row["step"])
+    fig, ax = plt.subplots(figsize=(8, 4.5), layout="constrained")
+    ax.plot(
+        report["grid_degrees"],
+        report["global_relative_tangent_error"],
+        color=COLORS[0],
+        label="Best tangent approximation of recorded update",
+    )
+    for (budget, row), color in zip(report["budget_summary"].items(), COLORS[1:]):
+        value = float(budget)
+        ax.axhline(value, color=color, ls="--", lw=1, label=f"{100 * value:g}% error budget")
+        ax.scatter(row["global_common_angle_max_degrees"], value, color=color, s=30)
+    ax.set(
+        xlabel="Hypothetical rotation of both factors (degrees)",
+        ylabel="Minimum relative tangent approximation error",
+        xlim=(0, 90),
+        ylim=(0, 1.03),
+        title=f"Step {report['step']} recorded update · hypothetical random-direction scan",
+    )
+    ax.yaxis.set_major_formatter(PercentFormatter(1))
+    ax.legend(frameon=False, fontsize=9)
+    save(fig, f"prepared-tangent-budget-step{report['step']}")
+
+
 def figure(path, caption):
     return f"```{{figure}} {path}\n:alt: {caption}\n\n{caption}\n```\n"
 
@@ -669,6 +701,7 @@ def main():
     gradual_id = "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01"
     prepared_id = "qwen3-4b-base-grpo-prepared-r1-20261004-01"
     if prepared_id in by_id:
+        tangent_budget_plot(prepared_id)
         prepared_runs = [
             by_id[rid]
             for rid in ("qwen3-4b-base-grpo-lora-r1-blog-20260923-01", gradual_id, prepared_id)

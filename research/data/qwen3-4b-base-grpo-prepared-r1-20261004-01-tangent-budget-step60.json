@@ -1,0 +1,2420 @@
+{
+  "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+  "step": 60,
+  "seed": 42,
+  "compact_formula_validation": {
+    "cases": 12,
+    "maximum_absolute_squared_norm_error": 1.1368683772161603e-13
+  },
+  "candidate_scope": "Independent random orthogonal directions indexed by sorted layer names; not production window candidates",
+  "grid_degrees": [
+    0.0,
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.0,
+    4.5,
+    5.0,
+    5.499999999999999,
+    6.0,
+    6.500000000000001,
+    7.0,
+    7.499999999999999,
+    8.0,
+    8.5,
+    9.0,
+    9.5,
+    10.0,
+    10.5,
+    10.999999999999998,
+    11.5,
+    12.0,
+    12.5,
+    13.000000000000002,
+    13.5,
+    14.0,
+    14.5,
+    14.999999999999998,
+    15.5,
+    16.0,
+    16.5,
+    17.0,
+    17.5,
+    18.0,
+    18.5,
+    19.0,
+    19.5,
+    20.0,
+    20.5,
+    21.0,
+    21.500000000000004,
+    21.999999999999996,
+    22.5,
+    23.0,
+    23.5,
+    24.0,
+    24.5,
+    25.0,
+    25.5,
+    26.000000000000004,
+    26.5,
+    27.0,
+    27.5,
+    28.0,
+    28.500000000000004,
+    29.0,
+    29.500000000000004,
+    29.999999999999996,
+    30.5,
+    31.0,
+    31.5,
+    32.0,
+    32.5,
+    33.0,
+    33.50000000000001,
+    34.0,
+    34.49999999999999,
+    35.0,
+    35.5,
+    36.0,
+    36.5,
+    37.0,
+    37.50000000000001,
+    38.0,
+    38.50000000000001,
+    39.0,
+    39.5,
+    40.0,
+    40.5,
+    41.0,
+    41.50000000000001,
+    42.0,
+    42.5,
+    43.00000000000001,
+    43.5,
+    43.99999999999999,
+    44.5,
+    45.0,
+    45.5,
+    46.0,
+    46.50000000000001,
+    46.99999999999999,
+    47.5,
+    48.0,
+    48.5,
+    49.0,
+    49.50000000000001,
+    50.0,
+    50.5,
+    51.0,
+    51.5,
+    51.99999999999999,
+    52.49999999999999,
+    53.0,
+    53.5,
+    54.0,
+    54.50000000000001,
+    55.0,
+    55.5,
+    56.0,
+    56.5,
+    57.0,
+    57.49999999999999,
+    58.0,
+    58.5,
+    59.0,
+    59.5,
+    59.99999999999999,
+    60.5,
+    61.0,
+    61.50000000000001,
+    62.0,
+    62.50000000000001,
+    63.0,
+    63.49999999999999,
+    64.0,
+    64.5,
+    65.0,
+    65.5,
+    66.0,
+    66.5,
+    67.00000000000001,
+    67.5,
+    68.0,
+    68.5,
+    68.99999999999999,
+    69.5,
+    70.0,
+    70.5,
+    71.0,
+    71.5,
+    72.0,
+    72.5,
+    73.0,
+    73.5,
+    74.0,
+    74.5,
+    75.00000000000001,
+    75.5,
+    76.0,
+    76.5,
+    76.99999999999999,
+    77.5,
+    78.0,
+    78.5,
+    79.0,
+    79.5,
+    80.0,
+    80.50000000000001,
+    81.0,
+    81.5,
+    82.0,
+    82.49999999999999,
+    83.00000000000001,
+    83.49999999999999,
+    84.0,
+    84.5,
+    85.0,
+    85.5,
+    86.0,
+    86.5,
+    87.0,
+    87.50000000000001,
+    87.99999999999999,
+    88.50000000000001,
+    89.0,
+    89.5,
+    90.0
+  ],
+  "global_relative_tangent_error": [
+    0.0003576435957358519,
+    0.008431348075033993,
+    0.01685121935660485,
+    0.025272657457139244,
+    0.03369326521473983,
+    0.04211216146990853,
+    0.05052871771057943,
+    0.058942377366652754,
+    0.06735261057598718,
+    0.07575889906470065,
+    0.0841607300634766,
+    0.09255759351039637,
+    0.10094898062369684,
+    0.10933438310728831,
+    0.11771329267316885,
+    0.1260852007333268,
+    0.13444959818749955,
+    0.1428059752678192,
+    0.15115382141872977,
+    0.1594926251997082,
+    0.1678218742033058,
+    0.17614105498393207,
+    0.18444965299447927,
+    0.19274715252891078,
+    0.20103303666959702,
+    0.209306787238587,
+    0.21756788475225777,
+    0.22581580837899368,
+    0.2340500358996328,
+    0.24227004367052932,
+    0.25047530658911604,
+    0.2586652980619117,
+    0.26683948997492,
+    0.2749973526664237,
+    0.283138354902147,
+    0.29126196385280856,
+    0.29936764507407737,
+    0.3074548624889375,
+    0.31552307837250043,
+    0.32357175333927335,
+    0.33160034633291635,
+    0.3396083146185117,
+    0.3475951137773632,
+    0.35556019770436303,
+    0.36350301860793177,
+    0.3714230270125668,
+    0.37931967176401155,
+    0.38719240003706884,
+    0.3950406573460693,
+    0.4028638875580154,
+    0.41066153290841295,
+    0.41843303401979715,
+    0.42617782992296743,
+    0.4338953580809365,
+    0.44158505441559565,
+    0.44924635333710494,
+    0.4568786877760039,
+    0.4644814892180426,
+    0.4720541877417336,
+    0.47959621205861375,
+    0.487106989556212,
+    0.4945859463437101,
+    0.5020325073002905,
+    0.5094460961261489,
+    0.5168261353961637,
+    0.5241720466162005,
+    0.5314832502820301,
+    0.5387591659408427,
+    0.5459992122553297,
+    0.5532028070703109,
+    0.5603693674818776,
+    0.56749830990902,
+    0.5745890501677126,
+    0.5816410035474207,
+    0.5886535848899914,
+    0.5956262086708977,
+    0.6025582890827902,
+    0.6094492401213234,
+    0.61629847567321,
+    0.6231054096064604,
+    0.6298694558627657,
+    0.6365900285519708,
+    0.6432665420485995,
+    0.6498984110903753,
+    0.6564850508786858,
+    0.6630258771809467,
+    0.669520306434803,
+    0.6759677558541203,
+    0.6823676435367058,
+    0.688719388573704,
+    0.695022411160607,
+    0.7012761327098247,
+    0.7074799759647509,
+    0.7136333651152662,
+    0.7197357259146121,
+    0.725786485797583,
+    0.73178507399996,
+    0.7377309216791303,
+    0.743623462035827,
+    0.7494621304369172,
+    0.7552463645391838,
+    0.7609756044140155,
+    0.7666492926729604,
+    0.7722668745940573,
+    0.7778277982488794,
+    0.7833315146302336,
+    0.7887774777804285,
+    0.7941651449200546,
+    0.7994939765772039,
+    0.8047634367170531,
+    0.8099729928717488,
+    0.8151221162705221,
+    0.8202102819699548,
+    0.8252369689843397,
+    0.8302016604160523,
+    0.8351038435858756,
+    0.8399430101631935,
+    0.8447186562960005,
+    0.8494302827406365,
+    0.854077394991202,
+    0.8586595034085595,
+    0.8631761233488698,
+    0.8676267752915864,
+    0.8720109849668428,
+    0.8763282834821623,
+    0.8805782074484225,
+    0.8847602991050115,
+    0.8888741064441079,
+    0.892919183334011,
+    0.8968950896414701,
+    0.9008013913529349,
+    0.9046376606946724,
+    0.9084034762516784,
+    0.9120984230853305,
+    0.9157220928497126,
+    0.9192740839065517,
+    0.9227540014387141,
+    0.9261614575621852,
+    0.929496071436496,
+    0.9327574693735161,
+    0.9359452849445777,
+    0.9390591590858544,
+    0.9420987402019578,
+    0.9450636842676869,
+    0.9479536549278811,
+    0.9507683235953255,
+    0.9535073695466563,
+    0.956170480016219,
+    0.9587573502878279,
+    0.9612676837843827,
+    0.9637011921552922,
+    0.966057595361668,
+    0.9683366217592322,
+    0.9705380081789047,
+    0.9726615000050342,
+    0.9747068512512159,
+    0.9766738246336754,
+    0.9785621916421665,
+    0.9803717326083599,
+    0.9821022367716777,
+    0.9837535023425417,
+    0.9853253365630111,
+    0.9868175557647686,
+    0.9882299854244312,
+    0.9895624602161563,
+    0.990814824061519,
+    0.9919869301766262,
+    0.9930786411164573,
+    0.9940898288163998,
+    0.9950203746309569,
+    0.995870169369618,
+    0.9966391133298622,
+    0.9973271163272859,
+    0.9979340977228395,
+    0.9984599864471501,
+    0.9989047210219298,
+    0.9992682495784553,
+    0.9995505298731003,
+    0.99975152929993,
+    0.9998712249003331,
+    0.9999096033697025
+  ],
+  "budget_summary": {
+    "0.1": {
+      "minimum_max_degrees": 5.499999999999999,
+      "median_max_degrees": 5.499999999999999,
+      "maximum_max_degrees": 7.499999999999999,
+      "global_common_angle_max_degrees": 5.499999999999999
+    },
+    "0.25": {
+      "minimum_max_degrees": 14.5,
+      "median_max_degrees": 14.5,
+      "maximum_max_degrees": 18.5,
+      "global_common_angle_max_degrees": 14.5
+    },
+    "0.5": {
+      "minimum_max_degrees": 29.999999999999996,
+      "median_max_degrees": 30.5,
+      "maximum_max_degrees": 36.0,
+      "global_common_angle_max_degrees": 30.5
+    }
+  },
+  "layers": {
+    "base_model.model.model.layers.0.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.000548538879385783,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.5
+      }
+    },
+    "base_model.model.model.layers.0.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00016137346756393223,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.0.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002935089783958632,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.0.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00025270781434678723,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.0.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00030889396064928026,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.0.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00021771645855156487,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.0.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0003803933085955135,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 15.5,
+        "0.5": 32.0
+      }
+    },
+    "base_model.model.model.layers.1.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0002455465250205499,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.1.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00017590307632393896,
+      "connected_feasible_max_degrees": {
+        "0.1": 7.499999999999999,
+        "0.25": 18.5,
+        "0.5": 36.0
+      }
+    },
+    "base_model.model.model.layers.1.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00022270670310197457,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.1.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00023017909572416103,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.1.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0002880189301260241,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.1.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00027347778180082324,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.1.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002223837125790468,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.10.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005200426971551044,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.10.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00039399878078379423,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.10.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00023957482141378965,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.10.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00030584953252611795,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.10.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003531957781538063,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.10.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0003173130342303041,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.10.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002895204273481716,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.11.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0006916674443595876,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.11.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0004097742218437908,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.11.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0003006154011956766,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.11.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00028675395962390415,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.11.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00034500070044197865,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.11.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00021729999889692121,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.11.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00026276344488708426,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.12.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005486807440114511,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.12.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00024962520996329784,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.12.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00028541250355084737,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.12.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002943550568639535,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.12.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00033769301919902943,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.12.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00032500303292751394,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.12.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00031426857322821563,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.13.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005340626485462366,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.13.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.000308890711341882,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.13.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0003467904864673967,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.13.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002819129867482494,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.13.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003979184150978639,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.13.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00031730389068607937,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.13.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002602781685095831,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.14.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.000568142449341084,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.14.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0004829238458519988,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.14.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00041460669313182384,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.14.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00028952236848627774,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.14.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00039424102400510285,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.14.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00033020049702677743,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.14.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00032371340045242317,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.15.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005013811662635885,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.15.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0002607975900841667,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.15.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002296993520162654,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.15.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00023867455835111494,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.15.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003772207031337603,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.15.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00028831985913265547,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.15.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00022597619432215396,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.16.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0006002619979218947,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.16.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0003575562510693406,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.16.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002958797634925078,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.16.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00024999996655525086,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.16.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00044139330959738917,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.16.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00030589587419051326,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.16.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0003052192492234669,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 15.5,
+        "0.5": 31.5
+      }
+    },
+    "base_model.model.model.layers.17.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005036048071331365,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.17.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00031855341316630885,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.17.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00039308538471733887,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.17.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00030951781334357607,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.17.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00036068746983579575,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.17.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00032968513922271915,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.17.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002637180607879637,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.18.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005784498502460166,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.18.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0003566171519845219,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.18.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002970811780503659,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.18.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002559479570379562,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.18.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003650848200303254,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.18.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00029726199025176047,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.18.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00026290365092267447,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.19.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.000596470021050655,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.19.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00036144604942265485,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.19.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002803553552146816,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.19.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0003068799193399372,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.19.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00035371889999825397,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.19.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00028117455039975336,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.19.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.000315783782874015,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.2.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.00046236083697256123,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.2.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0002811371373009935,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.2.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00026105993186190866,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.2.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002382972920001911,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.2.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00032096534153633615,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.2.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00022930212613907498,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.2.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00022429381817794364,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.20.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005399351092469909,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.20.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0002603112097781838,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.20.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00036303273807825206,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.20.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002705787368685165,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.20.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0004073497399352719,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.20.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00036631350995041344,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.20.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00027118245977561387,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.21.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005235665842675112,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.21.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00030883291145876246,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.21.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00027996835727811217,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.21.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00033025543530706167,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.21.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0004727346026871398,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.5
+      }
+    },
+    "base_model.model.model.layers.21.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0002605017299275345,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.21.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00032447779685129436,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.22.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0006489713420666793,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.22.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00028310469466770493,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.22.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00031164405541154447,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.22.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00027536982867734823,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.22.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00036769838565591683,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.22.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00032317275915263847,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.22.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002878785289648677,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.23.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0007943512871831211,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.23.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00033100762841225666,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.23.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0004010669823507699,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.23.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0003145190834538149,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.23.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.000380335361164051,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.23.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0003119466844801347,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.23.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00028314425243235446,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.24.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0006132239724775986,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.24.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.000408474595243494,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.24.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00034169438220542716,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.24.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0003521074063649354,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.24.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00036958790833958123,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.24.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.000268721331294187,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.24.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00027240014196388797,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.25.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005506000344716348,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.25.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00033205269727112647,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.25.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0004481875062857232,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.25.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0003087128650582236,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.25.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003725058445785829,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.25.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0003199153772171682,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.25.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0003688823510398256,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.26.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0006007597865362909,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.26.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0002471234795057251,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.26.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0003131158682965979,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.26.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002862262792707504,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.26.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00034274687264472146,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.26.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00029370802682628696,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.26.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00033906997320779533,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.27.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005386383615939673,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.27.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00039696817403381165,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.27.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00029867412232700705,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.27.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002602308706859785,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.27.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003244193690978591,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.27.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00028269876515367654,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.27.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0003046547091317431,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.28.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0007480245804334914,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.28.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0003357725699408182,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.28.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0003190955349964493,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.28.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00027386047848879124,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.28.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0004046517709412799,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.28.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00030447732248719373,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.28.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002561719230569435,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.29.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005726160133801019,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.29.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00025693545992005074,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.29.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002776290007595762,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.29.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00025922842153812,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.29.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003602798566944597,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.29.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0002901684010243336,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.29.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00027002159784522716,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.3.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0006145045614888757,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.5
+      }
+    },
+    "base_model.model.model.layers.3.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0003452942795897902,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.3.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002553272947981854,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.500000000000001,
+        "0.25": 16.0,
+        "0.5": 33.0
+      }
+    },
+    "base_model.model.model.layers.3.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00030989525966929575,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.3.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003829412910111642,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.3.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0003027122127375211,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.3.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00027735129729724775,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.30.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0007580050918075083,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.30.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0005054073328232548,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.30.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0003175303466616115,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.30.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.000289939885497343,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.30.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0004071488650085521,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.30.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00030956791182717807,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.30.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002822797537123581,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.31.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005301864013632756,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.31.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00032323775390351046,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.31.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00038526182817433317,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.31.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0003085191804779936,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.31.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00041245124102378636,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.31.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00033555364509177773,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.5
+      }
+    },
+    "base_model.model.model.layers.31.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00035260931560595715,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 15.5,
+        "0.5": 32.0
+      }
+    },
+    "base_model.model.model.layers.32.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.000502084288211801,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.32.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0004232431044714193,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.32.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.000310721768833063,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.32.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00030703165247041546,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 15.5,
+        "0.5": 31.5
+      }
+    },
+    "base_model.model.model.layers.32.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00029164383234629574,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.32.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0003017018617658725,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.32.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002762018455943221,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.33.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005170620822820781,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.33.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00032371027773319495,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.33.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0003031521742008626,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.33.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002602391505676351,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.33.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0006810550529579609,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.500000000000001,
+        "0.25": 16.0,
+        "0.5": 32.5
+      }
+    },
+    "base_model.model.model.layers.33.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0002861975757137189,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.33.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0005036635924709535,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 15.5,
+        "0.5": 32.5
+      }
+    },
+    "base_model.model.model.layers.34.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.00043161605308603715,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.34.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.000252245116589837,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.34.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0004672946324694058,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.34.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00022720506727254183,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.34.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0006790820640281788,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.500000000000001,
+        "0.25": 16.0,
+        "0.5": 33.0
+      }
+    },
+    "base_model.model.model.layers.34.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00020070202993477596,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.34.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00047799762228827893,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.35.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.00048672715229437113,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.35.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00026810377488621433,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.35.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00032054610800715563,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.35.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00029227461959244156,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.35.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0006814215973941102,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.35.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0002888819396230331,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.35.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00045120162062305174,
+      "connected_feasible_max_degrees": {
+        "0.1": 6.0,
+        "0.25": 15.5,
+        "0.5": 32.0
+      }
+    },
+    "base_model.model.model.layers.4.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.00041319455289973617,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.4.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0002748376115816244,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.4.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002234831832298212,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.4.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00027902640197048645,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.4.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00035688999521616126,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.4.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.000290113637356577,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.4.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00023941319050789362,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.5.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.00046702915238601883,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.5.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00036108639622201016,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.5.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002711346200371289,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.5.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00023665667856627052,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.5.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003430579809932413,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.5.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0002736444552441629,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.5.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0003272775680641289,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.6.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0004409985496547835,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.6.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00027947931030449874,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.6.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0002655428546858407,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.6.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.00027033385165523656,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.6.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.000437042702799331,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.6.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00022957809147895,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.6.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00023215906680869102,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.7.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0006195409996591133,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.7.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00024738262975854917,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.7.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00032972471247757503,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.7.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002624929913373627,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.7.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00031296193992889367,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.7.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.00019942477278990622,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.7.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.0002214941606295289,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.8.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005773972120769023,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.8.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.0003290084468843151,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.8.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.00034871068074593576,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.8.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002296811007549096,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.8.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.0003664126662011411,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.8.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0002814745885845194,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.8.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00024722130430681515,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    },
+    "base_model.model.model.layers.9.mlp.down_proj": {
+      "baseline_relative_tangent_error": 0.0005919279044641694,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.9.mlp.gate_proj": {
+      "baseline_relative_tangent_error": 0.00045281772919913364,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.9.mlp.up_proj": {
+      "baseline_relative_tangent_error": 0.0003050172420187301,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.9.self_attn.k_proj": {
+      "baseline_relative_tangent_error": 0.0002461379473412592,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.999999999999998,
+        "0.5": 31.0
+      }
+    },
+    "base_model.model.model.layers.9.self_attn.o_proj": {
+      "baseline_relative_tangent_error": 0.00037964754996212835,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.9.self_attn.q_proj": {
+      "baseline_relative_tangent_error": 0.0002320065059116381,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 30.5
+      }
+    },
+    "base_model.model.model.layers.9.self_attn.v_proj": {
+      "baseline_relative_tangent_error": 0.00023847489178246698,
+      "connected_feasible_max_degrees": {
+        "0.1": 5.499999999999999,
+        "0.25": 14.5,
+        "0.5": 29.999999999999996
+      }
+    }
+  },
+  "source_sha256": {
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_60/policy/extra_state_world_size_8_rank_0.pt": "b1ae073e66ee9651b3b454455fdc814083073ed4965ce511b53f5ecb8ac4a525",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_60/policy/lora_adapter/adapter_model.safetensors": "8bbf3b8d7d1ba4a141f855b569241ee748b83d03a4f3140b80bb2570a8824703"
+  },
+  "analysis_source_sha256": "35c91771222113a98ef4c104f146200b20c28c64bc09af4379041886e1027dee",
+  "limitations": "Hypothetical equal-angle rotations of both factors. Maximum angles are the last feasible 0.5-degree grid point connected to zero. These are necessary geometric bounds using a recorded finite update, not actual Adam-state transport, future gradient alignment, finite-step continuity, learned rank, or RL performance. The live run is unchanged."
+}

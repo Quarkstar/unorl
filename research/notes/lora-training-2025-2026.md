@@ -4742,3 +4742,63 @@ and
 `research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-factor-span-step60.json`.
 The experiment page links both; square markers on the rank plot show the
 independent saved-factor measurements without interpolating missing ranks.
+
+## 75. Prospective continuity budgets on the step-60 update
+
+Step-40 checkpoint tensors were removed by the run's latest-one retention
+after step 60 was saved. Its retained audit and tangent-error result remain
+valid, but do not contain enough tensor information to reconstruct a full
+angle scan. A separate read-only scan therefore uses the **actual saved
+step-60 optimizer delta and adapter**, not an invented reconstruction of
+step 40.
+
+For each adapter, an independent seeded random direction is made orthogonal
+to its current A direction, and another to its B direction. Both factors
+rotate through the same angle. These hypothetical directions use seed 42
+plus sorted adapter index; they are not the production preparation candidates
+and have no observed projected-gradient history. The scan evaluates the
+minimum tangent approximation error on a 0.5-degree grid, retaining the
+feasible range connected to zero rotation.
+
+| Tangent-error budget | Global common angle allowed | Median per-adapter angle allowed | Minimum per-adapter angle allowed |
+| ---: | ---: | ---: | ---: |
+| 10% | 5.5° | 5.5° | 5.5° |
+| 25% | 14.5° | 14.5° | 14.5° |
+| 50% | 30.5° | 30.5° | 30.0° |
+
+The global bound weights squared residuals by actual update energy. A
+common angle satisfying only that bound need not satisfy every adapter's
+individual budget; the final column gives the common-angle restriction if
+each adapter must comply. Values are feasible grid points, not continuously
+optimized maxima or proposed safe hyperparameters.
+
+```{figure} ../figures/prepared-tangent-budget-step60.svg
+:alt: Hypothetical rotation angle versus minimum tangent error on the saved step-60 optimizer update.
+
+Google Material palette. This is a CPU geometric scan, not a training or
+accuracy curve. Markers identify the last globally feasible grid angles for
+the indicated error budgets; they are drawn at the budget threshold.
+```
+
+This quantifies the continuity/rank tradeoff: restricting the geometric
+error to 10% leaves only modest immediate changes in both factors. Tightening
+the budget arbitrarily may reproduce the limited-rank problem we wanted to
+avoid. Conversely, allowing a much larger angle removes any strong update
+continuity assurance. An actual method still needs mapped-state feasibility,
+gradient alignment, and measured post-switch rank growth; random angle
+feasibility does not establish any of those.
+
+The compact scan computes projected energies from small Gram matrices,
+without dense Qwen weight gradients. Twelve independent tiny dense checks
+pass, with maximum absolute squared-norm discrepancy **1.1369e-13**. Results,
+checkpoint/export hashes, scope, and the analysis-source hash are in
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-tangent-budget-step60.json`;
+the implementation is `scripts/research/scan_tangent_budget.py`.
+
+A further limitation is the current observer's window-start basis: its old
+reference, especially B, can drift away from the live factor. A continuity
+filter may find no feasible candidate in that restricted observed subspace.
+It cannot invent moments for an unobserved live-boundary direction. A future
+design must explicitly handle that case and verify meaningful rank growth,
+rather than silently equating skipped switches with successful ReLoRA.
+The live experiment remains unchanged and continues toward step 100.
