@@ -2091,3 +2091,34 @@ the refresh worker with refresh disabled; the historical standard-LoRA run
 remains a valid reference. Independently diverged runs do not isolate the
 causal effect of refresh, and further baseline reruns are not automatically
 required for each algorithm variant.
+
+
+## 40. Gradual-refresh CPU primitives and checkpoint replay
+
+A standalone prototype is available in `../../unorl/refresh_transition.py`.
+`make_refresh_plane(A, seed)` creates two reproducible orthonormal rows once
+per transition. `rotate_in_refresh_plane(A, plane, angle_degrees)` rotates
+only the components in that saved plane, preserving the off-plane component
+and total row norm even when ordinary learning changes A between increments.
+It does not modify the running SkyRL worker or define an optimizer-transfer
+rule, merge schedule, or training configuration.
+
+Three CPU tests in `../../tests/test_refresh_transition.py` passed in 2.64
+seconds; Ruff also passed. They verify ten 2-degree rotations compose to one
+20-degree rotation without intervening updates; after an artificial learning
+change, the off-plane component and norm remain invariant and the actual row
+angle does not exceed 2 degrees; and ten AdamW updates interleaved with
+compensated rotations reproduce exactly the same A, B, and base weights when
+restarted from a serialized CPU checkpoint after the third increment. The
+last test uses a small dense quadratic objective to exercise state mechanics,
+not language-model or RL performance. It retains Adam states unchanged rather
+than testing any particular approximate momentum-transfer policy.
+
+The first replay attempt exposed an autograd graph retained through the plane
+normalization. Plane construction is now explicitly under `torch.no_grad()`,
+so its tensors can be saved independently of the training graph. The corrected
+serialized-checkpoint replay passed. Production integration still needs the
+saved plane and transition position in worker client state, deterministic
+FSDP behavior, rollout synchronization, and actual peak-memory measurement.
+No new training experiment has been launched; the standard baseline continues
+under the already configured hourly and 20-step evaluation cadence.
