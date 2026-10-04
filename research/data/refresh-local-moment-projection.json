@@ -1,0 +1,80 @@
+{
+  "total_angle_degrees": 20,
+  "rows": [
+    {
+      "increments": 1,
+      "local_cosine_product": 0.9396926207859084,
+      "known_old_direction_projection": 0.9396926207859084,
+      "relative_overstatement": 0.0,
+      "old_first_moment_mass_after_updates": 0.9,
+      "old_second_moment_mass_after_updates": 0.999,
+      "optimizer_updates_between_first_and_last_increment": 0,
+      "old_first_moment_mass_between_first_and_last_increment": 1.0
+    },
+    {
+      "increments": 2,
+      "local_cosine_product": 0.9698463103929541,
+      "known_old_direction_projection": 0.9396926207859084,
+      "relative_overstatement": 0.03208888623795603,
+      "old_first_moment_mass_after_updates": 0.81,
+      "old_second_moment_mass_after_updates": 0.998001,
+      "optimizer_updates_between_first_and_last_increment": 1,
+      "old_first_moment_mass_between_first_and_last_increment": 0.9
+    },
+    {
+      "increments": 5,
+      "local_cosine_product": 0.9878794454408234,
+      "known_old_direction_projection": 0.9396926207859084,
+      "relative_overstatement": 0.051279347723954816,
+      "old_first_moment_mass_after_updates": 0.5904900000000001,
+      "old_second_moment_mass_after_updates": 0.995009990004999,
+      "optimizer_updates_between_first_and_last_increment": 4,
+      "old_first_moment_mass_between_first_and_last_increment": 0.6561
+    },
+    {
+      "increments": 10,
+      "local_cosine_product": 0.9939249422201993,
+      "known_old_direction_projection": 0.9396926207859084,
+      "relative_overstatement": 0.05771283102014135,
+      "old_first_moment_mass_after_updates": 0.3486784401000001,
+      "old_second_moment_mass_after_updates": 0.9900448802097482,
+      "optimizer_updates_between_first_and_last_increment": 9,
+      "old_first_moment_mass_between_first_and_last_increment": 0.3874204890000001
+    },
+    {
+      "increments": 20,
+      "local_cosine_product": 0.9969583064882578,
+      "known_old_direction_projection": 0.9396926207859084,
+      "relative_overstatement": 0.060940869850031776,
+      "old_first_moment_mass_after_updates": 0.12157665459056935,
+      "old_second_moment_mass_after_updates": 0.9801888648295347,
+      "optimizer_updates_between_first_and_last_increment": 19,
+      "old_first_moment_mass_between_first_and_last_increment": 0.13508517176729928
+    },
+    {
+      "increments": 100,
+      "local_cosine_product": 0.9993909494698162,
+      "known_old_direction_projection": 0.9396926207859084,
+      "relative_overstatement": 0.06352963443937587,
+      "old_first_moment_mass_after_updates": 2.6561398887587544e-05,
+      "old_second_moment_mass_after_updates": 0.9047921471137089,
+      "optimizer_updates_between_first_and_last_increment": 99,
+      "old_first_moment_mass_between_first_and_last_increment": 2.9512665430652825e-05
+    },
+    {
+      "increments": 1000,
+      "local_cosine_product": 0.9999390783705727,
+      "known_old_direction_projection": 0.9396926207859084,
+      "relative_overstatement": 0.06411294103201248,
+      "old_first_moment_mass_after_updates": 1.7478712517226947e-46,
+      "old_second_moment_mass_after_updates": 0.36769542477096373,
+      "optimizer_updates_between_first_and_last_increment": 999,
+      "old_first_moment_mass_between_first_and_last_increment": 1.9420791685807718e-46
+    }
+  ],
+  "ten_update_old_first_moment_absolute_excess": 0.018909641240710352,
+  "limiting_cosine_product": 1,
+  "assumptions": "Fixed plane, equal increments, no A learning, no new gradient contributions. An initial hypothetical dense first moment has no orthogonal-plane component. Treat old-history decay separately from geometric projection. Real gradients, A updates and off-plane motion are excluded. This diagnoses the existing heuristic, not actual training performance.",
+  "conclusion": "Repeated local cosine scaling is not exact transport even as increments shrink. At ten increments it retains roughly 5.8 percent more of this old-direction component than its total-angle projection. New gradients can adapt the state, but shrinking angle alone does not recover missing directional history.",
+  "ten_increment_cycle_old_first_moment_absolute_excess": 0.02101071248967817
+}

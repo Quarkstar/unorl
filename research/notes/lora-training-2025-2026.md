@@ -2703,3 +2703,39 @@ hashes and includes an assertion that the two FP32 ten-increment endpoint
 errors stay below 0.1% of their corrections. Ruff passed. This limited result
 supports leaving the current FP32 trial unchanged while awaiting its actual
 transition probes and held-out evaluations.
+
+
+## 54. Small-step moment projection is still an approximation
+
+A [scalar transport diagnostic](../data/refresh-local-moment-projection.json)
+checks a fixed-plane example with no A learning or new gradients. Assume the
+old hypothetical dense first moment has no component in the plane direction
+orthogonal to the initial A. Its projection onto a row rotated by 20 degrees
+is then the old projected moment multiplied by `cos(20 degrees)`, or 0.939693.
+Ten local projections instead multiply by `cos(2 degrees) ** 10`, or 0.993925.
+Thus the current local heuristic retains 5.771% more of this old-direction
+component than the total-angle projection in that example.
+
+For `n` equal increments, `cos(total_angle / n) ** n` tends to one as `n`
+grows, whereas the actual total-angle projection stays at `cos(total_angle)`.
+Shrinking increments alone therefore cannot make this heuristic exact. This
+is a missing-direction/history issue rather than parameter compensation or
+floating-point rounding. New gradients during real training can update the
+state, but their effectiveness must be measured rather than assumed.
+
+There are nine optimizer updates between the first and last rotation of
+the actual ten-increment cycle (40 through 49). With beta1=0.9, 38.742% of
+the initial first-moment contribution remains after those nine updates.
+In the illustrative fixed-plane example, the excess contribution is then
+2.101% of the initial moment. After ten updates, as at the end of the affected
+training window through update 50, those numbers become 34.868% and 1.891%.
+These are arithmetic consequences of the toy assumptions, not measured
+adapter moments, gradient errors, or predicted accuracy changes.
+
+This does not invalidate the planned experiment: its hypothesis is that
+smaller changes plus interleaved gradients reduce disruption, not that local
+cosine transport is exact. Preserve the current recipe, measure transition
+update norms/cosines and held-out improvement, and avoid explaining a future
+result solely by rank growth or claiming exact moment preservation. The
+recorded directional-moment design in section 48 addresses a different,
+stronger transport requirement and remains an unimplemented follow-up.
