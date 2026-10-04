@@ -1,0 +1,135 @@
+{
+  "scope": "Geometric tangent lower bound; unrestricted factor directions, not native Adam or RL",
+  "source_sha256": "4288c8cabffdfffda84bb301f77f146db454b8d16d7944e85978b2b0368b5f66",
+  "cases": [
+    {
+      "seed": 17,
+      "output_angle_radians": 0.0,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 2.754937307710435e-16,
+      "projection_vs_lstsq_error": 1.777304046151787e-15,
+      "residual_identity_error": 1.4016150184856657e-16
+    },
+    {
+      "seed": 17,
+      "output_angle_radians": 0.2,
+      "input_angle_radians": 0.2,
+      "minimum_relative_update_error": 0.20921373748123645,
+      "projection_vs_lstsq_error": 2.411771197557828e-15,
+      "residual_identity_error": 0.0
+    },
+    {
+      "seed": 17,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.6,
+      "minimum_relative_update_error": 0.5828316050326551,
+      "projection_vs_lstsq_error": 2.0320543689282484e-15,
+      "residual_identity_error": 4.440892098500626e-16
+    },
+    {
+      "seed": 17,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 0.45513985681298275,
+      "projection_vs_lstsq_error": 3.145451795491981e-15,
+      "residual_identity_error": 2.220446049250313e-16
+    },
+    {
+      "seed": 29,
+      "output_angle_radians": 0.0,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 8.339671571020553e-17,
+      "projection_vs_lstsq_error": 3.1378591999756398e-15,
+      "residual_identity_error": 2.433925165748828e-15
+    },
+    {
+      "seed": 29,
+      "output_angle_radians": 0.2,
+      "input_angle_radians": 0.2,
+      "minimum_relative_update_error": 0.1637392218121287,
+      "projection_vs_lstsq_error": 2.0273544867064553e-15,
+      "residual_identity_error": 1.1102230246251565e-16
+    },
+    {
+      "seed": 29,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.6,
+      "minimum_relative_update_error": 0.4631785395376039,
+      "projection_vs_lstsq_error": 2.0508461533611664e-15,
+      "residual_identity_error": 2.220446049250313e-16
+    },
+    {
+      "seed": 29,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 0.39866879789483595,
+      "projection_vs_lstsq_error": 1.3409850070281778e-15,
+      "residual_identity_error": 4.440892098500626e-16
+    },
+    {
+      "seed": 43,
+      "output_angle_radians": 0.0,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 2.2729412745183707e-16,
+      "projection_vs_lstsq_error": 1.682527140037814e-15,
+      "residual_identity_error": 7.785981744932456e-16
+    },
+    {
+      "seed": 43,
+      "output_angle_radians": 0.2,
+      "input_angle_radians": 0.2,
+      "minimum_relative_update_error": 0.20992014911427542,
+      "projection_vs_lstsq_error": 2.19706768806641e-15,
+      "residual_identity_error": 0.0
+    },
+    {
+      "seed": 43,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.6,
+      "minimum_relative_update_error": 0.5790425354743801,
+      "projection_vs_lstsq_error": 1.7859819093440763e-15,
+      "residual_identity_error": 2.220446049250313e-16
+    },
+    {
+      "seed": 43,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 0.5100452051342784,
+      "projection_vs_lstsq_error": 1.7209759623698965e-15,
+      "residual_identity_error": 2.220446049250313e-16
+    },
+    {
+      "seed": 71,
+      "output_angle_radians": 0.0,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 9.175834690976757e-17,
+      "projection_vs_lstsq_error": 2.3241125689636677e-15,
+      "residual_identity_error": 1.946878487342064e-15
+    },
+    {
+      "seed": 71,
+      "output_angle_radians": 0.2,
+      "input_angle_radians": 0.2,
+      "minimum_relative_update_error": 0.15321994140535444,
+      "projection_vs_lstsq_error": 1.8847746617230142e-15,
+      "residual_identity_error": 0.0
+    },
+    {
+      "seed": 71,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.6,
+      "minimum_relative_update_error": 0.44476669493160187,
+      "projection_vs_lstsq_error": 1.7453016597232397e-15,
+      "residual_identity_error": 2.220446049250313e-16
+    },
+    {
+      "seed": 71,
+      "output_angle_radians": 0.6,
+      "input_angle_radians": 0.0,
+      "minimum_relative_update_error": 0.3065342612077626,
+      "projection_vs_lstsq_error": 1.7698124660692672e-15,
+      "residual_identity_error": 0.0
+    }
+  ],
+  "passed": true
+}

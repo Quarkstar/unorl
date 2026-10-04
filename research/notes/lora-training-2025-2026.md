@@ -4550,3 +4550,40 @@ section 72 can reduce compensation within a selected chart, but add no rank.
 Before another experiment, the current run's post-switch rank spectra,
 update-direction changes, and matched 100-update evaluation should decide
 whether this stronger selection constraint addresses the observed failure.
+
+### A computable lower bound before transporting any optimizer state
+
+For normalized candidate output/input directions `u, v`, every first-order
+rank-one factor update belongs to the linear space `u @ x + y @ v`.
+Its orthogonal projection of the old weight-space direction is:
+
+```python
+Pu = u[:, None] @ u[None, :]
+Pv = v[:, None] @ v[None, :]
+D_best = Pu @ D_old + D_old @ Pv - Pu @ D_old @ Pv
+unavoidable_residual = (I - Pu) @ D_old @ (I - Pv)
+minimum_error = norm(unavoidable_residual)
+```
+
+The residual is orthogonal to every representable factor update. Pythagoras
+therefore proves that no choice of new first or second moments can attain
+an error below `minimum_error` in this candidate tangent space. Actual native
+Adam may have a larger error: the projection permits arbitrary factor
+directions, whereas mapped moments restrict them. This is a necessary
+feasibility test, not a sufficient optimizer-continuity certificate.
+
+`scripts/research/diagnose_tangent_continuity.py` independently compares the
+projection with an explicit unrestricted least-squares solution in 16 CPU
+float64 cases: four seeds and four candidate-angle combinations. All pass
+absolute projection/residual tolerances of `1e-12`; the portable results are
+in `research/data/tangent-continuity-validation.json`. They validate linear
+algebra only, not historical checkpoint continuity, rank growth, or accuracy.
+
+The old direction has a sum-of-two-outer-products representation, so the
+bound can be evaluated with small factor inner products rather than storing
+a dense weight matrix. A future implementation should record the actual
+pre-switch Adam direction at the boundary; the already overwritten old
+optimizer state must not be inferred from the new checkpoint. Candidate
+continuity couples the A and B choices, unlike the current selector's two
+independent searches. Its cost and feasibility require evaluation before
+replacing that selector. The live recipe remains unchanged.
