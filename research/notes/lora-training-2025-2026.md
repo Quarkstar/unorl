@@ -4187,6 +4187,21 @@ It hashes the source logs, raw evaluations and all eight optimizer/extra-state
 files. This read-only audit does not reconstruct dense model weights, test
 full-model resume or establish useful rank; those limitations remain explicit.
 
+The paired question-bootstrap analysis is retained in
+`research/data/prepared-base-comparison-analysis.json`, with hashes of both
+input snapshots. At 20, the candidate-minus-standard avg@8 difference is
+**+3.75 percentage points**, with a question-bootstrap 95% interval of
+**[+0.4167, +7.9167]**. The corresponding pass@8 difference is **+3.3333
+points**, interval **[−10, +16.6667]**. Subtracting the initial differences,
+the difference in improvement from zero is **+2.9167 points** for avg@8,
+interval **[−0.8333, +7.5]**, and **zero points** for pass@8, interval
+**[−13.3333, +13.3333]**. Each bootstrap resamples 30 paired questions,
+retaining all eight responses per question, for 10,000 draws at seed 42.
+It does not measure training-seed uncertainty. Because this checkpoint
+precedes preparation, even its positive endpoint avg@8 interval cannot be
+attributed to the prepared method. Post-transfer and final comparisons are
+still required.
+
 ### First full-model preparation update
 
 Update 21 completes on all eight ranks with the preparation path enabled.

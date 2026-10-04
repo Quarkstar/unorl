@@ -1,6 +1,7 @@
-"""Compare the original 100-step LoRA reference with gradual refresh from base."""
+"""Compare the 100-step LoRA reference with adapter-refresh trials from base."""
 
 import argparse
+import hashlib
 import json
 import statistics
 from pathlib import Path
@@ -104,10 +105,14 @@ def main():
     parser.add_argument("--output", default="refresh-base-comparison-analysis.json")
     args = parser.parse_args()
     ids = {"control": args.control_run, "candidate": args.candidate_run}
-    runs = {
-        name: json.loads((ROOT / "data" / f"{rid}.json").read_text()) for name, rid in ids.items()
-    }
+    paths = {name: ROOT / "data" / f"{rid}.json" for name, rid in ids.items()}
+    raw = {name: path.read_bytes() for name, path in paths.items()}
+    runs = {name: json.loads(value) for name, value in raw.items()}
     report = analyze(runs["control"], runs["candidate"])
+    report["source_sha256"] = {
+        str(paths[name].relative_to(ROOT.parent)): hashlib.sha256(value).hexdigest()
+        for name, value in raw.items()
+    }
     (ROOT / "data" / args.output).write_text(json.dumps(report, indent=2) + "\n")
     print(
         json.dumps(

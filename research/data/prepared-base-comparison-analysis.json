@@ -1,0 +1,249 @@
+{
+  "run_ids": {
+    "control": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+    "candidate": "qwen3-4b-base-grpo-prepared-r1-20261004-01"
+  },
+  "completed_updates": {
+    "control": 100,
+    "candidate": 24
+  },
+  "config_differences": {
+    "environment.env_class": {
+      "control": "conditional_math",
+      "candidate": "unorl_math"
+    },
+    "trainer.ckpt_interval": {
+      "control": 100,
+      "candidate": 20
+    },
+    "trainer.ckpt_path": {
+      "control": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/checkpoints",
+      "candidate": "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints"
+    },
+    "trainer.export_path": {
+      "control": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/exports",
+      "candidate": "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports"
+    },
+    "trainer.log_path": {
+      "control": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/infra",
+      "candidate": "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/infra"
+    },
+    "trainer.prepared_angles": {
+      "control": null,
+      "candidate": 256
+    },
+    "trainer.prepared_min_total_fraction": {
+      "control": null,
+      "candidate": 0.9
+    },
+    "trainer.prepared_token_chunk": {
+      "control": null,
+      "candidate": 256
+    },
+    "trainer.prepared_window_updates": {
+      "control": null,
+      "candidate": 20
+    },
+    "trainer.project_name": {
+      "control": "conditional-rl",
+      "candidate": "unorl"
+    },
+    "trainer.relora_enable_merge": {
+      "control": null,
+      "candidate": true
+    },
+    "trainer.relora_first_merge_step": {
+      "control": null,
+      "candidate": 40
+    },
+    "trainer.relora_merge_interval": {
+      "control": null,
+      "candidate": 40
+    },
+    "trainer.relora_probe_response_tokens": {
+      "control": null,
+      "candidate": 128
+    },
+    "trainer.relora_restart_warmup_updates": {
+      "control": null,
+      "candidate": 0
+    },
+    "trainer.run_name": {
+      "control": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+      "candidate": "qwen3-4b-base-grpo-prepared-r1-20261004-01"
+    }
+  },
+  "windows": {
+    "1-20": {
+      "updates": 20,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.1224609375,
+          "candidate": 0.1177734375,
+          "candidate_minus_control": -0.004687500000000011,
+          "updates": 20
+        },
+        "policy/policy_entropy": {
+          "control": 0.6351817220449447,
+          "candidate": 0.6592639222741127,
+          "candidate_minus_control": 0.02408220022916796,
+          "updates": 20
+        },
+        "policy/grad_norm": {
+          "control": 0.040182055253535506,
+          "candidate": 0.039626043569296596,
+          "candidate_minus_control": -0.0005560116842389107,
+          "updates": 20
+        },
+        "generate/avg_num_tokens": {
+          "control": 1110.2380859375,
+          "candidate": 1154.0595703125,
+          "candidate_minus_control": 43.821484374999955,
+          "updates": 20
+        }
+      }
+    },
+    "21-40": {
+      "updates": 4,
+      "complete": false,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.2021484375,
+          "candidate": 0.181640625,
+          "candidate_minus_control": -0.0205078125,
+          "updates": 4
+        },
+        "policy/policy_entropy": {
+          "control": 0.3378349840641022,
+          "candidate": 0.3703928291797638,
+          "candidate_minus_control": 0.03255784511566162,
+          "updates": 4
+        },
+        "policy/grad_norm": {
+          "control": 0.07084077224135399,
+          "candidate": 0.04240846913307905,
+          "candidate_minus_control": -0.028432303108274937,
+          "updates": 4
+        },
+        "generate/avg_num_tokens": {
+          "control": 1139.169921875,
+          "candidate": 1291.2021484375,
+          "candidate_minus_control": 152.0322265625,
+          "updates": 4
+        }
+      }
+    },
+    "41-45": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "46-60": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "41-50": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "51-60": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "61-80": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "81-90": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "91-100": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "81-100": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    }
+  },
+  "evaluations": {
+    "0": {
+      "avg@8": {
+        "candidate_minus_control": 0.008333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.0125,
+          0.029166666666666667
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.1,
+          0.16666666666666666
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      }
+    },
+    "20": {
+      "avg@8": {
+        "candidate_minus_control": 0.0375,
+        "question_bootstrap_95_interval": [
+          0.004166666666666667,
+          0.07916666666666666
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.029166666666666667,
+          "question_bootstrap_95_interval": [
+            -0.008333333333333333,
+            0.075
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.1,
+          0.16666666666666666
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.0,
+          "question_bootstrap_95_interval": [
+            -0.13333333333333333,
+            0.13333333333333333
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    }
+  },
+  "limitations": "One control/candidate pair, not a multi-seed replication. Recipe differences are exposed explicitly. On-policy training windows contain different trajectories and are descriptive; no independent-sample confidence interval is assigned to them. Question bootstrap preserves eight-response groups but does not measure training-seed uncertainty or establish equivalence. Completion counts do not prove process success.",
+  "source_sha256": {
+    "research/data/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.json": "43d8b6db72737f2e8c9099cada2228cb9f2a41a85d6b09cf1282ddcaa0e9f6c8",
+    "research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01.json": "2cfb4b8b08731fcda845d4abbfed03e4b2646f0916fd4de3033ed3376cb684b9"
+  }
+}
