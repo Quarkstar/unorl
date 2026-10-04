@@ -4,7 +4,7 @@
     "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
   },
   "completed_updates": {
-    "control": 79,
+    "control": 80,
     "candidate": 100
   },
   "config_differences": {
@@ -203,44 +203,44 @@
       }
     },
     "61-80": {
-      "updates": 19,
-      "complete": false,
+      "updates": 20,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.39041940789473684,
-          "candidate": 0.38980263157894735,
-          "candidate_minus_control": -0.0006167763157894912,
-          "updates": 19
+          "control": 0.384375,
+          "candidate": 0.3845703125,
+          "candidate_minus_control": 0.0001953124999999889,
+          "updates": 20
         },
         "policy/policy_entropy": {
-          "control": 0.1402423346513196,
-          "candidate": 0.13890879797308067,
-          "candidate_minus_control": -0.0013335366782389335,
-          "updates": 19
+          "control": 0.1400646086782217,
+          "candidate": 0.13814604729413987,
+          "candidate_minus_control": -0.001918561384081835,
+          "updates": 20
         },
         "policy/grad_norm": {
-          "control": 0.03319748618492955,
-          "candidate": 0.03222705129730074,
-          "candidate_minus_control": -0.0009704348876288099,
-          "updates": 19
+          "control": 0.032891815155744554,
+          "candidate": 0.03224481362849474,
+          "candidate_minus_control": -0.0006470015272498145,
+          "updates": 20
         },
         "generate/avg_num_tokens": {
-          "control": 3283.0293996710525,
-          "candidate": 3712.4465460526317,
-          "candidate_minus_control": 429.4171463815792,
-          "updates": 19
+          "control": 3328.4677734375,
+          "candidate": 3762.8216796875,
+          "candidate_minus_control": 434.3539062499999,
+          "updates": 20
         },
         "updates/effective_delta_l2": {
-          "control": 0.05341240189737474,
-          "candidate": 0.054977285013438196,
-          "candidate_minus_control": 0.0015648831160634535,
-          "updates": 19
+          "control": 0.05326543379542682,
+          "candidate": 0.05503447420731262,
+          "candidate_minus_control": 0.0017690404118857958,
+          "updates": 20
         },
         "updates/cosine_with_previous_delta": {
-          "control": 0.9109909808400543,
-          "candidate": 0.9065123302462578,
-          "candidate_minus_control": -0.004478650593796485,
-          "updates": 19
+          "control": 0.9119000560685357,
+          "candidate": 0.9064303786869308,
+          "candidate_minus_control": -0.005469677381604976,
+          "updates": 20
         }
       }
     },
@@ -402,6 +402,48 @@
           "question_bootstrap_95_interval": [
             -0.03333333333333333,
             0.23333333333333334
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "80": {
+      "avg@8": {
+        "candidate_minus_control": 0.004166666666666667,
+        "question_bootstrap_95_interval": [
+          -0.041666666666666664,
+          0.05416666666666667
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.0,
+          "question_bootstrap_95_interval": [
+            -0.06666666666666667,
+            0.0625
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.06666666666666667,
+        "question_bootstrap_95_interval": [
+          -0.16666666666666666,
+          0.0
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.06666666666666667,
+          "question_bootstrap_95_interval": [
+            -0.2,
+            0.06666666666666667
           ],
           "questions": 30,
           "bootstrap_draws": 10000,

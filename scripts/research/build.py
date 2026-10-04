@@ -326,7 +326,46 @@ def experiment_page(run):
     text += "\n## Interpretation limits\n\nOne retained run is not a multi-seed study. AIME contains only 30 questions per year; avg@8 measures sampled single-response accuracy, while pass@8 measures question coverage. A peak checkpoint is not the final result. Response-count matching does not equal token-compute matching. See [measurement conventions](../methods.md).\n"
     if run["run_id"] == "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01":
         text += nora_observations(run)
+    if rid in {
+        "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
+        "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
+    }:
+        text += fresh_refresh_observations(run)
     (BOOK / "experiments" / f"{rid}.md").write_text(text)
+
+
+def fresh_refresh_observations(run):
+    """Publish complete matched windows and paired uncertainty on both run pages."""
+    path = BOOK / "data/refresh-base-fresh-control-analysis.json"
+    if not path.exists():
+        return ""
+    report = json.loads(path.read_text())
+    if run["run_id"] not in report["run_ids"].values():
+        return ""
+    text = "\n## Matched comparison with the fresh standard run\n\n"
+    text += "The additional fresh standard run checks the current implementation with refresh disabled; the historical standard-LoRA baseline remains valid. These independently diverged runs do not isolate the causal effect of rotation. The refresh candidate uses one 20-degree rotation at each boundary. The proposed ten-increment variant has not produced a result in this comparison.\n\n"
+    text += figure(
+        "../figures/comparison-refresh-base-fresh.svg",
+        "Standard LoRA versus one-shot compensated refresh, both starting from base with a 100-update budget. A partial standard run is not a final endpoint comparison.",
+    )
+    text += "\n### Training correctness in complete windows\n\n| Updates | Standard LoRA | One-shot refresh | Refresh − standard |\n|---|---:|---:|---:|\n"
+    for window in ("1-20", "21-40", "41-45", "46-60", "61-80", "81-100"):
+        row = report["windows"][window]
+        values = row["metrics"].get("reward/mean_positive_reward")
+        if row["complete"] and values:
+            text += f"| {window} | {100 * values['control']:.2f}% | {100 * values['candidate']:.2f}% | {100 * values['candidate_minus_control']:+.2f} pp |\n"
+    if report["evaluations"]:
+        step = max(report["evaluations"], key=int)
+        text += f"\n### Latest paired-question analysis: step {step}\n\n| Metric | Refresh − standard | Question-bootstrap 95% interval |\n|---|---:|---:|\n"
+        for metric, row in report["evaluations"][step].items():
+            low, high = row["question_bootstrap_95_interval"]
+            text += f"| {metric} | {100 * row['candidate_minus_control']:+.2f} pp | [{100 * low:+.2f}, {100 * high:+.2f}] pp |\n"
+            gain = row.get("difference_in_improvement_from_step0")
+            if gain:
+                low, high = gain["question_bootstrap_95_interval"]
+                text += f"| {metric}: improvement from step 0 | {100 * gain['candidate_minus_control']:+.2f} pp | [{100 * low:+.2f}, {100 * high:+.2f}] pp |\n"
+    text += "\nIntervals resample the 30 whole questions, retaining each group of eight responses; they do not measure training-seed uncertainty or establish equivalence. A lead before the first rotation must not be credited to the method. See the [detailed first-principles investigation](../notes/lora-training-2025-2026.md) and [download the paired analysis](../data/refresh-base-fresh-control-analysis.json).\n"
+    return text
 
 
 def nora_observations(run):
@@ -473,7 +512,7 @@ def main():
             fresh_base_runs,
             {"ablation"},
             "comparison-refresh-base-fresh",
-            "100 steps from base · fresh standard control versus gradual refresh",
+            "100 steps from base · fresh standard control versus one-shot refresh",
         )
     comparison(
         [
@@ -567,6 +606,19 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
     if len(fresh_base_runs) == 2:
         current = max((row["step"] for row in by_id[fresh_control_id]["metrics"]), default=0)
         text += f"### Fresh standard-LoRA control\n\nThe fresh control snapshot contains **{current}/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Partial control curves are not a final endpoint comparison. Both sampled starting evaluations are retained, and question-level uncertainty is reported separately.\n\n![Fresh control versus gradual refresh](figures/comparison-refresh-base-fresh.svg)\n\n"
+        paired = [
+            {
+                step: (avg, pas)
+                for step, avg, pas in evaluation(run)
+                if avg is not None and pas is not None
+            }
+            for run in fresh_base_runs
+        ]
+        common = sorted(set(paired[0]) & set(paired[1]))
+        if common:
+            step = common[-1]
+            standard, candidate = (values[step] for values in paired)
+            text += f"Latest shared checkpoint: **step {step}**. Standard LoRA reaches avg@8 / pass@8 **{100 * standard[0]:.2f}% / {100 * standard[1]:.2f}%**; one-shot refresh reaches **{100 * candidate[0]:.2f}% / {100 * candidate[1]:.2f}%**. See both experiment pages for complete training windows and paired-question uncertainty. The proposed multi-update rotation is a separate method and has no result here.\n\n"
     if refresh_runs:
         text += "![Shared-checkpoint continuation comparison](figures/comparison-refresh.svg)\n\n"
         text += "![Optimizer update geometry and refresh diagnostics](figures/refresh-update-geometry.svg)\n\nEffective weight-step norms and cosines exclude the compensating base correction. Boundary KL probes only the recorded response prefix; rank energy describes the accumulated update and is not a performance score. Missing measurements are labeled explicitly.\n\n"

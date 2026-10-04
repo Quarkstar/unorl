@@ -85,3 +85,34 @@ Best recorded AIME25 pass@8: **36.7% at step 60**. Last recorded: **36.7% at ste
 ## Interpretation limits
 
 One retained run is not a multi-seed study. AIME contains only 30 questions per year; avg@8 measures sampled single-response accuracy, while pass@8 measures question coverage. A peak checkpoint is not the final result. Response-count matching does not equal token-compute matching. See [measurement conventions](../methods.md).
+
+## Matched comparison with the fresh standard run
+
+The additional fresh standard run checks the current implementation with refresh disabled; the historical standard-LoRA baseline remains valid. These independently diverged runs do not isolate the causal effect of rotation. The refresh candidate uses one 20-degree rotation at each boundary. The proposed ten-increment variant has not produced a result in this comparison.
+
+```{figure} ../figures/comparison-refresh-base-fresh.svg
+:alt: Standard LoRA versus one-shot compensated refresh, both starting from base with a 100-update budget. A partial standard run is not a final endpoint comparison.
+
+Standard LoRA versus one-shot compensated refresh, both starting from base with a 100-update budget. A partial standard run is not a final endpoint comparison.
+```
+
+### Training correctness in complete windows
+
+| Updates | Standard LoRA | One-shot refresh | Refresh − standard |
+|---|---:|---:|---:|
+| 1-20 | 12.21% | 12.07% | -0.14 pp |
+| 21-40 | 21.37% | 24.71% | +3.34 pp |
+| 41-45 | 31.41% | 38.91% | +7.50 pp |
+| 46-60 | 35.44% | 37.86% | +2.42 pp |
+| 61-80 | 38.44% | 38.46% | +0.02 pp |
+
+### Latest paired-question analysis: step 80
+
+| Metric | Refresh − standard | Question-bootstrap 95% interval |
+|---|---:|---:|
+| avg@8 | +0.42 pp | [-4.17, +5.42] pp |
+| avg@8: improvement from step 0 | +0.00 pp | [-6.67, +6.25] pp |
+| pass@8 | -6.67 pp | [-16.67, +0.00] pp |
+| pass@8: improvement from step 0 | -6.67 pp | [-20.00, +6.67] pp |
+
+Intervals resample the 30 whole questions, retaining each group of eight responses; they do not measure training-seed uncertainty or establish equivalence. A lead before the first rotation must not be credited to the method. See the [detailed first-principles investigation](../notes/lora-training-2025-2026.md) and [download the paired analysis](../data/refresh-base-fresh-control-analysis.json).

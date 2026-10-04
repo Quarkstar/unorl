@@ -2313,3 +2313,67 @@ control-flow mechanism; it does not replace a native inference-engine test.
 The distributed fixture was tightened to compare plane hashes before and
 after restore on every rank, rather than only validating shape and saved count.
 The distributed GPU fixture remains unexecuted.
+
+
+## 47. Step-80 comparison: the standard run catches up
+
+The fresh standard run's step-80 raw evaluation contains all 240 responses,
+grouped into 30 questions with eight samples each. It has 40 correct responses
+and 11 solved questions: avg@8 16.6667%, pass@8 36.6667%. The completed
+one-shot refresh run at the same checkpoint has 41 correct responses and nine
+solved questions: avg@8 17.0833%, pass@8 30.0000%. Nine questions were solved
+by both; two were solved only by standard LoRA, and none only by refresh.
+
+| Checkpoint | Standard avg@8 | Refresh avg@8 | Standard pass@8 | Refresh pass@8 |
+| --- | ---: | ---: | ---: | ---: |
+| 40 | 12.0833% | 17.0833% | 23.3333% | 26.6667% |
+| 60 | 12.9167% | 17.5000% | 26.6667% | 36.6667% |
+| 80 | 16.6667% | 17.0833% | 36.6667% | 30.0000% |
+
+The avg@8 lead fell from 4.5833 percentage points at step 60 to 0.4167 at
+step 80. That remaining difference equals the initial step-0 difference, so
+the difference in improvement from initialization is zero. Paired-question
+bootstrap with 10,000 draws and seed 42 gives a 95% interval of [-4.1667,
+5.4167] percentage points for the step-80 avg@8 difference, and [-6.6667,
+6.2500] for the difference in improvement. The pass@8 difference is -6.6667
+points, with interval [-16.6667, 0]; improvement-adjusted interval [-20,
+6.6667]. These are descriptive single-run-pair intervals over 30 questions,
+not training-seed uncertainty, an equivalence test, or a causal merge estimate.
+
+| Training window | Standard correctness | Refresh correctness |
+| --- | ---: | ---: |
+| 21–40 | 21.3672% | 24.7070% |
+| 41–60 | 34.4336% | 38.1250% |
+| 61–80 | 38.4375% | 38.4570% |
+
+The refresh run already led by 3.3398 points before the first rotation affected
+training. Its lead was 3.6914 points in updates 41–60, then only 0.0195 in
+61–80. Across the latter two windows, standard correctness increased by
+4.0039 points and refresh by 0.3320. The early advantage therefore did not
+persist. Neither gradient magnitude nor entropy shows an obvious collapse:
+in updates 61–80, mean entropy was 0.14006 versus 0.13815, gradient norm
+0.03289 versus 0.03224, and effective-update L2 0.05327 versus 0.05503
+(standard versus refresh). Refresh responses remained longer: 3762.82 versus
+3328.47 tokens. These independently generated training trajectories do not
+permit assigning the catch-up causally to rotation.
+
+The step-80 standard checkpoint's actual previous-update factors were captured
+before retention can remove the checkpoint. All 252 projections matched the
+recorded update L2 0.05047304. In the hypothetical tangent-space diagnostic,
+a 20-degree rotation makes 33.2028% of that previous finite update norm
+unavailable in the new adapter tangent space; a 2-degree rotation makes
+3.3882% unavailable. The zero-angle residual is 0.03723%, consistent with the
+finite-update versus post-update-tangent distinction. The source extra-state
+file is 33,333,989 bytes with SHA256
+`b6466296b377b54f373d2c8f37ef7d393142916c1c2f177b2ff10f23670af641`.
+Per-layer results and provenance are retained in the
+[step-80 geometry artifact](../data/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01-refresh-geometry-step80.json).
+
+This supports the mechanism behind the proposed small increments: they cause
+a much smaller local change in accessible weight-update directions. It does
+not prove that gradual refresh improves accuracy, reconstructs Adam history,
+or avoids the eventual total-angle change. Also, the step-80 evaluation cannot
+measure learning after the second rotation at update 80; that requires the
+remaining updates. The 100-step final comparison is still pending. The next
+method keeps the matched recipe and tests adaptation between increments,
+rather than extending the budget or claiming that this control proves parity.

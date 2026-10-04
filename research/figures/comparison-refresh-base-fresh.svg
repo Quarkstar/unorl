@@ -298,6 +298,7 @@ L 252.220247 105.25538
 L 254.919355 112.652712
 L 257.618463 127.447377
 L 260.317571 103.406047
+L 263.016679 164.434039
 " clip-path="url(#p2b56bc9e8a)" style="fill: none; stroke: #2196f3; stroke-opacity: 0.16; stroke-linecap: square"/>
    </g>
    <g id="line2d_24">
@@ -380,6 +381,7 @@ L 252.220247 101.926581
 L 254.919355 105.070447
 L 257.618463 107.47458
 L 260.317571 107.104713
+L 263.016679 110.618446
 " clip-path="url(#p2b56bc9e8a)" style="fill: none; stroke: #2196f3; stroke-width: 2; stroke-linecap: square"/>
    </g>
    <g id="line2d_25">
@@ -833,6 +835,7 @@ L 669.779472 47.778108
 L 442.649534 237.667629
 L 496.091872 137.063909
 L 549.53421 124.488444
+L 602.976549 67.898852
 " clip-path="url(#pf6be66d41f)" style="fill: none; stroke: #2196f3; stroke-width: 2; stroke-linecap: square"/>
     <defs>
      <path id="mfb50a57097" d="M 0 1.5
@@ -852,6 +855,7 @@ z
      <use xlink:href="#mfb50a57097" x="442.649534" y="237.667629" style="fill: #2196f3; stroke: #2196f3"/>
      <use xlink:href="#mfb50a57097" x="496.091872" y="137.063909" style="fill: #2196f3; stroke: #2196f3"/>
      <use xlink:href="#mfb50a57097" x="549.53421" y="124.488444" style="fill: #2196f3; stroke: #2196f3"/>
+     <use xlink:href="#mfb50a57097" x="602.976549" y="67.898852" style="fill: #2196f3; stroke: #2196f3"/>
     </g>
    </g>
    <g id="line2d_56">
@@ -1084,12 +1088,14 @@ L 1009.19952 71.042718
 L 782.069582 181.078037
 L 835.51192 181.078037
 L 888.954259 149.639374
+L 942.396597 55.323387
 " clip-path="url(#pe52cae7b75)" style="fill: none; stroke: #2196f3; stroke-width: 2; stroke-linecap: square"/>
     <g clip-path="url(#pe52cae7b75)">
      <use xlink:href="#mfb50a57097" x="728.627244" y="275.394024" style="fill: #2196f3; stroke: #2196f3"/>
      <use xlink:href="#mfb50a57097" x="782.069582" y="181.078037" style="fill: #2196f3; stroke: #2196f3"/>
      <use xlink:href="#mfb50a57097" x="835.51192" y="181.078037" style="fill: #2196f3; stroke: #2196f3"/>
      <use xlink:href="#mfb50a57097" x="888.954259" y="149.639374" style="fill: #2196f3; stroke: #2196f3"/>
+     <use xlink:href="#mfb50a57097" x="942.396597" y="55.323387" style="fill: #2196f3; stroke: #2196f3"/>
     </g>
    </g>
    <g id="line2d_80">
@@ -1124,7 +1130,7 @@ L 1009.19952 286.397556
    </g>
   </g>
   <g id="text_43">
-   <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #263238" x="508.19976" y="19.3575" transform="rotate(-0 508.19976 19.3575)">100 steps from base · fresh standard control versus gradual refresh</text>
+   <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #263238" x="508.19976" y="19.3575" transform="rotate(-0 508.19976 19.3575)">100 steps from base · fresh standard control versus one-shot refresh</text>
   </g>
   <g id="legend_1">
    <g id="line2d_81">
