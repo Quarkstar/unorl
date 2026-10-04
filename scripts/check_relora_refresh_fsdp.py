@@ -21,6 +21,16 @@ from unorl.relora_refresh_worker import RefreshPolicyWorker
 from unorl.relora_worker import ReLoRAStrategy
 
 
+def plane_signature(planes):
+    """Hash the saved CPU planes deterministically for cross-rank/resume checks."""
+    digest = hashlib.sha256()
+    for name, plane in sorted(planes.items()):
+        digest.update(name.encode())
+        for row in plane:
+            digest.update(row.numpy().tobytes())
+    return digest.hexdigest()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -169,17 +179,12 @@ def main():
         assert applied_lrs == [0.001] * 8, applied_lrs
         assert all(0 < norm < 100 for norm in norms), norms
         assert all(float(s["step"]) == 8 for s in optimizer.state.values())
-        plane_signature = None
+        saved_plane_signature = None
         if args.gradual:
             assert worker._transition_start == 4 and worker._transition_count == 5
-            digest = hashlib.sha256()
-            for name, plane in sorted(worker._transition_planes.items()):
-                digest.update(name.encode())
-                for row in plane:
-                    digest.update(row.numpy().tobytes())
-            plane_signature = digest.hexdigest()
+            saved_plane_signature = plane_signature(worker._transition_planes)
             signatures = [None] * dist.get_world_size()
-            dist.all_gather_object(signatures, plane_signature)
+            dist.all_gather_object(signatures, saved_plane_signature)
             assert len(set(signatures)) == 1, signatures
             if dist.get_rank() == 0:
                 assert all(len(history) == 2 for history in worker._factor_history.values())
@@ -190,6 +195,7 @@ def main():
         worker.load_checkpoint(checkpoint)
         if args.gradual:
             assert worker._transition_count == 5 and worker._pending_base_sync
+            assert plane_signature(worker._transition_planes) == saved_plane_signature
             worker._math_probe = (tokens[0].cpu(), 2)
         with torch.no_grad():
             torch.testing.assert_close(model(tokens).logits.float(), before_resume, rtol=0, atol=0)
@@ -205,6 +211,7 @@ def main():
         worker.load_checkpoint(checkpoint)
         strategy.backward(model(tokens, labels=tokens).loss, wrapped, optimizer)
         if args.gradual:
+            assert plane_signature(worker._transition_planes) == saved_plane_signature
             worker._math_probe = (tokens[0].cpu(), 2)
             worker.optim_step()
             assert worker._transition_count == 0 and not worker._transition_planes
@@ -236,7 +243,7 @@ def main():
                 "checkpoint_after_update": 8,
                 "checkpoint_inside_transition": args.gradual,
                 "fixed_planes_identical_across_ranks": args.gradual,
-                "fixed_plane_sha256": plane_signature,
+                "fixed_plane_sha256": saved_plane_signature,
                 "compressed_correction_history": args.gradual,
                 "rollout_sync_test_scope": "base-weight extraction verified; no inference engine launched",
                 "grad_norms": norms,

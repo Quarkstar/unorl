@@ -2290,3 +2290,26 @@ of a resume checkpoint, 100-step budget, eight rollouts, and learning rate.
 The worker configuration test compares the two complete profiles and checks
 that only the increment-count field differs. No training process was launched;
 the final fresh-control analysis and distributed validation are still pending.
+
+
+## 46. Fourth hourly observation and pre-launch transport checks
+
+At 2026-10-04 00:39:06 UTC, the hourly watcher verified the same live launcher
+identity at step 79/100. Correctness over the last ten updates was 0.390625,
+policy entropy 0.1438995, gradient norm 0.0307582, and mean response length
+3202.0078 tokens. A separate process check confirmed the experiment and hourly
+watcher were alive. No restart was needed. The step-80 evaluation was not yet
+available at the observation; these values do not establish a new held-out
+accuracy result. The watcher regenerated the experiment page and comparison
+plots at the configured hourly cadence.
+
+The gradual-refresh profile also passed native SkyRL `validate_cfg`, in
+addition to UNORL's matched-recipe validation, without launching training.
+The existing inherited synchronization test passed in 7.85 seconds: pending
+base synchronization sends base then adapter, an ordinary subsequent broadcast
+sends only the adapter, and a failed transport preserves the pending flag for
+retry. Combined with the new worker's restore-flag assertion, this checks the
+control-flow mechanism; it does not replace a native inference-engine test.
+The distributed fixture was tightened to compare plane hashes before and
+after restore on every rank, rather than only validating shape and saved count.
+The distributed GPU fixture remains unexecuted.
