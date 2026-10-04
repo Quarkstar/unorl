@@ -2122,3 +2122,37 @@ saved plane and transition position in worker client state, deterministic
 FSDP behavior, rollout synchronization, and actual peak-memory measurement.
 No new training experiment has been launched; the standard baseline continues
 under the already configured hourly and 20-step evaluation cadence.
+
+
+## 41. SkyRL integration requirements for a multi-update transition
+
+Read-only worker review identifies the following necessary changes before a
+training trial. `RefreshPolicyWorker.save_checkpoint` currently serializes
+only `relora_factor_history` and `relora_previous_delta` in client state.
+A multi-update transition must also save its start step, fixed plane for each
+projection, completed-increment count, and intended total angle. The plane
+must not be recreated from the evolving A after resume. Loading must reject
+inconsistent schedule state and validate layer names, shapes, and finite
+values. The CPU replay test covers serialized mathematical state, not this
+SkyRL distributed checkpoint path.
+
+`ReLoRAPolicyWorker.forward_backward` captures a real trajectory prefix only
+when `_should_merge(next_step)` is true. Consequently the new schedule must
+identify every increment (40–49 and 80–89), so each compensation receives a
+real-prefix continuity probe. `NoRAMergePolicyWorker.optim_step` already
+invokes `_merge_with_probe` after the optimizer update and sets
+`_pending_base_sync`; its synchronization path sends modified base weights
+before the active adapter. That behavior must remain enabled after every
+increment. An adapter-only synchronization would silently lose the base
+compensation in rollout inference.
+
+The existing completed-cycle metric counts scheduled one-shot merge
+boundaries, so a new variant must separately report completed transitions and
+completed increments. The rank-factor history currently appends one pair per
+correction. In a fixed plane, each cycle's correction can be represented by
+two accumulated output columns and the two fixed input rows; compression
+should preserve diagnostics without retaining ten separate correction pairs.
+Production validation needs resume inside a transition, identical planes on
+all FSDP ranks, post-compensation rollout synchronization, and peak-memory
+measurement. These are requirements for a future isolated worker, not changes
+to the running baseline. No new experiment or configuration was launched.
