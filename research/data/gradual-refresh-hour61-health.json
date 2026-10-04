@@ -1,0 +1,19 @@
+{
+  "health": {
+    "utc": "2026-10-04T05:12:53.857326+00:00",
+    "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+    "status": "running",
+    "pid": 1612104,
+    "verified_alive": true,
+    "process_start_ticks": "4999687432",
+    "exit_status": null,
+    "global_step": 61,
+    "target_global_step": 100,
+    "last10_mean_correctness": 0.374609375,
+    "entropy": 0.13606522977352142,
+    "grad_norm": 0.030262375250458717,
+    "response_tokens": 3793.6484375
+  },
+  "identity_reverified": true,
+  "scope": "Hourly observation; step-60 checkpoint, raw evaluation, optimizer and memory checks are retained separately. Not a final result."
+}

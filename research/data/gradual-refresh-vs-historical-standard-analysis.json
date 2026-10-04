@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 45
+    "candidate": 61
   },
   "config_differences": {
     "environment.env_class": {
@@ -157,49 +157,124 @@
       }
     },
     "46-60": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
-    },
-    "41-50": {
-      "updates": 5,
-      "complete": false,
+      "updates": 15,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.35,
-          "candidate": 0.3546875,
-          "candidate_minus_control": 0.004687500000000011,
-          "updates": 5
+          "control": 0.36796875,
+          "candidate": 0.35885416666666664,
+          "candidate_minus_control": -0.00911458333333337,
+          "updates": 15
         },
         "policy/policy_entropy": {
-          "control": 0.15969296991825105,
-          "candidate": 0.16293813288211823,
-          "candidate_minus_control": 0.0032451629638671764,
-          "updates": 5
+          "control": 0.14446916530529658,
+          "candidate": 0.14563601116339367,
+          "candidate_minus_control": 0.001166845858097093,
+          "updates": 15
         },
         "policy/grad_norm": {
-          "control": 0.03586864396929741,
-          "candidate": 0.033890103176236155,
-          "candidate_minus_control": -0.0019785407930612564,
-          "updates": 5
+          "control": 0.03475624496738116,
+          "candidate": 0.03333138525485992,
+          "candidate_minus_control": -0.001424859712521237,
+          "updates": 15
         },
         "generate/avg_num_tokens": {
-          "control": 2319.8359375,
-          "candidate": 2514.99921875,
-          "candidate_minus_control": 195.16328125000018,
-          "updates": 5
+          "control": 3038.2375,
+          "candidate": 3257.1744791666665,
+          "candidate_minus_control": 218.93697916666633,
+          "updates": 15
+        }
+      }
+    },
+    "41-50": {
+      "updates": 10,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.34765625,
+          "candidate": 0.340625,
+          "candidate_minus_control": -0.007031249999999989,
+          "updates": 10
+        },
+        "policy/policy_entropy": {
+          "control": 0.15596451312303544,
+          "candidate": 0.15832313597202302,
+          "candidate_minus_control": 0.0023586228489875793,
+          "updates": 10
+        },
+        "policy/grad_norm": {
+          "control": 0.03424883112311363,
+          "candidate": 0.03384359274059534,
+          "candidate_minus_control": -0.0004052383825182901,
+          "updates": 10
+        },
+        "generate/avg_num_tokens": {
+          "control": 2511.37421875,
+          "candidate": 2742.11171875,
+          "candidate_minus_control": 230.73749999999973,
+          "updates": 10
         }
       }
     },
     "51-60": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 10,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.379296875,
+          "candidate": 0.375,
+          "candidate_minus_control": -0.004296874999999978,
+          "updates": 10
+        },
+        "policy/policy_entropy": {
+          "control": 0.14058571979403495,
+          "candidate": 0.14159994721412658,
+          "candidate_minus_control": 0.0010142274200916346,
+          "updates": 10
+        },
+        "policy/grad_norm": {
+          "control": 0.03581985831260681,
+          "candidate": 0.033098536729812625,
+          "candidate_minus_control": -0.0027213215827941867,
+          "updates": 10
+        },
+        "generate/avg_num_tokens": {
+          "control": 3205.9,
+          "candidate": 3401.149609375,
+          "candidate_minus_control": 195.2496093750001,
+          "updates": 10
+        }
+      }
     },
     "61-80": {
-      "updates": 0,
+      "updates": 1,
       "complete": false,
-      "metrics": {}
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.34765625,
+          "candidate": 0.3515625,
+          "candidate_minus_control": 0.00390625,
+          "updates": 1
+        },
+        "policy/policy_entropy": {
+          "control": 0.13131044805049896,
+          "candidate": 0.13606522977352142,
+          "candidate_minus_control": 0.004754781723022461,
+          "updates": 1
+        },
+        "policy/grad_norm": {
+          "control": 0.02625788375735283,
+          "candidate": 0.030262375250458717,
+          "candidate_minus_control": 0.004004491493105888,
+          "updates": 1
+        },
+        "generate/avg_num_tokens": {
+          "control": 3720.6640625,
+          "candidate": 3793.6484375,
+          "candidate_minus_control": 72.984375,
+          "updates": 1
+        }
+      }
     },
     "81-90": {
       "updates": 0,
@@ -316,6 +391,48 @@
           "candidate_minus_control": 0.1,
           "question_bootstrap_95_interval": [
             -0.06666666666666667,
+            0.26666666666666666
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "60": {
+      "avg@8": {
+        "candidate_minus_control": 0.008333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.041666666666666664,
+          0.05416666666666667
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.016666666666666666,
+          "question_bootstrap_95_interval": [
+            -0.029166666666666667,
+            0.0625
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.1,
+          0.16666666666666666
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.06666666666666667,
+          "question_bootstrap_95_interval": [
+            -0.13333333333333333,
             0.26666666666666666
           ],
           "questions": 30,

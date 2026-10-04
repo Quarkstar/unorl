@@ -2908,3 +2908,97 @@ mean energy outside the leading direction; meaningful rank growth remains
 unproven. Continue the unchanged trial, compare complete training windows
 41-50 and 51-60, and use the next scheduled evaluation at 60. The hourly
 watcher has refreshed the curves and portable paired analyses.
+
+
+## 57. Gradual refresh: first complete transition and step-60 evaluation
+
+The first cycle completed all ten scheduled increments after updates 40-49.
+At step 60, raw AIME25 sampling contains 39 correct responses out of 240 and
+10 solved questions out of 30: **16.25% avg@8 and 33.33% pass@8**. At step 40
+there were 33 correct responses and the same 10 solved questions. Correctness
+increased without expanding question coverage; this is not a final parity result.
+
+### Learning after the transition
+
+The first refresh affects training update 41. Compare the complete transition
+window 41-50 with the following window 51-60, rather than treating an
+instantaneous compensation probe as evidence of subsequent learning.
+
+| Run | Correctness 41-50 | Correctness 51-60 | Correctness 41-60 |
+| --- | ---: | ---: | ---: |
+| Gradual refresh | 34.06% | 37.50% | 35.78% |
+| Historical standard LoRA | 34.77% | 37.93% | 36.35% |
+| Fresh standard control | 32.54% | 36.33% | 34.43% |
+| One-shot warm-B refresh | 37.73% | 38.52% | 38.13% |
+
+Gradual refresh improves by 3.44 percentage points between these ten-update
+windows, compared with 3.16 for historical standard LoRA. Its full 41-60 mean
+is 0.57 points below that reference. Relative to its own 21-40 window, its
+41-60 mean rises by 12.85 points; historical standard rises by 12.70 points.
+These changing on-policy batches describe similar improvement through the
+first cycle. They do not isolate the refresh as a cause or establish equal
+learning rates across training seeds.
+
+Gradual-refresh mean entropy falls from 0.15832 to 0.14160 between the two
+windows; mean gradient norm remains similar, 0.03384 then 0.03310. Mean
+response length grows from 2742 to 3401 tokens. Physical update L2 falls from
+0.06580 to 0.06020, while adjacent-update cosine changes from 0.93274 to
+0.91896. There is no observed collapse of update size or continued learning
+in this completed first transition.
+
+### Held-out comparison and uncertainty
+
+| Step-60 run | avg@8 | pass@8 |
+| --- | ---: | ---: |
+| Gradual refresh | 16.25% | 33.33% |
+| Historical standard LoRA | 15.42% | 30.00% |
+| Fresh standard control | 12.92% | 26.67% |
+| One-shot warm-B refresh | 17.50% | 36.67% |
+
+Against historical standard, the avg@8 difference is +0.83 percentage points,
+with a paired question-bootstrap 95% interval of [-4.17, +5.42] points. The
+pass@8 difference is +3.33 points, interval [-10.00, +16.67]. Against the fresh
+control, avg@8 differs by +3.33 points, interval [-2.08, +9.58]; against
+one-shot refresh it differs by -1.25 points, interval [-4.58, +2.08]. All these
+intervals include zero. Bootstrap resamples the 30 whole questions, preserving
+their eight responses; it does not measure training-seed variance or prove
+equivalence. The portable analyses also report changes from each run's
+step-zero result, so differing starting samples remain visible.
+
+### Actual checkpoint, optimizer, rank and memory audit
+
+The [step-60 partial audit](../data/gradual-refresh-step60-audit.json) reads
+all eight actual checkpoint extra-state and optimizer files on CPU. Every
+transition is closed with no active plane or pending increment. Each optimizer
+shard has 504 active Adam states, all with step counter 60; native AdamW uses
+constant LR 0.000015, betas (0.9, 0.999), epsilon 0.00000001 and zero weight
+decay. Scheduler epoch is 60. No optimizer reset or LR restart occurred.
+This inspection does not claim a full-model checkpoint resume.
+
+Rank zero stores two compressed correction pairs per layer. Reconstruction
+across all 252 layers gives mean accumulated stable rank **1.006414**, mean
+energy outside the leading direction **0.6371%**, and total update L2
+**2.850624**. The reconstruction includes saved compensation history and
+active adapter factors, but excludes FP32 base-rounding residuals. There is
+some additional direction energy, yet meaningful high-rank learning remains
+unproven. The gradual method permits up to five accumulated directions after
+two cycles, versus three for the one-shot method; capacity is not identical.
+
+All 480 per-rank training-memory rows through update 60 are present. Maximum
+allocation is **17.7341 GiB**, reservation **18.6719 GiB**, both at step 60 on
+rank 2. These are training allocator measurements through a partial run,
+not final peaks or total training-plus-inference device memory.
+
+All ten expected backbone-then-adapter transfers are recorded at 40-49.
+Their completion is not an independent bitwise check of inference weights.
+Across refresh probes, mean response-prefix KL is 0.0004703, mean chosen-token
+log-probability absolute difference 0.007867, and mean relative correction
+rounding error 0.041401%. Neither gradual rotations nor exact real-arithmetic
+compensation guarantee exact numerical forward continuity.
+
+The [hourly observation](../data/gradual-refresh-hour61-health.json) at
+05:12:53 UTC reports 61/100 updates. Its live launcher identity was reverified
+before retaining this record. Continue the unchanged 100-step trial; evaluate
+the second cycle at 80-89 and the final held-out result at 100. Reuse the
+existing standards rather than launch another control. The goal remains
+matching or improving standard rank-1 LoRA, not merely surviving a refresh.
