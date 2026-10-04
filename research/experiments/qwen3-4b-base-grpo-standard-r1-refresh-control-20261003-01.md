@@ -11,7 +11,7 @@ Fresh 100-update standard LoRA control for the completed gradual-refresh trial. 
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01` |
-| Record | 80 steps logged / 100 planned |
+| Record | 100 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -31,7 +31,7 @@ Fresh 100-update standard LoRA control for the completed gradual-refresh trial. 
 | Evaluation samples/question | 8 |
 | GPUs (policy) | 8 |
 | KL loss / reward | False / False |
-| Exit status | not retained |
+| Exit status | 0 |
 | Merges enabled | False |
 | First merge global step | 40 |
 | Refresh angle (degrees) | 0.0 |
@@ -58,6 +58,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | 40 | 12.1% | 23.3% |
 | 60 | 12.9% | 26.7% |
 | 80 | 16.7% | 36.7% |
+| 100 | 17.5% | 36.7% |
 
 
 ## Evaluation sample counts
@@ -69,16 +70,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | aime25 | 40 | 29/240 | 7/30 |
 | aime25 | 60 | 31/240 | 8/30 |
 | aime25 | 80 | 40/240 | 11/30 |
+| aime25 | 100 | 42/240 | 11/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **10.0%** over the first 10 logged updates and **38.3%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **10.0%** over the first 10 logged updates and **35.7%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.7918 at step 1 → 0.1367 at step 80.
-- Policy gradient norm: 0.0311 at step 1 → 0.02708 at step 80.
-- Mean generated response tokens: 1397 at step 1 → 4192 at step 80.
+- Logged entropy: 0.7918 at step 1 → 0.1277 at step 100.
+- Policy gradient norm: 0.0311 at step 1 → 0.03228 at step 100.
+- Mean generated response tokens: 1397 at step 1 → 4032 at step 100.
 
-Best recorded AIME25 pass@8: **36.7% at step 80**. Last recorded: **36.7% at step 80**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **36.7% at step 80**. Last recorded: **36.7% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
@@ -103,14 +105,26 @@ Standard LoRA versus one-shot compensated refresh, both starting from base with 
 | 41-45 | 31.41% | 38.91% | +7.50 pp |
 | 46-60 | 35.44% | 37.86% | +2.42 pp |
 | 61-80 | 38.44% | 38.46% | +0.02 pp |
+| 81-100 | 38.48% | 38.63% | +0.16 pp |
 
-### Latest paired-question analysis: step 80
+### Latest paired-question analysis: step 100
 
 | Metric | Refresh − standard | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | +0.42 pp | [-4.17, +5.42] pp |
-| avg@8: improvement from step 0 | +0.00 pp | [-6.67, +6.25] pp |
-| pass@8 | -6.67 pp | [-16.67, +0.00] pp |
-| pass@8: improvement from step 0 | -6.67 pp | [-20.00, +6.67] pp |
+| avg@8 | -0.42 pp | [-3.33, +2.50] pp |
+| avg@8: improvement from step 0 | -0.83 pp | [-5.00, +3.33] pp |
+| pass@8 | +0.00 pp | [-16.67, +16.67] pp |
+| pass@8: improvement from step 0 | +0.00 pp | [-20.00, +23.33] pp |
 
 Intervals resample the 30 whole questions, retaining each group of eight responses; they do not measure training-seed uncertainty or establish equivalence. A lead before the first rotation must not be credited to the method. See the [detailed first-principles investigation](../notes/lora-training-2025-2026.md) and [download the paired analysis](../data/refresh-base-fresh-control-analysis.json).
+
+## Completed-run protocol and training allocator
+
+Successful exit and **100 updates** were audited against the matched recipe. Raw AIME25 groups agree with logged scores at every configured evaluation, and all **800 memory records across 8 ranks** match the update and refresh schedule. This verifies the recorded protocol, not performance parity.
+
+| Measurement | GiB | Step | Rank |
+|---|---:|---:|---:|
+| Maximum training allocation | 17.939 | 76 | 5 |
+| Maximum training reservation | 18.789 | 76 | 5 |
+
+These are policy-process allocator peaks in the worker's declared training window. They are not total GPU memory or a single-device/phone estimate; inference, weight synchronization, and export are outside this measurement. [Download the completion audit and source hashes](../data/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01-completion-audit.json).

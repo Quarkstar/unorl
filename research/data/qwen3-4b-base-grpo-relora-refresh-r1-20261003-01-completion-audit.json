@@ -1,0 +1,147 @@
+{
+  "run_id": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
+  "protocol_audit_passed": true,
+  "exit_status": 0,
+  "training_updates": 100,
+  "refresh_after_updates": [
+    40,
+    80
+  ],
+  "training_correctness_windows": [
+    {
+      "start": 1,
+      "end": 20,
+      "correctness": 0.120703125
+    },
+    {
+      "start": 21,
+      "end": 40,
+      "correctness": 0.2470703125
+    },
+    {
+      "start": 41,
+      "end": 60,
+      "correctness": 0.38125
+    },
+    {
+      "start": 61,
+      "end": 80,
+      "correctness": 0.3845703125
+    },
+    {
+      "start": 81,
+      "end": 100,
+      "correctness": 0.386328125
+    }
+  ],
+  "initial_optimizer_audit": {
+    "optimizer": "AdamW",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
+    "trainable_parameters": 2064384
+  },
+  "training_allocator": {
+    "ranks": 8,
+    "records": 800,
+    "windows": [
+      "policy forward/backward, optimizer, and merge/reset when scheduled"
+    ],
+    "max_allocated_gib": 18.00217914581299,
+    "max_reserved_gib": 18.947265625,
+    "max_allocated_at": {
+      "step": 81,
+      "rank": 2
+    },
+    "max_reserved_at": {
+      "step": 81,
+      "rank": 2
+    }
+  },
+  "evaluations": [
+    {
+      "step": 0,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 8,
+      "solved_questions": 4,
+      "avg@8": 0.03333333333333333,
+      "pass@8": 0.13333333333333333
+    },
+    {
+      "step": 20,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 14,
+      "solved_questions": 6,
+      "avg@8": 0.058333333333333334,
+      "pass@8": 0.2
+    },
+    {
+      "step": 40,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 41,
+      "solved_questions": 8,
+      "avg@8": 0.17083333333333334,
+      "pass@8": 0.26666666666666666
+    },
+    {
+      "step": 60,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 42,
+      "solved_questions": 11,
+      "avg@8": 0.175,
+      "pass@8": 0.36666666666666664
+    },
+    {
+      "step": 80,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 41,
+      "solved_questions": 9,
+      "avg@8": 0.17083333333333334,
+      "pass@8": 0.3
+    },
+    {
+      "step": 100,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 41,
+      "solved_questions": 11,
+      "avg@8": 0.17083333333333334,
+      "pass@8": 0.36666666666666664
+    }
+  ],
+  "final_rank": {
+    "layers": 252,
+    "mean_stable_rank": 1.0237455738018806,
+    "mean_energy_outside_first_direction": 0.023151920715591554
+  },
+  "source_sha256": {
+    "runs/logs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.exit-status": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/config.json": "c484430015274e9980d53f41c13d988bad2b527382fc20f42d0d555249f4fc88",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/metrics.jsonl": "af493e14a984e1f18b4be8d9d963d426ada5abff77f43937723fcc8977bb5ec5",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank0.jsonl": "fed849cc6232a5ce821a7a0fccffdb3e35bc1c879830f4487e2c481ba1d712ba",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank1.jsonl": "aa8b90eda64a053e664bc1f153287af1d6241de4849b13587973c776f97cde44",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank2.jsonl": "88de48560b47621d5f32c4f8654275279e4ba159234777766baa60ef80e53bd5",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank3.jsonl": "f7cdbf63f64da37578ebbeba579cb0f88c94b220e5005df2fe7df655380a9f90",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank4.jsonl": "a43e25dcfc823dd598a2a7f5c00b335532b3d5279a3c316d99e8f75824e0fb0e",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank5.jsonl": "0d8b765bf85ba4e9c586ab127d96bd7921054ac62039d1a9255b6b6849ebbe8f",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank6.jsonl": "16e9af6dbbb5bb0c05f7f26af97f1e05d4a932e354d1b0f9154dcaa60c7b464f",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/training-memory-rank7.jsonl": "3c3544ee07b8000b26a165ba5ed8522b479c1c2b00a37546beed74f83e7f847f",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/evaluation.jsonl": "83160dca2fdf9ae8f247fbea04bd898efa4c433801f1eca381fa78cca1a46a86",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "db5aa48e5a2ab41eed2866ba22c9985fe764be22c23ad875b2a4d6ac3a317d53",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "b04b81dfa4bd0eb036d4b8aadc87fd8f8346b46b3b7cfb2f5debc38f632422ab",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "9809ba988b69dbf13482aa53368f4d8079db53ef22ccafa6c2b460e16c6d2a61",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "3fbda4f01c21cd1633fdd0647b5c306e7d9653f5c04ff85b2eebad71ff8e3d50",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "6c2620368b9ca776ee6d200c3347e4e2a4f897e60facc9193b2e3acac7e147ba",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "5d53fbbcc0fd1b295b642821f3646c8a6a4d09a3e8cb73376122821b36c5dfdf",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/rank-diagnostics.jsonl": "4143c05388e7d5c6e2ca340d1055635ae9c54f8169d62bfcddc8bad3da29d9e6",
+    "runs/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01/initial-adapter-audit.json": "e1f23af92b28679829ae014d8b789c414b06b52093ea4c8b65ec5d8c4479bab8"
+  },
+  "limitations": "This verifies the recorded protocol, not performance parity or a multi-seed result. Training allocator peaks cover the worker's declared window, not total GPU memory, inference, weight synchronization, export, or phone memory. Initial optimizer/parameter metadata comes from the recorded startup audit. No weight files are read or removed."
+}

@@ -2517,3 +2517,92 @@ The queue was verified alive at 01:13 UTC, waiting for the source run; it reads
 completion state without polling training steps. It launches the tiny
 distributed fixture rather than the full training trial. No new RL run was
 launched during this proof work.
+
+
+## 50. Reproducible completed-run and training-memory audit
+
+`../../scripts/research/audit_refresh_run.py` now verifies a completed from-base
+run without reading or deleting weights. It requires a successful exit, the
+matched GRPO/rank-one/constant-LR recipe, native AdamW startup metadata and
+betas, all configured training steps, every per-rank training-memory record,
+the exact refresh schedule, raw eight-response AIME25 groups at every evaluation,
+agreement with logged avg@8/pass@8, unchanged evaluation questions, and a final
+rank diagnostic. The output includes hashes of every inspected source file.
+Four synthetic tests passed in 0.04 seconds, including rejection of a missing
+rank-memory record, a changed raw score, and an SGD startup audit. Ruff passed.
+
+The completed one-shot candidate passed the audit after its weight cleanup:
+100 updates, 800 training-memory records, refreshes at 40/80, and six AIME25
+evaluations. Its maximum allocation was 18.002179 GiB and reservation
+18.947266 GiB, both at update 81 on rank 2. The final raw evaluation remains
+41/240 correct responses and 11/30 solved questions. The
+[completion audit](../data/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01-completion-audit.json)
+is linked from that experiment's page, which now renders allocator values and
+their measurement scope automatically when an audit is available.
+
+These are per-policy-process allocator peaks during the declared forward,
+backward, optimizer, and scheduled merge/probe window. They exclude inference,
+weight synchronization, export, other processes, and phone/unified-memory
+overheads. The audit verifies the recorded experiment protocol, not model
+superiority or independent reconstruction of startup parameter counts. The
+fresh standard and future multi-update runs can use the same check once they
+finish, before large-file cleanup. It cannot certify a still-running trial.
+
+
+## 51. Completed fresh comparison and gradual-refresh launch decision
+
+The fresh standard run finished all 100 updates with exit status zero at
+02:00 UTC on October 4. Its [completion audit](../data/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01-completion-audit.json)
+verified 800 training-memory records and all six raw AIME25 evaluations.
+Final correctness is 42/240 responses, with 11/30 questions solved. The
+one-shot refresh has 41/240 and 11/30. Thus final avg@8 is 17.500% versus
+17.083%, and both pass@8 values are 36.667%. The paired-question bootstrap
+interval for refresh minus fresh standard is [-3.333,+2.500] percentage
+points for avg@8 and [-16.667,+16.667] for pass@8. Improvement from step zero
+is 0.833 points smaller for refresh, with interval [-5.000,+3.333]. These
+wide intervals and one training pair do not establish equivalence.
+
+Training correctness over updates 81-100 is 38.477% for fresh standard and
+38.633% for refresh. Mean effective-update norms are 0.056265 and 0.056361;
+mean adjacent-update cosines are 0.898692 and 0.894205. Entropies are 0.135994
+and 0.133366. Mean responses contain 3797 and 4001 tokens. There is no clear
+late gradient or entropy collapse. The early refresh lead existed before
+the intervention and disappeared by updates 61-80, so it cannot establish
+an advantage from merging. The historical standard still has the stronger
+endpoint, 20.000% avg@8 and 43.333% pass@8. Matching that result remains the
+goal; additional standard runs are not required for each candidate.
+
+Fresh standard peak training allocation/reservation is 17.939/18.789 GiB,
+versus 18.002/18.947 for one-shot refresh. These are policy-process allocator
+measurements in the recorded training windows, not total GPU memory.
+The [paired analysis](../data/refresh-base-fresh-control-analysis.json)
+retains every checkpoint comparison and complete window. Raw evaluation
+responses remain local.
+
+The queued [native distributed validation](../data/gradual-refresh-fsdp-validation-20261004.json)
+completed successfully on all eight GPUs at 02:02 UTC. It verified fixed-plane
+identity across ranks, compressed correction history, constant LR, preserved
+parameter identity and Adam history, an actual checkpoint inside a transition,
+and exact reproduction of the next effective weights and every Adam state.
+Base-weight extraction and dense export were verified; no inference engine
+was launched in this fixture. The full trial must still exercise real rollout
+synchronization during its transitions.
+
+The next experiment is ten 2-degree increments rather than one 20-degree
+rotation at each boundary. At update 80, the saved standard update loses
+33.20% of its norm when projected into the hypothetical 20-degree refreshed
+tangent, versus 3.39% at 2 degrees. This is evidence about available update
+directions, not future gradients. Interleaving optimization gives Adam time
+to adapt while preserving the forward function through base compensation.
+At beta1=0.9, only 34.9% of pre-transition first-moment weight remains after
+ten updates; beta2=0.999 retains 99.0%, so variance mismatch remains unresolved.
+The method does not reconstruct missing gradient history or guarantee
+performance. Its larger rank capacity (at most five versus three) is a
+second changed property and must be disclosed when interpreting results.
+
+The trial remains 100 steps from base with the same GRPO, rank, optimizer,
+LR, model, data, batch and rollout count. Refreshes occur after updates
+40-49 and 80-89; there is no LR warmup or optimizer reset. Reuse both completed
+standard runs and the one-shot candidate for comparison. Record performance,
+update direction, continuity probes, accumulated rank and peak allocator
+memory; check health hourly and analyze completed 20-step evaluations.

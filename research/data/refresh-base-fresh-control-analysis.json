@@ -4,7 +4,7 @@
     "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
   },
   "completed_updates": {
-    "control": 80,
+    "control": 100,
     "candidate": 100
   },
   "config_differences": {
@@ -245,19 +245,130 @@
       }
     },
     "81-90": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 10,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.4125,
+          "candidate": 0.4109375,
+          "candidate_minus_control": -0.0015624999999999667,
+          "updates": 10
+        },
+        "policy/policy_entropy": {
+          "control": 0.1364320233464241,
+          "candidate": 0.13657966256141663,
+          "candidate_minus_control": 0.00014763921499252874,
+          "updates": 10
+        },
+        "policy/grad_norm": {
+          "control": 0.03998057879507542,
+          "candidate": 0.033133457973599435,
+          "candidate_minus_control": -0.006847120821475983,
+          "updates": 10
+        },
+        "generate/avg_num_tokens": {
+          "control": 3638.6890625,
+          "candidate": 3830.128515625,
+          "candidate_minus_control": 191.439453125,
+          "updates": 10
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.05658368048824387,
+          "candidate": 0.055162684373847984,
+          "candidate_minus_control": -0.0014209961143958894,
+          "updates": 10
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.8842995505584095,
+          "candidate": 0.8881899484628948,
+          "candidate_minus_control": 0.00389039790448531,
+          "updates": 10
+        }
+      }
     },
     "91-100": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 10,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.35703125,
+          "candidate": 0.36171875,
+          "candidate_minus_control": 0.004687499999999956,
+          "updates": 10
+        },
+        "policy/policy_entropy": {
+          "control": 0.13555569872260093,
+          "candidate": 0.13015204966068267,
+          "candidate_minus_control": -0.005403649061918259,
+          "updates": 10
+        },
+        "policy/grad_norm": {
+          "control": 0.03324006106704473,
+          "candidate": 0.03365762699395418,
+          "candidate_minus_control": 0.0004175659269094467,
+          "updates": 10
+        },
+        "generate/avg_num_tokens": {
+          "control": 3955.122265625,
+          "candidate": 4171.491796875,
+          "candidate_minus_control": 216.36953124999945,
+          "updates": 10
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.05594674347012935,
+          "candidate": 0.05755886273236363,
+          "candidate_minus_control": 0.001612119262234278,
+          "updates": 10
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.9130839753914328,
+          "candidate": 0.900219066074113,
+          "candidate_minus_control": -0.012864909317319873,
+          "updates": 10
+        }
+      }
     },
     "81-100": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 20,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.384765625,
+          "candidate": 0.386328125,
+          "candidate_minus_control": 0.0015625000000000222,
+          "updates": 20
+        },
+        "policy/policy_entropy": {
+          "control": 0.13599386103451253,
+          "candidate": 0.13336585611104965,
+          "candidate_minus_control": -0.002628004923462879,
+          "updates": 20
+        },
+        "policy/grad_norm": {
+          "control": 0.03661031993106008,
+          "candidate": 0.03339554248377681,
+          "candidate_minus_control": -0.003214777447283268,
+          "updates": 20
+        },
+        "generate/avg_num_tokens": {
+          "control": 3796.9056640625,
+          "candidate": 4000.81015625,
+          "candidate_minus_control": 203.90449218750018,
+          "updates": 20
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.056265211979186616,
+          "candidate": 0.05636077355310581,
+          "candidate_minus_control": 9.55615739191909e-05,
+          "updates": 20
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.8986917629749211,
+          "candidate": 0.8942045072685039,
+          "candidate_minus_control": -0.004487255706417281,
+          "updates": 20
+        }
+      }
     }
   },
   "evaluations": {
@@ -444,6 +555,48 @@
           "question_bootstrap_95_interval": [
             -0.2,
             0.06666666666666667
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "100": {
+      "avg@8": {
+        "candidate_minus_control": -0.004166666666666667,
+        "question_bootstrap_95_interval": [
+          -0.03333333333333333,
+          0.025
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.008333333333333333,
+          "question_bootstrap_95_interval": [
+            -0.05,
+            0.03333333333333333
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.0,
+        "question_bootstrap_95_interval": [
+          -0.16666666666666666,
+          0.16666666666666666
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.0,
+          "question_bootstrap_95_interval": [
+            -0.2,
+            0.23333333333333334
           ],
           "questions": 30,
           "bootstrap_draws": 10000,

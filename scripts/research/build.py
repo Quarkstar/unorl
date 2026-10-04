@@ -331,6 +331,21 @@ def experiment_page(run):
         "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     }:
         text += fresh_refresh_observations(run)
+    audit_path = BOOK / "data" / f"{rid}-completion-audit.json"
+    if audit_path.exists():
+        audit = json.loads(audit_path.read_text())
+        if audit["run_id"] != rid or not audit["protocol_audit_passed"]:
+            raise ValueError("Completion audit does not match its experiment page")
+        memory = audit["training_allocator"]
+        allocated = memory["max_allocated_at"]
+        reserved = memory["max_reserved_at"]
+        text += "\n## Completed-run protocol and training allocator\n\n"
+        text += f"Successful exit and **{audit['training_updates']} updates** were audited against the matched recipe. Raw AIME25 groups agree with logged scores at every configured evaluation, and all **{memory['records']} memory records across {memory['ranks']} ranks** match the update and refresh schedule. This verifies the recorded protocol, not performance parity.\n\n"
+        text += "| Measurement | GiB | Step | Rank |\n|---|---:|---:|---:|\n"
+        text += f"| Maximum training allocation | {memory['max_allocated_gib']:.3f} | {allocated['step']} | {allocated['rank']} |\n"
+        text += f"| Maximum training reservation | {memory['max_reserved_gib']:.3f} | {reserved['step']} | {reserved['rank']} |\n"
+        text += "\nThese are policy-process allocator peaks in the worker's declared training window. They are not total GPU memory or a single-device/phone estimate; inference, weight synchronization, and export are outside this measurement. "
+        text += f"[Download the completion audit and source hashes](../data/{rid}-completion-audit.json).\n"
     (BOOK / "experiments" / f"{rid}.md").write_text(text)
 
 

@@ -105,14 +105,26 @@ Standard LoRA versus one-shot compensated refresh, both starting from base with 
 | 41-45 | 31.41% | 38.91% | +7.50 pp |
 | 46-60 | 35.44% | 37.86% | +2.42 pp |
 | 61-80 | 38.44% | 38.46% | +0.02 pp |
+| 81-100 | 38.48% | 38.63% | +0.16 pp |
 
-### Latest paired-question analysis: step 80
+### Latest paired-question analysis: step 100
 
 | Metric | Refresh − standard | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | +0.42 pp | [-4.17, +5.42] pp |
-| avg@8: improvement from step 0 | +0.00 pp | [-6.67, +6.25] pp |
-| pass@8 | -6.67 pp | [-16.67, +0.00] pp |
-| pass@8: improvement from step 0 | -6.67 pp | [-20.00, +6.67] pp |
+| avg@8 | -0.42 pp | [-3.33, +2.50] pp |
+| avg@8: improvement from step 0 | -0.83 pp | [-5.00, +3.33] pp |
+| pass@8 | +0.00 pp | [-16.67, +16.67] pp |
+| pass@8: improvement from step 0 | +0.00 pp | [-20.00, +23.33] pp |
 
 Intervals resample the 30 whole questions, retaining each group of eight responses; they do not measure training-seed uncertainty or establish equivalence. A lead before the first rotation must not be credited to the method. See the [detailed first-principles investigation](../notes/lora-training-2025-2026.md) and [download the paired analysis](../data/refresh-base-fresh-control-analysis.json).
+
+## Completed-run protocol and training allocator
+
+Successful exit and **100 updates** were audited against the matched recipe. Raw AIME25 groups agree with logged scores at every configured evaluation, and all **800 memory records across 8 ranks** match the update and refresh schedule. This verifies the recorded protocol, not performance parity.
+
+| Measurement | GiB | Step | Rank |
+|---|---:|---:|---:|
+| Maximum training allocation | 18.002 | 81 | 2 |
+| Maximum training reservation | 18.947 | 81 | 2 |
+
+These are policy-process allocator peaks in the worker's declared training window. They are not total GPU memory or a single-device/phone estimate; inference, weight synchronization, and export are outside this measurement. [Download the completion audit and source hashes](../data/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01-completion-audit.json).

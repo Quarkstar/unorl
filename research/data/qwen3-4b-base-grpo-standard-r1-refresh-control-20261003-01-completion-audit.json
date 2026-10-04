@@ -1,0 +1,144 @@
+{
+  "run_id": "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
+  "protocol_audit_passed": true,
+  "exit_status": 0,
+  "training_updates": 100,
+  "refresh_after_updates": [],
+  "training_correctness_windows": [
+    {
+      "start": 1,
+      "end": 20,
+      "correctness": 0.1220703125
+    },
+    {
+      "start": 21,
+      "end": 40,
+      "correctness": 0.213671875
+    },
+    {
+      "start": 41,
+      "end": 60,
+      "correctness": 0.3443359375
+    },
+    {
+      "start": 61,
+      "end": 80,
+      "correctness": 0.384375
+    },
+    {
+      "start": 81,
+      "end": 100,
+      "correctness": 0.384765625
+    }
+  ],
+  "initial_optimizer_audit": {
+    "optimizer": "AdamW",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
+    "trainable_parameters": 2064384
+  },
+  "training_allocator": {
+    "ranks": 8,
+    "records": 800,
+    "windows": [
+      "policy forward/backward, optimizer, and merge/reset when scheduled"
+    ],
+    "max_allocated_gib": 17.938969135284424,
+    "max_reserved_gib": 18.7890625,
+    "max_allocated_at": {
+      "step": 76,
+      "rank": 5
+    },
+    "max_reserved_at": {
+      "step": 76,
+      "rank": 5
+    }
+  },
+  "evaluations": [
+    {
+      "step": 0,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 7,
+      "solved_questions": 4,
+      "avg@8": 0.029166666666666667,
+      "pass@8": 0.13333333333333333
+    },
+    {
+      "step": 20,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 13,
+      "solved_questions": 7,
+      "avg@8": 0.05416666666666667,
+      "pass@8": 0.23333333333333334
+    },
+    {
+      "step": 40,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 29,
+      "solved_questions": 7,
+      "avg@8": 0.12083333333333333,
+      "pass@8": 0.23333333333333334
+    },
+    {
+      "step": 60,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 31,
+      "solved_questions": 8,
+      "avg@8": 0.12916666666666668,
+      "pass@8": 0.26666666666666666
+    },
+    {
+      "step": 80,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 40,
+      "solved_questions": 11,
+      "avg@8": 0.16666666666666666,
+      "pass@8": 0.36666666666666664
+    },
+    {
+      "step": 100,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 42,
+      "solved_questions": 11,
+      "avg@8": 0.175,
+      "pass@8": 0.36666666666666664
+    }
+  ],
+  "final_rank": {
+    "layers": 252,
+    "mean_stable_rank": 0.999999999688025,
+    "mean_energy_outside_first_direction": 1.070097112420239e-08
+  },
+  "source_sha256": {
+    "runs/logs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.exit-status": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/config.json": "ba30b1a496030151db6a97dedb8bcf2f43b68bc1d68e45e9c58e7d3fd661e4fe",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/metrics.jsonl": "cc3fb541c61e61f822296b857a12724f63f80fbc4cb0937cac5d86eb4aadceba",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank0.jsonl": "9177d12c27e99a93f97c15a44091582dbbbdeddbc8a9a40e4b1f54f7ffa937c5",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank1.jsonl": "e5008e5785ae5ebb3146c912bccd6ac1062dcbdb73ad1cf27892f453347ffbf6",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank2.jsonl": "35f8eb96a0114e903e21cc99f1d72ff83e94972e0ce4d7ece4a1ad08a5825f4e",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank3.jsonl": "e5ea1e237e25523871af9da36170883ea91bda63e1182684166d36ff0e7fd67a",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank4.jsonl": "e8f0b33ceb435e17fa2438c08cfd0affdfbd7194c24517bd70d4d76dfd3f2379",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank5.jsonl": "fe60ef2c495381f7211b58e0c3054328d2ce0d9d9fcf0433a07f4b6f8f343447",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank6.jsonl": "fdf7a99717e2aa67fd579f3a7634c7ee921232161ee7b410dc8cad8d934edaa2",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/training-memory-rank7.jsonl": "a2fad87923d9183a716c6d5d690c01a93d2a608b06dcae74ff9608e8b3edfcd6",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/evaluation.jsonl": "5bd4cfe602e698001fcd3af36219836c91f5410decf88280f09af36d2c5dd1af",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "3a556e43e21485876322ffeb889278090db88285dc44acc37b11c307352cf723",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "73eb9b6fa7adc1112aa5b6ac59d12a41a071783260df48fd537ce5c7ff6686d4",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "8f25d0073f8abdedb205a9a57176ad8b0b6bc8de2af123ed2cb1e5eff18845ce",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "24a53b62b581cf8e6d73279799d432a12b6d0d5a627bc24d71ee145c07133ba3",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "472ddd96a1af7fcd099c0c220ab5899fa688a0def68a94b8aa71023fd4a7fe48",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "316fc45f48544f49124cfd1ea1f160c451bdcd9b8be30872323c9b4609eae8be",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/rank-diagnostics.jsonl": "51944c73238b4cdcb5d019894789191e643eae4dc057f978f4996b156efecb6e",
+    "runs/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01/initial-adapter-audit.json": "b8ea2db031a8235c22589fd3ef1c4b6caf7992f5532205bf88903ea8dee8b5f5"
+  },
+  "limitations": "This verifies the recorded protocol, not performance parity or a multi-seed result. Training allocator peaks cover the worker's declared window, not total GPU memory, inference, weight synchronization, export, or phone memory. Initial optimizer/parameter metadata comes from the recorded startup audit. No weight files are read or removed."
+}

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 PLANNED_REFRESH = {
+    "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
     "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
     "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     "qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
@@ -12,6 +13,11 @@ PLANNED_REFRESH = {
 }
 
 NOTES = {
+    "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01": (
+        "GRPO · ten-increment compensated refresh, rank 1",
+        "ablation",
+        "100 updates from base, matched historical standard rank-one GRPO recipe: native AdamW, alpha 32, constant LR 1.5e-5, 32 prompts with eight rollouts, 8192 response tokens, eight GPUs. Replace each abrupt 20-degree refresh with ten 2-degree fixed-plane increments after updates 40-49 and 80-89. Ordinary optimizer updates occur between increments. Retain B, compensate the frozen base to preserve effective weights in exact arithmetic, preserve Adam counters and A moments, approximately project B first moments by actual row cosine, and retain B variances. This is approximate moment transport; unseen gradient history is not reconstructed. Two compressed correction directions per cycle give rank capacity at most five including the active adapter, versus at most three for the one-shot trial. Native eight-rank FSDP validation passed, including exact recovery from an in-transition checkpoint and base-weight extraction; it did not launch an inference engine. AIME25 avg@8/pass@8 every twenty updates, hourly health checks, ten-second NVML sampling, and per-update training allocator peaks. Compare with existing historical standard LoRA, completed fresh standard, and one-shot refresh; no extra baseline rerun. Outcome remains unproven.",
+    ),
     "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01": (
         "GRPO · fresh standard rank-1 LoRA control (100 steps from base)",
         "ablation",
