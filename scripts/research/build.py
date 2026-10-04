@@ -192,7 +192,7 @@ def refresh_update_plot(
         ("relora/probe_response_kl_mean", "Refresh response-prefix KL"),
         ("relora/mean_energy_outside_first_direction", "Mean energy outside leading direction"),
     ]
-    for ax, (key, title) in zip(axes.flat, specs):
+    for ax, (key, axis_title) in zip(axes.flat, specs):
         recorded = False
         for run, color in zip(runs, COLORS):
             recorded |= line(ax, run, key, color, run["title"])
@@ -203,7 +203,7 @@ def refresh_update_plot(
                 last = max((row["step"] for row in run["metrics"]), default=0)
                 for boundary in range(first, last + 1, interval):
                     ax.axvline(boundary, color=color, ls=":", alpha=0.5, lw=1)
-        ax.set(title=title, xlabel="Global training step")
+        ax.set(title=axis_title, xlabel="Global training step")
         if key.endswith("cosine_with_previous_delta"):
             ax.set_ylim(-1.05, 1.05)
         if key.endswith("mean_energy_outside_first_direction"):
@@ -292,7 +292,7 @@ def experiment_page(run):
             "Evaluation points are unsmoothed. Training curves show raw values faintly and a trailing 10-update mean. Missing metrics are labeled explicitly.",
         )
     else:
-        text += "No metric records survived, so no curve or score is fabricated.\n"
+        text += "This snapshot contains no training metrics; no curve or score is inferred.\n"
     text += "\n## Evaluation results\n\n"
     for benchmark in ["aime25", "aime26", "amc23", "math500"]:
         ev = evaluation(run, benchmark)
@@ -303,7 +303,7 @@ def experiment_page(run):
         )
         text += "".join(f"| {step} | {pct(avg)} | {pct(pas)} |\n" for step, avg, pas in ev) + "\n"
     if not rows:
-        text += "No AIME25 checkpoint evaluation is retained.\n"
+        text += "This snapshot contains no AIME25 checkpoint evaluation.\n"
     if run["unreadable_eval_dumps"]:
         text += "\nSome raw evaluation dumps were truncated or malformed; aggregated logged metrics above are retained, but per-question counts for these files are unavailable:\n\n"
         text += "".join(f"- `{p}`\n" for p in run["unreadable_eval_dumps"])

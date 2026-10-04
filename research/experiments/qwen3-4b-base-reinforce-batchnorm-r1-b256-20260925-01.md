@@ -37,11 +37,11 @@ Configuration is retained but no metrics survived. Treat this as an incomplete l
 
 ## Learning curves
 
-No metric records survived, so no curve or score is fabricated.
+This snapshot contains no training metrics; no curve or score is inferred.
 
 ## Evaluation results
 
-No AIME25 checkpoint evaluation is retained.
+This snapshot contains no AIME25 checkpoint evaluation.
 
 ## Quantitative observations
 

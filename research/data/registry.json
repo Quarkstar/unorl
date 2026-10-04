@@ -1,5 +1,10 @@
 [
   {
+    "id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+    "title": "GRPO \u00b7 prepared-history rank-aware ReLoRA, rank 1",
+    "group": "ablation"
+  },
+  {
     "id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
     "title": "GRPO \u00b7 ten-increment compensated refresh, rank 1",
     "group": "ablation"

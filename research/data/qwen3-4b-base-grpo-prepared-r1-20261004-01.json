@@ -1,0 +1,1282 @@
+{
+  "schema_version": 1,
+  "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+  "title": "GRPO \u00b7 prepared-history rank-aware ReLoRA, rank 1",
+  "group": "ablation",
+  "analysis": "100 updates from base using the historical standard rank-one LoRA GRPO recipe: Qwen3-4B-Base, all-linear rank 1 / alpha 32, native AdamW, constant LR 1.5e-5, 32 prompts with eight rollouts, response budget 8192 and eight GPUs. Prepare fixed two-direction input/output gradient history during updates 21-40 and 61-80; reduce full-update projections before clipping and cross moments. After 40/80 choose norm-matched new factors by observed normal-gradient descent, constrained to retain at least 90% of each side's best local total-descent score on a 256-angle grid. Compensate the frozen base, install observed-window Adam moments/counters and preserve the global constant scheduler. The constraint is not a baseline accuracy bound; the mean-gradient reference is fixed at preparation and its drift is logged. Refresh bases each cycle, measure actual accumulated rank, and skip layers without positive observed normal-descent benefit. Native eight-rank GRPO worker tests passed active/closed checkpoint replay, two transfers, gradient collection and dense export. Live inference, full-model peak VRAM and reward/performance remain to be established by this trial. AIME25 avg@8/pass@8 every 20 updates; hourly checks, 10-second NVML sampling and per-update training allocator peaks. Reuse existing standard LoRA and completed failed refresh trials; no extra baseline or budget extension. Outcome remains unproven until observed results.",
+  "optimizer": "AdamW (SkyRL default)",
+  "config": {
+    "trainer.algorithm.policy_loss_type": "regular",
+    "trainer.algorithm.advantage_estimator": "grpo",
+    "trainer.algorithm.grpo_norm_by_std": false,
+    "trainer.algorithm.loss_reduction": "token_mean",
+    "trainer.algorithm.use_kl_loss": false,
+    "trainer.algorithm.use_kl_in_reward": false,
+    "trainer.algorithm.zero_variance_filter": false,
+    "trainer.algorithm.dynamic_sampling.type": null,
+    "trainer.algorithm.off_policy_correction.tis_ratio_type": "token",
+    "trainer.algorithm.off_policy_correction.token_tis_ratio_clip_high": 1000000000.0,
+    "trainer.algorithm.off_policy_correction.sequence_mask_metric": null,
+    "trainer.algorithm.eps_clip_low": 1000000000.0,
+    "trainer.algorithm.eps_clip_high": 1000000000.0,
+    "trainer.strategy": "fsdp",
+    "trainer.placement.colocate_all": true,
+    "trainer.placement.policy_num_gpus_per_node": 8,
+    "trainer.epochs": 1,
+    "trainer.max_training_steps": 100,
+    "trainer.train_batch_size": 32,
+    "trainer.policy_mini_batch_size": 32,
+    "trainer.micro_train_batch_size_per_gpu": 2,
+    "trainer.micro_forward_batch_size_per_gpu": 2,
+    "trainer.update_epochs_per_batch": 1,
+    "trainer.max_prompt_length": 2048,
+    "trainer.policy.optimizer_config.lr": 1.5e-05,
+    "trainer.policy.optimizer_config.num_warmup_steps": 0,
+    "trainer.policy.optimizer_config.scheduler": "constant",
+    "trainer.policy.optimizer_config.weight_decay": 0.0,
+    "trainer.eval_before_train": true,
+    "trainer.eval_interval": 20,
+    "trainer.eval_batch_size": 128,
+    "trainer.ckpt_interval": 20,
+    "trainer.hf_save_interval": 100,
+    "trainer.max_ckpts_to_keep": 1,
+    "trainer.resume_mode": null,
+    "trainer.logger": "console",
+    "trainer.project_name": "unorl",
+    "trainer.seed": 42,
+    "generator.batched": true,
+    "generator.max_turns": 1,
+    "generator.n_samples_per_prompt": 8,
+    "generator.eval_n_samples_per_prompt": 8,
+    "generator.sampling_params.temperature": 1.0,
+    "generator.sampling_params.top_p": 1.0,
+    "generator.sampling_params.max_generate_length": 8192,
+    "generator.eval_sampling_params.temperature": 1.0,
+    "generator.eval_sampling_params.top_p": 1.0,
+    "generator.eval_sampling_params.max_generate_length": 8192,
+    "generator.apply_overlong_filtering": true,
+    "generator.inference_engine.backend": "vllm",
+    "generator.inference_engine.num_engines": 8,
+    "generator.inference_engine.tensor_parallel_size": 1,
+    "generator.inference_engine.run_engines_locally": true,
+    "generator.inference_engine.gpu_memory_utilization": 0.8,
+    "generator.inference_engine.enforce_eager": true,
+    "generator.inference_engine.weight_sync_backend": "nccl",
+    "environment.env_class": "unorl_math",
+    "trainer.dump_eval_results": true,
+    "environment.skyrl_gym.max_env_workers": 0,
+    "trainer.policy.model.path": "models/Qwen3-4B-Base",
+    "generator.inference_engine.engine_init_kwargs": {
+      "max_model_len": 10240
+    },
+    "data.val_data": [
+      "data/eval-aime25.parquet"
+    ],
+    "trainer.policy.model.lora.rank": 1,
+    "trainer.policy.model.lora.alpha": 32,
+    "trainer.policy.model.lora.dropout": 0.0,
+    "trainer.policy.model.lora.target_modules": "all-linear",
+    "trainer.relora_merge_interval": 40,
+    "trainer.relora_restart_warmup_updates": 0,
+    "trainer.relora_probe_response_tokens": 128,
+    "trainer.relora_first_merge_step": 40,
+    "trainer.relora_enable_merge": true,
+    "trainer.prepared_window_updates": 20,
+    "trainer.prepared_min_total_fraction": 0.9,
+    "trainer.prepared_angles": 256,
+    "trainer.prepared_token_chunk": 256,
+    "data.train_data": [
+      "data/train-benchmark-clean.parquet"
+    ],
+    "trainer.run_name": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+    "trainer.ckpt_path": "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints",
+    "trainer.export_path": "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports",
+    "trainer.log_path": "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/infra"
+  },
+  "metrics": [
+    {
+      "step": 0,
+      "metrics": {
+        "eval/aime25/avg_score": -0.9333333333333333,
+        "eval/aime25/pass_at_8": 0.16666666666666666,
+        "eval/aime25/mean_positive_reward": 0.03333333333333333,
+        "eval/aime25/avg@8": 0.03333333333333333,
+        "eval/aime25/pass@8": 0.16666666666666666
+      }
+    },
+    {
+      "step": 1,
+      "metrics": {
+        "generate/min_num_tokens": 2,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1454.83984375,
+        "generate/std_num_tokens": 1953.553457438195,
+        "generate/avg_tokens_non_zero_rewards": 830.2,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1454.83984375,
+        "generate/min_assistant_tokens": 2,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1953.553457438195,
+        "generate/tokens_per_turn_mean": 1454.83984375,
+        "generate/tokens_per_turn_std": 1953.553457438195,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.40625,
+        "reward/avg_raw_reward": -0.84375,
+        "reward/mean_positive_reward": 0.078125,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8437,
+        "policy/rollout_train_logprobs_abs_diff_max": 0.8918957710266113,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.013443980365991592,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.0342644527554512,
+        "loss/avg_final_rewards": -0.84375,
+        "loss/avg_raw_advantages": -0.05315971374511719,
+        "loss/avg_raw_advantages_abs": 0.1969456672668457,
+        "policy/policy_entropy": 0.8799399137496948,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9998300671577454,
+        "policy/loss_metrics/is_ratio_std": 0.3052339553833008,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.015289672650396824,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 1.7274760007858276,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 0.8918957710266113,
+        "policy/final_loss": 0.01212703250348568,
+        "policy/policy_loss": 0.01212703250348568,
+        "policy/grad_norm": 0.03133798763155937,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.036381036189550894,
+        "updates/effective_delta_l2": 0.2886791928406522,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 504.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1258.6348276135373,
+        "trainer/epoch": 0,
+        "trainer/global_step": 1,
+        "timing/eval": 90.64113187789917,
+        "timing/generate": 96.47021913528442,
+        "timing/postprocess_generator_output": 0.0015685558319091797,
+        "timing/convert_to_training_input": 0.07600975036621094,
+        "timing/fwd_logprobs_values_reward": 13.345626831054688,
+        "timing/compute_advantages_and_returns": 0.02252030372619629,
+        "timing/policy_train": 40.70224571228027,
+        "timing/train_critic_and_policy": 41.226314306259155,
+        "timing/sync_weights": 1.717299222946167,
+        "timing/sync_weights_only_transfer": 0.6851837486028671,
+        "timing/step": 153.930593252182
+      }
+    },
+    {
+      "step": 2,
+      "metrics": {
+        "generate/min_num_tokens": 5,
+        "generate/max_num_tokens": 8192,
+        "generate/avg_num_tokens": 1195.26171875,
+        "generate/std_num_tokens": 1589.5684770471657,
+        "generate/avg_tokens_non_zero_rewards": 1226.8181818181818,
+        "generate/avg_tokens_zero_rewards": 0.0,
+        "generate/avg_assistant_tokens": 1195.26171875,
+        "generate/min_assistant_tokens": 5,
+        "generate/max_assistant_tokens": 8192,
+        "generate/std_assistant_tokens": 1589.5684770471657,
+        "generate/tokens_per_turn_mean": 1195.26171875,
+        "generate/tokens_per_turn_std": 1589.5684770471657,
+        "generate/tokens_per_turn_max": 8192,
+        "reward/avg_pass_at_8": 0.25,
+        "reward/avg_raw_reward": -0.9140625,
+        "reward/mean_positive_reward": 0.04296875,
+        "generate/batch_num_seq": 256,
+        "generate/batch_padded_seq_len": 8425,
+        "policy/rollout_train_logprobs_abs_diff_max": 4.2148003578186035,
+        "policy/rollout_train_logprobs_abs_diff_min": 0.0,
+        "policy/rollout_train_logprobs_abs_diff_mean": 0.011583312414586544,
+        "policy/rollout_train_logprobs_abs_diff_std": 0.034226421266794205,
+        "loss/avg_final_rewards": -0.9140625,
+        "loss/avg_raw_advantages": -0.010723494924604893,
+        "loss/avg_raw_advantages_abs": 0.15568552911281586,
+        "policy/policy_entropy": 0.7069029211997986,
+        "policy/response_length": 8192.0,
+        "policy/policy_lr": 1.4999998711573426e-05,
+        "policy/loss_metrics/clip_ratio": 0.0,
+        "policy/loss_metrics/is_ratio_mean": 0.9999510645866394,
+        "policy/loss_metrics/is_ratio_std": 0.29925358295440674,
+        "policy/loss_metrics/tis_token_clip_high_ratio": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_mean": 0.01403055153787136,
+        "policy/loss_metrics/is_ratio_min": 0.0,
+        "policy/minibatch_rollout_logprobs_abs_diff_min": 0.0,
+        "policy/loss_metrics/is_ratio_max": 4.477972030639648,
+        "policy/minibatch_rollout_logprobs_abs_diff_max": 4.2148003578186035,
+        "policy/final_loss": -0.00312047079205513,
+        "policy/policy_loss": -0.00312047079205513,
+        "policy/grad_norm": 0.029671968892216682,
+        "policy/minibatch_rollout_logprobs_abs_diff_std": 0.036655739611644755,
+        "updates/effective_delta_l2": 0.20607578234785598,
+        "updates/cosine_with_previous_delta": 0.6173872152736674,
+        "relora/completed_cycles": 0.0,
+        "optimizer/state_entries": 903.0,
+        "relora/next_update_lr": 1.5e-05,
+        "relora/restart_lr_multiplier": 1.0,
+        "trainer/tokens_per_second_per_gpu": 1357.8834958100722,
+        "trainer/epoch": 0,
+        "trainer/global_step": 2,
+        "timing/generate": 85.83579564094543,
+        "timing/postprocess_generator_output": 0.0013909339904785156,
+        "timing/convert_to_training_input": 0.06453251838684082,
+        "timing/fwd_logprobs_values_reward": 10.315350770950317,
+        "timing/compute_advantages_and_returns": 0.019833087921142578,
+        "timing/policy_train": 31.974125862121582,
+        "timing/train_critic_and_policy": 32.482444286346436,
+        "timing/sync_weights": 1.5980808734893799,
+        "timing/sync_weights_only_transfer": 0.6460041105747223,
+        "timing/step": 131.3485381603241
+      }
+    }
+  ],
+  "evaluation_counts": [
+    {
+      "step": 0,
+      "benchmark": "aime25",
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 8,
+      "solved_questions": 5
+    }
+  ],
+  "unreadable_eval_dumps": [],
+  "provenance": {
+    "source": "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01",
+    "sha256": {
+      "metrics.jsonl": "647b4697d2ceb7c7af7a85945496f227e41c25efa87bb972b42e3b12aee23abd",
+      "config.json": "375228611fe024d674a4441560d3e2a4938b6d3558904e39079d5061534019e7",
+      "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b",
+      "exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "244d7914e46e7cedc78261d61ea01ca0dac59c0c05bf08f6c13f2258753bf058",
+      "initial-adapter-audit.json": "a0ad7afa4bfae124c7a89389dc05194f4581b70ff4a3cc918c8922ecf804eb9b",
+      "prelaunch-validation.json": "ec81dc5bea063fe28ceeb9f0924e4b2fb0959cd248a5f56d1b62f9f4c50b8f7f"
+    },
+    "skyrl_commit": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518"
+  },
+  "evaluation_question_scores": [
+    {
+      "step": 0,
+      "benchmark": "aime25",
+      "questions": [
+        {
+          "prompt_sha256": "8bb3d594ae658d057174929706716dbeef5c3680204439b7fb85bc1621c1a1e0",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "f5e590036153daecc5fb35258397b18b9d77419025f5504de33c4830c06f52d3",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "3c22afc220c16fc1b78d56b0e68d3297fa19a6bfc69181f72ce144e130116080",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "6cd1fb18dc44b877f34214b403e4d18a0f8e794ebcadbe42874757dbad04d42a",
+          "samples": 8,
+          "correct": 1
+        },
+        {
+          "prompt_sha256": "858e72bf88e33ea23adec387c7a407a30ef50963edf5d6b40a3036dfa1fd6971",
+          "samples": 8,
+          "correct": 1
+        },
+        {
+          "prompt_sha256": "c90a0a698b2de68a19d3198b7769b46fe4da425c3a4431a40ca46198203b9fad",
+          "samples": 8,
+          "correct": 2
+        },
+        {
+          "prompt_sha256": "3784c77db15d8ee1fbd81c660548dbeec2776c792309495ec3ec72fc731b2d23",
+          "samples": 8,
+          "correct": 1
+        },
+        {
+          "prompt_sha256": "fda71912b9e17bd88cf3a2285ec20d91c60541247c86b3a92eefe82d2e6a6bb8",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "a1aaa6d7e7cbfc59db5986711145e35d47b7445b3a7b450fe9810745477c7d14",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "33ecd9b6b27dab2da961bc67a264205c6b3de13dbf7608ed9eafe901d34407a0",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "4a7aff0ded078728c8ce27070ec0405448fa91c15d8ab4fde79381ed5508602b",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "b50be36ded90b139b9f427da2adf9f2bdd1ade12287014a8764853ce89c77baa",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "70679eeb2c353d55868861868cca8ecb4550febe6bf87b7f9c017b650774bf16",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "3c13bb88ae22b20b8104af03a8dd62a3f9ed9fb9c18b336f58cf2217ac2e28e8",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "026387ee0144c85eb6f96d8ae4ca289ca3d86804965ff8c89430eaef84675a0b",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "c119a8830db3ef2bb1bddb1b4538a021e426fcf3c651ba2a7b1b53ba76648c25",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "23d1bbc435976e3104b8e9d9b9f058237996bcd65349ee5d0ce814cf919d4834",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "81b60edc5dbc4bca0ebeb0878ad7f33787dce34dfae46944c205b6d00c0619ac",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "bdf92e018e74ec6d861b2dbd550c604a0b615b6bff80e644c46a2acdd928b57b",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "4aa750264f779de38d5b6cc93ea57c63cd6b41eb60bf54ecdd1ca22c8acecf9f",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "57421fb23e93f10b0da4feffd0547d794e4687942dac02ec8cd8bb774f7eeea9",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "2f70a88b8ff679535bd2b0bfb2c8c48f92f8081ed5e8a8da539dc0eb1e8482b3",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "f3d3117f42ab3bcbe76c8c7e37e25630442a154729ef992d8afee6096ff72d65",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "c93255d8285de6bfe5fbfc27c1dc014364f0ef0b835e62f58248062f2cbf51ab",
+          "samples": 8,
+          "correct": 3
+        },
+        {
+          "prompt_sha256": "523b885e75c9ff5ec3aa865b1164b74cc473371e6f16dcb94327baed0097ccde",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "574f6f0d9807ed7c083522133a0ecec243d104aa075824beeca8b44a4eb6972b",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "411e096f237b5457b50af7017e01d167293cbc1a9ff622fd078849dd67a945e4",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "733a8acb9f2f547733ab9b4f773a9a0149205a3550a1ccb351d0a85ed2305324",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "b25f38d086586e7c574eaa2f223249b29b691a3cf31f6f57d859d858df2b6245",
+          "samples": 8,
+          "correct": 0
+        },
+        {
+          "prompt_sha256": "681a4db467b77eed436d6add86b308b40054e75d71f34c85aca55777bd0f2222",
+          "samples": 8,
+          "correct": 0
+        }
+      ]
+    }
+  ],
+  "audits": {
+    "initial-adapter-audit.json": {
+      "method": "prepared-history normal-descent adapter switches",
+      "rank": 1,
+      "alpha": 32,
+      "initialization": "kaiming",
+      "optimizer": "AdamW",
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "epsilon": 1e-08,
+      "trainable_parameters": 2064384,
+      "merge_interval": 40,
+      "restart_warmup_updates": 0,
+      "optimizer_reset": "replace selected-factor moments with observed fixed-window projected history and its own counter; preserve native AdamW and global constant scheduler",
+      "rollout_sync": "base W then adapter after merge/resume; adapter only otherwise",
+      "probe": "one real math response prefix per rank, at most 128 response tokens",
+      "rank_diagnostic": "thin QR / small SVD of accumulated low-rank factors",
+      "preparation_updates": 20,
+      "min_total_descent_fraction": 0.9,
+      "candidate_angles": 256,
+      "compensation": "W += scale * (B_old @ A_old - B_new @ A_new)",
+      "rank_scope": "candidate bases refresh per window; useful learned rank is measured, not guaranteed",
+      "activation_saving": "identity autograd save_for_backward, compatible with checkpoint discard/recompute"
+    },
+    "prelaunch-validation.json": {
+      "native_worker_validation": {
+        "ranks": [
+          {
+            "success": true,
+            "rank": 0,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          },
+          {
+            "success": true,
+            "rank": 1,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          },
+          {
+            "success": true,
+            "rank": 2,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          },
+          {
+            "success": true,
+            "rank": 3,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          },
+          {
+            "success": true,
+            "rank": 4,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          },
+          {
+            "success": true,
+            "rank": 5,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          },
+          {
+            "success": true,
+            "rank": 6,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          },
+          {
+            "success": true,
+            "rank": 7,
+            "world_size": 8,
+            "real_policy_forward_backward": true,
+            "real_prepared_optim_step": true,
+            "active_and_closed_checkpoint_replay_exact": true,
+            "global_scheduler_step": 8,
+            "native_adam_counter_min": 2.0,
+            "native_adam_counter_max": 2.0,
+            "max_relative_native_gradient_projection_error": 0.0059009244974403425,
+            "constant_lrs": [
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001,
+              0.001
+            ],
+            "parameter_identities_preserved": true,
+            "base_weight_extractor_exact": true,
+            "dense_export_logit_max_absolute_difference": 0.00146484375,
+            "limitations": "Tiny native worker fixture with eight synthetic response trajectories per rank and no live inference engine. Manually bootstrapped model/strategy; not Ray model initialization, real rollout/evaluation, full-scale VRAM or performance evidence."
+          }
+        ],
+        "source_sha256": {
+          "unorl/prepared_worker.py": "ba1a0b01fd1b4dc9f69bd0d017f6fce9de9dd2920c9b622a45a3aeb918467035",
+          "unorl/prepared_config.py": "125768b10adcdf7ac0c9bcfb810f73bea739291c13357ec05d0dc7e41821101a",
+          "unorl/prepared_train.py": "7f7637b861ff7287d3957bf93622c5771102fa964617b93140afbc37779bb4dd",
+          "unorl/prepared_hooks.py": "d6c3f450d38ebc714cecc6b0d946ff767fde9e0e35ac3122f3bbcd6857b724ee",
+          "unorl/prepared_moments.py": "bf4eb12c45378089add57dbdd64dabdd589b72c9ea32a42b3dfa27708da61eaa",
+          "unorl/prepared_selection.py": "2f97c6eb6f3107729c9ccade147d47e1a7936e432c86e08458296c3579820033",
+          "scripts/check_prepared_worker_fsdp.py": "94e4e3ff314c5fd849b802ca17d37b1f50d047d5867eddab81916350ad3b9eb4",
+          "scripts/train.py": "da1c85ad9611e8dc36dcd697790e0a52f678254a9e4abdbb43855f69fdca49d9",
+          "configs/qwen3-4b-base-grpo-prepared-r1.json": "a6c924a0be57183a7981634f69fa5246186dbf7fa1cfc83c9254d9e13453941d",
+          "tests/test_prepared_recipe.py": "0ff41e5c43cada97021bf338323beefac1b5a9261fb92f842aee8e70032cb8bd"
+        },
+        "passed_log_sha256": "abe3d56611ef84d4a2d2fe393985628c30b4eacd13c49f73a6527d09bd4e0c3a",
+        "exit_code": 0,
+        "last_successful_merge_audits": [
+          {
+            "step": 4,
+            "rank": 0,
+            "utc": "2026-10-04T09:41:04.550949+00:00",
+            "peak_allocated_bytes": 17273344,
+            "peak_reserved_bytes": 27262976,
+            "window": "policy forward/backward, native AdamW, preparation and scheduled transfer",
+            "merged": true,
+            "updates/effective_delta_l2": 0.1661659102946325,
+            "updates/cosine_with_previous_delta": 0.7973086057356954,
+            "relora/probe_response_tokens": 16.0,
+            "relora/probe_response_kl_mean": 1.1257048981860862e-07,
+            "relora/probe_chosen_logprob_mean_abs_diff": 0.00037313997745513916,
+            "relora/probe_chosen_logprob_max_abs_diff": 0.0008516311645507812,
+            "relora/probe_argmax_flip_fraction": 0.0,
+            "relora/mean_accumulated_stable_rank": 1.0000000086870906,
+            "relora/mean_energy_outside_first_direction": 1.6683247941858984e-08,
+            "relora/merged_layers": 14.0,
+            "relora/rounding_relative_l2": 4.606734840577092e-08,
+            "prepared/history_observations": 2.0,
+            "prepared/min_total_descent_retained": 0.9012929134184658,
+            "prepared/mean_normal_descent_per_lr": 0.00032695116835514327,
+            "prepared/min_reference_a_abs_cosine": 0.9999506945915445,
+            "prepared/min_reference_b_abs_cosine": 0.905973264821994
+          },
+          {
+            "step": 4,
+            "rank": 0,
+            "utc": "2026-10-04T09:41:05.425655+00:00",
+            "peak_allocated_bytes": 17331200,
+            "peak_reserved_bytes": 27262976,
+            "window": "policy forward/backward, native AdamW, preparation and scheduled transfer",
+            "merged": true,
+            "updates/effective_delta_l2": 0.1661659102946325,
+            "updates/cosine_with_previous_delta": 0.7973086057356954,
+            "relora/probe_response_tokens": 16.0,
+            "relora/probe_response_kl_mean": 1.1257048981860862e-07,
+            "relora/probe_chosen_logprob_mean_abs_diff": 0.00037313997745513916,
+            "relora/probe_chosen_logprob_max_abs_diff": 0.0008516311645507812,
+            "relora/probe_argmax_flip_fraction": 0.0,
+            "relora/mean_accumulated_stable_rank": 1.0000000086870906,
+            "relora/mean_energy_outside_first_direction": 1.6683247941858984e-08,
+            "relora/merged_layers": 14.0,
+            "relora/rounding_relative_l2": 4.606734840577092e-08,
+            "prepared/history_observations": 2.0,
+            "prepared/min_total_descent_retained": 0.9012929134184658,
+            "prepared/mean_normal_descent_per_lr": 0.00032695116835514327,
+            "prepared/min_reference_a_abs_cosine": 0.9999506945915445,
+            "prepared/min_reference_b_abs_cosine": 0.905973264821994
+          },
+          {
+            "step": 8,
+            "rank": 0,
+            "utc": "2026-10-04T09:41:07.356793+00:00",
+            "peak_allocated_bytes": 17331200,
+            "peak_reserved_bytes": 27262976,
+            "window": "policy forward/backward, native AdamW, preparation and scheduled transfer",
+            "merged": true,
+            "updates/effective_delta_l2": 0.14024254860695928,
+            "updates/cosine_with_previous_delta": 0.8781155781632726,
+            "relora/probe_response_tokens": 16.0,
+            "relora/probe_response_kl_mean": 1.1433331792432e-07,
+            "relora/probe_chosen_logprob_mean_abs_diff": 0.000308796763420105,
+            "relora/probe_chosen_logprob_max_abs_diff": 0.0010738372802734375,
+            "relora/probe_argmax_flip_fraction": 0.0,
+            "relora/mean_accumulated_stable_rank": 1.3002730580171065,
+            "relora/mean_energy_outside_first_direction": 0.2180437925725154,
+            "relora/merged_layers": 14.0,
+            "relora/rounding_relative_l2": 3.868789989995115e-08,
+            "prepared/history_observations": 2.0,
+            "prepared/min_total_descent_retained": 0.900355954137283,
+            "prepared/mean_normal_descent_per_lr": 0.00029161056375772077,
+            "prepared/min_reference_a_abs_cosine": 0.9999478230257324,
+            "prepared/min_reference_b_abs_cosine": 0.9243155857051402
+          }
+        ],
+        "last_successful_rank_diagnostics": [
+          {
+            "step": 4,
+            "committed_merge": false,
+            "layers": {
+              "base_model.model.model.layers.0.self_attn.q_proj": {
+                "singular_values": [
+                  0.1646338850259781,
+                  2.8729868262189484e-08,
+                  0.0
+                ],
+                "stable_rank": 1.0000000066611212,
+                "energy_outside_first_direction": 6.661121099149625e-09,
+                "update_l2": 0.16463388557430123
+              },
+              "base_model.model.model.layers.0.self_attn.k_proj": {
+                "singular_values": [
+                  0.18096080422401428,
+                  4.0704552617398804e-08,
+                  3.4441018925690514e-09
+                ],
+                "stable_rank": 1.0000000465981038,
+                "energy_outside_first_direction": 4.6598101599570896e-08,
+                "update_l2": 0.1809608084402294
+              },
+              "base_model.model.model.layers.0.self_attn.v_proj": {
+                "singular_values": [
+                  0.18934662640094757,
+                  5.844800199383826e-08,
+                  1.2505950941488209e-08
+                ],
+                "stable_rank": 1.0000000132266442,
+                "energy_outside_first_direction": 1.3226644002273247e-08,
+                "update_l2": 0.1893466276531578
+              },
+              "base_model.model.model.layers.0.self_attn.o_proj": {
+                "singular_values": [
+                  0.14988847076892853,
+                  2.116705211108183e-08,
+                  0.0
+                ],
+                "stable_rank": 0.9999999868995034,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.1498884697871218
+              },
+              "base_model.model.model.layers.0.mlp.gate_proj": {
+                "singular_values": [
+                  0.22411790490150452,
+                  8.739311851968523e-08,
+                  2.472074456250084e-08
+                ],
+                "stable_rank": 0.9999999771999861,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.22411790234655882
+              },
+              "base_model.model.model.layers.0.mlp.up_proj": {
+                "singular_values": [
+                  0.2627235949039459,
+                  6.676232544577942e-08,
+                  1.639447511081471e-08
+                ],
+                "stable_rank": 0.9999999470896166,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.2627235879535428
+              },
+              "base_model.model.model.layers.0.mlp.down_proj": {
+                "singular_values": [
+                  0.17704138159751892,
+                  1.0568987462988844e-08,
+                  3.8887080222593795e-09
+                ],
+                "stable_rank": 0.9999999768646837,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.17704137954956473
+              },
+              "base_model.model.model.layers.1.self_attn.q_proj": {
+                "singular_values": [
+                  0.20152099430561066,
+                  7.253108691429588e-08,
+                  3.2397893257041233e-09
+                ],
+                "stable_rank": 1.0000000215624718,
+                "energy_outside_first_direction": 2.1562471363978375e-08,
+                "update_l2": 0.20152099647825603
+              },
+              "base_model.model.model.layers.1.self_attn.k_proj": {
+                "singular_values": [
+                  0.1608937531709671,
+                  7.784332289872964e-09,
+                  2.211844929433937e-09
+                ],
+                "stable_rank": 1.0000000127749415,
+                "energy_outside_first_direction": 1.2774941438031817e-08,
+                "update_l2": 0.16089375419867125
+              },
+              "base_model.model.model.layers.1.self_attn.v_proj": {
+                "singular_values": [
+                  0.1565503627061844,
+                  4.086390603674772e-08,
+                  3.3207037120064342e-09
+                ],
+                "stable_rank": 1.0000000049181652,
+                "energy_outside_first_direction": 4.91816520842292e-09,
+                "update_l2": 0.15655036309115467
+              },
+              "base_model.model.model.layers.1.self_attn.o_proj": {
+                "singular_values": [
+                  0.1486770212650299,
+                  1.5315166024265636e-08,
+                  1.1414964085076917e-08
+                ],
+                "stable_rank": 1.0000000378751388,
+                "energy_outside_first_direction": 3.7875137248732926e-08,
+                "update_l2": 0.1486770240806113
+              },
+              "base_model.model.model.layers.1.mlp.gate_proj": {
+                "singular_values": [
+                  0.28083401918411255,
+                  1.122312021095695e-08,
+                  6.699101717799749e-09
+                ],
+                "stable_rank": 1.0000000259751918,
+                "energy_outside_first_direction": 2.597519122016223e-08,
+                "update_l2": 0.2808340228314713
+              },
+              "base_model.model.model.layers.1.mlp.up_proj": {
+                "singular_values": [
+                  0.2712053954601288,
+                  6.322908774336611e-08,
+                  1.1401815491751677e-08
+                ],
+                "stable_rank": 1.0000000481932323,
+                "energy_outside_first_direction": 4.8193230073323434e-08,
+                "update_l2": 0.27120540199526105
+              },
+              "base_model.model.model.layers.1.mlp.down_proj": {
+                "singular_values": [
+                  0.19158518314361572,
+                  3.9382772598628435e-08,
+                  3.5065459424998835e-09
+                ],
+                "stable_rank": 1.000000015780468,
+                "energy_outside_first_direction": 1.5780467932380304e-08,
+                "update_l2": 0.19158518465526767
+              }
+            }
+          },
+          {
+            "step": 4,
+            "committed_merge": false,
+            "layers": {
+              "base_model.model.model.layers.0.self_attn.q_proj": {
+                "singular_values": [
+                  0.1646338850259781,
+                  2.8729868262189484e-08,
+                  0.0
+                ],
+                "stable_rank": 1.0000000066611212,
+                "energy_outside_first_direction": 6.661121099149625e-09,
+                "update_l2": 0.16463388557430123
+              },
+              "base_model.model.model.layers.0.self_attn.k_proj": {
+                "singular_values": [
+                  0.18096080422401428,
+                  4.0704552617398804e-08,
+                  3.4441018925690514e-09
+                ],
+                "stable_rank": 1.0000000465981038,
+                "energy_outside_first_direction": 4.6598101599570896e-08,
+                "update_l2": 0.1809608084402294
+              },
+              "base_model.model.model.layers.0.self_attn.v_proj": {
+                "singular_values": [
+                  0.18934662640094757,
+                  5.844800199383826e-08,
+                  1.2505950941488209e-08
+                ],
+                "stable_rank": 1.0000000132266442,
+                "energy_outside_first_direction": 1.3226644002273247e-08,
+                "update_l2": 0.1893466276531578
+              },
+              "base_model.model.model.layers.0.self_attn.o_proj": {
+                "singular_values": [
+                  0.14988847076892853,
+                  2.116705211108183e-08,
+                  0.0
+                ],
+                "stable_rank": 0.9999999868995034,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.1498884697871218
+              },
+              "base_model.model.model.layers.0.mlp.gate_proj": {
+                "singular_values": [
+                  0.22411790490150452,
+                  8.739311851968523e-08,
+                  2.472074456250084e-08
+                ],
+                "stable_rank": 0.9999999771999861,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.22411790234655882
+              },
+              "base_model.model.model.layers.0.mlp.up_proj": {
+                "singular_values": [
+                  0.2627235949039459,
+                  6.676232544577942e-08,
+                  1.639447511081471e-08
+                ],
+                "stable_rank": 0.9999999470896166,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.2627235879535428
+              },
+              "base_model.model.model.layers.0.mlp.down_proj": {
+                "singular_values": [
+                  0.17704138159751892,
+                  1.0568987462988844e-08,
+                  3.8887080222593795e-09
+                ],
+                "stable_rank": 0.9999999768646837,
+                "energy_outside_first_direction": 0.0,
+                "update_l2": 0.17704137954956473
+              },
+              "base_model.model.model.layers.1.self_attn.q_proj": {
+                "singular_values": [
+                  0.20152099430561066,
+                  7.253108691429588e-08,
+                  3.2397893257041233e-09
+                ],
+                "stable_rank": 1.0000000215624718,
+                "energy_outside_first_direction": 2.1562471363978375e-08,
+                "update_l2": 0.20152099647825603
+              },
+              "base_model.model.model.layers.1.self_attn.k_proj": {
+                "singular_values": [
+                  0.1608937531709671,
+                  7.784332289872964e-09,
+                  2.211844929433937e-09
+                ],
+                "stable_rank": 1.0000000127749415,
+                "energy_outside_first_direction": 1.2774941438031817e-08,
+                "update_l2": 0.16089375419867125
+              },
+              "base_model.model.model.layers.1.self_attn.v_proj": {
+                "singular_values": [
+                  0.1565503627061844,
+                  4.086390603674772e-08,
+                  3.3207037120064342e-09
+                ],
+                "stable_rank": 1.0000000049181652,
+                "energy_outside_first_direction": 4.91816520842292e-09,
+                "update_l2": 0.15655036309115467
+              },
+              "base_model.model.model.layers.1.self_attn.o_proj": {
+                "singular_values": [
+                  0.1486770212650299,
+                  1.5315166024265636e-08,
+                  1.1414964085076917e-08
+                ],
+                "stable_rank": 1.0000000378751388,
+                "energy_outside_first_direction": 3.7875137248732926e-08,
+                "update_l2": 0.1486770240806113
+              },
+              "base_model.model.model.layers.1.mlp.gate_proj": {
+                "singular_values": [
+                  0.28083401918411255,
+                  1.122312021095695e-08,
+                  6.699101717799749e-09
+                ],
+                "stable_rank": 1.0000000259751918,
+                "energy_outside_first_direction": 2.597519122016223e-08,
+                "update_l2": 0.2808340228314713
+              },
+              "base_model.model.model.layers.1.mlp.up_proj": {
+                "singular_values": [
+                  0.2712053954601288,
+                  6.322908774336611e-08,
+                  1.1401815491751677e-08
+                ],
+                "stable_rank": 1.0000000481932323,
+                "energy_outside_first_direction": 4.8193230073323434e-08,
+                "update_l2": 0.27120540199526105
+              },
+              "base_model.model.model.layers.1.mlp.down_proj": {
+                "singular_values": [
+                  0.19158518314361572,
+                  3.9382772598628435e-08,
+                  3.5065459424998835e-09
+                ],
+                "stable_rank": 1.000000015780468,
+                "energy_outside_first_direction": 1.5780467932380304e-08,
+                "update_l2": 0.19158518465526767
+              }
+            }
+          },
+          {
+            "step": 8,
+            "committed_merge": false,
+            "layers": {
+              "base_model.model.model.layers.0.self_attn.q_proj": {
+                "singular_values": [
+                  0.18287937343120575,
+                  0.1249748095870018,
+                  0.0020305414218455553,
+                  8.629520209524344e-09,
+                  4.238693840363794e-09
+                ],
+                "stable_rank": 1.467121914271983,
+                "energy_outside_first_direction": 0.31839338621274615,
+                "update_l2": 0.22151229016423396
+              },
+              "base_model.model.model.layers.0.self_attn.k_proj": {
+                "singular_values": [
+                  0.22937625646591187,
+                  0.08586336672306061,
+                  0.0014708919916301966,
+                  5.330765873168275e-08,
+                  3.4821872052503977e-09
+                ],
+                "stable_rank": 1.1401671833542357,
+                "energy_outside_first_direction": 0.12293564084337238,
+                "update_l2": 0.24492478133185316
+              },
+              "base_model.model.model.layers.0.self_attn.v_proj": {
+                "singular_values": [
+                  0.22971311211585999,
+                  0.13252881169319153,
+                  0.002323923399671912,
+                  5.32819264265072e-08,
+                  3.575532048216701e-08
+                ],
+                "stable_rank": 1.332952699485089,
+                "energy_outside_first_direction": 0.24978583232076168,
+                "update_l2": 0.2652119903781783
+              },
+              "base_model.model.model.layers.0.self_attn.o_proj": {
+                "singular_values": [
+                  0.183387890458107,
+                  0.0715610608458519,
+                  0.0027132388204336166,
+                  2.498743256751368e-08,
+                  1.5893949489864667e-09
+                ],
+                "stable_rank": 1.152488175923364,
+                "energy_outside_first_direction": 0.13231213916896967,
+                "update_l2": 0.19687423970817416
+              },
+              "base_model.model.model.layers.0.mlp.gate_proj": {
+                "singular_values": [
+                  0.22464486956596375,
+                  0.13641437888145447,
+                  0.002811049809679389,
+                  7.320355877027396e-08,
+                  3.999561570822152e-09
+                ],
+                "stable_rank": 1.3689025889115827,
+                "energy_outside_first_direction": 0.26948783054380654,
+                "update_l2": 0.2628347459329596
+              },
+              "base_model.model.model.layers.0.mlp.up_proj": {
+                "singular_values": [
+                  0.33243033289909363,
+                  0.08456139266490936,
+                  0.002405275125056505,
+                  1.3077321625587501e-07,
+                  1.2435109830732927e-08
+                ],
+                "stable_rank": 1.0647580532034355,
+                "energy_outside_first_direction": 0.060819500738786836,
+                "update_l2": 0.34302526716526743
+              },
+              "base_model.model.model.layers.0.mlp.down_proj": {
+                "singular_values": [
+                  0.19132189452648163,
+                  0.11600252240896225,
+                  0.002066477667540312,
+                  9.393677835589642e-09,
+                  3.1251716769986615e-09
+                ],
+                "stable_rank": 1.3677420308048471,
+                "energy_outside_first_direction": 0.2688679754825182,
+                "update_l2": 0.22375191927464969
+              },
+              "base_model.model.model.layers.1.self_attn.q_proj": {
+                "singular_values": [
+                  0.20748384296894073,
+                  0.09976332634687424,
+                  0.001599268289282918,
+                  2.8664082662999135e-08,
+                  4.645813511672259e-09
+                ],
+                "stable_rank": 1.2312516545850662,
+                "energy_outside_first_direction": 0.18781835031360694,
+                "update_l2": 0.2302277646703102
+              },
+              "base_model.model.model.layers.1.self_attn.k_proj": {
+                "singular_values": [
+                  0.20943796634674072,
+                  0.034677520394325256,
+                  0.0021449942141771317,
+                  8.789920258323036e-08,
+                  1.2915590374973362e-08
+                ],
+                "stable_rank": 1.0275197041024065,
+                "energy_outside_first_direction": 0.026782653405606927,
+                "update_l2": 0.21230024317324525
+              },
+              "base_model.model.model.layers.1.self_attn.v_proj": {
+                "singular_values": [
+                  0.17492622137069702,
+                  0.12584073841571808,
+                  0.0023753938730806112,
+                  5.812911041402913e-09,
+                  5.044439088663921e-09
+                ],
+                "stable_rank": 1.5177110104441112,
+                "energy_outside_first_direction": 0.34111303593469955,
+                "update_l2": 0.2155010831362019
+              },
+              "base_model.model.model.layers.1.self_attn.o_proj": {
+                "singular_values": [
+                  0.161661297082901,
+                  0.09239285439252853,
+                  0.0026871406007558107,
+                  1.2282470152058522e-08,
+                  2.9126281386737674e-09
+                ],
+                "stable_rank": 1.326912716228655,
+                "energy_outside_first_direction": 0.24637092721351306,
+                "update_l2": 0.1862203922356154
+              },
+              "base_model.model.model.layers.1.mlp.gate_proj": {
+                "singular_values": [
+                  0.28568264842033386,
+                  0.21167607605457306,
+                  0.0031744863372296095,
+                  1.4548858118246244e-08,
+                  5.550712334212449e-09
+                ],
+                "stable_rank": 1.5491277703976867,
+                "energy_outside_first_direction": 0.3544754544402212,
+                "update_l2": 0.35557194144684845
+              },
+              "base_model.model.model.layers.1.mlp.up_proj": {
+                "singular_values": [
+                  0.2705410122871399,
+                  0.18839657306671143,
+                  0.0035554796922951937,
+                  3.871713971648205e-08,
+                  1.1258929788482419e-08
+                ],
+                "stable_rank": 1.485103573092149,
+                "energy_outside_first_direction": 0.3266462904550892,
+                "update_l2": 0.32969433293787226
+              },
+              "base_model.model.model.layers.1.mlp.down_proj": {
+                "singular_values": [
+                  0.21605239808559418,
+                  0.08956222981214523,
+                  0.003210316179320216,
+                  2.081252503671749e-08,
+                  2.690868416976855e-09
+                ],
+                "stable_rank": 1.17206373743488,
+                "energy_outside_first_direction": 0.14680407894151737,
+                "update_l2": 0.2339024150256253
+              }
+            }
+          }
+        ],
+        "recipe_validation": {
+          "native_config_parse_passed": true,
+          "validator_passed": true,
+          "static_historical_recipe_parity_test_passed": true,
+          "differences_outside_method_fields": {
+            "trainer.ckpt_interval": [
+              100,
+              20
+            ]
+          },
+          "initialization_warning": "SkyRL automatically disables enforce_eager when LoRA is enabled; existing matched recipes use the same parser behavior."
+        },
+        "limitations": "Actual tiny native GRPO worker forward/backward, preparation, two transfers and active/closed checkpoint replay; eight synthetic trajectories with group-centered rewards per rank. Bootstrap model/strategy rather than Ray model initialization. Exact base extractor and dense HF export checks do not validate a live vLLM receiver. Rank diagnostics are synthetic-fixture evidence only. No full-scale peak VRAM or AIME/reward performance result.",
+        "first_fixture_failures": [
+          "Incorrect PolicyLossRegistry import location fixed to installed SkyRL backend path",
+          "TrainingInputBatch metadata assigned as an attribute after construction, per native API"
+        ]
+      },
+      "shared_checkpoint_modified": false,
+      "plan": {
+        "updates": 100,
+        "from_base": true,
+        "preparation_windows": [
+          [
+            21,
+            40
+          ],
+          [
+            61,
+            80
+          ]
+        ],
+        "switch_after_updates": [
+          40,
+          80
+        ],
+        "baseline_reused": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+        "hourly_watch_seconds": 3600,
+        "nvml_interval_seconds": 10
+      }
+    }
+  }
+}

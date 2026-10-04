@@ -4104,3 +4104,28 @@ Source freeze/commit, live inference initialization and full-model allocator
 measurements remain production checks. The actual trial, not the synthetic
 fixture, must establish performance matching/exceeding standard rank-one
 LoRA together with useful learned rank. Final performance is still unproven.
+
+### Launched and first full-model update checked
+
+The 100-update trial `qwen3-4b-base-grpo-prepared-r1-20261004-01` launched
+on 2026-10-04 at approximately 09:46 UTC from frozen training source
+`6aab6f5`. All eight inference engines initialized and the initial
+base-then-adapter synchronization completed. The live adapter audit verifies
+native AdamW, betas 0.9/0.999, epsilon 1e-8, rank one/alpha 32 and
+2,064,384 trainable parameters. Hourly health/book updates and 10-second
+NVML sampling are running with verified live process handles.
+
+Initial sampled AIME25 avg@8/pass@8 is **3.333%/16.667%**, eight correct
+responses among 240 and five solved questions among 30. This precedes any
+training or prepared transfer and must not be credited to the method.
+The first full-model update completes with training correctness **7.8125%**,
+finite gradient norm **0.031338** and entropy **0.879940**. All eight rank
+allocator records exist for that update; their maxima are **16.9342 GiB**
+allocated and **17.7715 GiB** reserved in the policy-training window.
+Preparation is inactive until update 21, so these numbers neither measure
+its overhead nor establish savings against a different run's peak.
+
+The individual experiment page and main comparison are generated from the
+current snapshot and updated hourly. Full-model collection/transfer first
+becomes exercised at the preparation and merge boundaries; final reward,
+held-out performance and substantial learned rank remain unproven.
