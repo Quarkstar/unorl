@@ -11,7 +11,7 @@ title: "GRPO · ten-increment compensated refresh, rank 1"
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01` |
-| Record | 21 steps logged / 100 planned |
+| Record | 24 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -66,11 +66,11 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 
 ## Quantitative observations
 
-Training response correctness averaged **10.2%** over the first 10 logged updates and **15.5%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **10.2%** over the first 10 logged updates and **18.1%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.845 at step 1 → 0.3862 at step 21.
-- Policy gradient norm: 0.03881 at step 1 → 0.05449 at step 21.
-- Mean generated response tokens: 1218 at step 1 → 1151 at step 21.
+- Logged entropy: 0.845 at step 1 → 0.3991 at step 24.
+- Policy gradient norm: 0.03881 at step 1 → 0.03003 at step 24.
+- Mean generated response tokens: 1218 at step 1 → 1273 at step 24.
 
 Best recorded AIME25 pass@8: **20.0% at step 20**. Last recorded: **20.0% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 

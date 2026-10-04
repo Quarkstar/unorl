@@ -67,7 +67,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · ten-increment compensated refresh, rank 1](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md) | 21 | 20 | 5.8% | 20.0% | AdamW (SkyRL default) |
+| [GRPO · ten-increment compensated refresh, rank 1](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md) | 24 | 20 | 5.8% | 20.0% | AdamW (SkyRL default) |
 | [GRPO · fresh standard rank-1 LoRA control (100 steps from base)](experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md) | 100 | 100 | 17.5% | 36.7% | AdamW (SkyRL default) |
 | [GRPO · compensated gradual refresh, rank 1 (100 steps from base)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md) | 100 | 100 | 17.1% | 36.7% | AdamW (SkyRL default) |
 | [GRPO · standard rank-1 ReLoRA, constant-LR resets](experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md) | 100 | 100 | 17.1% | 30.0% | AdamW (SkyRL default) |

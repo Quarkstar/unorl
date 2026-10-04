@@ -1,7 +1,7 @@
 run_id,group,last_train_step,last_eval_step,avg_at_8,pass_at_8
 qwen3-4b-base-grpo-standard-r1-continue-20261003-01,continuation,200,200,0.17083333333333334,0.3333333333333333
 qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01,continuation,134,120,0.17083333333333334,0.4
-qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01,ablation,21,20,0.058333333333333334,0.2
+qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01,ablation,24,20,0.058333333333333334,0.2
 qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01,ablation,100,100,0.175,0.36666666666666664
 qwen3-4b-base-grpo-relora-refresh-r1-20261003-01,ablation,100,100,0.17083333333333334,0.36666666666666664
 qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01,ablation,100,100,0.17083333333333334,0.3

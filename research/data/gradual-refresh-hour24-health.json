@@ -1,0 +1,15 @@
+{
+  "utc": "2026-10-04T03:11:16.622067+00:00",
+  "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+  "status": "running",
+  "pid": 1612104,
+  "verified_alive": true,
+  "process_start_ticks": "4999687432",
+  "exit_status": null,
+  "global_step": 24,
+  "target_global_step": 100,
+  "last10_mean_correctness": 0.180859375,
+  "entropy": 0.3990970551967621,
+  "grad_norm": 0.03003060631453991,
+  "response_tokens": 1272.86328125
+}

@@ -2785,3 +2785,15 @@ records the raw evaluation hashes and scope; it does not claim completed-run
 protocol success. The launcher and both monitors remain live. Continue the
 unchanged 100-step trial and inspect the actual transition at 40-49, its
 following learning window, and final held-out results.
+
+
+The first [hourly health observation](../data/gradual-refresh-hour24-health.json)
+at 03:11:16 UTC verified the same live launcher identity and 24/100 completed
+updates, with no exit status. Correctness over updates 15-24 averaged 18.086%.
+The latest recorded entropy was 0.399097, gradient norm 0.030031 and mean
+response length 1273 tokens. This overlaps the earlier twenty-update average
+and uses different batches; it is descriptive evidence of continued ordinary
+LoRA learning, not an independent estimate of a learning slope or a merge
+effect. Both detached monitors were verified live. The book snapshot and
+curves were refreshed by the hourly watcher; no restart or recipe change
+was made. The first intervention remains after update 40.

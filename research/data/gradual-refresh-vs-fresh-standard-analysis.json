@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 21
+    "candidate": 24
   },
   "config_differences": {
     "trainer.ckpt_path": {
@@ -81,44 +81,44 @@
       }
     },
     "21-40": {
-      "updates": 1,
+      "updates": 4,
       "complete": false,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.21484375,
-          "candidate": 0.21875,
-          "candidate_minus_control": 0.00390625,
-          "updates": 1
+          "control": 0.171875,
+          "candidate": 0.1962890625,
+          "candidate_minus_control": 0.0244140625,
+          "updates": 4
         },
         "policy/policy_entropy": {
-          "control": 0.40515056252479553,
-          "candidate": 0.3862016499042511,
-          "candidate_minus_control": -0.018948912620544434,
-          "updates": 1
+          "control": 0.38932226598262787,
+          "candidate": 0.3768313080072403,
+          "candidate_minus_control": -0.012490957975387573,
+          "updates": 4
         },
         "policy/grad_norm": {
-          "control": 0.05141058564186096,
-          "candidate": 0.05448880046606064,
-          "candidate_minus_control": 0.0030782148241996765,
-          "updates": 1
+          "control": 0.04523629695177078,
+          "candidate": 0.04342878656461835,
+          "candidate_minus_control": -0.0018075103871524334,
+          "updates": 4
         },
         "generate/avg_num_tokens": {
-          "control": 1131.8046875,
-          "candidate": 1150.6484375,
-          "candidate_minus_control": 18.84375,
-          "updates": 1
+          "control": 1103.158203125,
+          "candidate": 1174.3232421875,
+          "candidate_minus_control": 71.1650390625,
+          "updates": 4
         },
         "updates/effective_delta_l2": {
-          "control": 0.08263176640315377,
-          "candidate": 0.08732122756444952,
-          "candidate_minus_control": 0.0046894611612957465,
-          "updates": 1
+          "control": 0.08006534165908652,
+          "candidate": 0.08423320946156844,
+          "candidate_minus_control": 0.00416786780248192,
+          "updates": 4
         },
         "updates/cosine_with_previous_delta": {
-          "control": 0.9068725011448701,
-          "candidate": 0.8814347653504055,
-          "candidate_minus_control": -0.02543773579446451,
-          "updates": 1
+          "control": 0.9252609494175499,
+          "candidate": 0.920678384179986,
+          "candidate_minus_control": -0.00458256523756384,
+          "updates": 4
         }
       }
     },
