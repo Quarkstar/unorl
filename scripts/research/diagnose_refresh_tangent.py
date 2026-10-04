@@ -68,6 +68,18 @@ def main():
         current_a = new_a
     expected = math.cos(math.radians(20)) * a + math.sin(math.radians(20)) * q
     torch.testing.assert_close(current_a, expected, atol=1e-12, rtol=0)
+    # Two dense-gradient histories can be invisible to both old adapter factors
+    # yet differ in the new B gradient. Therefore old Adam states alone cannot
+    # determine exact state transport into the rotated adapter coordinates.
+    hidden_gradient = db @ q
+    old_a_gradient = b.T @ hidden_gradient
+    old_b_gradient = hidden_gradient @ a.T
+    torch.testing.assert_close(old_a_gradient, torch.zeros_like(a), atol=1e-12, rtol=0)
+    torch.testing.assert_close(old_b_gradient, torch.zeros_like(b), atol=1e-12, rtol=0)
+    new_b_gradient = hidden_gradient @ expected.T
+    torch.testing.assert_close(
+        new_b_gradient, math.sin(math.radians(20)) * db, atol=1e-12, rtol=0
+    )
     report = {
         "scope": "Synthetic 11x13 rank-one float64 CPU example; scale absorbed in target update.",
         "seed": 42,
@@ -81,6 +93,19 @@ def main():
                 (current_a - expected).norm()
             ),
             "scope": "Checks fixed-plane composition and local compensation; not optimizer adaptation.",
+        },
+        "missing_history_counterexample": {
+            "old_A_gradient_norm": float(old_a_gradient.norm()),
+            "old_B_gradient_norm": float(old_b_gradient.norm()),
+            "new_B_gradient_norm": float(new_b_gradient.norm()),
+            "rotation_degrees": 20,
+            "conclusion": (
+                "Zero dense-gradient history and repeated hidden_gradient history have identical "
+                "old adapter Adam states, but different first and second moments when their dense "
+                "gradients are projected onto the rotated A. Exact counterfactual transport cannot "
+                "be inferred solely from old adapter states. Small rotations reduce local change "
+                "but do not remove this missing-information problem."
+            ),
         },
         "limitations": (
             "First-order parameter update geometry, not an Adam transport theorem or model performance "

@@ -39,5 +39,12 @@
     "final_row_difference_from_one_20_degree_rotation": 3.945151744817069e-16,
     "scope": "Checks fixed-plane composition and local compensation; not optimizer adaptation."
   },
+  "missing_history_counterexample": {
+    "old_A_gradient_norm": 2.331833574723161e-17,
+    "old_B_gradient_norm": 1.196750613731326e-16,
+    "new_B_gradient_norm": 0.3420201433256686,
+    "rotation_degrees": 20,
+    "conclusion": "Zero dense-gradient history and repeated hidden_gradient history have identical old adapter Adam states, but different first and second moments when their dense gradients are projected onto the rotated A. Exact counterfactual transport cannot be inferred solely from old adapter states. Small rotations reduce local change but do not remove this missing-information problem."
+  },
   "limitations": "First-order parameter update geometry, not an Adam transport theorem or model performance measurement. Finite factor updates include the additional db @ da term. Compensating W preserves the function but does not preserve the adapter tangent space."
 }

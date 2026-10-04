@@ -2060,3 +2060,34 @@ evaluation remains step 60 (12.9167% avg@8, 26.6667% pass@8); no step-80
 score is available. The 61–80 training window remains incomplete and is
 reported with actual observation counts in the comparison artifact. No
 training restart, recipe change, or new refresh trial has been performed.
+
+
+## 39. Exact Adam-history transport is underdetermined
+
+A float64 CPU counterexample now complements the update-space projection
+analysis in `../../scripts/research/diagnose_refresh_tangent.py`. Choose a
+unit column `c` orthogonal to B and a unit row `q` orthogonal to A. The
+hypothetical dense gradient `G = c @ q` gives zero old adapter gradients:
+`B.T @ G = 0` and `G @ A.T = 0`. After rotating A toward q by 20 degrees,
+`G @ A_new.T = sin(20 degrees) * c`, which is nonzero. The executable example
+verified old gradient norms below 1.2e-16 and new B-gradient norm 0.342020.
+
+Thus a zero dense-gradient history and this hidden-gradient history yield
+identical old adapter first/second moments in exact arithmetic, but different
+counterfactual moments in the new coordinates. Old adapter optimizer states
+alone cannot reconstruct exact historical moments for a newly exposed
+direction. This concerns replaying past dense gradients into new coordinates;
+it does not claim that optimizer continuity requires that particular replay
+rule. Keeping native Adam states is still a well-defined heuristic, and smaller
+rotations may permit adaptation. They do not make the missing history known.
+The synthetic check is not an experiment on model accuracy. Ruff passed and
+all geometry assertions passed. The current training run was not modified.
+
+Monitoring cadence was clarified by the user: status checks occur hourly and
+at completed evaluation checkpoints (every 20 steps), rather than after each
+update. The existing hourly watcher and ten-second VRAM recorder remain in
+place. The fresh standard control is an additional implementation check using
+the refresh worker with refresh disabled; the historical standard-LoRA run
+remains a valid reference. Independently diverged runs do not isolate the
+causal effect of refresh, and further baseline reruns are not automatically
+required for each algorithm variant.
