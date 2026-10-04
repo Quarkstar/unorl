@@ -4802,3 +4802,97 @@ It cannot invent moments for an unobserved live-boundary direction. A future
 design must explicitly handle that case and verify meaningful rank growth,
 rather than silently equating skipped switches with successful ReLoRA.
 The live experiment remains unchanged and continues toward step 100.
+
+## 76. A one-sided candidate derived from gradient dependence
+
+This is an alternative design for consideration after the current endpoint,
+not an implemented replacement or a new experiment. It addresses the fact
+that arbitrary rotation cannot preserve diagonal Adam history, without
+pretending that an exact coordinate symmetry supplies new rank.
+
+For a linear adapter with zero LoRA dropout and zero weight decay, changing
+only A and compensating the frozen base gives:
+
+```python
+W_new = W + scale * B @ (A_old - A_new)
+B_new = B
+gA_old = scale * B.T @ G
+gA_new = scale * B.T @ G  # identical for the same effective-weight gradient
+gB_old = scale * G @ A_old.T
+gB_new = scale * G @ A_new.T
+```
+
+The immediate raw gradient for A does not depend on A itself. Keeping B
+therefore permits retaining **A's full native m/v history and counter**;
+there is no coordinate rotation to apply to those state tensors. B's
+gradient does change, so merely retaining B's old state remains unjustified.
+The proposed transfer would change only B's moments using observed candidate
+A projections, preserving the existing native Adam optimizer and parameters.
+
+This raw-gradient identity is not unconditional equality of the next native
+Adam update: changing B's gradient can change the common global clipping
+multiplier. Equality for A's next state additionally requires equal clipping
+scales, for example when neither branch clips. Future effective-weight
+gradients also diverge after different updates. Regularization, nonzero
+LoRA dropout, base rounding, and simultaneous-factor second-order terms
+must be handled explicitly rather than hidden in an exact-continuity claim.
+
+### Observable state for the changed factor
+
+With fixed input candidate basis `Q` and selected `A_new = c.T @ Q.T`,
+collect the two columns `G_t @ Q` using the actual training clipping scales.
+Then B's first and second moments for that observed window can be mapped:
+
+```python
+mB_new = scale * (M @ c)
+vB_new = scale**2 * (
+    c[0]**2 * V00 + 2*c[0]*c[1]*V01 + c[1]**2 * V11
+)
+# B's counter = observed window length; A's counter/history remain native.
+```
+
+`M, V00, V01, V11` use consistent exponential weighting. Cross moments
+remain essential. These statistics are exact for the observed fixed-coordinate
+window in exact arithmetic, not for a counterfactual trajectory with its own
+clipping or the entire old history. This candidate still loses B's history
+outside the preparation window. It reduces the scope of that discontinuity;
+it does not remove it.
+
+Unlike the current two-sided transfer, no candidate output basis needs to
+represent the live B at the boundary. Its observed drift can therefore no
+longer make a replacement B infeasible. The input candidate basis can still
+miss the live A direction. A no-switch fallback may preserve native state
+but must be logged as a skipped switch, not credited as rank growth.
+
+### Why this can still increase learned rank
+
+At the first transfer, the accumulated update before compensation is rank
+one with column direction B and row direction A_old. Let `Pcol, Prow`
+project onto those actual accumulated directions. The new first-order descent
+has normal component:
+
+```python
+normal_descent = scale * ((I - Pcol) @ dB_new) @ (A_new @ (I - Prow))
+normal_energy = scale**2 * (
+    ((I - Pcol) @ dB_new).square().sum()
+    * (A_new @ (I - Prow)).square().sum()
+)
+```
+
+Thus rotating only A is sufficient for first-order rank-increasing descent
+**if B's subsequent Adam direction also has a component outside the old
+column space**. Keeping B fixed at the instant of compensation is different
+from freezing B during learning. If either factor in this expression is zero,
+the transfer offers no such rank signal. At later cycles, use the normal
+projector of the actual accumulated matrix on the full expression
+`scale * (B @ dA + dB_new @ A_new)`; do not assume that the active factors
+belong to its row/column spaces after correction cancellations.
+
+The candidate should therefore select observed new-direction descent subject
+to both geometric feasibility and actual mapped-update continuity. The
+stage-60 angle scan provides necessary limits, not a safe threshold. Native
+clipping/state tests and matched 100-update accuracy plus saved-weight spectra
+are required before claiming this helps. In particular, a stable run with
+negligible additional learned rank would fail the user's ReLoRA objective.
+The current two-sided experiment should finish unchanged before deciding
+whether this alternative or a constrained two-sided selector is justified.
