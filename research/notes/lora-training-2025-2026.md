@@ -3002,3 +3002,74 @@ before retaining this record. Continue the unchanged 100-step trial; evaluate
 the second cycle at 80-89 and the final held-out result at 100. Reuse the
 existing standards rather than launch another control. The goal remains
 matching or improving standard rank-1 LoRA, not merely surviving a refresh.
+
+
+## 58. Is gradual refresh actually gaining rank?
+
+The user's objection is valid: continuity and a standard-LoRA-like reward
+curve are not sufficient evidence of ReLoRA's intended rank advantage. A
+sum of rank-one terms can remain effectively rank one. In particular,
+`B @ A1 + B @ A2 == B @ (A1 + A2)` when the output column B is shared.
+Merely rotating input rows A does not fix this.
+
+The [saved-factor diagnostic](../data/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01-factor-span-step60.json)
+separates input and output alignment across the actual two compressed
+correction pairs and active adapter at step 60. It reconstructs a small QR
+core rather than a dense layer-weight update. Means across 252 layers are:
+
+| Diagnostic | Value |
+| --- | ---: |
+| Accumulated stable rank | 1.006414 |
+| Accumulated energy outside current active B direction | 0.6444% |
+| Accumulated energy outside current active A direction | 8.9896% |
+| Stable rank of normalized output columns | 1.014745 |
+| Stable rank of normalized input rows | 1.500054 |
+| Sum of component norms / norm of accumulated update | 1.356649 |
+
+Input rows are more diverse than output columns. Moreover, input diversity
+alone overstates useful accumulated rank: the actual update remains almost
+rank one. Normalized direction ranks discard magnitudes; the two compressed
+history columns are a representation of the correction, not individual
+trained adapters. Accordingly these measurements diagnose the current
+factorization, not a causal history of each original increment.
+
+The global update L2 reconstructed in double precision is 2.850624072,
+consistent with the earlier float32 spectrum reconstruction 2.850624148.
+Both exclude FP32 base-rounding residuals. Two independent dense-oracle test
+cases validate accumulated rank and residual projections, including the
+case of different input rows with identical output columns: output residual
+energy is zero and the accumulated stable rank remains one.
+
+### Requirements for the next method
+
+A useful next design must preserve forward continuity while allowing the
+output column to acquire genuinely new components. Algebraically, a joint
+refresh can preserve the effective weight using:
+
+```python
+W += scale * (B_old @ A_old - B_new @ A_new)
+```
+
+This identity only guarantees instantaneous real-arithmetic continuity.
+It does not guarantee rank growth or preserve Adam history. Randomly forcing
+orthogonal B is therefore not yet a justified recipe: it can replace useful
+local gradient directions with arbitrary ones.
+
+Changing A changes the projected gradient for B (`G @ A.T`); changing B
+changes the projected gradient for A (`B.T @ G`). Native adapter optimizer
+states contain only those old projections, not the missing full-gradient
+history. Thus retaining B solves part of the continuity problem but may
+inhibit output diversity; rotating B introduces a second missing-history
+problem. Cosine scaling remains a heuristic rather than exact transport.
+
+Before another trial, require an explicit source of useful output directions,
+an account of which historical projected moments can actually be reconstructed,
+and native distributed validation. Measure both accumulated singular-value
+energy and the physical update left outside the refreshed trainable space.
+The previously analyzed fixed-plane directional-statistics approach addresses
+missing projected history under its stated assumptions, but its production
+integration and extra memory are unverified; it is not an implemented cure.
+Keep the running 100-step trial unchanged. At completion, assess accuracy,
+learning through the second transition, output diversity and memory together.
+A good score with effectively rank-one accumulation is a continuity result,
+not proof of a useful ReLoRA rank advantage.
