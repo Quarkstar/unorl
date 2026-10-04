@@ -77,9 +77,7 @@ def main():
     torch.testing.assert_close(old_a_gradient, torch.zeros_like(a), atol=1e-12, rtol=0)
     torch.testing.assert_close(old_b_gradient, torch.zeros_like(b), atol=1e-12, rtol=0)
     new_b_gradient = hidden_gradient @ expected.T
-    torch.testing.assert_close(
-        new_b_gradient, math.sin(math.radians(20)) * db, atol=1e-12, rtol=0
-    )
+    torch.testing.assert_close(new_b_gradient, math.sin(math.radians(20)) * db, atol=1e-12, rtol=0)
     report = {
         "scope": "Synthetic 11x13 rank-one float64 CPU example; scale absorbed in target update.",
         "seed": 42,
