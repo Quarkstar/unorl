@@ -1464,6 +1464,7 @@ comparison rule after observing step 100. The final assessment still requires
 successful process exit, complete eight-response evaluation groups, the full
 81–100 training window, accumulated rank and measured training memory.
 
+(final-result-gradual-refresh-preserves-learning-but-does-not-establish-parity)=
 ## 28. Final result: gradual refresh preserves learning, but does not establish parity
 
 The 100-update trial finished with exit status **0** at approximately 20:28 UTC
@@ -4626,3 +4627,26 @@ its permitted continuity budget, then evaluate the actual mapped Adam
 direction for feasible candidates. Whether that intervention is needed for
 performance still depends on the matched post-transfer evaluation and rank
 measurements of the unchanged running experiment.
+
+The mismatch is broad across projection types, rather than an isolated
+adapter. Each row aggregates 36 adapters by summing squared update and
+residual norms before taking their ratio:
+
+| Projection | Share of old update energy | Minimum relative tangent error |
+| --- | ---: | ---: |
+| q_proj | 12.38% | 92.34% |
+| k_proj | 3.15% | 88.81% |
+| v_proj | 3.73% | 87.13% |
+| o_proj | 10.15% | 87.44% |
+| gate_proj | 29.50% | 91.08% |
+| up_proj | 30.65% | 86.58% |
+| down_proj | 10.44% | 85.87% |
+
+The three MLP projections account for approximately 70.59% of update energy,
+but attention projections also have large relative residuals. Selecting only
+one projection type to protect would therefore not address the general
+geometric discontinuity. Per-adapter feasibility checks are a reasonable
+next design component, with a global energy-weighted continuity check to
+prevent numerous individually small changes from accumulating. This remains
+a design implication of the recorded update geometry, not proof that every
+direction change is harmful or that these thresholds improve RL accuracy.

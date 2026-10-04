@@ -152,8 +152,23 @@ def main():
         }
         total_energy = sum(row["update_energy"] for row in tangent_rows.values())
         residual_energy = sum(row["minimum_tangent_error_energy"] for row in tangent_rows.values())
+        groups = {}
+        for name, row in tangent_rows.items():
+            group = groups.setdefault(
+                name.rsplit(".", 1)[-1],
+                {"layers": 0, "update_energy": 0.0, "minimum_tangent_error_energy": 0.0},
+            )
+            group["layers"] += 1
+            group["update_energy"] += row["update_energy"]
+            group["minimum_tangent_error_energy"] += row["minimum_tangent_error_energy"]
+        for group in groups.values():
+            group["minimum_relative_tangent_error"] = (
+                group["minimum_tangent_error_energy"] / group["update_energy"]
+            ) ** 0.5
+            group["update_energy_share"] = group["update_energy"] / total_energy
         report["last_optimizer_delta_tangent_bound"] = {
             "layers": tangent_rows,
+            "projection_groups": groups,
             "recorded_delta_l2": total_energy**0.5,
             "minimum_tangent_error_l2": residual_energy**0.5,
             "minimum_relative_tangent_error": (residual_energy / total_energy) ** 0.5,

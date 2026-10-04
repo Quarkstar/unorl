@@ -3297,6 +3297,57 @@
         "minimum_tangent_error_energy": 4.137958094274205e-06
       }
     },
+    "projection_groups": {
+      "down_proj": {
+        "layers": 36,
+        "update_energy": 0.0005522747634470619,
+        "minimum_tangent_error_energy": 0.0004071939332798923,
+        "minimum_relative_tangent_error": 0.8586635948130706,
+        "update_energy_share": 0.10439054215315284
+      },
+      "gate_proj": {
+        "layers": 36,
+        "update_energy": 0.001560525416904905,
+        "minimum_tangent_error_energy": 0.0012944539350226232,
+        "minimum_relative_tangent_error": 0.9107682381104073,
+        "update_energy_share": 0.29496928901422276
+      },
+      "up_proj": {
+        "layers": 36,
+        "update_energy": 0.0016215167769264038,
+        "minimum_tangent_error_energy": 0.0012153799388249771,
+        "minimum_relative_tangent_error": 0.8657555983480432,
+        "update_energy_share": 0.3064978279964547
+      },
+      "k_proj": {
+        "layers": 36,
+        "update_energy": 0.00016655627803631684,
+        "minimum_tangent_error_energy": 0.00013135849364225263,
+        "minimum_relative_tangent_error": 0.888072815293054,
+        "update_energy_share": 0.03148233689821497
+      },
+      "o_proj": {
+        "layers": 36,
+        "update_energy": 0.0005369617306475514,
+        "minimum_tangent_error_energy": 0.0004105381316351643,
+        "minimum_relative_tangent_error": 0.874389801339369,
+        "update_energy_share": 0.10149608471683522
+      },
+      "q_proj": {
+        "layers": 36,
+        "update_energy": 0.0006550610750565622,
+        "minimum_tangent_error_energy": 0.0005585542172041137,
+        "minimum_relative_tangent_error": 0.923404041005248,
+        "update_energy_share": 0.12381913006810137
+      },
+      "v_proj": {
+        "layers": 36,
+        "update_energy": 0.00019757139076071568,
+        "minimum_tangent_error_energy": 0.00014999835872954532,
+        "minimum_relative_tangent_error": 0.8713271067786215,
+        "update_energy_share": 0.037344789153018185
+      }
+    },
     "recorded_delta_l2": 0.07273559948044367,
     "minimum_tangent_error_l2": 0.06455599901123496,
     "minimum_relative_tangent_error": 0.8875433690292476,

@@ -159,7 +159,7 @@ The [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-
 Historical and fresh standard rank-one LoRA, one-shot refresh, and the ten-increment trial; absent endpoints remain absent.
 ```
 
-## Compensated gradual refresh: completed 100-step trial
+## One-shot warm-B refresh: completed 100-step trial
 
 The [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The trial from base completed all 100 updates with refreshes at 40/80. Final AIME25 avg@8 / pass@8 was **17.08% / 36.67%**, versus historical standard LoRA's **20.00% / 43.33%**. Final-window training correctness was higher (**38.63% versus 37.48%**), but additional effective rank was modest. Performance parity remains unproven; see the [final analysis](notes/lora-training-2025-2026.md#final-result-gradual-refresh-preserves-learning-but-does-not-establish-parity).
 
