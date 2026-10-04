@@ -2185,3 +2185,37 @@ performance comparison must report this difference instead of attributing all
 changes to smoother optimizer adaptation. The existing standard-LoRA baseline
 remains the primary reference; another control run is not a prerequisite for
 each new method.
+
+
+## 43. Model-side fixed-plane increments and Adam continuation
+
+`../../unorl/gradual_refresh.py` now implements `apply_plane_refresh` as an
+isolated model-side operation. It accepts caller-owned saved planes, checks
+that their names match all active adapters, and applies each compensated
+rotation through the existing full-tensor and parameter-copy helpers. The
+running worker does not import this module. The caller still must implement
+the transition schedule, checkpoint client state, correction-history ownership,
+and base-plus-adapter rollout synchronization.
+
+After learning introduces an off-plane component in A, its actual angle change
+can be smaller than the scheduled plane angle. The operation therefore uses
+`dot(A_old, A_new) / (norm(A_old) * norm(A_new))`, clamped to [-1, 1], for B's
+first-moment multiplier. A's moments, both second moments, B itself, Parameter
+identities, and bias-correction counters remain unchanged. A zero-degree
+increment explicitly uses multiplier one to avoid altering moments through
+normalization roundoff. This remains a heuristic: actual-angle projection
+does not recover the missing historical gradients identified in Section 39.
+
+Three model-side CPU tests and the four rotation tests passed together in
+5.77 seconds; Ruff passed. The model-side checks use a tiny PEFT Qwen3 model
+and verify effective-weight/logit continuity, unchanged B and selected Adam
+state, the exact implemented first-moment multiplier, and zero-increment
+identity. A serialized checkpoint after three optimizer-plus-rotation updates
+replays the remaining seven updates exactly, including every model tensor,
+Adam state tensor, saved plane, and compressed correction history. A missing
+layer mapping is rejected before parameter changes.
+
+These tests cover unsharded CPU state mechanics, not FSDP checkpoint loading,
+rollout-engine synchronization, training peak memory, or RL accuracy. The
+next integration gate remains a distributed resume inside the transition with
+the saved schedule and plane state restored. No new training trial was launched.
