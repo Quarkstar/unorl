@@ -1,0 +1,45 @@
+{
+  "scope": "Synthetic float64 CPU proof with varying A and fixed historical dense gradients; not an RL experiment or production gradient collector.",
+  "seed": 42,
+  "betas": [
+    0.9,
+    0.999
+  ],
+  "updates": 40,
+  "boundaries": [
+    {
+      "step": 20,
+      "plane_angle_degrees": 20,
+      "actual_row_cosine": 0.9402036762424468,
+      "exact_first_max_abs_error": 1.2434497875801753e-14,
+      "exact_second_max_abs_error": 1.1368683772161603e-13,
+      "cosine_only_first_relative_error": 0.2111752982731203,
+      "retained_variance_relative_error": 0.1723061685400958,
+      "gradient_history_entries": 20
+    },
+    {
+      "step": 40,
+      "plane_angle_degrees": 20,
+      "actual_row_cosine": 0.942016930321003,
+      "exact_first_max_abs_error": 1.0658141036401503e-14,
+      "exact_second_max_abs_error": 2.8421709430404007e-13,
+      "cosine_only_first_relative_error": 0.4367511839170509,
+      "retained_variance_relative_error": 0.09968950423374408,
+      "gradient_history_entries": 40
+    }
+  ],
+  "worst_first_max_abs_error": 2.1316282072803006e-14,
+  "worst_second_max_abs_error": 3.410605131648481e-13,
+  "stored_output_vectors": {
+    "first_moments": 3,
+    "full_cross_moments": 9,
+    "symmetric_cross_moments_possible": 6
+  },
+  "requirements": [
+    "Select a fixed plane before collecting the optimizer history, then retain it across rotations.",
+    "Record two extra projected dense gradients per adapter layer, without forming a dense weight gradient in production.",
+    "Apply the same loss scaling, accumulation, distributed reduction, and gradient-clipping factor to all components.",
+    "Preserve Adam counters; transport does not add an optimizer update."
+  ],
+  "limitations": "Exactness concerns counterfactual projected-gradient EMAs with historical dense gradients and their scaling held fixed. It does not recreate alternative rollouts, dense gradients, or the global clipping factor of a counterfactual training run. A newly chosen plane cannot recover unrecorded earlier directions. Gradient collection, FSDP integration, activation costs, peak memory and performance are untested. The prepared ten-increment trial is unchanged."
+}

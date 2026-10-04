@@ -2377,3 +2377,98 @@ measure learning after the second rotation at update 80; that requires the
 remaining updates. The 100-step final comparison is still pending. The next
 method keeps the matched recipe and tests adaptation between increments,
 rather than extending the budget or claiming that this control proves parity.
+
+
+## 48. A possible follow-up: record fixed-plane gradient moments
+
+Section 39 proves that the old LoRA Adam states alone cannot determine the
+history in an unobserved input direction. A possible follow-up is to record
+the missing directional information ahead of time. This is a theoretical
+design, not a change to the prepared ten-increment experiment, and no claim of
+novelty or improved RL performance is made.
+
+Select two orthonormal input rows `e1, e2` at initialization and keep this plane
+fixed across boundaries. Let `G` denote a layer's historical dense gradient,
+including the adapter scaling and the applied loss/gradient scaling. Split
+the B gradient into three output vectors:
+
+```python
+c1 = (A * e1).sum()
+c2 = (A * e2).sum()
+A_off = A - c1 * e1 - c2 * e2
+g1 = G @ e1.T
+g2 = G @ e2.T
+h0 = G @ A_off.T
+hp = c1 * g1 + c2 * g2
+hq = c1 * g2 - c2 * g1
+gB = h0 + hp
+```
+
+The dense `G` is an oracle in the CPU proof, not a proposed production tensor.
+In principle, `g1` and `g2` can be accumulated from upstream output gradients
+and the two projected forward inputs, without forming a dense weight gradient.
+Then `h0` can also be obtained as `gB - hp`. That collector is unimplemented;
+its precision, checkpoint recomputation, distributed reduction, activation
+storage, and peak-memory costs require measurement.
+Cross moments must be formed after gradient accumulation and distributed
+reduction: averaging squared local vectors would not reproduce the square of
+the global gradient. Probe vectors must also remain outside the optimizer's
+parameter groups and global clipping norm; the actual clipping factor is
+applied to them afterward.
+
+Rotating A in this fixed plane rotates the last two gradient components:
+
+```python
+T = torch.tensor([
+    [1, 0, 0],
+    [0, cos_delta, sin_delta],
+    [0, -sin_delta, cos_delta],
+])
+m = T @ m
+C = torch.einsum("ij,jko,lk->ilo", T, C, T)
+mB = m[0] + m[1]
+vB = C[0, 0] + C[1, 1] + 2 * C[0, 1]
+```
+
+Here `m` contains the three beta1 exponential first moments. `C` contains
+beta2 exponential raw cross moments of the three components, separately for
+each output coordinate. These are raw second moments, not centered covariance.
+Cross terms are necessary because Adam's second moment is the squared sum of
+gradient components. Simply rotating two stored diagonal variances would lose
+that information. Counters are unchanged by the transport.
+
+The executable CPU proof in
+`../../scripts/research/diagnose_refresh_moments.py` uses varying A, 40
+synthetic dense-gradient observations, beta1 0.9, beta2 0.999, and two
+20-degree boundaries. It compares transported statistics with a direct replay
+of all historical projected B gradients after applying the same rotation to
+their historical A rows. Across all updates, maximum absolute first/second
+moment errors were 2.13e-14 / 3.41e-13. The simpler cosine-only first-moment
+rule had relative errors 21.1% and 43.7% at the two toy boundaries; retaining
+the old second moment gave 17.2% and 10.0% errors. These synthetic errors are
+not measurements of the running RL model. All assertions and Ruff passed;
+the [proof artifact](../data/refresh-moment-transport-analysis.json) records
+the conditions and results.
+
+Exactness is narrowly defined: historical dense gradients and their scaling
+are held fixed, while historical A rows are counterfactually rotated in the
+chosen plane. This does not reproduce alternative rollouts, alternative dense
+gradients, or the global clipping factor of a different training trajectory.
+It establishes an algebraic way to transfer that particular gradient history,
+not that the resulting optimizer is optimal or will learn faster. The stored
+plane must be chosen before collecting the history. Creating a new plane at
+step 40 cannot recover the unrecorded first 39 steps, so this would require a
+different plane-selection protocol from the current proposal.
+
+The prototype stores three first-moment vectors and a full nine-entry second-
+moment matrix per B output coordinate; symmetry could reduce the latter to six
+vectors. Compared with native B Adam's two moment vectors, that is ten extra
+vectors in the full representation, or seven with symmetric storage. It does
+not require a dense optimizer state. Those counts assume native B moments are
+derived from the component statistics instead of retained as duplicate arrays.
+Keeping native AdamW's two arrays alongside the new statistics would add twelve
+vectors, or nine with symmetric storage; transient derived arrays also affect
+peak memory. It increases resource usage and needs a measured implementation
+before being considered a low-memory method.
+The next planned trial remains gradual compensated rotation with its existing
+approximate moment policy, pending the completed comparison and GPU validation.
