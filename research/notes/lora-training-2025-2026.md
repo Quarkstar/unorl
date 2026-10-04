@@ -4397,3 +4397,156 @@ at update **43**, with last-ten correctness **31.0156%**, entropy
 **0.163384**, gradient norm **0.0363908**, and mean generated length
 **2353.63 tokens**. This is a descriptive on-policy window spanning the
 first transfer, not a final performance or learned-rank conclusion.
+
+## 72. A local Adam symmetry for choosing a smaller compensation
+
+The sign calculation in section 71 has a precise local optimizer
+interpretation. For a linear adapter with zero weight decay, changing the
+sign of A and compensating in the frozen base preserves the effective weight:
+
+```python
+product = scale * B @ A
+W = W + 2 * product
+A = -A
+mB = -mB
+# B, mA, vA, vB and both Adam counters are unchanged.
+```
+
+For the same effective-weight gradient, `gA` stays the same and `gB`
+changes sign. Global gradient clipping has the same norm. Adam's first
+moment for B changes sign; its squared moment, bias correction and epsilon
+denominator are unchanged. This is a known sign-coordinate transformation,
+not recovery of gradients in an unseen direction. After incorporating the
+same fresh gradient into the moments, native Adam descent directions obey:
+
+```python
+dA_flipped = dA
+dB_flipped = -dB
+descent_original = scale * (B @ dA + dB @ A)
+descent_flipped = scale * (B @ dA_flipped + dB_flipped @ (-A))
+# descent_flipped == descent_original
+```
+
+For a prepared switch this lets us choose between the two product signs
+without changing its first-order observed-mean descent score. Among those
+two choices, choosing a nonnegative old/new product inner product minimizes
+the Frobenius norm of `old_product - new_product`. The real switch-40
+calculation finds a possible **13.6338%** reduction in total compensation
+norm. It does not establish a monotonic relation to BF16 forward KL.
+
+This is **not identical finite-step or long-trajectory transport**. With
+both factors trainable, the two charts have opposite second-order cross terms:
+
+```python
+# Same native Adam dA/dB after the fresh gradient and bias correction:
+weight_after_flipped - weight_after_original = (
+    -2 * scale * lr**2 * dB @ dA
+)
+```
+
+`scripts/research/diagnose_adapter_sign_chart.py` validates these statements
+using CPU float64 native AdamW, four seeds, two learning rates (1.5e-5 and
+3e-4), scale 32, betas 0.9/0.999, epsilon 1e-8 and zero decay. Each case
+has 20 observed fixed-coordinate clipped gradients followed by one fresh
+clipped update. Both counters advance to 21. First-order descent error is
+**zero** in all eight cases; maximum compensation-continuity error is
+**2.22e-16** and maximum error in the second-order formula **4.05e-16**.
+At the experiment's LR, actual one-step weight differences in this small
+fixture range from approximately **5.02e-9 to 1.19e-8**.
+
+The source hash and individual results are retained in
+`research/data/adapter-sign-chart-native-validation.json`. These checks do
+not measure full-model BF16 continuity, live inference, useful learned rank
+or RL accuracy. The sign choice itself supplies no new rank directions;
+it is a possible refinement of a refresh that already changes the spans.
+The running trial is unchanged. Its final performance and rank comparison
+still decide whether the main prepared-direction method works.
+
+## 73. A mathematical constraint for continuity with rank growth
+
+The design target is useful descent in effective-weight space, not identical
+numbers in Adam's state tensors. For zero weight decay, let the native Adam
+directions after incorporating a fresh gradient be `dA` and `dB`:
+
+```python
+D_old = scale * (B @ dA + dB @ A)
+W_new = W + scale * (B @ A - B_new @ A_new)
+D_new = scale * (B_new @ dA_new + dB_new @ A_new)
+```
+
+Compensation preserves the current effective weight in exact arithmetic.
+It does not constrain `D_new`. A proposed replacement selection rule would
+maximize descent outside accumulated learned spans, subject to
+`norm(D_new - D_old) <= epsilon * norm(D_old)` and positive alignment with
+an observed gradient. This rule is a proposal, not a change to the running
+prepared experiment. Its current per-side retention threshold does not prove
+this weight-space continuity bound.
+
+### What a continuity bound actually guarantees
+
+For a fixed fresh effective-weight gradient `G`, the Frobenius
+Cauchy–Schwarz inequality gives:
+
+```python
+alignment_new >= alignment_old - norm(G) * norm(D_new - D_old)
+# where alignment_old = (G * D_old).sum()
+# and alignment_new = (G * D_new).sum()
+```
+
+Thus positive old alignment survives if the allowed difference is smaller
+than `alignment_old / norm(G)`. Adam is not guaranteed to have positive
+alignment with every fresh stochastic gradient; this condition must be
+checked, not presumed. For a locally L-smooth fixed loss, a step `-lr * D`
+has the bound `loss_after <= loss_before - lr * alignment +
+0.5 * L * lr**2 * norm(D)**2`. This supplies a local sufficient descent
+condition, not a guarantee for changing on-policy RL reward.
+
+The actual simultaneous factor step also contains
+`scale * lr**2 * dB @ dA`. That cross term, base rounding, and a changed
+rollout distribution are outside a first-order continuity certificate.
+
+### Why exact continuity cannot supply arbitrary new rank
+
+At a nonzero rank-one accumulated update, let `Pcol` and `Prow` project onto
+its column and row spaces. The normal component of a matrix direction is:
+
+```python
+normal(D) = (I - Pcol) @ D @ (I - Prow)
+```
+
+Ordinary rank-one factor descent is tangent to its own rank-one product,
+so its normal component there is zero. For that case, contraction of the
+orthogonal projector gives `norm(normal(D_new)) <= norm(D_new - D_old)`.
+Consequently a tight continuity tolerance also limits immediate new-rank
+descent. At a later cycle, the accumulated update and active product need
+not have the same spans; the general bound instead controls the *difference*
+of their projected directions. Nonzero normal descent is a local rank-growth
+signal, not a guarantee of substantial retained singular values after many
+updates. Actual saved-weight spectra remain necessary.
+
+This exposes a real tradeoff: demand zero update change and new-direction
+energy disappears in the first-cycle tangent case; allow uncontrolled change
+and continuity is lost. A useful method needs a measured continuity budget,
+not just a renamed exact coordinate transformation.
+
+### State transport requires observed cross moments
+
+For candidate-coordinate gradients `g0, g1` and a fixed selected combination:
+
+```python
+g_new = c0 * g0 + c1 * g1
+m_new = c0 * m0 + c1 * m1
+v_new = c0**2 * v0 + c1**2 * v1 + 2*c0*c1*cross01
+```
+
+These identities apply to consistently weighted, clipped histories in those
+fixed coordinates. Ordinary diagonal Adam lacks `cross01` and lacks gradients
+in an unobserved direction. It cannot reconstruct arbitrary new-coordinate
+history from its old state alone. The prepared observer supplies these
+statistics for its observed finite window; it does not recover the entire
+old history or a counterfactual training trajectory. Sign choices from
+section 72 can reduce compensation within a selected chart, but add no rank.
+
+Before another experiment, the current run's post-switch rank spectra,
+update-direction changes, and matched 100-update evaluation should decide
+whether this stronger selection constraint addresses the observed failure.

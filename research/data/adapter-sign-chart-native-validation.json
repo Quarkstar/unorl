@@ -1,0 +1,87 @@
+{
+  "method": "compensated A sign flip with exact signed first-moment mapping",
+  "cases": [
+    {
+      "seed": 17,
+      "lr": 1.5e-05,
+      "continuity_max_abs_error": 2.220446049250313e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 4.044891763134634e-16,
+      "actual_one_step_weight_difference_l2": 1.1914783966999866e-08,
+      "predicted_second_order_difference_l2": 1.1914783805786168e-08,
+      "native_counter_after": 21
+    },
+    {
+      "seed": 17,
+      "lr": 0.0003,
+      "continuity_max_abs_error": 2.220446049250313e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 4.041665353427177e-16,
+      "actual_one_step_weight_difference_l2": 4.765913522403293e-06,
+      "predicted_second_order_difference_l2": 4.765913522314466e-06,
+      "native_counter_after": 21
+    },
+    {
+      "seed": 29,
+      "lr": 1.5e-05,
+      "continuity_max_abs_error": 1.1102230246251565e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 7.434758721684958e-17,
+      "actual_one_step_weight_difference_l2": 5.02018745256838e-09,
+      "predicted_second_order_difference_l2": 5.020187441642948e-09,
+      "native_counter_after": 21
+    },
+    {
+      "seed": 29,
+      "lr": 0.0003,
+      "continuity_max_abs_error": 1.1102230246251565e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 2.0710244080965302e-16,
+      "actual_one_step_weight_difference_l2": 2.0080749766644446e-06,
+      "predicted_second_order_difference_l2": 2.0080749766571787e-06,
+      "native_counter_after": 21
+    },
+    {
+      "seed": 43,
+      "lr": 1.5e-05,
+      "continuity_max_abs_error": 1.1102230246251565e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 1.2037390405921564e-16,
+      "actual_one_step_weight_difference_l2": 8.594652448865703e-09,
+      "predicted_second_order_difference_l2": 8.594652459526723e-09,
+      "native_counter_after": 21
+    },
+    {
+      "seed": 43,
+      "lr": 0.0003,
+      "continuity_max_abs_error": 1.1102230246251565e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 1.8792691190301614e-16,
+      "actual_one_step_weight_difference_l2": 3.4378609838376815e-06,
+      "predicted_second_order_difference_l2": 3.4378609838106882e-06,
+      "native_counter_after": 21
+    },
+    {
+      "seed": 71,
+      "lr": 1.5e-05,
+      "continuity_max_abs_error": 2.220446049250313e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 3.743488853656572e-16,
+      "actual_one_step_weight_difference_l2": 5.303432442219644e-09,
+      "predicted_second_order_difference_l2": 5.303432450324854e-09,
+      "native_counter_after": 21
+    },
+    {
+      "seed": 71,
+      "lr": 0.0003,
+      "continuity_max_abs_error": 2.220446049250313e-16,
+      "first_order_descent_max_abs_error": 0.0,
+      "second_order_formula_max_abs_error": 3.4710436090591885e-16,
+      "actual_one_step_weight_difference_l2": 2.1213729801286693e-06,
+      "predicted_second_order_difference_l2": 2.121372980129941e-06,
+      "native_counter_after": 21
+    }
+  ],
+  "source_sha256": "532ba5dc4037bc2f8d77385b20f655a74a73e9e01bf17f933a055a4226e23c64",
+  "scope": "CPU float64 native AdamW with zero decay, 20 observed fixed-coordinate clipped gradients and one fresh clipped update. Demonstrates first-order descent invariance and the nonzero second-order difference. Not full-model BF16 continuity, identical long trajectories, rank growth or RL performance. No live experiment weights, optimizer states or settings were changed."
+}
