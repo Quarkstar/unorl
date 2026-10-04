@@ -2,6 +2,7 @@
 
 import argparse
 import faulthandler
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -23,6 +24,11 @@ from unorl.relora_worker import ReLoRAStrategy
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--gradual",
+        action="store_true",
+        help="Verify a six-increment transition and resume before its final increment",
+    )
     args = parser.parse_args()
     faulthandler.dump_traceback_later(90, repeat=True)
     torch.cuda.set_device(int(os.environ["LOCAL_RANK"]))
@@ -55,8 +61,9 @@ def main():
                 "trainer.policy.optimizer_config.weight_decay=0.0",
             ]
         )
+        interval = 8 if args.gradual else 3
         strategy = ReLoRAStrategy(
-            merge_interval=3,
+            merge_interval=interval,
             restart_warmup_updates=0,
             first_merge_step=4,
             fsdp_config=cfg.trainer.policy.fsdp_config,
@@ -82,7 +89,12 @@ def main():
         )
         wrapped, optimizer, scheduler = strategy.prepare((wrapped, None, None))
         model = wrapped.model
-        worker = RefreshPolicyWorker.__new__(RefreshPolicyWorker)
+        worker_type = RefreshPolicyWorker
+        if args.gradual:
+            from unorl.gradual_refresh_worker import GradualRefreshPolicyWorker
+
+            worker_type = GradualRefreshPolicyWorker
+        worker = worker_type.__new__(worker_type)
         worker.model = wrapped
         worker.strategy = strategy
         worker.get_node_local_rank = lambda: int(os.environ["LOCAL_RANK"])
@@ -94,12 +106,15 @@ def main():
             relora_refresh_angle_degrees=20.0,
             relora_enable_merge=True,
             relora_first_merge_step=4,
-            relora_merge_interval=3,
+            relora_merge_interval=interval,
+            relora_refresh_updates=6,
             relora_restart_warmup_updates=0,
             relora_track_updates=True,
             max_training_steps=9,
         )
         worker._factor_history = {}
+        if args.gradual:
+            worker._clear_transition()
         identities = {n: id(p) for n, p in model.named_parameters()}
         tokens = torch.tensor([[1, 2, 3, 4]], device="cuda")
         norms = []
@@ -114,7 +129,7 @@ def main():
             assert isinstance(optimizer, torch.optim.AdamW)
             assert len(optimizer.state) == 28
             assert scheduler.last_epoch == step
-            if step in (4, 7):
+            if worker._should_merge(step):
                 with torch.no_grad():
                     before = model(tokens).logits.float()
                     before_dist = response_log_distribution(model, tokens[0], 2)
@@ -154,24 +169,57 @@ def main():
         assert applied_lrs == [0.001] * 8, applied_lrs
         assert all(0 < norm < 100 for norm in norms), norms
         assert all(float(s["step"]) == 8 for s in optimizer.state.values())
+        plane_signature = None
+        if args.gradual:
+            assert worker._transition_start == 4 and worker._transition_count == 5
+            digest = hashlib.sha256()
+            for name, plane in sorted(worker._transition_planes.items()):
+                digest.update(name.encode())
+                for row in plane:
+                    digest.update(row.numpy().tobytes())
+            plane_signature = digest.hexdigest()
+            signatures = [None] * dist.get_world_size()
+            dist.all_gather_object(signatures, plane_signature)
+            assert len(set(signatures)) == 1, signatures
+            if dist.get_rank() == 0:
+                assert all(len(history) == 2 for history in worker._factor_history.values())
         checkpoint = str(args.output / "checkpoint")
         worker.save_checkpoint(checkpoint)
         with torch.no_grad():
             before_resume = model(tokens).logits.float()
         worker.load_checkpoint(checkpoint)
+        if args.gradual:
+            assert worker._transition_count == 5 and worker._pending_base_sync
+            worker._math_probe = (tokens[0].cpu(), 2)
         with torch.no_grad():
             torch.testing.assert_close(model(tokens).logits.float(), before_resume, rtol=0, atol=0)
         strategy.backward(model(tokens, labels=tokens).loss, wrapped, optimizer)
         worker.optim_step()
         with torch.no_grad():
             next_update_logits = model(tokens).logits.float().clone()
+            next_update_weights = {name: value.clone() for name, value in effective_weights(model)}
+            next_optimizer_states = [
+                {key: full_tensor(value).clone() for key, value in state.items()}
+                for state in optimizer.state.values()
+            ]
         worker.load_checkpoint(checkpoint)
         strategy.backward(model(tokens, labels=tokens).loss, wrapped, optimizer)
-        strategy.optimizer_step(optimizer, wrapped, scheduler)
+        if args.gradual:
+            worker._math_probe = (tokens[0].cpu(), 2)
+            worker.optim_step()
+            assert worker._transition_count == 0 and not worker._transition_planes
+            assert worker._pending_base_sync
+        else:
+            strategy.optimizer_step(optimizer, wrapped, scheduler)
         with torch.no_grad():
             torch.testing.assert_close(
                 model(tokens).logits.float(), next_update_logits, rtol=0, atol=0
             )
+            for name, value in effective_weights(model):
+                torch.testing.assert_close(value, next_update_weights[name], rtol=0, atol=0)
+            for state, saved_state in zip(optimizer.state.values(), next_optimizer_states):
+                for key, value in state.items():
+                    torch.testing.assert_close(full_tensor(value), saved_state[key], rtol=0, atol=0)
         strategy.save_hf_model(wrapped, str(args.output / "dense-export"))
         effective = {n: v.cpu().clone() for n, v in effective_weights(model)}
         if dist.get_rank() == 0:
@@ -182,8 +230,15 @@ def main():
                 "success": True,
                 "world_size": dist.get_world_size(),
                 "optimizer": type(optimizer).__name__,
-                "updates": 8,
-                "merge_after_updates": [4, 7],
+                "updates": 9,
+                "refresh_variant": "multi-update fixed plane" if args.gradual else "one-shot",
+                "merge_after_updates": list(range(4, 10)) if args.gradual else [4, 7],
+                "checkpoint_after_update": 8,
+                "checkpoint_inside_transition": args.gradual,
+                "fixed_planes_identical_across_ranks": args.gradual,
+                "fixed_plane_sha256": plane_signature,
+                "compressed_correction_history": args.gradual,
+                "rollout_sync_test_scope": "base-weight extraction verified; no inference engine launched",
                 "grad_norms": norms,
                 "probe_logits_max_abs_diff": probe,
                 "merge_metrics": metrics,
@@ -196,6 +251,7 @@ def main():
                 "actual_worker_optimizer_and_weight_step_telemetry_verified": True,
                 "checkpoint_resume_verified": True,
                 "next_update_reproduced_exactly": True,
+                "next_update_full_effective_weights_and_adam_state_reproduced_exactly": True,
                 "actual_refresh_worker_boundary_and_collective_rank_diagnostics_verified": True,
                 "applied_lrs": applied_lrs,
                 "dense_export_includes_prior_merge_and_current_adapter": True,

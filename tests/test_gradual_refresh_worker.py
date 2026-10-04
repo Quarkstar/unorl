@@ -136,8 +136,14 @@ def test_reject_corrupt_transition_state(tmp_path, monkeypatch):
 def test_matched_config_rejects_overlapping_or_truncated_transitions():
     from unorl.gradual_refresh_config import GradualRefreshTrainConfig, validate_gradual_refresh
 
-    path = Path(__file__).resolve().parents[1] / "configs/qwen3-4b-base-grpo-relora-refresh-r1.json"
+    configs = Path(__file__).resolve().parents[1] / "configs"
+    path = configs / "qwen3-4b-base-grpo-gradual-refresh-r1.json"
     profile = json.loads(path.read_text())
+    reference = json.loads((configs / "qwen3-4b-base-grpo-relora-refresh-r1.json").read_text())
+    assert profile["trainer.relora_refresh_updates"] == 10
+    assert {
+        key: value for key, value in profile.items() if key != "trainer.relora_refresh_updates"
+    } == reference
     cfg = GradualRefreshTrainConfig.from_cli_overrides(
         [f"{key}={json.dumps(value)}" for key, value in profile.items()]
     )

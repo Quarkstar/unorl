@@ -77,7 +77,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--mode",
-        choices=["grpo", "reinforce", "ppo", "nora-merge", "relora", "relora-refresh"],
+        choices=[
+            "grpo",
+            "reinforce",
+            "ppo",
+            "nora-merge",
+            "relora",
+            "relora-refresh",
+            "gradual-refresh",
+        ],
         default="reinforce",
     )
     parser.add_argument("--config", help="Profile in configs/; defaults depend on --mode")
@@ -94,6 +102,7 @@ def main():
             "nora-merge": "qwen3-4b-base-grpo-nora-merge-r1.json",
             "relora": "qwen3-4b-base-grpo-relora-r1-warmup5.json",
             "relora-refresh": "qwen3-4b-base-grpo-relora-refresh-r1-continue.json",
+            "gradual-refresh": "qwen3-4b-base-grpo-gradual-refresh-r1.json",
         }[args.mode]
     run_id = args.run_id or f"unorl-{args.mode}-{datetime.now(timezone.utc):%Y%m%d-%H%M%S}"
     if Path(run_id).name != run_id or run_id in {".", ".."}:
@@ -115,6 +124,7 @@ def main():
         "nora-merge": "unorl.nora_merge_train",
         "relora": "unorl.relora_train",
         "relora-refresh": "unorl.relora_refresh_train",
+        "gradual-refresh": "unorl.gradual_refresh_train",
     }[args.mode]
     command = [str(PYTHON), "-m", module] + [f"{k}={json.dumps(v)}" for k, v in cfg.items()]
     if args.dry_run:

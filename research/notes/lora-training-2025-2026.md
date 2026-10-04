@@ -2259,3 +2259,34 @@ agreement. Corrupt counts, starts, schedule, layer mappings, and nonfinite
 planes are rejected. This covers worker state mechanics without claiming that
 native FSDP checkpoint restore or a vLLM broadcast has passed. Distributed
 resume and inference synchronization remain required before a training trial.
+
+
+## 45. Distributed smoke-check plan and launchable matched profile
+
+The existing `../../scripts/check_relora_refresh_fsdp.py` now accepts
+`--gradual`. This selects the separate worker, applies six increments after
+updates 4–9, and saves the native checkpoint after update 8 while the transition
+is still active. It checks that the saved planes have identical hashes on all
+ranks, that rank-zero correction history contains only two factor pairs per
+layer, and that the final increment can be replayed after restoring. Replay
+assertions compare the full effective weights and every Adam state tensor in
+addition to logits. The fixture also checks base-weight extraction and dense
+export; it does not launch an inference engine or establish a measured VRAM
+benefit. The default one-shot fixture remains available.
+
+This distributed check is **prepared, not executed**: the current experiment
+still owns the GPUs. The CLI help/import check and Ruff passed without GPU
+initialization. Passing the eventual native distributed run is a prerequisite
+for launching the proposed training trial.
+
+`../../configs/qwen3-4b-base-grpo-gradual-refresh-r1.json` is a copy of the
+one-shot base-model refresh profile with only
+`trainer.relora_refresh_updates = 10` added. It retains the same 100-step
+budget, base-model start, rank, alpha, native AdamW, constant learning rate,
+eight rollouts, data, sequence lengths, evaluation, and checkpoint settings.
+The launcher now exposes `--mode gradual-refresh`, routed to
+`../../unorl/gradual_refresh_train.py`. A dry run verified the module, absence
+of a resume checkpoint, 100-step budget, eight rollouts, and learning rate.
+The worker configuration test compares the two complete profiles and checks
+that only the increment-count field differs. No training process was launched;
+the final fresh-control analysis and distributed validation are still pending.
