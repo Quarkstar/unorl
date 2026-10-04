@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 41
+    "candidate": 45
   },
   "config_differences": {
     "environment.env_class": {
@@ -127,32 +127,32 @@
       }
     },
     "41-45": {
-      "updates": 1,
-      "complete": false,
+      "updates": 5,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.20703125,
-          "candidate": 0.2109375,
-          "candidate_minus_control": 0.00390625,
-          "updates": 1
+          "control": 0.35,
+          "candidate": 0.3546875,
+          "candidate_minus_control": 0.004687500000000011,
+          "updates": 5
         },
         "policy/policy_entropy": {
-          "control": 0.16937512159347534,
-          "candidate": 0.1566465198993683,
-          "candidate_minus_control": -0.012728601694107056,
-          "updates": 1
+          "control": 0.15969296991825105,
+          "candidate": 0.16293813288211823,
+          "candidate_minus_control": 0.0032451629638671764,
+          "updates": 5
         },
         "policy/grad_norm": {
-          "control": 0.03424862399697304,
-          "candidate": 0.030059870332479477,
-          "candidate_minus_control": -0.004188753664493561,
-          "updates": 1
+          "control": 0.03586864396929741,
+          "candidate": 0.033890103176236155,
+          "candidate_minus_control": -0.0019785407930612564,
+          "updates": 5
         },
         "generate/avg_num_tokens": {
-          "control": 2717.8046875,
-          "candidate": 2960.79296875,
-          "candidate_minus_control": 242.98828125,
-          "updates": 1
+          "control": 2319.8359375,
+          "candidate": 2514.99921875,
+          "candidate_minus_control": 195.16328125000018,
+          "updates": 5
         }
       }
     },
@@ -162,32 +162,32 @@
       "metrics": {}
     },
     "41-50": {
-      "updates": 1,
+      "updates": 5,
       "complete": false,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.20703125,
-          "candidate": 0.2109375,
-          "candidate_minus_control": 0.00390625,
-          "updates": 1
+          "control": 0.35,
+          "candidate": 0.3546875,
+          "candidate_minus_control": 0.004687500000000011,
+          "updates": 5
         },
         "policy/policy_entropy": {
-          "control": 0.16937512159347534,
-          "candidate": 0.1566465198993683,
-          "candidate_minus_control": -0.012728601694107056,
-          "updates": 1
+          "control": 0.15969296991825105,
+          "candidate": 0.16293813288211823,
+          "candidate_minus_control": 0.0032451629638671764,
+          "updates": 5
         },
         "policy/grad_norm": {
-          "control": 0.03424862399697304,
-          "candidate": 0.030059870332479477,
-          "candidate_minus_control": -0.004188753664493561,
-          "updates": 1
+          "control": 0.03586864396929741,
+          "candidate": 0.033890103176236155,
+          "candidate_minus_control": -0.0019785407930612564,
+          "updates": 5
         },
         "generate/avg_num_tokens": {
-          "control": 2717.8046875,
-          "candidate": 2960.79296875,
-          "candidate_minus_control": 242.98828125,
-          "updates": 1
+          "control": 2319.8359375,
+          "candidate": 2514.99921875,
+          "candidate_minus_control": 195.16328125000018,
+          "updates": 5
         }
       }
     },

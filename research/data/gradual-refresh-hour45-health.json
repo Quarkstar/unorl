@@ -1,0 +1,46 @@
+{
+  "health": {
+    "utc": "2026-10-04T04:12:04.492333+00:00",
+    "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+    "status": "running",
+    "pid": 1612104,
+    "verified_alive": true,
+    "process_start_ticks": "4999687432",
+    "exit_status": null,
+    "global_step": 45,
+    "target_global_step": 100,
+    "last10_mean_correctness": 0.324609375,
+    "entropy": 0.1887228935956955,
+    "grad_norm": 0.03362693637609482,
+    "response_tokens": 2586.171875
+  },
+  "refresh_steps": [
+    40,
+    41,
+    42,
+    43,
+    44,
+    45
+  ],
+  "transition_increments_completed": 6,
+  "base_then_adapter_transfers_complete_through_step45": true,
+  "continuity_summary": {
+    "relora/probe_response_kl_mean": {
+      "mean": 0.0004704318895771091,
+      "max": 0.0005688649080184405
+    },
+    "relora/probe_chosen_logprob_mean_abs_diff": {
+      "mean": 0.008206999424146488,
+      "max": 0.00943639490287751
+    },
+    "relora/rounding_relative_l2": {
+      "mean": 0.00042295782582012676,
+      "max": 0.00043524270871655307
+    }
+  },
+  "last_update_l2": 0.06549807555872558,
+  "last_update_cosine": 0.9283835073266112,
+  "last_stable_rank": 1.0001346509107738,
+  "last_outside_first_direction": 0.00013463203014019197,
+  "scope": "Hourly partial transition observation, not a completed learning-window or endpoint comparison. Transfer-call completion does not independently certify inference tensor equality."
+}

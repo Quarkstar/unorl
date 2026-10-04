@@ -2887,3 +2887,24 @@ update-space rationale, not exact Adam history transport, future gradients,
 causal superiority, or the final goal. Keep the trial unchanged and evaluate
 learning after the whole transition, accumulated rank growth, numerical
 continuity and final held-out scores before selecting another method.
+
+
+The next [hourly observation](../data/gradual-refresh-hour45-health.json)
+at 04:12:04 UTC confirms 45/100 updates with the same live launcher identity.
+All six scheduled increments at 40-45 and their awaited base-then-adapter
+transfers are recorded; four increments remain in the first cycle. Latest-ten
+training correctness is 32.461%, latest entropy 0.188723, gradient norm
+0.033627 and response length 2586 tokens. The latest physical update has
+L2 0.065498 and adjacent-update cosine 0.928384. These partial, changing
+on-policy batches are not a completed transition-window comparison or a
+fixed-test learning slope.
+
+Across those six response-prefix probes, mean KL is 0.000470 and maximum
+0.000569; mean chosen-logprob absolute difference is 0.008207, with maximum
+of those per-probe means 0.009436. Mean relative FP32 correction rounding
+error is 0.042296%. No new transfer failure or immediate update collapse
+is recorded. Accumulated stable rank at 45 is only 1.000135, with 0.013463%
+mean energy outside the leading direction; meaningful rank growth remains
+unproven. Continue the unchanged trial, compare complete training windows
+41-50 and 51-60, and use the next scheduled evaluation at 60. The hourly
+watcher has refreshed the curves and portable paired analyses.
