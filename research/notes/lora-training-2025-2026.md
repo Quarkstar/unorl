@@ -2219,3 +2219,43 @@ These tests cover unsharded CPU state mechanics, not FSDP checkpoint loading,
 rollout-engine synchronization, training peak memory, or RL accuracy. The
 next integration gate remains a distributed resume inside the transition with
 the saved schedule and plane state restored. No new training trial was launched.
+
+
+## 44. Isolated worker integration and transition checkpoint validation
+
+`../../unorl/gradual_refresh_worker.py` implements a separate
+`GradualRefreshPolicyWorker`; the running worker is unchanged. With the matched
+profile and ten increments, it captures a real trajectory prefix and refreshes
+after updates 40–49 and 80–89. It retains the existing optimizer-update
+telemetry, continuity probes, rank diagnostics, and inherited base-then-adapter
+synchronization. Completed transitions and increments are reported separately.
+`../../unorl/gradual_refresh_config.py` rejects overlapping schedules and a
+training budget that ends partway through a transition.
+
+Checkpoint client state now includes a version, the exact configured schedule,
+transition start, completed-increment count, fixed per-layer input planes,
+compressed correction columns, and positions in diagnostic factor history.
+Load validation compares the saved count and start against the scheduler step,
+checks layer names, tensor shapes, orthonormality and finite values, and checks
+that compressed columns agree with the saved history. Active transition planes
+are retained on every rank; diagnostic columns and history belong to rank zero.
+SkyRL's pinned `FSDPStrategy.save_checkpoint` writes each rank's client state
+to its own `extra_state_world_size_<world_size>_rank_<rank>.pt`, and its loader
+reads the matching file. This source inspection supports that storage design
+but is not a distributed execution test.
+
+After loading, the new worker explicitly sets `_pending_base_sync = True`.
+This matters when restoring into a live worker that previously synchronized a
+different accumulated base. Merely restoring the adapter would omit the base
+compensation. The existing synchronization routine will consequently send the
+base followed by the adapter on the next broadcast.
+
+Ten targeted CPU tests passed in 11.65 seconds, including the restore
+synchronization assertion; Ruff passed. The worker replay test uses the actual worker's
+save/load methods with a CPU serialization strategy stub and mocked collective
+reductions: save after the third increment, restore, and replay the remaining
+seven increments. It verifies exact model, Adam state, and compressed-history
+agreement. Corrupt counts, starts, schedule, layer mappings, and nonfinite
+planes are rejected. This covers worker state mechanics without claiming that
+native FSDP checkpoint restore or a vLLM broadcast has passed. Distributed
+resume and inference synchronization remain required before a training trial.
