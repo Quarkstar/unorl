@@ -2739,3 +2739,49 @@ update norms/cosines and held-out improvement, and avoid explaining a future
 result solely by rank growth or claiming exact moment preservation. The
 recorded directional-moment design in section 48 addresses a different,
 stronger transport requirement and remains an unimplemented follow-up.
+
+
+## 55. Gradual-refresh step 20: ordinary LoRA learning before intervention
+
+The scheduled evaluation was available and audited at 03:05 UTC on October 4.
+The raw dump contains exactly thirty questions with eight responses each:
+14/240 correct responses and 6/30 solved questions, matching logged
+5.833% avg@8 and 20.000% pass@8. The starting evaluation was 4/240 and 3/30,
+so the sampled gains are 4.167 and 10.000 percentage points respectively.
+No refresh has occurred: the first is scheduled after optimizer update 40.
+Differences here must not be attributed to gradual rotation or merging.
+
+| Run | Step-0 avg@8 | Step-20 avg@8 | Step-0 pass@8 | Step-20 pass@8 | Updates 1-20 training correctness |
+|---|---:|---:|---:|---:|---:|
+| Historical standard LoRA | 2.500% | 4.167% | 13.333% | 23.333% | 12.246% |
+| Fresh standard LoRA | 2.917% | 5.417% | 13.333% | 23.333% | 12.207% |
+| One-shot refresh | 3.333% | 5.833% | 13.333% | 20.000% | 12.070% |
+| Ten-increment trial | 1.667% | 5.833% | 10.000% | 20.000% | 12.441% |
+
+The new trial's avg@8 difference from historical standard is +1.667 points,
+with paired-question bootstrap interval [-2.083,+6.667]; its pass@8 difference
+is -3.333 points, with interval [-16.667,+10.000]. Against fresh standard,
+avg@8 difference is +0.417 points, interval [-3.750,+4.583], and pass@8 is
+-3.333 points, interval [-13.333,+6.667]. Both endpoint metrics equal the
+one-shot trial at this checkpoint, but that alone does not establish
+statistical or trajectory equivalence. The experiment page provides all
+three paired analyses, including adjustment for sampled step-zero results.
+
+Over updates 1-20, mean entropy is 0.646872, gradient norm 0.041868, response
+length 1140 tokens, effective-update L2 0.120605, and adjacent-update cosine
+0.864980 (nineteen adjacent pairs). Fresh standard has effective-update L2
+0.119807 and cosine 0.862633; one-shot refresh has 0.123194 and 0.858449.
+The new run's ordinary-LoRA phase shows comparable update scale and direction
+continuity, with no evidence here of the gradient-collapse issue seen in
+earlier algorithm/optimizer-confounded trials. These are serial on-policy
+batch averages, not independent fixed-test measurements.
+
+All 160 training-memory records through step 20 (twenty per rank) were
+validated, with no merged updates. Peak allocation/reservation so far is
+17.580/18.516 GiB, both at update 5 on rank 7. This is a partial training
+allocator peak, not the eventual maximum and not total GPU or phone memory.
+The [partial checkpoint audit](../data/gradual-refresh-step20-audit.json)
+records the raw evaluation hashes and scope; it does not claim completed-run
+protocol success. The launcher and both monitors remain live. Continue the
+unchanged 100-step trial and inspect the actual transition at 40-49, its
+following learning window, and final held-out results.

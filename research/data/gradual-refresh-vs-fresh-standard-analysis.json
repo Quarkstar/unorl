@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 0
+    "candidate": 21
   },
   "config_differences": {
     "trainer.ckpt_path": {
@@ -39,14 +39,88 @@
   },
   "windows": {
     "1-20": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 20,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.1220703125,
+          "candidate": 0.1244140625,
+          "candidate_minus_control": 0.0023437500000000056,
+          "updates": 20
+        },
+        "policy/policy_entropy": {
+          "control": 0.6365350469946861,
+          "candidate": 0.6468720197677612,
+          "candidate_minus_control": 0.010336972773075104,
+          "updates": 20
+        },
+        "policy/grad_norm": {
+          "control": 0.0516103707253933,
+          "candidate": 0.04186756266281009,
+          "candidate_minus_control": -0.009742808062583208,
+          "updates": 20
+        },
+        "generate/avg_num_tokens": {
+          "control": 1132.1072265625,
+          "candidate": 1140.204296875,
+          "candidate_minus_control": 8.097070312499909,
+          "updates": 20
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.11980651988635159,
+          "candidate": 0.12060512790787405,
+          "candidate_minus_control": 0.0007986080215224567,
+          "updates": 20
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.8626328300534102,
+          "candidate": 0.8649804102547828,
+          "candidate_minus_control": 0.002347580201372601,
+          "updates": 19
+        }
+      }
     },
     "21-40": {
-      "updates": 0,
+      "updates": 1,
       "complete": false,
-      "metrics": {}
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.21484375,
+          "candidate": 0.21875,
+          "candidate_minus_control": 0.00390625,
+          "updates": 1
+        },
+        "policy/policy_entropy": {
+          "control": 0.40515056252479553,
+          "candidate": 0.3862016499042511,
+          "candidate_minus_control": -0.018948912620544434,
+          "updates": 1
+        },
+        "policy/grad_norm": {
+          "control": 0.05141058564186096,
+          "candidate": 0.05448880046606064,
+          "candidate_minus_control": 0.0030782148241996765,
+          "updates": 1
+        },
+        "generate/avg_num_tokens": {
+          "control": 1131.8046875,
+          "candidate": 1150.6484375,
+          "candidate_minus_control": 18.84375,
+          "updates": 1
+        },
+        "updates/effective_delta_l2": {
+          "control": 0.08263176640315377,
+          "candidate": 0.08732122756444952,
+          "candidate_minus_control": 0.0046894611612957465,
+          "updates": 1
+        },
+        "updates/cosine_with_previous_delta": {
+          "control": 0.9068725011448701,
+          "candidate": 0.8814347653504055,
+          "candidate_minus_control": -0.02543773579446451,
+          "updates": 1
+        }
+      }
     },
     "41-45": {
       "updates": 0,
@@ -110,6 +184,48 @@
         "questions": 30,
         "bootstrap_draws": 10000,
         "bootstrap_seed": 42
+      }
+    },
+    "20": {
+      "avg@8": {
+        "candidate_minus_control": 0.004166666666666667,
+        "question_bootstrap_95_interval": [
+          -0.0375,
+          0.04583333333333333
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.016666666666666666,
+          "question_bootstrap_95_interval": [
+            -0.03333333333333333,
+            0.07083333333333333
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.13333333333333333,
+          0.06666666666666667
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.0,
+          "question_bootstrap_95_interval": [
+            -0.2,
+            0.23333333333333334
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
       }
     }
   },

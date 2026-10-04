@@ -1,0 +1,23 @@
+{
+  "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+  "through_step": 20,
+  "completed_run": false,
+  "training_memory_records": 160,
+  "ranks": 8,
+  "merged_steps": [],
+  "max_allocated_gib": 17.58006763458252,
+  "max_reserved_gib": 18.515625,
+  "max_allocated_at": {
+    "step": 5,
+    "rank": 7
+  },
+  "max_reserved_at": {
+    "step": 5,
+    "rank": 7
+  },
+  "eval_source_sha256": {
+    "0": "abdceef33f9c7b983b4ea0bf8f1f2558f2dd1e0d3794f2b18bf895cb77facd93",
+    "20": "e84f44824cc8692464c18c759be703afd69359bc10102164649e38f9acaa8118"
+  },
+  "limitations": "Partial pre-refresh checkpoint, not a completed protocol audit or performance parity claim. Training allocator only, excludes inference, weight synchronization and export."
+}
