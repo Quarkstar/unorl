@@ -4148,3 +4148,48 @@ it is not counted as rank-growth success. Native checkpoint state, actual
 learned spectra and held-out comparison remain separate required evidence.
 The prefix audit and source hashes are retained in
 `research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-recorded-prefix-step7.json`.
+
+## 69. What the finite preparation window changes in Adam
+
+The prepared method preserves the effective weight at the switch and maps
+the **observed window** into valid native Adam moments. It does not preserve
+the full earlier optimizer history in newly selected directions. The latter
+is unavailable because those projections were not recorded before preparation.
+This distinction is especially relevant to Adam's long second-moment memory.
+
+For any fixed projected gradient coordinate, a bias-corrected exponential
+average at update `T` is a weighted mean of observations 1 through `T`.
+The total weight assigned to observations before the last `H` updates is:
+
+```python
+older_weight = beta**H * (1 - beta**(T - H)) / (1 - beta**T)
+```
+
+For `H=20, T=40`, the older observations carry **10.8398%** of the
+first-moment weighting at beta 0.9 and **49.4998%** of the second-moment
+weighting at beta 0.999. For an uninterrupted `T=80` history these fractions
+would be **12.1385% / 74.2447%**. These are algebraic weights, not measured
+gradient differences or fractions of useful signal lost. The actual second
+switch need not have an uninterrupted 80-update counter: selected parameters
+reset their counter to 20 at update 40, whereas skipped parameters retain it.
+
+If projected gradient statistics are stationary, the full and windowed
+bias-corrected moments have the same expectation. In a changing RL trajectory
+they can differ, and truncation can either remove stale information or lose
+useful smoothing. Exact window mapping therefore does not establish equality
+with standard LoRA's Adam trajectory or guarantee a stable next update.
+The existing 90% criterion compares candidate directions using the windowed
+moments; it does not bound this difference against full-history standard LoRA.
+
+The trial keeps the chosen window and native optimizer fixed. Its boundary
+audits, actual next-update magnitudes, gradient norms, reward and held-out
+curves must show whether the tradeoff works. A failure would motivate measuring
+history sensitivity before changing window length or transporting additional
+statistics; these calculations alone do not justify another experiment.
+
+Finally, compensation is a reparameterization. In exact arithmetic the
+accumulated effective update and its singular values are unchanged at the
+instant of a switch. Additional stored factor pairs are capacity, not evidence
+of learned rank. The diagnostic includes both frozen correction pairs and the
+current active adapter; useful rank growth must appear after subsequent
+optimizer updates and remain accompanied by competitive performance.
