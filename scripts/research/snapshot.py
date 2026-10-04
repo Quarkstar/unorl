@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 PLANNED_REFRESH = {
+    "qwen3-4b-base-grpo-prepared-r1-20261004-01",
     "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
     "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
     "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
@@ -13,6 +14,11 @@ PLANNED_REFRESH = {
 }
 
 NOTES = {
+    "qwen3-4b-base-grpo-prepared-r1-20261004-01": (
+        "GRPO · prepared-history rank-aware ReLoRA, rank 1",
+        "ablation",
+        "100 updates from base using the historical standard rank-one LoRA GRPO recipe: Qwen3-4B-Base, all-linear rank 1 / alpha 32, native AdamW, constant LR 1.5e-5, 32 prompts with eight rollouts, response budget 8192 and eight GPUs. Prepare fixed two-direction input/output gradient history during updates 21-40 and 61-80; reduce full-update projections before clipping and cross moments. After 40/80 choose norm-matched new factors by observed normal-gradient descent, constrained to retain at least 90% of each side's best local total-descent score on a 256-angle grid. Compensate the frozen base, install observed-window Adam moments/counters and preserve the global constant scheduler. The constraint is not a baseline accuracy bound; the mean-gradient reference is fixed at preparation and its drift is logged. Refresh bases each cycle, measure actual accumulated rank, and skip layers without positive observed normal-descent benefit. Native eight-rank GRPO worker tests passed active/closed checkpoint replay, two transfers, gradient collection and dense export. Live inference, full-model peak VRAM and reward/performance remain to be established by this trial. AIME25 avg@8/pass@8 every 20 updates; hourly checks, 10-second NVML sampling and per-update training allocator peaks. Reuse existing standard LoRA and completed failed refresh trials; no extra baseline or budget extension. Outcome remains unproven until observed results.",
+    ),
     "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01": (
         "GRPO · ten-increment compensated refresh, rank 1",
         "ablation",
@@ -285,6 +291,7 @@ def main():
         for name, key in (
             ("merge-audit.jsonl", "merge_audits"),
             ("rank-diagnostics.jsonl", "rank_diagnostics"),
+            ("prepared-selection-audit.jsonl", "prepared_selection_audits"),
         ):
             if (p / name).exists():
                 raw = (p / name).read_bytes()

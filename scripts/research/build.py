@@ -179,7 +179,11 @@ def comparison(runs, groups, name, title):
     save(fig, name)
 
 
-def refresh_update_plot(runs):
+def refresh_update_plot(
+    runs,
+    name="refresh-update-geometry",
+    title="Gradual refresh · optimization continuity and accumulated rank",
+):
     """Separate optimizer updates from compensated refresh and policy drift."""
     fig, axes = plt.subplots(2, 2, figsize=(12, 7), layout="constrained")
     specs = [
@@ -208,8 +212,8 @@ def refresh_update_plot(runs):
             ax.text(0.5, 0.5, "Not recorded yet", ha="center", transform=ax.transAxes)
     handles, labels = axes.flat[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="outside lower center", ncol=1, frameon=False, fontsize=9)
-    fig.suptitle("Gradual refresh · optimization continuity and accumulated rank", fontsize=15)
-    save(fig, "refresh-update-geometry")
+    fig.suptitle(title, fontsize=15)
+    save(fig, name)
 
 
 def figure(path, caption):
@@ -263,6 +267,17 @@ def experiment_page(run):
                 "First merge global step": cfg.get("trainer.relora_first_merge_step"),
                 "Refresh angle (degrees)": cfg.get("trainer.relora_refresh_angle_degrees"),
                 "Resume checkpoint": cfg.get("trainer.resume_path"),
+            }
+        )
+    if "trainer.prepared_window_updates" in cfg:
+        fields.update(
+            {
+                "Preparation window (updates)": cfg["trainer.prepared_window_updates"],
+                "Minimum observed local descent fraction": cfg[
+                    "trainer.prepared_min_total_fraction"
+                ],
+                "Direction angles per factor": cfg["trainer.prepared_angles"],
+                "Adam transferred-history counter": "window observations; global scheduler unchanged",
             }
         )
     text = f'---\ntitle: "{run["title"]}"\n---\n\n# {run["title"]}\n\n{run["analysis"]}\n\n'
@@ -587,6 +602,24 @@ def main():
     fresh_control_id = "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01"
     base_refresh_id = "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
     gradual_id = "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01"
+    prepared_id = "qwen3-4b-base-grpo-prepared-r1-20261004-01"
+    if prepared_id in by_id:
+        prepared_runs = [
+            by_id[rid]
+            for rid in ("qwen3-4b-base-grpo-lora-r1-blog-20260923-01", gradual_id, prepared_id)
+            if rid in by_id
+        ]
+        comparison(
+            prepared_runs,
+            {"primary", "reference", "ablation"},
+            "comparison-prepared",
+            "100-step budget · standard LoRA and prepared-history ReLoRA",
+        )
+        refresh_update_plot(
+            prepared_runs,
+            "prepared-update-geometry",
+            "Prepared-history ReLoRA · optimizer updates and measured rank",
+        )
     if gradual_id in by_id:
         comparison(
             [
@@ -734,6 +767,20 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
                     lower, upper = result["question_bootstrap_95_interval"]
                     text += f"| {step} | {metric} | {100 * result['candidate_minus_control']:+.2f} | [{100 * lower:+.2f}, {100 * upper:+.2f}] |\n"
             text += "\nStep 100 precedes intervention; its difference reflects sampled starting evaluations.\n\n"
+    if prepared_id in by_id:
+        text += (
+            "\n## Prepared-history ReLoRA\n\nThe [prepared-history trial](experiments/"
+            + prepared_id
+            + ".md) uses the same 100-update budget and reuses the historical standard LoRA reference. Its local descent constraint is not an accuracy guarantee. Missing evaluation points are not extrapolated; useful rank growth and performance parity remain unproven.\n\n"
+        )
+        text += figure(
+            "figures/comparison-prepared.svg",
+            "Google Material palette; observed training correctness and sampled AIME25 evaluations.",
+        )
+        text += figure(
+            "figures/prepared-update-geometry.svg",
+            "Optimizer weight steps, boundary policy drift and measured accumulated rank; missing measurements remain explicit.",
+        )
     text += "\n## Post-step-60 diagnosis\n\nThe [truncation analysis](notes/batchnorm-after60.md) examines the loss of question coverage and specifies a controlled follow-up trial.\n\n## Research directions and next questions\n\nThe [2025–2026 LoRA training investigation](notes/lora-training-2025-2026.md) compares LoRA-FA, LoFT, recent optimizer-state research, and merge/reset designs. It separates published evidence from proposed UNORL experiments.\n\n1. Final-layer LoRA: the last-half trial completed; measure actual activation/peak memory savings and investigate fewer layers.\n2. [NoRA initialization](notes/nora.md): the trial completed with promising early acceleration. The full-layer merge/reset trial completed without sustained improvement after resets. LoFT-simple completed without meaningful reward improvement in this setting. The main line is now ReLoRA: the matched restart-ramp versus constant-LR merge/reset comparison completed. Both accumulated updates beyond rank one, but neither improved final avg@8 over standard LoRA.\n3. Test QLoRA separately; this direction remains untested.\n\nThe current scope is on-policy learning; small batches and single-rollout use remain central.\n\n[Measurement conventions](methods.md) · [Build and publish](publishing.md) · [Download comparison data](data/comparison.csv)\n"
     (BOOK / "index.md").write_text(text)
     with (BOOK / "data/comparison.csv").open("w") as f:

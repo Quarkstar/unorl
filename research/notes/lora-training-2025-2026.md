@@ -3994,3 +3994,113 @@ logs, per-rank training-memory measurements and merge audits. The planned
 matched-budget performance comparison remains 100 updates from base with
 historical standard rank-one LoRA reused; no full RL trial has started and the
 performance/rank-growth goal is still open.
+
+## 68. Prepared-history worker implemented and matched recipe ready
+
+`unorl/prepared_worker.py`, `unorl/prepared_config.py` and
+`unorl/prepared_train.py` integrate the derived method with native SkyRL
+GRPO/AdamW. The isolated fixtures are no longer the only code path exercising
+collection, selection and state installation. The [worker validation
+record](../data/prepared-worker-native-validation.json) contains all eight
+native reports, final source hashes, merge/rank diagnostics and limitations.
+
+### Worker lifecycle and fairness
+
+The [prepared recipe](https://github.com/Quarkstar/unorl/blob/main/configs/qwen3-4b-base-grpo-prepared-r1.json)
+keeps the historical rank-one LoRA settings: Qwen3-4B-Base, all-linear rank
+one/alpha 32/Kaiming initialization, AdamW LR 1.5e-5, no warmup/decay/KL,
+GRPO without reward-standard-deviation normalization, 32 prompts with eight
+responses, microbatch two per GPU, response budget 8192 and all eight GPUs.
+The budget remains **100 updates from base**; AIME25 normal-sampling
+avg@8/pass@8 is evaluated at 0/20/40/60/80/100. No extra standard baseline
+or step-200 continuation is part of this plan.
+
+A configuration parity test compares the whole shared flat configuration
+with the retained historical recipe. Only method fields and checkpoint
+cadence differ: checkpoints are every 20 updates rather than 100, retaining
+the latest. Native config parsing and prepared validation pass. The same
+SkyRL parser automatically disables `enforce_eager` when LoRA is enabled;
+this applies to the existing matched recipes too and is not a new method
+change. Requested flat configs and runtime behavior should be distinguished.
+
+The first window observes updates **21-40** and the second **61-80**. Its
+fixed input/output bases contain the current factor direction at the start
+of preparation and a fresh orthogonal random direction. The two bases are
+replaced each cycle rather than impose a fixed global rank ceiling. The
+worker accumulates projections from the actual policy loss's microbatches,
+including SkyRL's data-parallel loss-sum correction. After native AdamW
+returns its clipping norm, full-update projections are averaged across ranks
+before applying the observed clipping multiplier and forming cross moments.
+
+After updates 40/80, norm-matched factors maximize observed normal descent
+under the declared `rho=0.9` per-factor local-descent constraint and a
+256-angle grid. Layers with no positive observed normal-descent benefit
+are skipped. The worker compensates the base, replaces selected moments
+and their counters with the window's own history, and leaves the global
+constant scheduler intact. It records both factor corrections, actual
+accumulated spectrum and reference-direction drift. The local bound remains
+an observed-gradient prediction, not a bound on baseline accuracy or actual
+next-rollout improvement.
+
+The base-then-adapter synchronization path is inherited, with a pending base
+sync after changes or resume. Per-rank allocator peaks include preparation
+and boundary work. A skipped nonfinite native update discards pending
+projections and raises an error rather than silently change the matched
+update budget. Checkpoints save active bases/moments, window metadata,
+previous update factors, accumulated corrections and every populated native
+Adam counter. Resume checks the declared method/LR/betas/epsilon protocol
+against the current recipe before accepting the loaded history; active
+window counts and basis dimensions must match. Adam counters intentionally
+need not equal the global scheduler after a transfer.
+
+### Real worker fixture results
+
+The new eight-rank fixture calls actual policy `forward_backward` and
+`PreparedPolicyWorker.optim_step`, rather than manually substituting only a
+selection function. Each rank has one synthetic prompt with eight response
+trajectories, group-centered 0/1 outcomes, global token-normalized advantages,
+four microbatches and unequal counts of loss-bearing response tokens. Old
+action log probabilities are computed from the current model. Trajectories
+are constructed, not sampled by an inference engine; this is a training-path
+validation rather than a rollout or math-reward experiment.
+
+Two windows of length two precede transfers at native updates four/eight.
+Reloading an active-window checkpoint and repeating transfer plus the next
+update reproduces effective weights and every native optimizer tensor
+bitwise. A post-transfer checkpoint also replays the next update exactly,
+with counters different from the global step. At the final global update
+eight, all populated Adam counters are two. All eleven executed updates,
+including replays, use LR 0.001 and preserve Parameter identities.
+
+Maximum relative projection error against synchronized native gradients is
+**0.00590092**. The base-weight extractor returns the actual compensated
+base exactly. An independently loaded dense HF export differs from the
+native adapter model's BF16 logits by at most **0.00146484**, below the
+unchanged 0.02 tiny-fixture gate. This does not test a live vLLM receiver.
+
+All 14 tiny adapter layers transfer at both boundaries. Minimum retained
+local descent fractions are **0.901293** and **0.900356**. The compensated
+boundary itself preserves the old function and initially its accumulated
+rank: mean stable rank is approximately one at update four. After subsequent
+actual worker updates, mean stable rank is **1.30027**, with **21.8044%**
+mean energy outside the leading direction at eight. This is useful evidence
+that the integrated mechanism can learn additional directions in the
+synthetic fixture. It is not evidence of substantial rank growth, reward
+gain or AIME improvement in Qwen3-4B math RL.
+
+### Launch gates and reporting
+
+Two fixture API mistakes were fixed before the passing run: the installed
+policy-loss registry lives in SkyRL's backend utilities, and batch metadata
+is assigned as an attribute rather than a tensor-dictionary constructor
+keyword. Subsequent native runs passed after adding dense-export checks and
+stricter resume protocol validation; no numerical tolerance was relaxed.
+
+The production launcher has a `prepared` mode with the audited recipe.
+The research snapshot registry is ready to record the new run, selection
+audits and its individual page; Material-palette comparisons against the
+historical standard and completed gradual trial are generated once it exists.
+Source freeze/commit, live inference initialization and full-model allocator
+measurements remain production checks. The actual trial, not the synthetic
+fixture, must establish performance matching/exceeding standard rank-one
+LoRA together with useful learned rank. Final performance is still unproven.

@@ -85,6 +85,7 @@ def main():
             "relora",
             "relora-refresh",
             "gradual-refresh",
+            "prepared",
         ],
         default="reinforce",
     )
@@ -103,6 +104,7 @@ def main():
             "relora": "qwen3-4b-base-grpo-relora-r1-warmup5.json",
             "relora-refresh": "qwen3-4b-base-grpo-relora-refresh-r1-continue.json",
             "gradual-refresh": "qwen3-4b-base-grpo-gradual-refresh-r1.json",
+            "prepared": "qwen3-4b-base-grpo-prepared-r1.json",
         }[args.mode]
     run_id = args.run_id or f"unorl-{args.mode}-{datetime.now(timezone.utc):%Y%m%d-%H%M%S}"
     if Path(run_id).name != run_id or run_id in {".", ".."}:
@@ -125,6 +127,7 @@ def main():
         "relora": "unorl.relora_train",
         "relora-refresh": "unorl.relora_refresh_train",
         "gradual-refresh": "unorl.gradual_refresh_train",
+        "prepared": "unorl.prepared_train",
     }[args.mode]
     command = [str(PYTHON), "-m", module] + [f"{k}={json.dumps(v)}" for k, v in cfg.items()]
     if args.dry_run:
