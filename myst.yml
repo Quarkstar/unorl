@@ -23,6 +23,8 @@ project:
       title: GRPO · gradual A refresh with warm B (shared step-100 checkpoint)
   - title: Controlled follow-up experiments
     children:
+    - file: research/experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md
+      title: GRPO · ten-increment compensated refresh, rank 1
     - file: research/experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md
       title: GRPO · fresh standard rank-1 LoRA control (100 steps from base)
     - file: research/experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md

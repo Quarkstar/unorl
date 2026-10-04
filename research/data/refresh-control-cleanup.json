@@ -1,0 +1,30 @@
+{
+  "run_id": "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
+  "removed": [
+    {
+      "path": "checkpoints",
+      "bytes": 17760115440
+    },
+    {
+      "path": "exports/global_step_100/policy",
+      "bytes": 17657172362
+    }
+  ],
+  "removed_bytes": 35417287802,
+  "raw_evaluation_sha256": {
+    "exports/aime25/dumped_evals/global_step_0_evals/aggregated_results.jsonl": "39a1dd4635b15936aad9120cf4a0f54ed88254c1533c9565bb6143d57c6f59b3",
+    "exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "3a556e43e21485876322ffeb889278090db88285dc44acc37b11c307352cf723",
+    "exports/aime25/dumped_evals/global_step_100_evals/aggregated_results.jsonl": "7cad9fa78cc88e7421d69242d8e36fa3c24e948874aa3968b93b7ba3edc2bbcf",
+    "exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "316fc45f48544f49124cfd1ea1f160c451bdcd9b8be30872323c9b4609eae8be",
+    "exports/aime25/dumped_evals/global_step_20_evals/aggregated_results.jsonl": "4aa2d8dd2fba79cbe6b37af4996fb02390af1510cb301d05b1ea3307a7d3cb6a",
+    "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "73eb9b6fa7adc1112aa5b6ac59d12a41a071783260df48fd537ce5c7ff6686d4",
+    "exports/aime25/dumped_evals/global_step_40_evals/aggregated_results.jsonl": "b1e81dddec496026de23bf015e99593bafeb4024121b25a79c2c42e1ef572e98",
+    "exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "8f25d0073f8abdedb205a9a57176ad8b0b6bc8de2af123ed2cb1e5eff18845ce",
+    "exports/aime25/dumped_evals/global_step_60_evals/aggregated_results.jsonl": "d46adabbdb10528c7edce620d283cc8a1112828374bffe53afef6c9a24e583dd",
+    "exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "24a53b62b581cf8e6d73279799d432a12b6d0d5a627bc24d71ee145c07133ba3",
+    "exports/aime25/dumped_evals/global_step_80_evals/aggregated_results.jsonl": "81b07a7456e2335a5a19ac113a2a550a44251fdf62a9a19c0a653092f61dd64f",
+    "exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "472ddd96a1af7fcd099c0c220ab5899fa688a0def68a94b8aa71023fd4a7fe48"
+  },
+  "evaluations_and_diagnostics_retained": true,
+  "shared_historical_step100_untouched": true
+}

@@ -2606,3 +2606,19 @@ LR, model, data, batch and rollout count. Refreshes occur after updates
 standard runs and the one-shot candidate for comparison. Record performance,
 update direction, continuity probes, accumulated rank and peak allocator
 memory; check health hourly and analyze completed 20-step evaluations.
+
+
+The trial `qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01` launched at
+02:10 UTC on October 4 from source commit `02e45c3`, using all eight GPUs.
+The launcher and detached hourly watcher and ten-second memory sampler were
+verified live by their process identities. Initial Ray startup succeeded and
+loaded the 7,492-question training dataset. This is startup evidence, not a
+completed training update or an inference-sync validation. The original
+100-step limit remains unchanged.
+
+After its successful completion audit, the fresh standard's checkpoints,
+optimizer states and numeric model exports were removed, reclaiming
+35,417,287,802 bytes. All twelve raw evaluation JSONL files were hash-verified
+unchanged, with logs, metrics, rank and memory diagnostics preserved. The
+[cleanup manifest](../data/refresh-control-cleanup.json) records paths and
+hashes. The historical standard step-100 checkpoint remains untouched.

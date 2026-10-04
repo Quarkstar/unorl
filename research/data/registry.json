@@ -1,5 +1,10 @@
 [
   {
+    "id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+    "title": "GRPO \u00b7 ten-increment compensated refresh, rank 1",
+    "group": "ablation"
+  },
+  {
     "id": "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
     "title": "GRPO \u00b7 fresh standard rank-1 LoRA control (100 steps from base)",
     "group": "ablation"
