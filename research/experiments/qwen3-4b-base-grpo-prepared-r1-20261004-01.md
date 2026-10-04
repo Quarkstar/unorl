@@ -11,7 +11,7 @@ title: "GRPO · prepared-history rank-aware ReLoRA, rank 1"
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-prepared-r1-20261004-01` |
-| Record | 24 steps logged / 100 planned |
+| Record | 43 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -59,6 +59,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---:|---:|---:|
 | 0 | 3.3% | 16.7% |
 | 20 | 7.9% | 26.7% |
+| 40 | 15.0% | 40.0% |
 
 
 ## Evaluation sample counts
@@ -67,16 +68,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---|---:|---:|---:|
 | aime25 | 0 | 8/240 | 5/30 |
 | aime25 | 20 | 19/240 | 8/30 |
+| aime25 | 40 | 36/240 | 12/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **9.3%** over the first 10 logged updates and **16.8%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **9.3%** over the first 10 logged updates and **31.0%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.8799 at step 1 → 0.3569 at step 24.
-- Policy gradient norm: 0.03134 at step 1 → 0.04061 at step 24.
-- Mean generated response tokens: 1455 at step 1 → 1225 at step 24.
+- Logged entropy: 0.8799 at step 1 → 0.1634 at step 43.
+- Policy gradient norm: 0.03134 at step 1 → 0.03639 at step 43.
+- Mean generated response tokens: 1455 at step 1 → 2354 at step 43.
 
-Best recorded AIME25 pass@8: **26.7% at step 20**. Last recorded: **26.7% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **40.0% at step 40**. Last recorded: **40.0% at step 40**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 

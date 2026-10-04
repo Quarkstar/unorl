@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 24
+    "candidate": 40
   },
   "config_differences": {
     "environment.env_class": {
@@ -105,32 +105,32 @@
       }
     },
     "21-40": {
-      "updates": 4,
-      "complete": false,
+      "updates": 20,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.2021484375,
-          "candidate": 0.181640625,
-          "candidate_minus_control": -0.0205078125,
-          "updates": 4
+          "control": 0.2365234375,
+          "candidate": 0.2349609375,
+          "candidate_minus_control": -0.0015624999999999944,
+          "updates": 20
         },
         "policy/policy_entropy": {
-          "control": 0.3378349840641022,
-          "candidate": 0.3703928291797638,
-          "candidate_minus_control": 0.03255784511566162,
-          "updates": 4
+          "control": 0.25986804217100146,
+          "candidate": 0.2755596376955509,
+          "candidate_minus_control": 0.015691595524549462,
+          "updates": 20
         },
         "policy/grad_norm": {
-          "control": 0.07084077224135399,
-          "candidate": 0.04240846913307905,
-          "candidate_minus_control": -0.028432303108274937,
-          "updates": 4
+          "control": 0.04667234905064106,
+          "candidate": 0.04207271225750446,
+          "candidate_minus_control": -0.004599636793136602,
+          "updates": 20
         },
         "generate/avg_num_tokens": {
-          "control": 1139.169921875,
-          "candidate": 1291.2021484375,
-          "candidate_minus_control": 152.0322265625,
-          "updates": 4
+          "control": 1421.2619140625,
+          "candidate": 1744.0515625,
+          "candidate_minus_control": 322.7896484375001,
+          "updates": 20
         }
       }
     },
@@ -239,11 +239,53 @@
           "bootstrap_seed": 42
         }
       }
+    },
+    "40": {
+      "avg@8": {
+        "candidate_minus_control": 0.0375,
+        "question_bootstrap_95_interval": [
+          -0.004166666666666667,
+          0.0875
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.029166666666666667,
+          "question_bootstrap_95_interval": [
+            -0.020833333333333332,
+            0.0875
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": 0.13333333333333333,
+        "question_bootstrap_95_interval": [
+          0.0,
+          0.3
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.1,
+          "question_bootstrap_95_interval": [
+            -0.1,
+            0.3
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
     }
   },
   "limitations": "One control/candidate pair, not a multi-seed replication. Recipe differences are exposed explicitly. On-policy training windows contain different trajectories and are descriptive; no independent-sample confidence interval is assigned to them. Question bootstrap preserves eight-response groups but does not measure training-seed uncertainty or establish equivalence. Completion counts do not prove process success.",
   "source_sha256": {
     "research/data/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.json": "43d8b6db72737f2e8c9099cada2228cb9f2a41a85d6b09cf1282ddcaa0e9f6c8",
-    "research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01.json": "2cfb4b8b08731fcda845d4abbfed03e4b2646f0916fd4de3033ed3376cb684b9"
+    "research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01.json": "17f3f25810caedc2f5317d021803c0e7aa667c789c4c1ea48243c640dbe854af"
   }
 }

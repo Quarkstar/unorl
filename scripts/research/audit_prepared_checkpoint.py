@@ -131,8 +131,12 @@ def audit(run_id, step):
         )
     prefix["checkpoint_rank_checks"] = rank_checks
     prefix["checkpoint_protocol"] = protocol
-    prefix["limitations"] += (
-        " Native checkpoint checks cover scheduler/protocol, per-name saved counters, "
+    prefix["limitations"] = (
+        "Read-only checkpoint and recorded-prefix audit, not a completed-run, full-model "
+        "resume, live receiver tensor-equality, performance-parity or useful-rank certificate. "
+        "Sources may contain later records; incomplete trailing JSONL writes are excluded. "
+        "Memory is the policy allocator window, not total-device memory. "
+        "Native checkpoint checks cover scheduler/protocol, per-name saved counters, "
         "optimizer counter multisets, finite local moments, preparation buffers and correction-history lengths. "
         "They do not associate optimizer integer IDs with parameter names, reconstruct "
         "full model weights, test full-model resume or prove useful learned rank."

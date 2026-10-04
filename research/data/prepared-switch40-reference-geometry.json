@@ -1,0 +1,47 @@
+{
+  "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+  "step": 40,
+  "layer_summary": {
+    "reference_a_abs_cosine_at_switch": {
+      "min": 0.9993252577246455,
+      "median": 0.999922797887117,
+      "mean": 0.9998962033114452,
+      "max": 0.9999869072725165
+    },
+    "reference_b_abs_cosine_at_switch": {
+      "min": 0.8166646497628303,
+      "median": 0.8737376405907155,
+      "mean": 0.8750037723529716,
+      "max": 0.9482249762354182
+    },
+    "total_descent_retained_fraction": {
+      "min": 0.9000326254814088,
+      "median": 0.9026819168090952,
+      "mean": 0.9217041005584429,
+      "max": 0.9986238318265098
+    },
+    "predicted_normal_descent_per_lr": {
+      "min": 0.0004152942815380811,
+      "median": 0.0047758018772583455,
+      "mean": 0.0064888015513602905,
+      "max": 0.0349694012402324
+    }
+  },
+  "max_relative_normal_projector_difference_bound": 0.6138416443978917,
+  "mean_relative_normal_projector_difference_bound": 0.49578882021898935,
+  "source_sha256": {
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/prepared-selection-audit.jsonl": "261a115fccf4844f37f337959d6c374ebd7528d486532585412cee01e029f45a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/metrics.jsonl": "a9e5f66195675f8b1cacd33f44bc2b1b9c58f9a5b0a7e510cecba66a514bbe54"
+  },
+  "bound_scope": "For the same dense observed-mean gradient M, ||Pout_ref M Pin_ref - Pout_current M Pin_current||_F <= (sin(theta_B)+sin(theta_A))*||M||_F. This is an upper bound, not measured gradient error, a reward guarantee or proof of harmful selection.",
+  "first_post_transfer_update": {
+    "step": 41,
+    "metrics": {
+      "policy/grad_norm": 0.03292303904891014,
+      "policy/policy_entropy": 0.13954481482505798,
+      "updates/effective_delta_l2": 0.07651779281415604,
+      "updates/cosine_with_previous_delta": 0.23446180421409246,
+      "reward/mean_positive_reward": 0.2578125
+    }
+  }
+}

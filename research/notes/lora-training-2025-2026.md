@@ -4261,3 +4261,90 @@ instant of a switch. Additional stored factor pairs are capacity, not evidence
 of learned rank. The diagnostic includes both frozen correction pairs and the
 current active adapter; useful rank growth must appear after subsequent
 optimizer updates and remain accompanied by competitive performance.
+
+## 70. First prepared transfer: native state passes; learning outcome pending
+
+The full-model transfer at update 40 completes at approximately **11:35 UTC
+on 2026-10-04**. All **252** adapter layers select positive observed normal
+descent and switch. Each has **20** complete preparation observations.
+Retained total local descent fractions have minimum **0.9000326**, median
+**0.9026819** and mean **0.9217041**. These satisfy the chosen constraint
+against the best candidate in the fixed window's grid, not against the full
+standard LoRA trajectory or future rewards.
+
+The read-only native checkpoint audit passes on all eight ranks: scheduler
+40, all **504** populated Adam states per rank finite with counter **20**,
+constant LR, closed preparation metadata and the expected two frozen
+correction pairs per layer on rank zero. All **320** policy-memory records
+are present. Initial and update-40 base-plus-adapter synchronization records
+exist. Raw AIME groups at zero/20/40 each contain 30 questions with eight
+responses and reproduce the aggregate scores. Evidence is retained in
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-checkpoint-step40.json`.
+
+| Measure | Prepared trial | Historical standard LoRA |
+| --- | ---: | ---: |
+| Training correctness, updates 21–40 | 23.4961% | 23.6523% |
+| Mean entropy, updates 21–40 | 0.275560 | 0.259868 |
+| Mean gradient norm, updates 21–40 | 0.042073 | 0.046672 |
+| Mean generated tokens, updates 21–40 | 1744.05 | 1421.26 |
+| AIME25 avg@8 at 40 | 15.0% (36/240) | 11.25% (27/240) |
+| AIME25 pass@8 at 40 | 40.0% (12/30) | 26.6667% (8/30) |
+
+The endpoint differences are **+3.75 / +13.3333 percentage points** in
+avg@8/pass@8. Paired question-bootstrap 95% intervals are
+**[−0.4167, +8.75] / [0, +30] points**. Difference in improvement from zero
+is **+2.9167 / +10 points**, with intervals **[−2.0833, +8.75] /
+[−10, +30]**. Training through 40 precedes post-transfer learning, so these
+scores do not show a gain from subsequent learning in the new directions.
+No superiority or equivalence claim follows from these single-run intervals.
+
+### Numerical continuity and reference drift
+
+The compensated accumulated update has mean stable rank
+**1.0000000018** immediately after the switch. Energy outside its leading
+direction is approximately **1.14e-8**. This is the expected cancellation of
+the new active pair against its frozen negative correction; the additional
+stored pairs are capacity, not learned rank.
+
+FP32 base-compensation rounding has relative L2 **1.0374e-5**. The actual
+teacher-forced response-prefix probe across 1024 tokens has mean KL
+**0.00076441**, chosen-token mean absolute log-probability difference
+**0.0129184**, maximum **0.293541**, and argmax flips on **5/1024** tokens.
+The measured forward function is therefore close but not bitwise preserved.
+This prefix probe does not certify every rollout or server tensor equality.
+Training allocator maxima through 40 are **17.6283 / 18.5664 GiB**
+allocated/reserved, not total-device memory or a controlled overhead estimate.
+
+The fixed reference remains close to A at the switch: minimum absolute
+cosine **0.9993253**, mean **0.9998962**. B drifts more: minimum
+**0.8166646**, mean **0.8750038**; the largest angular drift is about
+**35.25 degrees**. The criterion measures normal descent relative to the
+window-start references, not the exact current factors. For the same mean
+gradient `M`, rank-one normal projectors obey:
+
+```python
+# Reference and current unit A/B directions define the projectors.
+normal_ref = Pout_ref @ M @ Pin_ref
+normal_current = Pout_current @ M @ Pin_current
+# Frobenius-norm upper bound:
+error_bound = (sin_angle_B + sin_angle_A) * torch.linalg.norm(M)
+```
+
+The largest measured geometric coefficient is **0.613842**, with mean
+**0.495789**. These are upper-bound coefficients, not measured gradient
+errors or evidence of harmful selection. They expose why retained descent
+and predicted normal descent cannot guarantee escape from the current rank-one
+directions. The source summaries, bound scope and source hashes are retained
+in `research/data/prepared-switch40-reference-geometry.json`.
+
+### First actual update after switching
+
+Update 41 completes with finite gradient norm **0.0329230**, correctness
+**25.7813%**, and entropy **0.139545**. Its effective weight-update L2 is
+**0.0765178**, close to **0.0727356** at 40, while cosine with the preceding
+update falls to **0.234462** from the pre-switch **0.963758**. This is a
+useful mechanism signal: native training continues with a substantially
+different update direction without an immediate magnitude spike. It is
+not proof of useful accumulated rank or lasting accuracy improvement.
+The matched run remains unchanged. Subsequent checkpoints and the final
+100-update comparison must establish both performance and learned rank.

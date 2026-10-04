@@ -1,0 +1,169 @@
+{
+  "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+  "through_step": 40,
+  "scheduled_switches": [
+    40
+  ],
+  "boundaries": [
+    {
+      "step": 40,
+      "selected_layers": 252,
+      "minimum_retained_descent": 0.9000326254814088,
+      "minimum_reference_a_cosine": 0.9993252577246455,
+      "minimum_reference_b_cosine": 0.8166646497628303
+    }
+  ],
+  "training_memory_records": 320,
+  "peak_allocated_gib": 17.628345012664795,
+  "peak_reserved_gib": 18.56640625,
+  "raw_evaluation_counts": [
+    {
+      "step": 0,
+      "correct_of_240": 8,
+      "solved_of_30": 5
+    },
+    {
+      "step": 20,
+      "correct_of_240": 19,
+      "solved_of_30": 8
+    },
+    {
+      "step": 40,
+      "correct_of_240": 36,
+      "solved_of_30": 12
+    }
+  ],
+  "source_sha256": {
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/config.json": "375228611fe024d674a4441560d3e2a4938b6d3558904e39079d5061534019e7",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/initial-adapter-audit.json": "a0ad7afa4bfae124c7a89389dc05194f4581b70ff4a3cc918c8922ecf804eb9b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/prepared-selection-audit.jsonl": "261a115fccf4844f37f337959d6c374ebd7528d486532585412cee01e029f45a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank0.jsonl": "96ddae8b741dbe2d8e05c0cf87084ee20b13dc9b7220aa019d68f4645fb53437",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank1.jsonl": "a940734d4950a5d0ecc20438c796384b3313cc2c146ac0157ed0b2602cf1a26a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank2.jsonl": "94370fdcafcc39444a67f7a8e6675035d6eb7bc9df2e16791dcb4f90f292fc9d",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank3.jsonl": "00de39dd6573cfe615f0ba43ae128f29f090acc77070c49a96c3129d016ce8fd",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank4.jsonl": "aa2182be365bc0cb111a86275b747c431cb461f011d191dc8a60406d19b9fcd4",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank5.jsonl": "f755df423ef44655c9c501058224724b96527533ef99ba8d2a31fe5d13291d39",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank6.jsonl": "bb908be50970f4a18984ffcf91f3639db98eb60f7a5825fb9ae5115919ecba81",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank7.jsonl": "12708c786d5a6ca3187c571f0a117de3dc516d1c434bfaf706b6f3984eda961a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/backbone-sync-audit.jsonl": "bdc176286a90561b6a5b69cdc9b59bc6273e728a8d10fd92f3d8e605b6ce506a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/merge-audit.jsonl": "b3895606f9c3171820fdc39d846dd3e32fd453811e828037b8a8b4afa30d28c7",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/evaluation.jsonl": "91e3e9a2586494de85bbfe6ae5d55ba3f61b5e04ada03e8bae1f3a66648f3d1a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "244d7914e46e7cedc78261d61ea01ca0dac59c0c05bf08f6c13f2258753bf058",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "b233ce30f5fd6896b33bed801fa75b0e8846ab69c420ea50edb616390b683063",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "d2085d4ccd75205ddb59707173a7ccdcf02ba324fa6037f91a85da1f929e9f5b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_0.pt": "1c60c7c56e42e867945f00725f6f454ef6c201e65c75fe88e88b4b9f0bac4ab4",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_0.pt": "a4254e8c902b228d4e171bcd4ca71a15ccb86b0753ab1f1d65aee52489cb199b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_1.pt": "466fb3a33123b8a1775c3858f698e80f82c04317dac75a2ec5c1f02fc4b1165b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_1.pt": "d94d9eac7e10c091080e7812c4d31c2bcca633aef628ec525b35cbc7bfcefcbe",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_2.pt": "9339ee778f5ccbc7663f17b5f46fc405e322d8521a5feb4e146a2d8f5cc1d17d",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_2.pt": "bd1ad85c9897c1aa7ac86a089d02e853f5ac333924d4dbc531657232b1cc3488",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_3.pt": "735d853efabb860d19aa753afb35bf78314cdbdff1c42003ec9de114c3eb1cf4",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_3.pt": "e32b6ca4068a70a83fd6233e56b4232c819a65728c93c8a6dedf3872cbc2fc11",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_4.pt": "2d2b37db8fd35d95ecf1d1e1312b6047bbea3807709deef450f7a698ca3da9a9",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_4.pt": "75931151b68866babc056fb9461f903522626560a5483e65e55470e75f69be84",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_5.pt": "d5b69bced98acb77c7e848c2f578ebe0cacaeb638891b1e28b2a22a1b9d591e7",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_5.pt": "c3b735c5fbd3a0a185a7224a6529fe931145e07f9aa082de867abc9d93f614c0",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_6.pt": "878b90d156288bbf07d3393206954e635ff2b3b35d4078b0ac74fc67b7d8114d",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_6.pt": "7860d99b7edb8526c746faad5f1d767154de6d1999a7dc675eb9ab0d07f18e03",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/extra_state_world_size_8_rank_7.pt": "86d00cb0a64d85461f59b86058037c0e361b1096190c77254ba117ba389d2d83",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_40/policy/optim_world_size_8_rank_7.pt": "4e09456c7eb75e0dfd726ddd7eb8cc6d4951c61d6c8649dd4fe4f8682791822f"
+  },
+  "limitations": "Read-only checkpoint and recorded-prefix audit, not a completed-run, full-model resume, live receiver tensor-equality, performance-parity or useful-rank certificate. Sources may contain later records; incomplete trailing JSONL writes are excluded. Memory is the policy allocator window, not total-device memory. Native checkpoint checks cover scheduler/protocol, per-name saved counters, optimizer counter multisets, finite local moments, preparation buffers and correction-history lengths. They do not associate optimizer integer IDs with parameter names, reconstruct full model weights, test full-model resume or prove useful learned rank.",
+  "checkpoint_rank_checks": [
+    {
+      "rank": 0,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 1,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 2,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 3,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 4,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 5,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 6,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 7,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "20.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    }
+  ],
+  "checkpoint_protocol": {
+    "version": 1,
+    "seed": 42,
+    "first_merge": 40,
+    "merge_interval": 40,
+    "window_updates": 20,
+    "min_total_fraction": 0.9,
+    "angles": 256,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
+    "constant_lr": 1.5e-05
+  }
+}
