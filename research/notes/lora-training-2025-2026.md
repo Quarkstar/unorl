@@ -3178,3 +3178,85 @@ directions may still be inefficient; useful selection, norms and local
 update-space coverage need analysis. No guarantee of improved accuracy,
 rank growth or lower memory follows from the projection identities alone.
 Finish the current 100-step trial before selecting or launching this candidate.
+
+
+## 60. Mathematical validation and the remaining descent condition
+
+The [CPU native-Adam validation](../data/prepared-adapter-moment-validation.json)
+uses twelve observed updates, unequal microbatch lengths 2/5/3, global loss
+normalization and actual nontrivial clipping multipliers between 0.032913 and
+0.126033. The current adapter trains with native AdamW. A fixed prepared
+adapter's gradients are calculated through output-gradient projections;
+a separate small-fixture dense weight-gradient oracle supplies reference
+projections to another native AdamW optimizer.
+
+Maximum projected-gradient error is 2.08e-17 and maximum first/second moment
+error 3.47e-18. Installed moment counters both equal the twelve observations.
+Compensating the base at the boundary changes double-precision forward
+outputs by at most 1.78e-15. The actual base has no gradient. This proves the
+observed-coordinate bookkeeping in one CPU layer, not GPU/FSDP, mixed
+precision, production activation lifetime or general performance.
+
+A separate executable counterexample verifies missing historical information:
+with old A=[1,0] and B=[1,0].T, both G=0 and G=[[0,0],[0,1]] give zero old
+adapter gradients. After changing A to [0,1], their B gradients differ.
+Consequently no deterministic function of old native moments can generally
+produce the exact new moments. Retaining or cosine-scaling old arrays does
+not overcome that information loss. Prepared projections collect the missing
+information *before* the switch, for their fixed directions and observation
+window.
+
+### Descent is a separate mathematical requirement
+
+For small factor updates, the physical weight change is:
+
+```python
+delta_weight = scale * (
+    B @ delta_A + delta_B @ A + delta_B @ delta_A
+)
+first_order_loss_change = (gA * delta_A).sum() + (gB * delta_B).sum()
+```
+
+The last physical-weight term is second order in the step. With the new
+prepared-coordinate moments, form bias-corrected first moment `mhat` and
+positive diagonal denominator `denom = sqrt(vhat) + eps`. Flatten notation
+below stands for sums over all active adapter entries:
+
+```python
+q = (g * mhat / denom).sum()
+u = (g.square() / denom).sum()
+```
+
+A momentum step `delta = -lr * mhat / denom` is a first-order descent
+direction only if q > 0. Correct projected-history bookkeeping does not
+ensure that condition: old observed momentum can oppose the current gradient.
+
+One mathematically justified *candidate safeguard* is to blend the proposed
+momentum direction with the current preconditioned gradient, changing only
+the step direction rather than falsifying its stored EMA history. For a
+chosen margin eta strictly between zero and one:
+
+```python
+if u > 0 and q < eta * u:
+    blend = (eta * u - q) / (u - q)
+else:
+    blend = 0.0
+step_numerator = (1 - blend) * mhat + blend * g
+delta = -lr * step_numerator / denom
+```
+
+When blending is needed, its coefficient lies between zero and one, and
+`(g * step_numerator / denom).sum()` equals `eta * u`. Otherwise it is already
+at least that quantity. Therefore the first-order loss change is at most
+`-lr * eta * u` for a nonzero gradient. Under a locally smooth objective,
+a sufficiently small step decreases the current training loss; the finite
+factor cross term and curvature still constrain how small is sufficient.
+This is not a guaranteed increase in true reward, and clipping, distributed
+reduction and denominator normalization must match the implementation.
+
+This safeguard is derived from a descent condition rather than an arbitrary
+moment reset. It is not yet implemented, validated in the worker, or selected
+for a trial. It also changes Adam's update rule; any comparison must state
+that change explicitly. It does not recover a missing useful subspace, force
+rank growth, or rescue a vanishing projected gradient. Direction selection,
+rank accumulation and measured post-merge learning remain separate gates.

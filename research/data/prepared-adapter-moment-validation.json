@@ -1,0 +1,24 @@
+{
+  "observed_updates": 12,
+  "microbatch_token_counts": [
+    2,
+    5,
+    3
+  ],
+  "dtype": "float64",
+  "seed": 57,
+  "native_optimizer": "torch.optim.AdamW",
+  "max_projected_gradient_error_vs_dense_oracle": 2.0816681711721685e-17,
+  "max_native_moment_error_vs_dense_oracle": 3.469446951953614e-18,
+  "max_boundary_forward_error": 1.7763568394002505e-15,
+  "clipping_multiplier_range": [
+    0.03291282055304781,
+    0.1260333067738416
+  ],
+  "installed_observer_step_counters": [
+    12.0,
+    12.0
+  ],
+  "observed_base_has_no_gradient": true,
+  "limitations": "One CPU linear-layer fixture with fixed prepared factors. Dense G exists only in the independent oracle. Proves observed-coordinate projection, aggregated/clipped moment bookkeeping and real-arithmetic compensation at double precision; not counterfactual policy history, FSDP, mixed precision, production hook lifetime, peak memory, rank improvement or accuracy."
+}
