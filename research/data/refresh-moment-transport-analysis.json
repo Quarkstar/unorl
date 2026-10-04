@@ -30,6 +30,31 @@
   ],
   "worst_first_max_abs_error": 2.1316282072803006e-14,
   "worst_second_max_abs_error": 3.410605131648481e-13,
+  "projected_gradient_collection": {
+    "scope": "Float64 CPU frozen 11x13 linear layer, rank-one trainable factors, four accumulated microbatches; not PEFT/FSDP or checkpoint-recomputed execution.",
+    "tokens": [
+      6,
+      10,
+      4,
+      7
+    ],
+    "trainable_parameters": 24,
+    "frozen_base_gradient_allocated": false,
+    "dense_base_gradient_product_guard_passed": true,
+    "projected_gradient_max_abs_error": 3.552713678800501e-15,
+    "native_a_gradient_max_abs_error": 1.1102230246251565e-16,
+    "native_b_gradient_max_abs_error": 1.3322676295501878e-15,
+    "native_input_gradient_max_abs_error": 8.326672684688674e-17,
+    "input_gradient_cases": [
+      false,
+      true
+    ],
+    "variable_two_and_three_dimensional_inputs": true,
+    "projected_values_per_token": 2,
+    "largest_projection_tensor_values": 20,
+    "full_dense_gradient_used_only_in_reference": true,
+    "memory_scope": "Additional hook payload contains the projected input tensor; native LoRA activation storage and end-to-end peak memory are not measured."
+  },
   "stored_output_vectors": {
     "first_moments": 3,
     "full_cross_moments": 9,
@@ -41,5 +66,5 @@
     "Apply the same loss scaling, accumulation, distributed reduction, and gradient-clipping factor to all components.",
     "Preserve Adam counters; transport does not add an optimizer update."
   ],
-  "limitations": "Exactness concerns counterfactual projected-gradient EMAs with historical dense gradients and their scaling held fixed. It does not recreate alternative rollouts, dense gradients, or the global clipping factor of a counterfactual training run. A newly chosen plane cannot recover unrecorded earlier directions. Gradient collection, FSDP integration, activation costs, peak memory and performance are untested. The prepared ten-increment trial is unchanged."
+  "limitations": "Exactness concerns counterfactual projected-gradient EMAs with historical dense gradients and their scaling held fixed. It does not recreate alternative rollouts, dense gradients, or the global clipping factor of a counterfactual training run. A newly chosen plane cannot recover unrecorded earlier directions. A toy CPU output hook validates gradient collection; PEFT/FSDP integration, checkpoint recomputation, mixed precision, activation costs, peak memory and performance remain untested. The prepared ten-increment trial is unchanged."
 }

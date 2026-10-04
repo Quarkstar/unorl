@@ -2407,7 +2407,7 @@ gB = h0 + hp
 The dense `G` is an oracle in the CPU proof, not a proposed production tensor.
 In principle, `g1` and `g2` can be accumulated from upstream output gradients
 and the two projected forward inputs, without forming a dense weight gradient.
-Then `h0` can also be obtained as `gB - hp`. That collector is unimplemented;
+Then `h0` can also be obtained as `gB - hp`. The production collector is unimplemented;
 its precision, checkpoint recomputation, distributed reduction, activation
 storage, and peak-memory costs require measurement.
 Cross moments must be formed after gradient accumulation and distributed
@@ -2470,5 +2470,50 @@ Keeping native AdamW's two arrays alongside the new statistics would add twelve
 vectors, or nine with symmetric storage; transient derived arrays also affect
 peak memory. It increases resource usage and needs a measured implementation
 before being considered a low-memory method.
+Reusing one fixed plane also limits rank growth. Every base compensation lies
+in its two input directions, so the accumulated correction has rank at most
+two. With an initially zero B and one active rank-one adapter, each layer's
+total update from the base has rank at most three, even across many cycles.
+This could still be useful compared with a rank-one baseline, but it does not
+provide unrestricted ReLoRA rank growth. Moving into additional planes would
+need additional recorded gradient information and cross moments, or another
+approximation; neither requirement is solved by this proof.
 The next planned trial remains gradual compensated rotation with its existing
 approximate moment policy, pending the completed comparison and GPU validation.
+
+
+## 49. Toy autograd collection without a dense base-gradient buffer
+
+The moment diagnostic now includes an output-hook prototype on a frozen
+11-by-13 CPU linear layer with rank-one trainable A and B. It records two
+projected input values per token during forward execution and accumulates
+`scale * grad_output.T @ projected_inputs` during backward. The hook retains
+the projected inputs rather than another full input copy. Four microbatches
+with 6, 10, 4, and 7 tokens cover variable two- and three-dimensional inputs,
+including inputs that do and do not require gradients.
+
+A separate tiny oracle enables the base-weight gradient to provide the dense
+reference. In the actual frozen branch, `base.grad` remained `None`, and a
+Torch dispatch guard rejected any matrix product with the dense base-gradient
+shape. The guard's negative control confirmed it detects such a product. The
+actual branch passed without forming that product. Native A/B gradients and
+input gradients matched their independent references. Maximum absolute errors
+were 3.55e-15 for collected projections, 1.11e-16 for A, 1.33e-15 for B, and
+8.33e-17 for input gradients. All diagnostic assertions and Ruff passed.
+
+This checks a practical algebraic mechanism for obtaining the missing gradient
+directions without making the frozen base trainable. It does not yet measure
+memory in a language model: native LoRA still retains its own activations,
+gradient collection adds projected activations and statistics, and the toy
+oracle explicitly allocates a dense reference gradient outside the actual
+branch. PEFT/FSDP integration, mixed precision, checkpoint recomputation,
+global gradient reduction/clipping, and actual peak-memory costs remain
+untested. The updated proof artifact linked above records these limits.
+
+The existing ten-increment trial and its configuration are unchanged. Its
+native GPU validation was queued at 01:08 UTC to start after the fresh standard
+run records all 100 updates, exits successfully, and releases all eight GPUs.
+The queue was verified alive at 01:13 UTC, waiting for the source run; it reads
+completion state without polling training steps. It launches the tiny
+distributed fixture rather than the full training trial. No new RL run was
+launched during this proof work.
