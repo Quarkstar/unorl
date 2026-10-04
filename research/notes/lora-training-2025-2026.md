@@ -2156,3 +2156,32 @@ Production validation needs resume inside a transition, identical planes on
 all FSDP ranks, post-compensation rollout synchronization, and peak-memory
 measurement. These are requirements for a future isolated worker, not changes
 to the running baseline. No new experiment or configuration was launched.
+
+
+## 42. Compressing gradual-refresh correction history
+
+The CPU prototype now includes `accumulate_plane_correction`. During a
+transition, each compensation has the form `scale * B_t @ (A_old - A_new)`.
+The row difference lies in the saved two-dimensional plane even when ordinary
+learning changes A and B between increments. Therefore the sum of all ten
+corrections can be recorded exactly, up to floating-point rounding, as
+`C1 @ e1 + C2 @ e2`: two accumulated output columns and the fixed input rows.
+The implementation updates only these vectors and rejects corrections outside
+the saved plane. It does not construct a dense correction matrix.
+
+A fourth CPU test compares this compressed representation with a dense sum
+across ten rotations, with new B values and learning changes to A at every
+increment. Float64 agreement passed at absolute and relative tolerance
+1e-12; an out-of-plane correction was rejected. All four transition tests
+passed in 2.59 seconds, and Ruff passed. This validates diagnostic history
+compression, not a language-model training result or an end-to-end peak-memory
+reduction. Dense base weights still exist, and distributed integration remains
+unimplemented.
+
+Two factor pairs per transition prevent history storage from growing with
+every small rotation. However, they also allow a different cumulative rank
+ceiling from one-shot refresh, which records one pair per boundary. Any future
+performance comparison must report this difference instead of attributing all
+changes to smoother optimizer adaptation. The existing standard-LoRA baseline
+remains the primary reference; another control run is not a prerequisite for
+each new method.

@@ -5,7 +5,11 @@ import math
 import pytest
 import torch
 
-from unorl.refresh_transition import make_refresh_plane, rotate_in_refresh_plane
+from unorl.refresh_transition import (
+    accumulate_plane_correction,
+    make_refresh_plane,
+    rotate_in_refresh_plane,
+)
 
 
 def test_composition_and_off_plane_preservation():
@@ -88,3 +92,24 @@ def test_invalid_transition_inputs():
         make_refresh_plane(torch.zeros_like(a), seed=17)
     with pytest.raises(ValueError):
         rotate_in_refresh_plane(a, (plane[0], plane[0]), 2)
+
+
+def test_cycle_correction_compression_with_changing_adapter_factors():
+    generator = torch.Generator().manual_seed(42)
+    a = torch.randn(1, 13, generator=generator, dtype=torch.float64)
+    plane = make_refresh_plane(a, seed=17)
+    dense = torch.zeros(11, 13, dtype=a.dtype)
+    columns = None
+    for _ in range(10):
+        # Simulate arbitrary learning changes to both factors between rotations.
+        a += 0.01 * torch.randn(a.shape, generator=generator, dtype=a.dtype)
+        b = torch.randn(11, 1, generator=generator, dtype=a.dtype)
+        new_a = rotate_in_refresh_plane(a, plane, 2)
+        dense += 32 * b @ (a - new_a)
+        columns = accumulate_plane_correction(columns, b, a, new_a, plane, scale=32)
+        a = new_a
+    reconstructed = sum(column @ unit for column, unit in zip(columns, plane))
+    torch.testing.assert_close(reconstructed, dense, atol=1e-12, rtol=1e-12)
+    assert sum(column.numel() for column in columns) == 2 * 11
+    with pytest.raises(ValueError, match="outside the saved plane"):
+        accumulate_plane_correction(columns, b, a, torch.zeros_like(a), plane, scale=32)
