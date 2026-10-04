@@ -1,0 +1,38 @@
+{
+  "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+  "through_step": 21,
+  "scheduled_switches": [],
+  "boundaries": [],
+  "training_memory_records": 168,
+  "peak_allocated_gib": 17.34379482269287,
+  "peak_reserved_gib": 18.18359375,
+  "raw_evaluation_counts": [
+    {
+      "step": 0,
+      "correct_of_240": 8,
+      "solved_of_30": 5
+    },
+    {
+      "step": 20,
+      "correct_of_240": 19,
+      "solved_of_30": 8
+    }
+  ],
+  "source_sha256": {
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/config.json": "375228611fe024d674a4441560d3e2a4938b6d3558904e39079d5061534019e7",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/initial-adapter-audit.json": "a0ad7afa4bfae124c7a89389dc05194f4581b70ff4a3cc918c8922ecf804eb9b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank0.jsonl": "a254e49bac30e3b89e03a513f190906ba5aeed4c8fcd4a71d725667e517ccd43",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank1.jsonl": "ea601e4a4321f0bba6d0c36c2f89c8f857134f6f75d15dec6af13dd5548e795c",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank2.jsonl": "00da29c17e843ea7a0b85e4550ad25d72cc08592a7ff27daa5ac6034501256c9",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank3.jsonl": "43bf42dd6c5e3253d8a1582facdf235af7bb1e672e75984f3b30fed5933b0d3c",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank4.jsonl": "36d3582d72f4c297ce8a4a0b8fc994fa573e2b74be32b41783516dbd52e98cc4",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank5.jsonl": "ade539c300e571f79273df6a85dccefca82c4b2a69c5e6257968ea87e6168ddf",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank6.jsonl": "5d4dcd6490ae43812061691de0d1fa476f2c6f4f436a13b9d28c3b4b61847a83",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank7.jsonl": "5dc62d8e728ea5bd2a72c3394c4b57f3ee785970b2d544dfe121331cf2f05a02",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/backbone-sync-audit.jsonl": "24660ce0d2447feea543aea782a707ca7813e273313c5953b2fcfdee669b4cf8",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/evaluation.jsonl": "0ccfa33bc412ad3b28894cca13511d6fdce19214d6203f0be28d9afe96f327d5",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "244d7914e46e7cedc78261d61ea01ca0dac59c0c05bf08f6c13f2258753bf058",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "b233ce30f5fd6896b33bed801fa75b0e8846ab69c420ea50edb616390b683063"
+  },
+  "limitations": "Read-only recorded-prefix audit, not a completed-run, optimizer checkpoint, live receiver tensor-equality, performance-parity or useful-rank certificate. Sources may contain later records; incomplete trailing JSONL writes are excluded. Memory is the policy allocator window, not total-device memory."
+}

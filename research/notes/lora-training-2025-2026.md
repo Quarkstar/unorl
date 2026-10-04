@@ -4187,6 +4187,21 @@ It hashes the source logs, raw evaluations and all eight optimizer/extra-state
 files. This read-only audit does not reconstruct dense model weights, test
 full-model resume or establish useful rank; those limitations remain explicit.
 
+### First full-model preparation update
+
+Update 21 completes on all eight ranks with the preparation path enabled.
+The recorded-prefix audit now covers **168** policy-memory rows. Its first
+preparation update has finite gradient norm **0.0432931**, entropy
+**0.427345**, and training correctness **18.75%**. The largest allocation
+at that update is **15.8717 GiB**, with **16.6797 GiB** reserved.
+This is not a memory saving estimate: rollout lengths and rank-local batches
+vary, and the overall prefix maxima remain 17.3438 / 18.1836 GiB.
+The retained evidence is
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-recorded-prefix-step21.json`.
+Successful update completion exercises full-model collection, but this prefix
+audit does not directly inspect the live observer buffers. The first scheduled
+transfer and its native saved state remain pending at update 40.
+
 ## 69. What the finite preparation window changes in Adam
 
 The prepared method preserves the effective weight at the switch and maps
