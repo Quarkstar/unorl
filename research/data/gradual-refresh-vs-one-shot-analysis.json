@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 92
+    "candidate": 100
   },
   "config_differences": {
     "trainer.ckpt_path": {
@@ -367,86 +367,86 @@
       }
     },
     "91-100": {
-      "updates": 2,
-      "complete": false,
+      "updates": 10,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.390625,
-          "candidate": 0.41015625,
-          "candidate_minus_control": 0.01953125,
-          "updates": 2
+          "control": 0.36171875,
+          "candidate": 0.3625,
+          "candidate_minus_control": 0.0007812500000000111,
+          "updates": 10
         },
         "policy/policy_entropy": {
-          "control": 0.12769653648138046,
-          "candidate": 0.1428055539727211,
-          "candidate_minus_control": 0.015109017491340637,
-          "updates": 2
+          "control": 0.13015204966068267,
+          "candidate": 0.13940099328756334,
+          "candidate_minus_control": 0.009248943626880668,
+          "updates": 10
         },
         "policy/grad_norm": {
-          "control": 0.03312753140926361,
-          "candidate": 0.03095789346843958,
-          "candidate_minus_control": -0.002169637940824032,
-          "updates": 2
+          "control": 0.03365762699395418,
+          "candidate": 0.03187272921204567,
+          "candidate_minus_control": -0.0017848977819085107,
+          "updates": 10
         },
         "generate/avg_num_tokens": {
-          "control": 4026.23828125,
-          "candidate": 3861.390625,
-          "candidate_minus_control": -164.84765625,
-          "updates": 2
+          "control": 4171.491796875,
+          "candidate": 4105.086328125,
+          "candidate_minus_control": -66.40546874999927,
+          "updates": 10
         },
         "updates/effective_delta_l2": {
-          "control": 0.057296770999473945,
-          "candidate": 0.055574507518200075,
-          "candidate_minus_control": -0.0017222634812738696,
-          "updates": 2
+          "control": 0.05755886273236363,
+          "candidate": 0.055888025471229515,
+          "candidate_minus_control": -0.0016708372611341157,
+          "updates": 10
         },
         "updates/cosine_with_previous_delta": {
-          "control": 0.8995301916374294,
-          "candidate": 0.906095898090981,
-          "candidate_minus_control": 0.00656570645355159,
-          "updates": 2
+          "control": 0.900219066074113,
+          "candidate": 0.9009850835708819,
+          "candidate_minus_control": 0.000766017496768967,
+          "updates": 10
         }
       }
     },
     "81-100": {
-      "updates": 12,
-      "complete": false,
+      "updates": 20,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.4075520833333333,
-          "candidate": 0.4020182291666667,
-          "candidate_minus_control": -0.00553385416666663,
-          "updates": 12
+          "control": 0.386328125,
+          "candidate": 0.3814453125,
+          "candidate_minus_control": -0.0048828125,
+          "updates": 20
         },
         "policy/policy_entropy": {
-          "control": 0.13509914154807726,
-          "candidate": 0.1410716169824203,
-          "candidate_minus_control": 0.005972475434343039,
-          "updates": 12
+          "control": 0.13336585611104965,
+          "candidate": 0.14006291143596172,
+          "candidate_minus_control": 0.006697055324912077,
+          "updates": 20
         },
         "policy/grad_norm": {
-          "control": 0.0331324702128768,
-          "candidate": 0.03215370265146097,
-          "candidate_minus_control": -0.000978767561415829,
-          "updates": 12
+          "control": 0.03339554248377681,
+          "candidate": 0.032132796850055455,
+          "candidate_minus_control": -0.0012627456337213558,
+          "updates": 20
         },
         "generate/avg_num_tokens": {
-          "control": 3862.8134765625,
-          "candidate": 3790.4241536458335,
-          "candidate_minus_control": -72.38932291666652,
-          "updates": 12
+          "control": 4000.81015625,
+          "candidate": 3940.65859375,
+          "candidate_minus_control": -60.15156250000018,
+          "updates": 20
         },
         "updates/effective_delta_l2": {
-          "control": 0.05551836547811898,
-          "candidate": 0.05520034563720562,
-          "candidate_minus_control": -0.0003180198409133625,
-          "updates": 12
+          "control": 0.05636077355310581,
+          "candidate": 0.05550676936611812,
+          "candidate_minus_control": -0.0008540041869876877,
+          "updates": 20
         },
         "updates/cosine_with_previous_delta": {
-          "control": 0.8900799889919839,
-          "candidate": 0.8992285447220132,
-          "candidate_minus_control": 0.009148555730029262,
-          "updates": 12
+          "control": 0.8942045072685039,
+          "candidate": 0.8994200788095508,
+          "candidate_minus_control": 0.005215571541046904,
+          "updates": 20
         }
       }
     }
@@ -635,6 +635,48 @@
           "question_bootstrap_95_interval": [
             -0.06666666666666667,
             0.26666666666666666
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "100": {
+      "avg@8": {
+        "candidate_minus_control": -0.016666666666666666,
+        "question_bootstrap_95_interval": [
+          -0.05,
+          0.020833333333333332
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.0,
+          "question_bootstrap_95_interval": [
+            -0.03333333333333333,
+            0.0375
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.1,
+        "question_bootstrap_95_interval": [
+          -0.23333333333333334,
+          0.0
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.06666666666666667,
+          "question_bootstrap_95_interval": [
+            -0.2,
+            0.06666666666666667
           ],
           "questions": 30,
           "bootstrap_draws": 10000,

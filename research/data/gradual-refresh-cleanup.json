@@ -1,0 +1,53 @@
+{
+  "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+  "removed": [
+    {
+      "path": "checkpoints",
+      "bytes": 17793687440
+    },
+    {
+      "path": "relora-rank-factors.pt",
+      "bytes": 33620607
+    },
+    {
+      "path": "exports/global_step_100/policy",
+      "bytes": 17657172362
+    }
+  ],
+  "total_bytes_removed": 35484480409,
+  "retained_measurement_sha256": {
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/rank-diagnostics.jsonl": "a9f600592e87ef6cbb1e69209b272cfcaafa40b91491934171e3c6d34236041c",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/evaluation.jsonl": "82c39abc4138a0742564e4da8dffdc9895882afce78889213c493e884caf2397",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank5.jsonl": "a322e26ef2cb78b494f128a9aea29edb93e1948593b8eb4eae8e1ca7004d7119",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/metrics.jsonl": "450ec097b4d37bd1811f4afcfb192c62ca1c38bcba0a26a728d63e4a64b83624",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/backbone-sync-audit.jsonl": "43294964f403ce39a505f02960acb5a24a82218745da851df5c590beedd1bc47",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/hourly-status.jsonl": "5b92bdc2b68f56b3532e03565e759a09f6ccea5270fcd296310943ffb8d6871e",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank6.jsonl": "caaff85c23de35c3396f5cbc351741a1a3610ccc44f4463b6ce135160fa74e9f",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank2.jsonl": "708c6c9a39372f90e7c928072cf8711e0bc1feff8f3dc1fd3ed613390196a80c",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank4.jsonl": "3fb20383ed658bb0d5c658ba1e9eee09fc16d94426fc9b4d22df01fad717e9fe",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/vram-samples.jsonl": "6ece62c5eac2189266903f8e6923cd6b4899cc48518b09890038db7d62627032",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/merge-audit.jsonl": "e47eb8640e967a9bb56c7033f8d801d785c6489a41070b0651749f12b9e05c46",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank1.jsonl": "0f1cef5a2918aa47155011b2676bb58ca45fff0274d4b78754dcf79db24dbfd6",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank3.jsonl": "2ef50cf7cd9a5115b6fa35c26158343bfabbb368a7ace4285ea2ca3665b1da8d",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank7.jsonl": "d8d6603e83739022254ebd515038743b19e8e4d654cf4c3ced1d5c0096604312",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank0.jsonl": "f57fafcf8d84fc58c1c45f1e9feab06717c8990633949097d24004f2a819fcf6",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_60_evals/aggregated_results.jsonl": "4dd81151ddd779f38f107b3275a54dc20df0efd23816c74474e3aab610b62d82",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "4282685d6ec299281afdb88594c92edde115583f5a8676671b7acfab328a728c",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_80_evals/aggregated_results.jsonl": "0343408ee642a8b9b3c025eb6c7cd7a35b98b5bc08c2949fdb29292226fd330f",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "33a7c33c943bcadcd9d0d35b8fef2a75878a05f49cc8227d8b46cef5716c4006",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_40_evals/aggregated_results.jsonl": "110fd324ad8a48a1a50a449bdbc8ddaf912644d9888de775c4268db9f06c2e8d",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "bd8d51e71768e509ec73cc0f4fef7086866cf76599c5817e79e57b004bcd29f1",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_0_evals/aggregated_results.jsonl": "a46af4a679a15a36b35650a45f8d8bc288fd44de92094d90db1013f102389c6c",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "abdceef33f9c7b983b4ea0bf8f1f2558f2dd1e0d3794f2b18bf895cb77facd93",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_100_evals/aggregated_results.jsonl": "ebc341306e78e2a86dff76bd624e04e49ffa44eaa6d855d921ed94ae26f88598",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "b8c5f24d5292143a3f13b749c1eaadbd608ce50c7e3f8c342f811dc4630ecd4c",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_20_evals/aggregated_results.jsonl": "478412e2fb0a17a0fc024134768c51adfacd0ee4ef39df64390e9ccaea9ffa90",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "e84f44824cc8692464c18c759be703afd69359bc10102164649e38f9acaa8118",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/config.json": "aaa4cbb8366ece900cf732ff614a4778ff63a6f03b352fad1555575e2f306b7b",
+    "/data_storage/yl_test/nzy/unorl/runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/initial-adapter-audit.json": "795f1afd09d13efb3543fffe1c1c1c738d86cc364e4155b50b988eabfcbe6d1d",
+    "runs/logs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.log": "95f59b25a1d15c8b88bda18c79232cab1bad99c425901d813fdccc97668aabe6"
+  },
+  "shared_standard_step100_preserved": true,
+  "shared_standard_checkpoint_files": 34,
+  "scope": "Only audited completed-run checkpoints, dense export policy directory and rank-factor cache removed. Logs, configuration, metrics, raw evaluations and portable research audits retained. Shared baseline verified unchanged by file size/mtime manifest."
+}

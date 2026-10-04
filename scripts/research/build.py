@@ -360,7 +360,7 @@ def fresh_refresh_observations(run):
     if run["run_id"] not in report["run_ids"].values():
         return ""
     text = "\n## Matched comparison with the fresh standard run\n\n"
-    text += "The additional fresh standard run checks the current implementation with refresh disabled; the historical standard-LoRA baseline remains valid. These independently diverged runs do not isolate the causal effect of rotation. The refresh candidate uses one 20-degree rotation at each boundary. The proposed ten-increment variant has not produced a result in this comparison.\n\n"
+    text += "The additional fresh standard run checks the current implementation with refresh disabled; the historical standard-LoRA baseline remains valid. These independently diverged runs do not isolate the causal effect of rotation. The refresh candidate uses one 20-degree rotation at each boundary. The ten-increment variant is reported separately in its [completed experiment page](qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md).\n\n"
     text += figure(
         "../figures/comparison-refresh-base-fresh.svg",
         "Standard LoRA versus one-shot compensated refresh, both starting from base with a 100-update budget. A partial standard run is not a final endpoint comparison.",

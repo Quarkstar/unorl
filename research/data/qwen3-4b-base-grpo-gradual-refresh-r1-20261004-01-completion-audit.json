@@ -1,0 +1,165 @@
+{
+  "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+  "protocol_audit_passed": true,
+  "exit_status": 0,
+  "training_updates": 100,
+  "refresh_after_updates": [
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89
+  ],
+  "training_correctness_windows": [
+    {
+      "start": 1,
+      "end": 20,
+      "correctness": 0.1244140625
+    },
+    {
+      "start": 21,
+      "end": 40,
+      "correctness": 0.229296875
+    },
+    {
+      "start": 41,
+      "end": 60,
+      "correctness": 0.3578125
+    },
+    {
+      "start": 61,
+      "end": 80,
+      "correctness": 0.3875
+    },
+    {
+      "start": 81,
+      "end": 100,
+      "correctness": 0.3814453125
+    }
+  ],
+  "initial_optimizer_audit": {
+    "optimizer": "AdamW",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
+    "trainable_parameters": 2064384
+  },
+  "training_allocator": {
+    "ranks": 8,
+    "records": 800,
+    "windows": [
+      "policy forward/backward, optimizer, and merge/reset when scheduled"
+    ],
+    "max_allocated_gib": 18.006264686584473,
+    "max_reserved_gib": 18.9453125,
+    "max_allocated_at": {
+      "step": 81,
+      "rank": 2
+    },
+    "max_reserved_at": {
+      "step": 81,
+      "rank": 2
+    }
+  },
+  "evaluations": [
+    {
+      "step": 0,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 4,
+      "solved_questions": 3,
+      "avg@8": 0.016666666666666666,
+      "pass@8": 0.1
+    },
+    {
+      "step": 20,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 14,
+      "solved_questions": 6,
+      "avg@8": 0.058333333333333334,
+      "pass@8": 0.2
+    },
+    {
+      "step": 40,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 33,
+      "solved_questions": 10,
+      "avg@8": 0.1375,
+      "pass@8": 0.3333333333333333
+    },
+    {
+      "step": 60,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 39,
+      "solved_questions": 10,
+      "avg@8": 0.1625,
+      "pass@8": 0.3333333333333333
+    },
+    {
+      "step": 80,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 39,
+      "solved_questions": 11,
+      "avg@8": 0.1625,
+      "pass@8": 0.36666666666666664
+    },
+    {
+      "step": 100,
+      "responses": 240,
+      "questions": 30,
+      "correct_responses": 37,
+      "solved_questions": 8,
+      "avg@8": 0.15416666666666667,
+      "pass@8": 0.26666666666666666
+    }
+  ],
+  "final_rank": {
+    "layers": 252,
+    "mean_stable_rank": 1.0229103126325463,
+    "mean_energy_outside_first_direction": 0.022374004926885252
+  },
+  "source_sha256": {
+    "runs/logs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.exit-status": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/config.json": "aaa4cbb8366ece900cf732ff614a4778ff63a6f03b352fad1555575e2f306b7b",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/metrics.jsonl": "450ec097b4d37bd1811f4afcfb192c62ca1c38bcba0a26a728d63e4a64b83624",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank0.jsonl": "f57fafcf8d84fc58c1c45f1e9feab06717c8990633949097d24004f2a819fcf6",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank1.jsonl": "0f1cef5a2918aa47155011b2676bb58ca45fff0274d4b78754dcf79db24dbfd6",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank2.jsonl": "708c6c9a39372f90e7c928072cf8711e0bc1feff8f3dc1fd3ed613390196a80c",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank3.jsonl": "2ef50cf7cd9a5115b6fa35c26158343bfabbb368a7ace4285ea2ca3665b1da8d",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank4.jsonl": "3fb20383ed658bb0d5c658ba1e9eee09fc16d94426fc9b4d22df01fad717e9fe",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank5.jsonl": "a322e26ef2cb78b494f128a9aea29edb93e1948593b8eb4eae8e1ca7004d7119",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank6.jsonl": "caaff85c23de35c3396f5cbc351741a1a3610ccc44f4463b6ce135160fa74e9f",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/training-memory-rank7.jsonl": "d8d6603e83739022254ebd515038743b19e8e4d654cf4c3ced1d5c0096604312",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/evaluation.jsonl": "82c39abc4138a0742564e4da8dffdc9895882afce78889213c493e884caf2397",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "abdceef33f9c7b983b4ea0bf8f1f2558f2dd1e0d3794f2b18bf895cb77facd93",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "e84f44824cc8692464c18c759be703afd69359bc10102164649e38f9acaa8118",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "bd8d51e71768e509ec73cc0f4fef7086866cf76599c5817e79e57b004bcd29f1",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "4282685d6ec299281afdb88594c92edde115583f5a8676671b7acfab328a728c",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "33a7c33c943bcadcd9d0d35b8fef2a75878a05f49cc8227d8b46cef5716c4006",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "b8c5f24d5292143a3f13b749c1eaadbd608ce50c7e3f8c342f811dc4630ecd4c",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/rank-diagnostics.jsonl": "a9f600592e87ef6cbb1e69209b272cfcaafa40b91491934171e3c6d34236041c",
+    "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/initial-adapter-audit.json": "795f1afd09d13efb3543fffe1c1c1c738d86cc364e4155b50b988eabfcbe6d1d"
+  },
+  "limitations": "This verifies the recorded protocol, not performance parity or a multi-seed result. Training allocator peaks cover the worker's declared window, not total GPU memory, inference, weight synchronization, export, or phone memory. Initial optimizer/parameter metadata comes from the recorded startup audit. No weight files are read or removed."
+}

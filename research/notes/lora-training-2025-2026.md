@@ -3519,3 +3519,116 @@ model scale, excluding accumulators and its independent oracle. Peak
 production allocation, activation retention and distributed placement remain
 unmeasured. This is an extension to investigate after the current trial, not
 an excuse to launch another experiment before a validated implementation.
+
+
+## 63. Completed gradual-refresh trial: goal not achieved
+
+The 100-update trial exited successfully at 07:50 UTC on October 4. The
+[completion audit](../data/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01-completion-audit.json)
+verifies all 100 training updates, all 800 per-rank training allocator
+records, the twenty scheduled refreshes and all six raw evaluations. The
+[actual final checkpoint audit](../data/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01-checkpoint-step100.json)
+reads all eight native optimizer and extra-state shards: counters are 100,
+the second transition is closed, and the constant-LR AdamW recipe is intact.
+All training, monitor and watcher processes have exited, and no GPU compute
+process remains. The comparison remains 100 updates from base; no 200-step
+extension or extra baseline was launched.
+
+### Final held-out result
+
+| Run | Correct responses / 240 | Solved questions / 30 | avg@8 | pass@8 |
+| --- | ---: | ---: | ---: | ---: |
+| Gradual refresh | 37 | 8 | 15.42% | 26.67% |
+| Historical standard LoRA | 48 | 13 | 20.00% | 43.33% |
+| Fresh standard LoRA | 42 | 11 | 17.50% | 36.67% |
+| One-shot warm-B refresh | 41 | 11 | 17.08% | 36.67% |
+
+Against historical standard, avg@8 differs by **-4.58 percentage points**,
+paired question-bootstrap 95% interval **[-8.33, -1.25]**. Pass@8 differs by
+**-16.67 points**, interval **[-30.00, -3.33]**. Both endpoint intervals lie
+below zero: this result should not be dismissed as equivalent performance
+or mere noise. They resample fixed questions, not training seeds. Differences
+in gain from each step-zero sample have wider intervals that include zero;
+this does not erase the lower observed final endpoint.
+
+Against fresh standard, avg@8 differs by -2.08 points, interval [-6.67, +3.33],
+and pass@8 by -10 points, interval [-23.33, +3.33]. Against one-shot, avg@8
+differs by -1.67 points, interval [-5.00, +2.08]; pass@8 differs by -10,
+interval [-23.33, 0.00]. Independent rollout trajectories and the absence of
+training-seed replication limit causal interpretation. The intended parity
+with historical standard is **not achieved**.
+
+Within the trial, step 80 to 100 changes avg@8 by -0.83 points, interval
+[-4.58, +3.75], and pass@8 by -10 points, interval [-23.33, +3.33]. Seven
+questions are solved at both checkpoints, four are lost and one is gained.
+Correct responses are concentrated among fewer solved questions: 39/11=3.55
+correct samples per solved question at 80, versus 37/8=4.625 at 100. These
+are descriptive sampling changes, not proof of an entropy-driven diversity
+collapse. The [final analysis artifact](../data/gradual-refresh-final-analysis.json)
+retains these paired-question comparisons and the coverage counts.
+
+### Training reward did not show a unique post-merge collapse
+
+| Run | Correctness 81-90 | Correctness 91-100 | Correctness 81-100 |
+| --- | ---: | ---: | ---: |
+| Gradual refresh | 40.039% | 36.250% | 38.145% |
+| Historical standard | 40.039% | 34.922% | 37.480% |
+| Fresh standard | 41.250% | 35.703% | 38.477% |
+| One-shot warm-B | 41.094% | 36.172% | 38.633% |
+
+All four runs fall in the last ten updates. Gradual refresh is not uniquely
+worse in those training windows, so this drop does not establish its own
+merge-induced failure. The changing on-policy batches may differ in
+trajectory difficulty; exact cause is not identified. Final-ten mean entropy
+is 0.13940, gradient norm 0.03187, response length 4105 tokens, physical
+update L2 0.055888 and adjacent-update cosine 0.900985. Fresh standard's
+physical update L2 is 0.055947 and one-shot's 0.057559. There is no evidence
+of a vanishing update or exploding gradient that explains the final held-out
+gap by itself. Longer responses and comparable training correctness do not
+prove improved held-out reasoning.
+
+### The rank-growth objective also remains unmet
+
+Final mean accumulated stable rank is **1.022910**, with only **2.2374%**
+mean energy outside the leading direction. Output-direction stable rank is
+1.065957, input-direction stable rank 1.700977. Energy outside the active
+output direction is 2.2553%, versus 16.3217% outside the active input
+direction. These saved-factor diagnostics exclude FP32 base-rounding
+residuals. Input refreshes retain learning but do not create much output
+diversity; the update still behaves mostly like rank one.
+
+The one-shot method ends at stable rank 1.023746 with 2.3152% outside-leading
+energy. Splitting rotation into ten increments therefore did not materially
+improve effective rank over the earlier warm-B method. The cold-reset
+constant-LR trial produced stable rank 2.160 and 53.25% outside-leading energy,
+but also failed historical-standard final accuracy. Rank capacity and useful
+learning through merges must be addressed together. Neither keeping B warm
+nor simply resetting it has established the desired combination.
+
+### Memory, cleanup and next decision
+
+Peak training allocation is **18.0063 GiB**, reservation **18.9453 GiB**, at
+step 81 on rank 2. Fresh standard's peaks are 17.9390/18.7891 GiB and
+one-shot's 18.0022/18.9473 GiB. These different-run peaks are descriptive,
+not a controlled causal estimate of overhead; they exclude inference,
+synchronization and export and are not a phone-memory estimate.
+
+After all checkpoint/spectrum audits, [scoped cleanup](../data/gradual-refresh-cleanup.json)
+removed 35,484,480,409 bytes of checkpoints, dense policy export and rank-factor
+cache. Hash checks confirm retained logs, raw evaluations and metrics are
+unchanged. The shared historical standard checkpoint at 100, including all
+26 tensor files and eight auxiliary files, remains unchanged by the recorded
+size/mtime manifest. Dataset and downloaded model files were not removed.
+
+The supported conclusion is a useful diagnostic result, not a successful
+ReLoRA method: continuity and training curves survived, substantial rank
+growth did not emerge, and the final held-out endpoint fell short. The next
+candidate must explicitly expose useful output as well as input directions
+and obtain their moment information before switching. Sections 59-62 derive
+and CPU-validate prepared projected-gradient moments, adaptive selection with
+cross moments, the normal-gradient capacity argument and a possible descent
+safeguard. None is integrated into the real worker or proven to improve RL.
+Native collector precision, microbatch/reduction/clipping rules, checkpoint
+resume, memory lifetime and inference synchronization must be validated
+before a new matched-budget trial. Do not solve this failure by extending
+the training budget or redefining success as a stable effectively rank-one run.

@@ -1,0 +1,198 @@
+{
+  "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+  "completed_updates": 100,
+  "within_trial_step80_to100": {
+    "avg@8": {
+      "candidate_minus_control": -0.008333333333333333,
+      "question_bootstrap_95_interval": [
+        -0.04583333333333333,
+        0.0375
+      ],
+      "questions": 30,
+      "bootstrap_draws": 10000,
+      "bootstrap_seed": 42
+    },
+    "pass@8": {
+      "candidate_minus_control": -0.1,
+      "question_bootstrap_95_interval": [
+        -0.23333333333333334,
+        0.03333333333333333
+      ],
+      "questions": 30,
+      "bootstrap_draws": 10000,
+      "bootstrap_seed": 42
+    }
+  },
+  "coverage_change": {
+    "solved_both": 7,
+    "lost": 4,
+    "gained": 1,
+    "unsolved_both": 18
+  },
+  "correct_responses_per_solved_question": {
+    "80": 3.5454545454545454,
+    "100": 4.625
+  },
+  "final_comparisons": {
+    "historical-standard": {
+      "avg@8": {
+        "candidate_minus_control": -0.04583333333333333,
+        "question_bootstrap_95_interval": [
+          -0.08333333333333333,
+          -0.0125
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.0375,
+          "question_bootstrap_95_interval": [
+            -0.0875,
+            0.008333333333333333
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.16666666666666666,
+        "question_bootstrap_95_interval": [
+          -0.3,
+          -0.03333333333333333
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.13333333333333333,
+          "question_bootstrap_95_interval": [
+            -0.36666666666666664,
+            0.06666666666666667
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "fresh-standard": {
+      "avg@8": {
+        "candidate_minus_control": -0.020833333333333332,
+        "question_bootstrap_95_interval": [
+          -0.06666666666666667,
+          0.03333333333333333
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.008333333333333333,
+          "question_bootstrap_95_interval": [
+            -0.0625,
+            0.05416666666666667
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.1,
+        "question_bootstrap_95_interval": [
+          -0.23333333333333334,
+          0.03333333333333333
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.06666666666666667,
+          "question_bootstrap_95_interval": [
+            -0.26666666666666666,
+            0.16666666666666666
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    },
+    "one-shot": {
+      "avg@8": {
+        "candidate_minus_control": -0.016666666666666666,
+        "question_bootstrap_95_interval": [
+          -0.05,
+          0.020833333333333332
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": 0.0,
+          "question_bootstrap_95_interval": [
+            -0.03333333333333333,
+            0.0375
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.1,
+        "question_bootstrap_95_interval": [
+          -0.23333333333333334,
+          0.0
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.06666666666666667,
+          "question_bootstrap_95_interval": [
+            -0.2,
+            0.06666666666666667
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
+    }
+  },
+  "snapshot_source_sha256": "0c92bd437d3af614079d16213bcdc223b2b5e5db2a07dcdfc8e2987f26b401b6",
+  "limitations": "Paired question bootstrap retains eight-response groups but does not measure training-seed uncertainty. Coverage/concentration changes are descriptive and do not establish a causal entropy or diversity failure.",
+  "final_rank": {
+    "layers": 252,
+    "mean_stable_rank": 1.0229103126325463,
+    "mean_energy_outside_first_direction": 0.022374004926885252
+  },
+  "final_factor_geometry": {
+    "accumulated_stable_rank": 1.022910316686241,
+    "energy_outside_active_output_direction": 0.022552587454290167,
+    "energy_outside_active_input_direction": 0.16321651790794212,
+    "normalized_output_direction_stable_rank": 1.0659569577071084,
+    "normalized_input_direction_stable_rank": 1.7009769678443314,
+    "sum_component_norms_over_accumulated_norm": 1.6888502737886508,
+    "accumulated_update_l2": 0.19464486999410963
+  },
+  "global_accumulated_update_l2": 3.342208762663065,
+  "training_allocator": {
+    "ranks": 8,
+    "records": 800,
+    "windows": [
+      "policy forward/backward, optimizer, and merge/reset when scheduled"
+    ],
+    "max_allocated_gib": 18.006264686584473,
+    "max_reserved_gib": 18.9453125,
+    "max_allocated_at": {
+      "step": 81,
+      "rank": 2
+    },
+    "max_reserved_at": {
+      "step": 81,
+      "rank": 2
+    }
+  }
+}
