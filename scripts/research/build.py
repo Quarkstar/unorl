@@ -196,6 +196,26 @@ def refresh_update_plot(
         recorded = False
         for run, color in zip(runs, COLORS):
             recorded |= line(ax, run, key, color, run["title"])
+            if key == "relora/mean_energy_outside_first_direction":
+                latest = max((row["step"] for row in run["metrics"]), default=0)
+                for path in sorted((BOOK / "data").glob(f"{run['run_id']}-factor-span-step*.json")):
+                    audit = json.loads(path.read_text())
+                    if audit["run_id"] != run["run_id"] or audit["step"] > latest:
+                        continue
+                    # Per-layer stable rank = total energy / leading energy.
+                    # These are saved-weight observations, not interpolated ranks.
+                    tail = [
+                        1 - 1 / row["accumulated_stable_rank"] for row in audit["layers"].values()
+                    ]
+                    ax.scatter(
+                        audit["step"],
+                        sum(tail) / len(tail),
+                        color=color,
+                        marker="s",
+                        s=35,
+                        label=run["title"],
+                    )
+                    recorded = True
             cfg = run["config"]
             interval = cfg.get("trainer.relora_merge_interval")
             if interval and cfg.get("trainer.relora_enable_merge", True):
@@ -210,7 +230,12 @@ def refresh_update_plot(
             ax.yaxis.set_major_formatter(PercentFormatter(1))
         if not recorded:
             ax.text(0.5, 0.5, "Not recorded yet", ha="center", transform=ax.transAxes)
-    handles, labels = axes.flat[0].get_legend_handles_labels()
+    entries = {}
+    for ax in axes.flat:
+        handles, labels = ax.get_legend_handles_labels()
+        for handle, label in zip(handles, labels):
+            entries.setdefault(label, handle)
+    labels, handles = list(entries), list(entries.values())
     fig.legend(handles, labels, loc="outside lower center", ncol=1, frameon=False, fontsize=9)
     fig.suptitle(title, fontsize=15)
     save(fig, name)
@@ -348,6 +373,8 @@ def experiment_page(run):
         text += fresh_refresh_observations(run)
     if rid == "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01":
         text += gradual_refresh_observations(run)
+    if rid == "qwen3-4b-base-grpo-prepared-r1-20261004-01":
+        text += prepared_observations(run)
     audit_path = BOOK / "data" / f"{rid}-completion-audit.json"
     if audit_path.exists():
         audit = json.loads(audit_path.read_text())
@@ -364,6 +391,44 @@ def experiment_page(run):
         text += "\nThese are policy-process allocator peaks in the worker's declared training window. They are not total GPU memory or a single-device/phone estimate; inference, weight synchronization, and export are outside this measurement. "
         text += f"[Download the completion audit and source hashes](../data/{rid}-completion-audit.json).\n"
     (BOOK / "experiments" / f"{rid}.md").write_text(text)
+
+
+def prepared_observations(run):
+    """Publish completed checkpoint audits alongside the active trial's curve."""
+    rid = run["run_id"]
+    audits = [
+        json.loads(path.read_text())
+        for path in (BOOK / "data").glob(f"{rid}-checkpoint-step*.json")
+    ]
+    if not audits:
+        return ""
+    latest = max(audits, key=lambda row: row["through_step"])
+    step = latest["through_step"]
+    if latest["run_id"] != rid:
+        raise ValueError("Prepared checkpoint audit differs from experiment page")
+    text = f"\n## Independently audited prefix through step {step}\n\n"
+    text += "This is a partial-run checkpoint audit, not a completed experiment or proof of performance parity. All eight saved optimizer states, scheduler/protocol, finite local moments, preparation state, raw evaluation groups, and the recorded training-memory prefix were checked.\n\n"
+    text += f"Training allocator peak so far: **{latest['peak_allocated_gib']:.3f} GiB allocated / {latest['peak_reserved_gib']:.3f} GiB reserved**, from **{latest['training_memory_records']} worker-update records**. These are policy allocator measurements, not total-device memory.\n\n"
+    text += f"[Download the checkpoint audit and source hashes](../data/{rid}-checkpoint-step{step}.json).\n\n"
+    path = BOOK / "data" / f"{rid}-factor-span-step{step}.json"
+    if path.exists():
+        geometry = json.loads(path.read_text())
+        if geometry["run_id"] != rid or geometry["step"] != step:
+            raise ValueError("Saved factor geometry differs from audited checkpoint")
+        rows = list(geometry["layers"].values())
+        energy = sum(row["accumulated_update_l2"] ** 2 for row in rows)
+        tail = sum(
+            row["accumulated_update_l2"] ** 2 * (1 - 1 / row["accumulated_stable_rank"])
+            for row in rows
+        )
+        text += f"Actual saved-factor mean stable rank: **{geometry['mean_layer_metrics']['accumulated_stable_rank']:.4f}**. Energy-weighted fraction outside each matrix's leading singular direction: **{100 * tail / energy:.2f}%**. This measures the accumulated factor update, excluding base-rounding residuals; it is distinct from normalized direction-span rank.\n\n"
+        text += f"[Download saved-factor diagnostics and source hashes](../data/{rid}-factor-span-step{step}.json).\n\n"
+    text += figure(
+        "../figures/prepared-update-geometry.svg",
+        "Recorded optimizer updates and boundary drift. Squares on the rank panel are independent saved-factor measurements at the indicated steps; missing ranks are not interpolated.",
+    )
+    text += "The [mathematical and checkpoint analysis](../notes/lora-training-2025-2026.md) explains finite-window Adam history, switch continuity, and rank-growth limitations. [Download the matched paired-question comparison](../data/prepared-base-comparison-analysis.json). AIME's 30 questions and a single training trajectory do not establish equivalence.\n"
+    return text
 
 
 def fresh_refresh_observations(run):
@@ -771,7 +836,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         text += (
             "\n## Prepared-history ReLoRA\n\nThe [prepared-history trial](experiments/"
             + prepared_id
-            + ".md) uses the same 100-update budget and reuses the historical standard LoRA reference. Its local descent constraint is not an accuracy guarantee. Missing evaluation points are not extrapolated; useful rank growth and performance parity remain unproven.\n\n"
+            + ".md) uses the same 100-update budget and reuses the historical standard LoRA reference. Its local descent constraint is not an accuracy guarantee. Missing evaluation points are not extrapolated; Final performance parity and benefits from accumulated rank remain unproven.\n\n"
         )
         text += figure(
             "figures/comparison-prepared.svg",

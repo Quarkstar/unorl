@@ -4650,3 +4650,95 @@ next design component, with a global energy-weighted continuity check to
 prevent numerous individually small changes from accumulating. This remains
 a design implication of the recorded update geometry, not proof that every
 direction change is harmful or that these thresholds improve RL accuracy.
+
+## 74. First post-transfer checkpoint: step 60
+
+The prepared run completed its first 20 learning updates after the transfer
+at 40. It remains active toward the originally matched 100-update endpoint;
+no recipe change or extension was made. The hourly report at 12:49:59 UTC
+observed step 59 and last-ten correctness 37.2656%; the subsequent complete
+checkpoint/evaluation below is the stronger evidence for step 60.
+
+### Matched accuracy and training trend
+
+| Evaluation step | Standard avg@8 / pass@8 | Prepared avg@8 / pass@8 |
+| ---: | ---: | ---: |
+| 0 | 2.50% / 13.33% | 3.33% / 16.67% |
+| 20 | 4.17% / 23.33% | 7.92% / 26.67% |
+| 40 | 11.25% / 26.67% | 15.00% / 40.00% |
+| 60 | 15.42% / 30.00% | 14.58% / 26.67% |
+
+The raw step-60 prepared evaluation contains **35/240 correct responses**
+and **8/30 solved questions**, checked against the logged aggregates. From
+40 to 60, correct responses decreased by one while solved questions fell
+from 12 to 8. That is a sampled coverage decline, not evidence by itself of
+a systematic collapse.
+
+| Training updates | Standard correctness | Prepared correctness |
+| --- | ---: | ---: |
+| 1–20 | 12.2461% | 11.7773% |
+| 21–40 | 23.6523% | 23.4961% |
+| 41–50 | 34.7656% | 35.3125% |
+| 51–60 | 37.9297% | 37.1484% |
+
+The complete post-switch 41–60 means are **36.3477% standard versus
+36.2305% prepared**. Training improvement continued with closely matched
+correctness, despite the switch's large geometric discontinuity. This does
+not establish test-performance parity or isolate a causal switch effect.
+
+At 60, paired-question bootstrap differences (prepared minus standard) are
+**−0.8333 percentage points avg@8**, with 95% interval **[−6.6667, +5.0000]**,
+and **−3.3333 points pass@8**, with interval **[−20.0000, +13.3333]**.
+Differences in improvement from step 0 are −1.6667 points avg@8 and −6.6667
+points pass@8; their intervals also span zero. The 10,000 draws resample
+whole matched questions with seed 42, retaining all eight samples. These
+are question-sampling intervals, not training-seed uncertainty, and neither
+prove superiority nor equivalence. Exact snapshot hashes and complete
+window metrics are in `research/data/prepared-base-comparison-analysis.json`.
+
+### Actual rank grew after the switch
+
+The independent saved-adapter analysis at 60 uses the two frozen correction
+pairs plus the actual active factors. Mean accumulated stable rank is
+**1.1386291**, compared with **1.0000000** at the compensated boundary.
+Mean per-matrix energy outside its leading singular direction is
+**11.8699%**; weighting by accumulated matrix energy gives **11.4295%**.
+These fractions follow `1 - 1 / stable_rank` for each matrix before averaging.
+Global accumulated update L2 is **2.7189159**. This is actual learned-factor
+geometry, excluding base-rounding residuals, not merely different candidate
+directions or nominal capacity.
+
+The last finite optimizer update at 60 has relative residual **0.0357644%**
+outside its saved active tangent. Unlike the 88.7543% boundary measurement,
+this is a normal within-cycle update against its own post-update factors;
+it is not another switch-continuity test. Small second-order effects remain.
+
+The first cycle therefore satisfies a useful intermediate requirement:
+measurable additional rank with continuing training improvement. It does
+not satisfy the final requirement of matching or exceeding standard LoRA
+at 100. In particular, the step-60 test endpoint is slightly lower, and the
+current sampled lead at 40 did not persist. The live run should finish its
+unchanged second preparation/transfer before choosing another design.
+
+### Checkpoint and resource audit
+
+All eight native checkpoints passed the recorded-prefix audit. Each worker
+has **504 finite native Adam moment states**, with counter **40**: twenty
+observed history updates installed at the first transfer, followed by twenty
+native updates. Scheduler step is 60; LR remains 1.5e-5 with no restart ramp.
+The preparation window is closed, correction history remains two pairs per
+adapter on rank zero, and the next collection starts at 61.
+
+All **480 worker-update memory records** are present. Prefix peak training
+allocation is **17.8149 GiB**, reservation **18.6914 GiB**. These measure the
+policy allocator's declared training window, not total GPU usage or phone
+memory. Logged backbone-plus-adapter synchronization at the first transfer
+was audited, but this audit does not establish tensor equality at the live
+receiver or full-model resume behavior.
+
+Portable evidence is retained in
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-checkpoint-step60.json`
+and
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-factor-span-step60.json`.
+The experiment page links both; square markers on the rank plot show the
+independent saved-factor measurements without interpolating missing ranks.

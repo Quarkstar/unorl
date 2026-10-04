@@ -5,7 +5,7 @@
   },
   "completed_updates": {
     "control": 100,
-    "candidate": 43
+    "candidate": 60
   },
   "config_differences": {
     "environment.env_class": {
@@ -135,74 +135,124 @@
       }
     },
     "41-45": {
-      "updates": 3,
-      "complete": false,
+      "updates": 5,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.3268229166666667,
-          "candidate": 0.3489583333333333,
-          "candidate_minus_control": 0.02213541666666663,
-          "updates": 3
+          "control": 0.35,
+          "candidate": 0.35859375,
+          "candidate_minus_control": 0.008593750000000011,
+          "updates": 5
         },
         "policy/policy_entropy": {
-          "control": 0.16314469774564108,
-          "candidate": 0.14946038027604422,
-          "candidate_minus_control": -0.013684317469596863,
-          "updates": 3
+          "control": 0.15969296991825105,
+          "candidate": 0.15197908580303193,
+          "candidate_minus_control": -0.007713884115219116,
+          "updates": 5
         },
         "policy/grad_norm": {
-          "control": 0.03479492415984472,
-          "candidate": 0.036270114282766976,
-          "candidate_minus_control": 0.001475190122922257,
-          "updates": 3
+          "control": 0.03586864396929741,
+          "candidate": 0.03529198095202446,
+          "candidate_minus_control": -0.000576663017272952,
+          "updates": 5
         },
         "generate/avg_num_tokens": {
-          "control": 2207.05078125,
-          "candidate": 2705.5989583333335,
-          "candidate_minus_control": 498.5481770833335,
-          "updates": 3
+          "control": 2319.8359375,
+          "candidate": 2768.06796875,
+          "candidate_minus_control": 448.2320312500001,
+          "updates": 5
         }
       }
     },
     "46-60": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
-    },
-    "41-50": {
-      "updates": 3,
-      "complete": false,
+      "updates": 15,
+      "complete": true,
       "metrics": {
         "reward/mean_positive_reward": {
-          "control": 0.3268229166666667,
-          "candidate": 0.3489583333333333,
-          "candidate_minus_control": 0.02213541666666663,
-          "updates": 3
+          "control": 0.36796875,
+          "candidate": 0.36354166666666665,
+          "candidate_minus_control": -0.004427083333333359,
+          "updates": 15
         },
         "policy/policy_entropy": {
-          "control": 0.16314469774564108,
-          "candidate": 0.14946038027604422,
-          "candidate_minus_control": -0.013684317469596863,
-          "updates": 3
+          "control": 0.14446916530529658,
+          "candidate": 0.14625716507434844,
+          "candidate_minus_control": 0.0017879997690518623,
+          "updates": 15
         },
         "policy/grad_norm": {
-          "control": 0.03479492415984472,
-          "candidate": 0.036270114282766976,
-          "candidate_minus_control": 0.001475190122922257,
-          "updates": 3
+          "control": 0.03475624496738116,
+          "candidate": 0.035992911209662755,
+          "candidate_minus_control": 0.001236666242281595,
+          "updates": 15
         },
         "generate/avg_num_tokens": {
-          "control": 2207.05078125,
-          "candidate": 2705.5989583333335,
-          "candidate_minus_control": 498.5481770833335,
-          "updates": 3
+          "control": 3038.2375,
+          "candidate": 3237.4203125,
+          "candidate_minus_control": 199.18281249999973,
+          "updates": 15
+        }
+      }
+    },
+    "41-50": {
+      "updates": 10,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.34765625,
+          "candidate": 0.353125,
+          "candidate_minus_control": 0.005468750000000022,
+          "updates": 10
+        },
+        "policy/policy_entropy": {
+          "control": 0.15596451312303544,
+          "candidate": 0.15021237432956697,
+          "candidate_minus_control": -0.005752138793468475,
+          "updates": 10
+        },
+        "policy/grad_norm": {
+          "control": 0.03424883112311363,
+          "candidate": 0.0363858949393034,
+          "candidate_minus_control": 0.00213706381618977,
+          "updates": 10
+        },
+        "generate/avg_num_tokens": {
+          "control": 2511.37421875,
+          "candidate": 2917.55625,
+          "candidate_minus_control": 406.1820312499999,
+          "updates": 10
         }
       }
     },
     "51-60": {
-      "updates": 0,
-      "complete": false,
-      "metrics": {}
+      "updates": 10,
+      "complete": true,
+      "metrics": {
+        "reward/mean_positive_reward": {
+          "control": 0.379296875,
+          "candidate": 0.371484375,
+          "candidate_minus_control": -0.0078125,
+          "updates": 10
+        },
+        "policy/policy_entropy": {
+          "control": 0.14058571979403495,
+          "candidate": 0.14516291618347169,
+          "candidate_minus_control": 0.0045771963894367385,
+          "updates": 10
+        },
+        "policy/grad_norm": {
+          "control": 0.03581985831260681,
+          "candidate": 0.035249462351202965,
+          "candidate_minus_control": -0.0005703959614038467,
+          "updates": 10
+        },
+        "generate/avg_num_tokens": {
+          "control": 3205.9,
+          "candidate": 3322.608203125,
+          "candidate_minus_control": 116.70820312499973,
+          "updates": 10
+        }
+      }
     },
     "61-80": {
       "updates": 0,
@@ -331,11 +381,53 @@
           "bootstrap_seed": 42
         }
       }
+    },
+    "60": {
+      "avg@8": {
+        "candidate_minus_control": -0.008333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.06666666666666667,
+          0.05
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.016666666666666666,
+          "question_bootstrap_95_interval": [
+            -0.07916666666666666,
+            0.041666666666666664
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.2,
+          0.13333333333333333
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "difference_in_improvement_from_step0": {
+          "candidate_minus_control": -0.06666666666666667,
+          "question_bootstrap_95_interval": [
+            -0.3333333333333333,
+            0.16666666666666666
+          ],
+          "questions": 30,
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42
+        }
+      }
     }
   },
   "limitations": "One control/candidate pair, not a multi-seed replication. Recipe differences are exposed explicitly. On-policy training windows contain different trajectories and are descriptive; no independent-sample confidence interval is assigned to them. Question bootstrap preserves eight-response groups but does not measure training-seed uncertainty or establish equivalence. Completion counts do not prove process success.",
   "source_sha256": {
     "research/data/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.json": "43d8b6db72737f2e8c9099cada2228cb9f2a41a85d6b09cf1282ddcaa0e9f6c8",
-    "research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01.json": "3ce722382518581348a7b0d2904a7e655005c7be9ebe690ef20d26d405b2d714"
+    "research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01.json": "8c702e221eb95c252e9b96ab055ff997ca7b8a9cd5c0ea3aa5fc165de67702b4"
   }
 }

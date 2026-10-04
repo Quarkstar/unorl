@@ -67,7 +67,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · prepared-history rank-aware ReLoRA, rank 1](experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md) | 43 | 40 | 15.0% | 40.0% | AdamW (SkyRL default) |
+| [GRPO · prepared-history rank-aware ReLoRA, rank 1](experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md) | 60 | 60 | 14.6% | 26.7% | AdamW (SkyRL default) |
 | [GRPO · ten-increment compensated refresh, rank 1](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md) | 100 | 100 | 15.4% | 26.7% | AdamW (SkyRL default) |
 | [GRPO · fresh standard rank-1 LoRA control (100 steps from base)](experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md) | 100 | 100 | 17.5% | 36.7% | AdamW (SkyRL default) |
 | [GRPO · compensated gradual refresh, rank 1 (100 steps from base)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md) | 100 | 100 | 17.1% | 36.7% | AdamW (SkyRL default) |
@@ -193,7 +193,7 @@ Step 100 precedes intervention; its difference reflects sampled starting evaluat
 
 ## Prepared-history ReLoRA
 
-The [prepared-history trial](experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md) uses the same 100-update budget and reuses the historical standard LoRA reference. Its local descent constraint is not an accuracy guarantee. Missing evaluation points are not extrapolated; useful rank growth and performance parity remain unproven.
+The [prepared-history trial](experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md) uses the same 100-update budget and reuses the historical standard LoRA reference. Its local descent constraint is not an accuracy guarantee. Missing evaluation points are not extrapolated; Final performance parity and benefits from accumulated rank remain unproven.
 
 ```{figure} figures/comparison-prepared.svg
 :alt: Google Material palette; observed training correctness and sampled AIME25 evaluations.
