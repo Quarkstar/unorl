@@ -11,7 +11,7 @@ title: "GRPO · ten-increment compensated refresh, rank 1"
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01` |
-| Record | 77 steps logged / 100 planned |
+| Record | 80 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -57,6 +57,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | 20 | 5.8% | 20.0% |
 | 40 | 13.8% | 33.3% |
 | 60 | 16.2% | 33.3% |
+| 80 | 16.2% | 36.7% |
 
 
 ## Evaluation sample counts
@@ -67,16 +68,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | aime25 | 20 | 14/240 | 6/30 |
 | aime25 | 40 | 33/240 | 10/30 |
 | aime25 | 60 | 39/240 | 10/30 |
+| aime25 | 80 | 39/240 | 11/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **10.2%** over the first 10 logged updates and **39.9%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **10.2%** over the first 10 logged updates and **37.5%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.845 at step 1 → 0.1603 at step 77.
-- Policy gradient norm: 0.03881 at step 1 → 0.03075 at step 77.
-- Mean generated response tokens: 1218 at step 1 → 3390 at step 77.
+- Logged entropy: 0.845 at step 1 → 0.1329 at step 80.
+- Policy gradient norm: 0.03881 at step 1 → 0.0213 at step 80.
+- Mean generated response tokens: 1218 at step 1 → 4494 at step 80.
 
-Best recorded AIME25 pass@8: **33.3% at step 40**. Last recorded: **33.3% at step 60**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **36.7% at step 80**. Last recorded: **36.7% at step 80**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
@@ -100,15 +102,16 @@ Historical and fresh standard LoRA, one-shot refresh, and the current ten-increm
 | 21-40 | 23.65% | 22.93% | -0.72 pp |
 | 41-50 | 34.77% | 34.06% | -0.70 pp |
 | 51-60 | 37.93% | 37.50% | -0.43 pp |
+| 61-80 | 39.26% | 38.75% | -0.51 pp |
 
-Latest common AIME25 evaluation: **step 60**.
+Latest common AIME25 evaluation: **step 80**.
 
 | Metric | Gradual minus reference | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | +0.83 pp | [-4.17, +5.42] pp |
-| avg@8: gain from step 0 | +1.67 pp | [-2.92, +6.25] pp |
-| pass@8 | +3.33 pp | [-10.00, +16.67] pp |
-| pass@8: gain from step 0 | +6.67 pp | [-13.33, +26.67] pp |
+| avg@8 | +2.50 pp | [-2.50, +7.08] pp |
+| avg@8: gain from step 0 | +3.33 pp | [-2.08, +8.75] pp |
+| pass@8 | +6.67 pp | [-10.00, +23.33] pp |
+| pass@8: gain from step 0 | +10.00 pp | [-10.00, +30.00] pp |
 
 [Download all metric windows, question-level intervals, and configuration differences](../data/gradual-refresh-vs-historical-standard-analysis.json).
 
@@ -120,15 +123,16 @@ Latest common AIME25 evaluation: **step 60**.
 | 21-40 | 21.37% | 22.93% | +1.56 pp |
 | 41-50 | 32.54% | 34.06% | +1.52 pp |
 | 51-60 | 36.33% | 37.50% | +1.17 pp |
+| 61-80 | 38.44% | 38.75% | +0.31 pp |
 
-Latest common AIME25 evaluation: **step 60**.
+Latest common AIME25 evaluation: **step 80**.
 
 | Metric | Gradual minus reference | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | +3.33 pp | [-2.08, +9.58] pp |
-| avg@8: gain from step 0 | +4.58 pp | [+0.00, +10.00] pp |
-| pass@8 | +6.67 pp | [-6.67, +20.00] pp |
-| pass@8: gain from step 0 | +10.00 pp | [-6.67, +26.67] pp |
+| avg@8 | -0.42 pp | [-5.42, +4.58] pp |
+| avg@8: gain from step 0 | +0.83 pp | [-5.42, +6.67] pp |
+| pass@8 | +0.00 pp | [-13.33, +13.33] pp |
+| pass@8: gain from step 0 | +3.33 pp | [-13.33, +20.00] pp |
 
 [Download all metric windows, question-level intervals, and configuration differences](../data/gradual-refresh-vs-fresh-standard-analysis.json).
 
@@ -140,15 +144,16 @@ Latest common AIME25 evaluation: **step 60**.
 | 21-40 | 24.71% | 22.93% | -1.78 pp |
 | 41-50 | 37.73% | 34.06% | -3.67 pp |
 | 51-60 | 38.52% | 37.50% | -1.02 pp |
+| 61-80 | 38.46% | 38.75% | +0.29 pp |
 
-Latest common AIME25 evaluation: **step 60**.
+Latest common AIME25 evaluation: **step 80**.
 
 | Metric | Gradual minus reference | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | -1.25 pp | [-4.58, +2.08] pp |
-| avg@8: gain from step 0 | +0.42 pp | [-3.33, +4.58] pp |
-| pass@8 | -3.33 pp | [-16.67, +10.00] pp |
-| pass@8: gain from step 0 | +0.00 pp | [-16.67, +16.67] pp |
+| avg@8 | -0.83 pp | [-5.83, +3.75] pp |
+| avg@8: gain from step 0 | +0.83 pp | [-4.17, +5.42] pp |
+| pass@8 | +6.67 pp | [-10.00, +23.33] pp |
+| pass@8: gain from step 0 | +10.00 pp | [-6.67, +26.67] pp |
 
 [Download all metric windows, question-level intervals, and configuration differences](../data/gradual-refresh-vs-one-shot-analysis.json).
 

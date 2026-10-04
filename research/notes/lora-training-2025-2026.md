@@ -3016,6 +3016,17 @@ Both the training process and hourly watcher remain live. The research-book
 publication and GitHub checks for the mathematical analysis also passed.
 
 
+
+A reusable read-only checkpoint auditor now checks schedule state on all eight
+ranks, active Adam counters, saved-plane agreement during transitions,
+compressed-history consistency, raw held-out scores and per-rank memory/sync
+prefixes. Its [step-60 cross-check](../data/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01-checkpoint-step60.json)
+reproduces the earlier rank, memory and evaluation audit. It also reconstructs
+the actually rotated active row for an in-transition checkpoint, rather than
+mistakenly using the saved pre-refresh update row. Full-run success still
+requires the separate completion auditor and terminal process evidence.
+
+
 ## 58. Is gradual refresh actually gaining rank?
 
 The user's objection is valid: continuity and a standard-LoRA-like reward
@@ -3272,3 +3283,87 @@ for a trial. It also changes Adam's update rule; any comparison must state
 that change explicitly. It does not recover a missing useful subspace, force
 rank growth, or rescue a vanishing projected gradient. Direction selection,
 rank accumulation and measured post-merge learning remain separate gates.
+
+
+## 61. Gradual refresh step 80: continued learning, limited rank growth
+
+Raw AIME25 sampling at step 80 contains 39 correct responses out of 240 and
+11 solved questions out of 30: **16.25% avg@8 and 36.67% pass@8**. Step 60
+also had 39 correct responses but ten solved questions. Coverage increased
+by one question; overall response accuracy did not increase in this sample.
+
+| Step-80 run | avg@8 | pass@8 |
+| --- | ---: | ---: |
+| Gradual refresh | 16.25% | 36.67% |
+| Historical standard LoRA | 13.75% | 30.00% |
+| Fresh standard control | 16.67% | 36.67% |
+| One-shot warm-B refresh | 17.08% | 30.00% |
+
+Against historical standard, avg@8 differs by +2.50 percentage points, paired
+question-bootstrap 95% interval [-2.50, +7.08]. Pass@8 differs by +6.67 points,
+interval [-10.00, +23.33]. Against fresh standard, the avg@8 difference is
+-0.42 points, interval [-5.42, +4.58], with identical pass@8. Against one-shot,
+avg@8 differs by -0.83 points, interval [-5.83, +3.75]. These intervals include
+zero and do not establish superiority or equivalence. The paired artifacts
+retain whole-question bootstrap settings and changes from each starting
+sample; they do not quantify training-seed uncertainty.
+
+### Complete training window before the second cycle
+
+The refresh after update 80 first changes training update 81. Thus the
+complete 61-80 window measures learning following the first cycle, not the
+learning effect of the second cycle.
+
+| Run | Correctness 61-80 | Entropy | Gradient norm | Response tokens |
+| --- | ---: | ---: | ---: | ---: |
+| Gradual refresh | 38.750% | 0.13867 | 0.03340 | 3693 |
+| Historical standard | 39.258% | 0.13624 | 0.03408 | 3469 |
+| Fresh standard | 38.438% | 0.14006 | 0.03289 | 3328 |
+| One-shot warm-B | 38.457% | 0.13815 | 0.03224 | 3763 |
+
+Gradual refresh is 0.508 percentage points below historical standard in this
+window. Relative to its own 41-60 mean, correctness rises by 2.969 points;
+historical standard rises by 2.910 points. The complete-window training trend
+remains similar descriptively. Physical update L2 averages 0.057868, versus
+0.053265 for fresh standard and 0.055034 for one-shot. Different on-policy
+trajectories prevent interpreting these differences as causal update-quality
+or learning-rate estimates.
+
+### Actual second-cycle state, spectrum and continuity
+
+The [step-80 checkpoint audit](../data/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01-checkpoint-step80.json)
+reads all eight actual checkpoint extra-state and optimizer files. Native
+AdamW counters equal 80 for all 504 active states per rank; LR, betas, epsilon
+and zero weight decay remain matched. All ranks agree on the new 252 fixed
+planes and transition start 80/count 1. Rank zero has four compressed
+correction pairs per layer, including the active second cycle. The active row
+is reconstructed after its real 2-degree rotation before measuring geometry.
+This is not a full-model resume test.
+
+Mean stable rank is **1.014279**, compared with 1.006414 at step 60. Mean
+energy outside the leading direction is **1.4067%**, compared with 0.6371%.
+Global update L2 is 3.135560. Energy outside the active output direction is
+1.4141%, while energy outside the active input direction is 7.5130%.
+Normalized output-column stable rank is 1.047772, versus 1.667115 for input
+rows. Rank is increasing, but most update energy still occupies one direction.
+The measured rank growth is insufficient evidence of the intended ReLoRA
+advantage. Counts of stored factors or accumulated nominal capacity must not
+replace these effective-spectrum measurements.
+
+The first increment of this cycle compensates base weights by L2 0.109900,
+with relative FP32 correction rounding error 0.032848%. Its 1024-token
+response-prefix probe gives KL 0.0004744, mean chosen-logprob absolute change
+0.007419, maximum 0.449794 and argmax flips 0.390625%. The physical optimizer
+update before that refresh has L2 0.055332 and adjacent-update cosine
+0.957542. Instantaneous numerical continuity remains imperfect; this probe
+does not establish subsequent learning or independent inference tensor equality.
+
+All 640 per-rank training allocator rows through update 80 are present. Eleven
+scheduled increments and awaited backbone-then-adapter transfers are verified:
+40-49 and 80. Peak allocation/reservation remains **17.7341/18.6719 GiB** at
+step 60 on rank 2; the run is partial, so these are not final maxima. Continue
+the remaining increments 81-89 and training through 100. Compare complete
+81-90 and 91-100 windows, final evaluation and accumulated spectrum before
+selecting the next method. Matching short-run standard LoRA scores without
+meaningful additional learned directions would not satisfy the rank-growth
+objective clarified by the user.
