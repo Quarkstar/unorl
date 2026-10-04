@@ -2654,3 +2654,52 @@ Five analysis tests passed, including rejection of treating nine affected
 updates as a completed ten-update window. Ruff passed. A direct-script import
 error in the report generator was detected and fixed before publication;
 the running training process was unaffected.
+
+
+## 53. Compensation precision: stored FP32 versus hypothetical BF16 bases
+
+A CPU-only [rounding diagnostic](../data/refresh-rounding-analysis.json)
+uses the retained historical standard adapter at step 100 and two real base
+projections: layer-0 query and layer-35 value. It holds B fixed and compares
+one 20-degree compensated rotation with ten 2-degree rotations in one plane.
+No optimizer updates, logits, reward or rollout are involved. This isolates
+numerical storage error rather than reproducing the scheduled learning trial.
+
+The runtime configuration prints `policy.inference_only_init: false`.
+SkyRL's FSDP policy initialization passes that flag as `bf16` to its model
+wrapper; false selects FP32 stored parameters. FSDP mixed-precision forward
+computation and inference engines use BF16 separately. The stored dtype is
+therefore essential when interpreting compensated merges.
+
+| Projection | Stored base | One-shot relative correction error | Ten-increment relative correction error |
+|---|---|---:|---:|
+| Layer 0 query | FP32 | 0.00276% | 0.00879% |
+| Layer 35 value | FP32 | 0.00285% | 0.00904% |
+| Layer 0 query | BF16 counterfactual | 72.01% | 96.50% |
+| Layer 35 value | BF16 counterfactual | 72.82% | 96.54% |
+
+The denominator is the norm of the intended base correction, not the norm
+of the whole weight, logits or task performance. In FP32, endpoint error
+is approximately 3.2 times larger with ten increments, but remains below
+one ten-thousandth of the intended correction for these examples. Casting
+the final FP32 bases to BF16 gives one-shot versus ten-increment element
+disagreement fractions of only 0.000477% and 0.000229%. Rotated A endpoints
+agree within 1e-7 absolute tolerance. Neither fact proves model-output
+continuity: separately executed low-rank matmuls and forward casts introduce
+additional rounding, which actual response-prefix probes must measure.
+
+If stored bases were changed to BF16, ten repeated small corrections would
+lose much of their intended effect: approximately 97.8% and 97.7% of base
+elements remain unchanged in these counterfactual simulations. This is not
+the current trial's storage scheme, and does not explain its performance
+before any merge. It warns against assuming gradual compensated rotation
+will transfer unchanged to a lower-memory BF16-base implementation. A future
+variant would need to account for accumulated rounding, perhaps through a
+retained correction representation, and measure its real memory cost.
+No such variant is implemented or launched here.
+
+The diagnostic records the adapter, model-index and loaded base-tensor
+hashes and includes an assertion that the two FP32 ten-increment endpoint
+errors stay below 0.1% of their corrections. Ruff passed. This limited result
+supports leaving the current FP32 trial unchanged while awaiting its actual
+transition probes and held-out evaluations.

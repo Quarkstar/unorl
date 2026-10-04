@@ -1,0 +1,129 @@
+{
+  "source_adapter": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/exports/global_step_100/policy/adapter_model.safetensors",
+  "source_adapter_sha256": "9734bff7027a52bda3dfd1bc094a572a815ba51c7249af835512511aa070f337",
+  "source_model_index_sha256": "d6c42883a895dfef5b0080ed2116a1bcd764f558406b98923d675978a1abf29c",
+  "scale": 32,
+  "layers": {
+    "model.layers.0.self_attn.q_proj": {
+      "shape": [
+        4096,
+        2560
+      ],
+      "loaded_base_fp32_sha256": "1fdd3117e69794eb46934ac11d52f08c12cf9f0f6f2ca76d5a34291b589389aa",
+      "source_shard": "model-00001-of-00003.safetensors",
+      "results": {
+        "torch.float32": {
+          "one_shot": {
+            "stored_base_dtype": "torch.float32",
+            "increments": 1,
+            "target_endpoint_correction_l2": 0.06975067553368801,
+            "endpoint_effective_weight_error_l2": 1.9239203096506367e-06,
+            "endpoint_relative_correction_error": 2.7582819735149753e-05,
+            "sum_increment_error_l2": 1.923918447808725e-06,
+            "increment_rms_relative_rounding": 2.7582793031523436e-05,
+            "unchanged_base_element_fraction": 0.000150299072265625
+          },
+          "ten_increments": {
+            "stored_base_dtype": "torch.float32",
+            "increments": 10,
+            "target_endpoint_correction_l2": 0.06975066095151883,
+            "endpoint_effective_weight_error_l2": 6.13205647617937e-06,
+            "endpoint_relative_correction_error": 8.791395511565892e-05,
+            "sum_increment_error_l2": 1.9239896925232887e-05,
+            "increment_rms_relative_rounding": 0.00027445386658155784,
+            "unchanged_base_element_fraction": 0.0008066177368164062
+          },
+          "endpoint_base_difference_l2": 6.427618847608508e-06,
+          "endpoint_bf16_base_element_disagreement_fraction": 4.76837158203125e-06,
+          "endpoint_a_difference_l2": 9.781351128831979e-08
+        },
+        "torch.bfloat16": {
+          "one_shot": {
+            "stored_base_dtype": "torch.bfloat16",
+            "increments": 1,
+            "target_endpoint_correction_l2": 0.06975067553368801,
+            "endpoint_effective_weight_error_l2": 0.05022426161446783,
+            "endpoint_relative_correction_error": 0.7200541246401354,
+            "sum_increment_error_l2": 0.05022426161969004,
+            "increment_rms_relative_rounding": 0.7200541244327862,
+            "unchanged_base_element_fraction": 0.8292407989501953
+          },
+          "ten_increments": {
+            "stored_base_dtype": "torch.bfloat16",
+            "increments": 10,
+            "target_endpoint_correction_l2": 0.06975066095151883,
+            "endpoint_effective_weight_error_l2": 0.06730932981881371,
+            "endpoint_relative_correction_error": 0.964999168475235,
+            "sum_increment_error_l2": 0.06795861579779565,
+            "increment_rms_relative_rounding": 0.969418106078333,
+            "unchanged_base_element_fraction": 0.9783179283142089
+          },
+          "endpoint_base_difference_l2": 0.06020788262661467,
+          "endpoint_bf16_base_element_disagreement_fraction": 0.16585092544555663,
+          "endpoint_a_difference_l2": 9.781351128831979e-08
+        }
+      }
+    },
+    "model.layers.35.self_attn.v_proj": {
+      "shape": [
+        1024,
+        2560
+      ],
+      "loaded_base_fp32_sha256": "a9f576c13c608614a898796b16f74e02328482059cadc015b55a2e035d8aa4f2",
+      "source_shard": "model-00002-of-00003.safetensors",
+      "results": {
+        "torch.float32": {
+          "one_shot": {
+            "stored_base_dtype": "torch.float32",
+            "increments": 1,
+            "target_endpoint_correction_l2": 0.03841242712816473,
+            "endpoint_effective_weight_error_l2": 1.0954802862669475e-06,
+            "endpoint_relative_correction_error": 2.851890307821034e-05,
+            "sum_increment_error_l2": 1.0954811132930894e-06,
+            "increment_rms_relative_rounding": 2.8518924600070684e-05,
+            "unchanged_base_element_fraction": 8.087158203125e-05
+          },
+          "ten_increments": {
+            "stored_base_dtype": "torch.float32",
+            "increments": 10,
+            "target_endpoint_correction_l2": 0.03841242624134795,
+            "endpoint_effective_weight_error_l2": 3.472676744397656e-06,
+            "endpoint_relative_correction_error": 9.04050351461422e-05,
+            "sum_increment_error_l2": 1.0943185121870427e-05,
+            "increment_rms_relative_rounding": 0.00028345684952415785,
+            "unchanged_base_element_fraction": 0.0002796173095703125
+          },
+          "endpoint_base_difference_l2": 3.641789143264901e-06,
+          "endpoint_bf16_base_element_disagreement_fraction": 2.288818359375e-06,
+          "endpoint_a_difference_l2": 7.287439529024375e-08
+        },
+        "torch.bfloat16": {
+          "one_shot": {
+            "stored_base_dtype": "torch.bfloat16",
+            "increments": 1,
+            "target_endpoint_correction_l2": 0.03841242712816473,
+            "endpoint_effective_weight_error_l2": 0.02797139183409761,
+            "endpoint_relative_correction_error": 0.7281860045128065,
+            "sum_increment_error_l2": 0.027971391843326143,
+            "increment_rms_relative_rounding": 0.728186004540844,
+            "unchanged_base_element_fraction": 0.8253322601318359
+          },
+          "ten_increments": {
+            "stored_base_dtype": "torch.bfloat16",
+            "increments": 10,
+            "target_endpoint_correction_l2": 0.03841242624134795,
+            "endpoint_effective_weight_error_l2": 0.03708379975965586,
+            "endpoint_relative_correction_error": 0.9654115448645645,
+            "sum_increment_error_l2": 0.037443348523871246,
+            "increment_rms_relative_rounding": 0.9698796763126015,
+            "unchanged_base_element_fraction": 0.9773262023925782
+          },
+          "endpoint_base_difference_l2": 0.03277532117215301,
+          "endpoint_bf16_base_element_disagreement_fraction": 0.16947975158691406,
+          "endpoint_a_difference_l2": 7.287439529024375e-08
+        }
+      }
+    }
+  },
+  "limitations": "Two real projection matrices and historical step-100 adapter only. CPU diagnostic holds B fixed and performs no optimizer updates; no rollout, gradient, logits, or task accuracy is measured. FP32 stored base matches current SkyRL training initialization; BF16 stored base is a counterfactual. Forward casts and separate LoRA matmuls can introduce additional errors not captured by effective-weight algebra. This does not reproduce actual step-40/80 trajectories or establish performance equivalence."
+}
