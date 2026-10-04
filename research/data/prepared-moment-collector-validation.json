@@ -1,6 +1,6 @@
 {
   "module": "unorl/prepared_moments.py",
-  "source_sha256": "619990216dd12ca554827594953dd4ee49c131ddcd3023ec6d77804f5709377f",
+  "source_sha256": "bf4eb12c45378089add57dbdd64dabdd589b72c9ea32a42b3dfa27708da61eaa",
   "tests": "tests/test_prepared_moments.py",
   "tests_passed": 8,
   "torch_version": "2.11.0+cu130",
@@ -17,5 +17,18 @@
   "resident_tensor_values_per_adapter_parameter": 9,
   "estimated_replicated_observer_mib_at_2064384_parameters": 70.875,
   "production_integrated": false,
-  "limitations": "CPU collector only. Resident tensor accounting excludes temporary products, checkpoint copies, model hooks and input activation retention. No full-model GPU peak, data-parallel reduction, FSDP optimizer installation, mixed-precision native-gradient agreement or RL performance validation."
+  "limitations": "CPU unit checks plus separately recorded tiny native FSDP2 validation. Resident tensor accounting excludes temporary products, checkpoint copies and hook activation retention until backward. No production-worker integration, full-model GPU peak, inference-engine synchronization or RL performance evidence.",
+  "hook_module": "unorl/prepared_hooks.py",
+  "hook_source_sha256": "8c39fadf1777e8f0b9c7aca7440b08a7ee5d45ae272d989476f62072fba7476f",
+  "hook_tests": "tests/test_prepared_hooks.py",
+  "hook_tests_passed": 6,
+  "combined_tests_passed": 14,
+  "hook_validation_scope": [
+    "Both reentrant and nonreentrant Torch checkpoint modes",
+    "One callback per actual training backward",
+    "Skip no-grad evaluation and disable callbacks on closed graphs",
+    "Detached activation wrapper released after backward even if output retained",
+    "Discard nonfinite native update without advancing prepared history"
+  ],
+  "native_validation_record": "prepared-moment-native-validation.json"
 }

@@ -1,0 +1,339 @@
+{
+  "ranks": [
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    },
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    },
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    },
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    },
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    },
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    },
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    },
+    {
+      "success": true,
+      "world_size": 8,
+      "layers": 14,
+      "optimizer": "AdamW",
+      "global_scheduler_step": 6,
+      "native_adam_step_after_final_update": 5,
+      "prepared_observations_at_refresh": 4,
+      "max_relative_native_gradient_projection_error": 0.006953584022662492,
+      "max_relative_observed_moment_oracle_error": 0.0007847856894953059,
+      "max_boundary_logit_abs_difference": 0.002197265625,
+      "checkpoint_replay_exact": true,
+      "constant_lrs": [
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "clipping_multipliers": [
+        0.0003186863428998894,
+        0.0005354002868753312,
+        0.0005184001924236208,
+        0.0004568892812461286,
+        0.0004101817372725055,
+        0.0004101817372725055,
+        0.00035074442759830437
+      ],
+      "native_parameter_identities_preserved": true,
+      "limitations": "Tiny native SkyRL FSDP2 Qwen fixture with gradient checkpointing, native AdamW, distinct rank-local microbatches and a separate dense oracle. Not the production RL worker, full-scale peak VRAM, an inference-engine sync test or performance evidence. BF16 gradient agreement is approximate; the collector uses FP32 projected arithmetic."
+    }
+  ],
+  "validation_scope": "Native eight-rank SkyRL FSDP2 tiny Qwen3 checkpoint/replay fixture; not a new RL experiment",
+  "exit_code": 0,
+  "torch_version": "2.11.0+cu130",
+  "skyrl_revision": "0b286bacba2bb51dfe50186b6b5d6b1e0b5f5518",
+  "source_sha256": {
+    "unorl/prepared_moments.py": "bf4eb12c45378089add57dbdd64dabdd589b72c9ea32a42b3dfa27708da61eaa",
+    "unorl/prepared_hooks.py": "8c39fadf1777e8f0b9c7aca7440b08a7ee5d45ae272d989476f62072fba7476f",
+    "scripts/check_prepared_moments_fsdp.py": "aefad011598f55168975343a44165eb431b1f8c1233e2484e4ee8027a6e39b65",
+    "tests/test_prepared_moments.py": "9a0049e45ee9946507e2b98a85c93cab182e7e24bc05c7b0e234cbe894b54ed4",
+    "tests/test_prepared_hooks.py": "abfc0ef6f80d64963041fe4b3d0f9703816b5d9c206262731cce524d3a29c16e",
+    "unorl/relora_worker.py": "a2308867c8adc1b60af6832a781bd8f0e57c69b70e6646e7c70fec2ab798dc05",
+    "unorl/low_resource.py": "7e749825313d7427096cbbbb20cb1bf81027412ae7bb2abe67ba85173e5139fc"
+  },
+  "passed_log_sha256": "b7b38e21e9e22e719d9251f0317178d8c75a5cdcc8881dd1304f9de4b6efebcb",
+  "rank_order": "ranks follows distributed all_gather_object rank order 0 through 7",
+  "precision": {
+    "stored_parameters": "FP32",
+    "fsdp_forward": "BF16",
+    "projected_statistics": "FP32",
+    "fp32_matmul": "high (native SkyRL setting retained)",
+    "basis_orthogonality_check": "FP64 Gram, tolerance 1e-5"
+  },
+  "predeclared_gates": {
+    "native_gradient_relative_error": 0.05,
+    "observed_moment_relative_error": 0.001,
+    "boundary_logit_absolute_difference": 0.02,
+    "effective_weights_rtol": 1e-05,
+    "effective_weights_atol": 1e-06,
+    "checkpoint_weights_and_optimizer_states": "bitwise exact"
+  },
+  "fixture_details": {
+    "qwen_layers": 2,
+    "hidden_size": 16,
+    "vocab_size": 32,
+    "adapter_layers": 14,
+    "adapter_rank": 1,
+    "alpha": 32,
+    "lr": 0.001,
+    "max_grad_norm": 0.001,
+    "microbatch_sequence_lengths": [
+      3,
+      5
+    ],
+    "distinct_rank_local_inputs": true,
+    "loss_normalization": "(length-1)/6 for each of two microbatches",
+    "observer_reduction": "all-reduce mean before EMA squares and observed clipping",
+    "checkpoint_global_update": 4,
+    "refresh_global_update": 5,
+    "prepared_counter_at_refresh": 4,
+    "last_global_update": 6,
+    "last_native_adam_counter": 5,
+    "gradient_checkpointing": "nonreentrant"
+  },
+  "initial_failures_and_fixes": [
+    {
+      "failure": "FP32 basis Gram falsely rejected orthonormal vectors under native high/TF32 matmul",
+      "fix": "Validate orthogonality in FP64, unchanged tolerance; no global precision override"
+    },
+    {
+      "failure": "Fixture treated SkyRL load_checkpoint return as a dictionary",
+      "fix": "Unpack actual (checkpoint_path, states) return; native API unchanged"
+    }
+  ],
+  "production_integrated": false,
+  "remaining_gates": [
+    "Production worker collection/clipping/skipped-update lifecycle",
+    "Model-scale hook activation retention and peak VRAM",
+    "Production checkpoint and inference base-then-adapter synchronization",
+    "Useful novel direction selection and measurable rank growth",
+    "Matched 100-update RL performance against retained historical standard"
+  ]
+}

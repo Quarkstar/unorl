@@ -32,8 +32,11 @@ class PreparedBasisMoments:
         for q in (qin, qout):
             if q.ndim != 2 or q.shape[1] != 2 or not torch.isfinite(q).all():
                 raise ValueError("Expected a finite two-column candidate basis")
-            eye = torch.eye(2, dtype=q.dtype, device=q.device)
-            if not torch.allclose(q.T @ q, eye, atol=1e-5, rtol=0):
+            # SkyRL enables "high" FP32 matmul precision (TF32 on CUDA).
+            # Validate geometry in double precision, rather than rejecting
+            # orthogonal FP32 vectors due to a rounded Gram product.
+            eye = torch.eye(2, dtype=torch.float64, device=q.device)
+            if not torch.allclose(q.double().T @ q.double(), eye, atol=1e-5, rtol=0):
                 raise ValueError("Candidate columns must be orthonormal")
         self.qin, self.qout = qin.detach().clone(), qout.detach().clone()
         self.beta1, self.beta2 = beta1, beta2
@@ -88,6 +91,13 @@ class PreparedBasisMoments:
         self.ca.mul_(self.beta2).add_(self._packed_square(self.ga), alpha=1 - self.beta2)
         self.cb.mul_(self.beta2).add_(self._packed_square(self.gb.T).T, alpha=1 - self.beta2)
         self.count += 1
+        self.pending_microbatches = 0
+        self.ga.zero_()
+        self.gb.zero_()
+
+    @torch.no_grad()
+    def discard_update(self):
+        """Discard a skipped native update without altering moments or counters."""
         self.pending_microbatches = 0
         self.ga.zero_()
         self.gb.zero_()

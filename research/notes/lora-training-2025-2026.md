@@ -3687,3 +3687,102 @@ versus FP32 observer precision, all-rank reduction, full model checkpoint
 resume and base-then-adapter inference synchronization. No scheduler restart,
 SGD substitution or extra baseline rerun is authorized by this implementation.
 No new full-model experiment has started.
+
+## 65. Native prepared-history transfer: eight-rank fixture passed
+
+The [native validation record](../data/prepared-moment-native-validation.json)
+contains all eight rank reports, source hashes, the SkyRL revision, precision
+settings, numerical gates and limitations. This is a tiny distributed
+implementation check, not an additional RL performance experiment or a
+replacement for the retained standard rank-one LoRA reference.
+
+### What was exercised
+
+`scripts/check_prepared_moments_fsdp.py` uses native SkyRL FSDP2 and AdamW,
+a two-layer Qwen3 model, 14 rank-one all-linear adapters and nonreentrant
+gradient checkpointing. Base/adapter storage is FP32; FSDP forward is BF16.
+Each rank uses different tokens and two unequal microbatches of sequence
+lengths three and five, weighted by their two and four prediction tokens.
+Projected gradients are accumulated, averaged across all eight ranks, then
+scaled with the native clipping multiplier before second moments are formed.
+A separate dense gradient oracle exists only in this small fixture.
+
+The observer starts after native update one. A complete native checkpoint at
+update four saves three observed updates. At update five, the fixture selects
+new A/B coefficients after observing the history, installs the mapped raw
+moments into the existing FSDP optimizer states and compensates the base
+weight. Its prepared-history counter is four, while the global scheduler is
+at five. After checkpoint reload, replaying update five and the transfer
+produces bitwise-identical effective weights and all populated native Adam
+states. Continuing once more leaves the prepared native counter at five and
+the global scheduler at six. The original Parameter objects survive; all
+seven executed updates, including the replay, use constant LR 0.001.
+
+| Check | Observed maximum, all eight ranks | Gate |
+|---|---:|---:|
+| Relative gradient projection error versus synchronized native BF16 backward | 0.00695358 | < 0.05 |
+| Relative warmed moment error versus independent observed-gradient replay | 0.000784786 | < 0.001 |
+| Boundary BF16 logit absolute difference | 0.00219727 | < 0.02 |
+| Effective FP32 weight continuity | passed | atol 1e-6, rtol 1e-5 |
+| Checkpoint replay of effective weights and native optimizer states | exact | atol 0, rtol 0 |
+
+Moment agreement is approximate under the native FP32 `high` matmul setting,
+not an exact arithmetic claim. These gates were retained rather than relaxed
+after observing the result. The fixture LR/clipping threshold and model size
+are chosen to exercise the mechanism; they are not the full-run RL recipe.
+
+### Failures investigated before the passing check
+
+The first issue was a false orthogonality rejection: SkyRL enables `high`
+FP32 matmul precision, and the FP32 Gram product rounded an actually
+orthogonal pair. A diagnostic FP64 Gram had errors around 1e-8, while its
+FP32 counterpart had errors around 1e-4. Basis validation now computes the
+small Gram in FP64 at the original 1e-5 tolerance. Native FP32 matmul settings
+and BF16 forward were not changed globally.
+
+The next failure was a fixture API mistake: SkyRL returns
+`(checkpoint_path, states)` from `load_checkpoint`. Unpacking that tuple fixes
+the checkpoint test without changing SkyRL. Both failed processes terminated
+before retry; no timeout was treated as a failed training run.
+
+The combined collector/hook CPU suite also passes all 14 cases. The hooks
+capture once per backward under either Torch checkpoint mode, skip no-grad
+evaluation, and release their captured detached activation after backward
+even when the output survives. A skipped nonfinite update discards pending
+projections without advancing the history count.
+
+### Mathematical scope and next design gate
+
+For `W_effective = W + scale * B @ A`, native histories observe only
+`scale * B.T @ G` and `scale * G @ A.T`. Arbitrary new directions contain
+gradient information those histories never recorded. A coordinate rotation
+within the same factor subspaces does not solve the rank-growth requirement;
+at rank one that internal orthogonal rotation is only a sign change.
+Ordinary Adam's diagonal second moments also omit the cross terms needed for
+general rotations. This follows from the [Adam update equations](https://arxiv.org/abs/1412.6980);
+the impossibility example and the proposed prepared statistics are our
+derivations, not claims that the paper validates this method.
+
+Prepared fixed candidate spans retain those missing projections and packed
+cross moments before selecting the next factors. The native result supports
+their implementation along the observed trajectory, with observed clipping;
+it does not reconstruct a counterfactual optimizer trajectory, preserve the
+entire pre-window history, or prove reward improvement.
+
+Unconstrained leading-SVD selection can choose the already dominant direction.
+That would repeat the gradual-refresh trial's failure to produce meaningful
+rank growth. Before a full trial, selection must therefore quantify useful
+gradient signal outside the accumulated dominant directions, and distinguish
+new rank capacity from substantial learned rank. Candidate bases must refresh
+between cycles rather than impose a fixed global low-rank span. Novelty alone
+is insufficient: orthogonal random directions can have negligible signal.
+
+The current output hook retains each full input activation until its backward
+callback, despite releasing it afterward. That can affect gradient-checkpoint
+peak memory. The 70.875 MiB observer-buffer accounting does not include this
+retention, and the tiny fixture is not a full-model memory measurement.
+Production worker lifecycle, skipped-update handling, checkpoint/resume,
+base-then-adapter inference synchronization, useful direction selection and
+model-scale peak VRAM remain gates before the matched 100-update trial.
+No new full-model RL experiment has started, and the ReLoRA performance goal
+remains unachieved.
