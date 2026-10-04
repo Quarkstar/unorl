@@ -3632,3 +3632,58 @@ Native collector precision, microbatch/reduction/clipping rules, checkpoint
 resume, memory lifetime and inference synchronization must be validated
 before a new matched-budget trial. Do not solve this failure by extending
 the training budget or redefining success as a stable effectively rank-one run.
+
+
+## 64. Implemented prepared-moment collector: CPU gates passed
+
+The isolated `unorl/prepared_moments.py` module implements the width-two
+per-cycle sufficient statistics derived above. It does not attach hooks,
+change the running model or optimizer, or launch a training recipe. The
+[collector validation record](../data/prepared-moment-collector-validation.json)
+retains source hash, installed Torch version, scope and limitations.
+
+Eight targeted tests pass. Independently replayed native AdamW moments agree
+with mapped collector moments in float32 and float64, with respective test
+tolerances 1e-5 and 1e-12. Coefficients are selected after observing the
+history. A correlated-gradient test distinguishes the correct cross-moment
+quadratic form from an incorrect sum of diagonal variances. Exact state
+restoration retains unfinished microbatch accumulations without aliasing
+checkpoint data. Invalid diagonal/cross moments, unfinished selection and
+unsupported checkpoint state are rejected.
+
+The collector processes two- and three-dimensional, including noncontiguous,
+activation/output-gradient tensors in bounded token chunks. It holds no
+activation references after accumulation and avoids forming an out-by-in
+weight gradient. A Torch-dispatch guard has both a passing collector path and
+a negative control that rejects such a dense product. This does not measure
+future model-hook activation lifetime or GPU peak memory.
+
+Packed second moments use three entries per coordinate. Including fixed
+bases, first moments, packed cross moments and gradient accumulators, actual
+observer tensor storage is **9P values**, independent of its update count.
+For the recorded P=2,064,384 and FP32, that is **70.875 MiB** per replicated
+observer: 55.125 MiB of bases/moments plus 15.75 MiB of accumulators. A storage
+test verifies the exact accounting and unchanged tensor size as history grows.
+Temporary matrix products and CPU checkpoint copies are excluded. Bases
+should be replaced between cycles rather than accumulate indefinitely; this
+storage formula does not require a fixed global rank ceiling.
+
+### Native integration requirements
+
+The SkyRL FSDP strategy clips synchronized native gradients in
+`skyrl/backends/skyrl_train/distributed/fsdp_strategy.py:152`; its returned
+norm is the pre-clipping norm. Observer microbatch projections must undergo
+the same data-parallel sum/mean and loss normalization **before** forming
+second moments, then receive the observed clipping multiplier. Squaring
+rank-local or microbatch gradients first would estimate a different quantity.
+Nonfinite/skipped native updates must not silently advance observer counters.
+
+The collector returns raw first/second moments and its own observation count;
+native Adam supplies bias correction. That count is not automatically the
+global scheduler step. FSDP state installation must write the correct shards,
+preserve native Parameter objects and leave the constant global LR schedule
+intact. Validate output hooks under gradient checkpointing, BF16 forward
+versus FP32 observer precision, all-rank reduction, full model checkpoint
+resume and base-then-adapter inference synchronization. No scheduler restart,
+SGD substitution or extra baseline rerun is authorized by this implementation.
+No new full-model experiment has started.

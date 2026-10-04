@@ -1,0 +1,21 @@
+{
+  "module": "unorl/prepared_moments.py",
+  "source_sha256": "619990216dd12ca554827594953dd4ee49c131ddcd3023ec6d77804f5709377f",
+  "tests": "tests/test_prepared_moments.py",
+  "tests_passed": 8,
+  "torch_version": "2.11.0+cu130",
+  "validation_scope": [
+    "independent native Adam oracle in float32 and float64",
+    "adaptive coefficient selection after observed history",
+    "packed cross moments including a correlated-gradient counterexample",
+    "exact partial-accumulator restoration without aliasing",
+    "noncontiguous activation projection in chunks",
+    "dense-gradient negative allocation guard",
+    "invalid-state and covariance rejection",
+    "fixed tensor storage with observation count"
+  ],
+  "resident_tensor_values_per_adapter_parameter": 9,
+  "estimated_replicated_observer_mib_at_2064384_parameters": 70.875,
+  "production_integrated": false,
+  "limitations": "CPU collector only. Resident tensor accounting excludes temporary products, checkpoint copies, model hooks and input activation retention. No full-model GPU peak, data-parallel reduction, FSDP optimizer installation, mixed-precision native-gradient agreement or RL performance validation."
+}
