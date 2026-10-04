@@ -4587,3 +4587,42 @@ optimizer state must not be inferred from the new checkpoint. Candidate
 continuity couples the A and B choices, unlike the current selector's two
 independent searches. Its cost and feasibility require evaluation before
 replacing that selector. The live recipe remains unchanged.
+
+### Applying the bound to the actual first transfer
+
+The native step-40 checkpoint stores `relora_previous_delta`, captured after
+the optimizer step and before the prepared transfer. Its two-factor
+representation therefore describes the actual finite weight update made by
+the old adapter, while the saved adapter export supplies the new directions.
+This permits a read-only geometric comparison without reconstructing the
+overwritten old Adam moments.
+
+Across all 252 layers, the recorded update norm is **0.07273559948**, agreeing
+with the logged step-40 update norm. Its orthogonal residual outside the
+new adapter tangent has norm **0.06455599901**, giving a global minimum
+relative tangent approximation error of **0.8875433690**, or **88.7543%**.
+No arbitrary first-order factor update in those new directions can approximate
+that recorded update more closely in Frobenius norm. The optimizer's actual
+mapped state can only further restrict its first-order choices.
+
+The compact computation uses projected low-rank factors and QR; four separate
+CPU float64 checks agreed with explicit dense projection to absolute squared
+norm tolerance `1e-10`. The real result and checkpoint/export hashes are in
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-factor-span-step40.json`,
+under `last_optimizer_delta_tangent_bound`.
+
+This is a strong continuity warning, not a causal accuracy conclusion. The
+reference is the actual last *finite* update, rather than the old Adam
+direction under the next fresh gradient. Simultaneous factor steps have a
+second-order term, so the tangent bound is not a general finite-step
+impossibility theorem. Future stochastic gradients can also favor different
+directions. It is consistent with, but does not fully explain, the recorded
+adjacent-update cosine of **0.234462** at step 41.
+
+The practical consequence is that the current 90% observed-score retention
+constraint should not be interpreted as 90% update continuity. A next design
+should reject candidate tangents whose geometric residual already exceeds
+its permitted continuity budget, then evaluate the actual mapped Adam
+direction for feasible candidates. Whether that intervention is needed for
+performance still depends on the matched post-transfer evaluation and rank
+measurements of the unchanged running experiment.

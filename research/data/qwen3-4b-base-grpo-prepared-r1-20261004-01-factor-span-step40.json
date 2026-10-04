@@ -2285,5 +2285,1021 @@
     "accumulated_update_l2": 0.1408735271099468
   },
   "global_update_l2": 2.4281926792211457,
-  "limitations": "Saved factor geometry only; excludes FP32 base-rounding residuals. Normalized span ranks discard component magnitudes. No future-gradient, Adam-history, causal accuracy or performance claim."
+  "limitations": "Saved factor geometry only; excludes FP32 base-rounding residuals. Normalized span ranks discard component magnitudes. No future-gradient, Adam-history, causal accuracy or performance claim.",
+  "last_optimizer_delta_tangent_bound": {
+    "layers": {
+      "base_model.model.model.layers.0.mlp.down_proj": {
+        "update_energy": 3.5581324618729e-05,
+        "minimum_tangent_error_energy": 2.811466066829207e-05
+      },
+      "base_model.model.model.layers.0.mlp.gate_proj": {
+        "update_energy": 8.902500996711053e-05,
+        "minimum_tangent_error_energy": 7.094365531663879e-05
+      },
+      "base_model.model.model.layers.0.mlp.up_proj": {
+        "update_energy": 8.958137055741999e-05,
+        "minimum_tangent_error_energy": 3.3030021743464146e-05
+      },
+      "base_model.model.model.layers.0.self_attn.k_proj": {
+        "update_energy": 8.446206457263801e-06,
+        "minimum_tangent_error_energy": 6.648192943444789e-06
+      },
+      "base_model.model.model.layers.0.self_attn.o_proj": {
+        "update_energy": 3.078205032906432e-05,
+        "minimum_tangent_error_energy": 1.4959594891268682e-05
+      },
+      "base_model.model.model.layers.0.self_attn.q_proj": {
+        "update_energy": 3.108919290658553e-05,
+        "minimum_tangent_error_energy": 1.079608355028405e-05
+      },
+      "base_model.model.model.layers.0.self_attn.v_proj": {
+        "update_energy": 1.3099659338980584e-05,
+        "minimum_tangent_error_energy": 5.000932107869295e-06
+      },
+      "base_model.model.model.layers.1.mlp.down_proj": {
+        "update_energy": 2.0331016731967146e-05,
+        "minimum_tangent_error_energy": 2.0199720724526003e-05
+      },
+      "base_model.model.model.layers.1.mlp.gate_proj": {
+        "update_energy": 7.975093617051966e-05,
+        "minimum_tangent_error_energy": 6.310536208036398e-05
+      },
+      "base_model.model.model.layers.1.mlp.up_proj": {
+        "update_energy": 9.489847486133038e-05,
+        "minimum_tangent_error_energy": 4.764517377370833e-05
+      },
+      "base_model.model.model.layers.1.self_attn.k_proj": {
+        "update_energy": 7.59672445836808e-06,
+        "minimum_tangent_error_energy": 7.379007252935675e-06
+      },
+      "base_model.model.model.layers.1.self_attn.o_proj": {
+        "update_energy": 1.578311636224976e-05,
+        "minimum_tangent_error_energy": 1.5567138903268108e-05
+      },
+      "base_model.model.model.layers.1.self_attn.q_proj": {
+        "update_energy": 2.6799103634723513e-05,
+        "minimum_tangent_error_energy": 2.3903954415779442e-05
+      },
+      "base_model.model.model.layers.1.self_attn.v_proj": {
+        "update_energy": 7.811371060939467e-06,
+        "minimum_tangent_error_energy": 7.595509606543392e-06
+      },
+      "base_model.model.model.layers.10.mlp.down_proj": {
+        "update_energy": 1.313093879886997e-05,
+        "minimum_tangent_error_energy": 1.2739890222294838e-05
+      },
+      "base_model.model.model.layers.10.mlp.gate_proj": {
+        "update_energy": 3.460309820536559e-05,
+        "minimum_tangent_error_energy": 3.360689542942689e-05
+      },
+      "base_model.model.model.layers.10.mlp.up_proj": {
+        "update_energy": 3.420583862841434e-05,
+        "minimum_tangent_error_energy": 3.338697511443505e-05
+      },
+      "base_model.model.model.layers.10.self_attn.k_proj": {
+        "update_energy": 3.9996759241283e-06,
+        "minimum_tangent_error_energy": 3.9929317708996745e-06
+      },
+      "base_model.model.model.layers.10.self_attn.o_proj": {
+        "update_energy": 1.1260362747709963e-05,
+        "minimum_tangent_error_energy": 9.703960825833487e-06
+      },
+      "base_model.model.model.layers.10.self_attn.q_proj": {
+        "update_energy": 2.0251341672907326e-05,
+        "minimum_tangent_error_energy": 1.0608405702422065e-05
+      },
+      "base_model.model.model.layers.10.self_attn.v_proj": {
+        "update_energy": 3.9180689837065776e-06,
+        "minimum_tangent_error_energy": 3.761394833901763e-06
+      },
+      "base_model.model.model.layers.11.mlp.down_proj": {
+        "update_energy": 1.3255035603260424e-05,
+        "minimum_tangent_error_energy": 1.2163207455278083e-05
+      },
+      "base_model.model.model.layers.11.mlp.gate_proj": {
+        "update_energy": 3.3608754028808e-05,
+        "minimum_tangent_error_energy": 3.288653563136525e-05
+      },
+      "base_model.model.model.layers.11.mlp.up_proj": {
+        "update_energy": 4.3457601673348535e-05,
+        "minimum_tangent_error_energy": 2.754456130144385e-05
+      },
+      "base_model.model.model.layers.11.self_attn.k_proj": {
+        "update_energy": 3.7194427408362358e-06,
+        "minimum_tangent_error_energy": 3.137352266431153e-06
+      },
+      "base_model.model.model.layers.11.self_attn.o_proj": {
+        "update_energy": 1.0660410933936484e-05,
+        "minimum_tangent_error_energy": 1.0344863095633859e-05
+      },
+      "base_model.model.model.layers.11.self_attn.q_proj": {
+        "update_energy": 1.40022344558466e-05,
+        "minimum_tangent_error_energy": 1.3794885473186094e-05
+      },
+      "base_model.model.model.layers.11.self_attn.v_proj": {
+        "update_energy": 3.96096647862371e-06,
+        "minimum_tangent_error_energy": 1.399640214678722e-06
+      },
+      "base_model.model.model.layers.12.mlp.down_proj": {
+        "update_energy": 1.603526446559263e-05,
+        "minimum_tangent_error_energy": 9.160702239266508e-06
+      },
+      "base_model.model.model.layers.12.mlp.gate_proj": {
+        "update_energy": 4.775247788902716e-05,
+        "minimum_tangent_error_energy": 1.9931510727049857e-05
+      },
+      "base_model.model.model.layers.12.mlp.up_proj": {
+        "update_energy": 5.229502441272737e-05,
+        "minimum_tangent_error_energy": 2.0686466565988496e-05
+      },
+      "base_model.model.model.layers.12.self_attn.k_proj": {
+        "update_energy": 3.3677897810782835e-06,
+        "minimum_tangent_error_energy": 2.7840795612314755e-06
+      },
+      "base_model.model.model.layers.12.self_attn.o_proj": {
+        "update_energy": 1.236822804770308e-05,
+        "minimum_tangent_error_energy": 9.535628181265033e-06
+      },
+      "base_model.model.model.layers.12.self_attn.q_proj": {
+        "update_energy": 1.720349826159154e-05,
+        "minimum_tangent_error_energy": 1.0493766792563833e-05
+      },
+      "base_model.model.model.layers.12.self_attn.v_proj": {
+        "update_energy": 4.761883809790791e-06,
+        "minimum_tangent_error_energy": 4.423513338389572e-06
+      },
+      "base_model.model.model.layers.13.mlp.down_proj": {
+        "update_energy": 1.1537721762788294e-05,
+        "minimum_tangent_error_energy": 1.1295315397383603e-05
+      },
+      "base_model.model.model.layers.13.mlp.gate_proj": {
+        "update_energy": 3.793192522513808e-05,
+        "minimum_tangent_error_energy": 3.529895507107762e-05
+      },
+      "base_model.model.model.layers.13.mlp.up_proj": {
+        "update_energy": 4.046359091377878e-05,
+        "minimum_tangent_error_energy": 3.9439004175317406e-05
+      },
+      "base_model.model.model.layers.13.self_attn.k_proj": {
+        "update_energy": 4.129549234328048e-06,
+        "minimum_tangent_error_energy": 3.0262230734940647e-06
+      },
+      "base_model.model.model.layers.13.self_attn.o_proj": {
+        "update_energy": 9.284094354072823e-06,
+        "minimum_tangent_error_energy": 9.20235414952492e-06
+      },
+      "base_model.model.model.layers.13.self_attn.q_proj": {
+        "update_energy": 1.486846470022303e-05,
+        "minimum_tangent_error_energy": 6.14334980799662e-06
+      },
+      "base_model.model.model.layers.13.self_attn.v_proj": {
+        "update_energy": 4.928522135072008e-06,
+        "minimum_tangent_error_energy": 4.615323902453978e-06
+      },
+      "base_model.model.model.layers.14.mlp.down_proj": {
+        "update_energy": 1.1930229509299628e-05,
+        "minimum_tangent_error_energy": 1.1592229568291845e-05
+      },
+      "base_model.model.model.layers.14.mlp.gate_proj": {
+        "update_energy": 4.071834816014025e-05,
+        "minimum_tangent_error_energy": 2.2156489053124314e-05
+      },
+      "base_model.model.model.layers.14.mlp.up_proj": {
+        "update_energy": 3.6426614795196936e-05,
+        "minimum_tangent_error_energy": 3.630004454762485e-05
+      },
+      "base_model.model.model.layers.14.self_attn.k_proj": {
+        "update_energy": 3.5880995580080865e-06,
+        "minimum_tangent_error_energy": 3.5809061935280727e-06
+      },
+      "base_model.model.model.layers.14.self_attn.o_proj": {
+        "update_energy": 1.4501472226289738e-05,
+        "minimum_tangent_error_energy": 1.2346007374540088e-05
+      },
+      "base_model.model.model.layers.14.self_attn.q_proj": {
+        "update_energy": 1.607481735952902e-05,
+        "minimum_tangent_error_energy": 1.5711175722087024e-05
+      },
+      "base_model.model.model.layers.14.self_attn.v_proj": {
+        "update_energy": 4.266449677164175e-06,
+        "minimum_tangent_error_energy": 1.9415952562340868e-06
+      },
+      "base_model.model.model.layers.15.mlp.down_proj": {
+        "update_energy": 1.804992135441668e-05,
+        "minimum_tangent_error_energy": 8.722648870652227e-06
+      },
+      "base_model.model.model.layers.15.mlp.gate_proj": {
+        "update_energy": 4.4436961517983465e-05,
+        "minimum_tangent_error_energy": 2.15759392269136e-05
+      },
+      "base_model.model.model.layers.15.mlp.up_proj": {
+        "update_energy": 4.58088304264917e-05,
+        "minimum_tangent_error_energy": 2.2663650786269908e-05
+      },
+      "base_model.model.model.layers.15.self_attn.k_proj": {
+        "update_energy": 4.057888947931733e-06,
+        "minimum_tangent_error_energy": 2.4668954024801983e-06
+      },
+      "base_model.model.model.layers.15.self_attn.o_proj": {
+        "update_energy": 1.220122435993915e-05,
+        "minimum_tangent_error_energy": 1.1976739356411227e-05
+      },
+      "base_model.model.model.layers.15.self_attn.q_proj": {
+        "update_energy": 1.4259442721519921e-05,
+        "minimum_tangent_error_energy": 1.3836132130901324e-05
+      },
+      "base_model.model.model.layers.15.self_attn.v_proj": {
+        "update_energy": 6.069042605453951e-06,
+        "minimum_tangent_error_energy": 1.8181154482658463e-06
+      },
+      "base_model.model.model.layers.16.mlp.down_proj": {
+        "update_energy": 1.0959914556794612e-05,
+        "minimum_tangent_error_energy": 1.0859314628324229e-05
+      },
+      "base_model.model.model.layers.16.mlp.gate_proj": {
+        "update_energy": 3.707844275711787e-05,
+        "minimum_tangent_error_energy": 2.1383528358748973e-05
+      },
+      "base_model.model.model.layers.16.mlp.up_proj": {
+        "update_energy": 4.187718300483569e-05,
+        "minimum_tangent_error_energy": 4.065468609586378e-05
+      },
+      "base_model.model.model.layers.16.self_attn.k_proj": {
+        "update_energy": 3.3993211321589955e-06,
+        "minimum_tangent_error_energy": 3.267363617065272e-06
+      },
+      "base_model.model.model.layers.16.self_attn.o_proj": {
+        "update_energy": 1.314857687658316e-05,
+        "minimum_tangent_error_energy": 8.788374451891682e-06
+      },
+      "base_model.model.model.layers.16.self_attn.q_proj": {
+        "update_energy": 1.8008941256345572e-05,
+        "minimum_tangent_error_energy": 1.5275028973272073e-05
+      },
+      "base_model.model.model.layers.16.self_attn.v_proj": {
+        "update_energy": 4.710278540636755e-06,
+        "minimum_tangent_error_energy": 4.3999129258991265e-06
+      },
+      "base_model.model.model.layers.17.mlp.down_proj": {
+        "update_energy": 1.2800881650054754e-05,
+        "minimum_tangent_error_energy": 7.973700992162325e-06
+      },
+      "base_model.model.model.layers.17.mlp.gate_proj": {
+        "update_energy": 3.82419357503032e-05,
+        "minimum_tangent_error_energy": 3.730766965263412e-05
+      },
+      "base_model.model.model.layers.17.mlp.up_proj": {
+        "update_energy": 3.9271320976057335e-05,
+        "minimum_tangent_error_energy": 3.894193201822259e-05
+      },
+      "base_model.model.model.layers.17.self_attn.k_proj": {
+        "update_energy": 5.1237381101092776e-06,
+        "minimum_tangent_error_energy": 2.6528836637263966e-06
+      },
+      "base_model.model.model.layers.17.self_attn.o_proj": {
+        "update_energy": 1.2390869115309433e-05,
+        "minimum_tangent_error_energy": 1.2347937393692918e-05
+      },
+      "base_model.model.model.layers.17.self_attn.q_proj": {
+        "update_energy": 1.6229936866052297e-05,
+        "minimum_tangent_error_energy": 1.6182513884881946e-05
+      },
+      "base_model.model.model.layers.17.self_attn.v_proj": {
+        "update_energy": 4.627923207542475e-06,
+        "minimum_tangent_error_energy": 3.345405569744716e-06
+      },
+      "base_model.model.model.layers.18.mlp.down_proj": {
+        "update_energy": 1.4180048575198622e-05,
+        "minimum_tangent_error_energy": 1.4058917890323466e-05
+      },
+      "base_model.model.model.layers.18.mlp.gate_proj": {
+        "update_energy": 4.569957850035693e-05,
+        "minimum_tangent_error_energy": 4.4441299398504825e-05
+      },
+      "base_model.model.model.layers.18.mlp.up_proj": {
+        "update_energy": 3.8851984680722564e-05,
+        "minimum_tangent_error_energy": 3.8511252787737375e-05
+      },
+      "base_model.model.model.layers.18.self_attn.k_proj": {
+        "update_energy": 3.6938153147508354e-06,
+        "minimum_tangent_error_energy": 1.5982842388997802e-06
+      },
+      "base_model.model.model.layers.18.self_attn.o_proj": {
+        "update_energy": 1.3059274643738273e-05,
+        "minimum_tangent_error_energy": 7.009859787676342e-06
+      },
+      "base_model.model.model.layers.18.self_attn.q_proj": {
+        "update_energy": 1.5801582551140424e-05,
+        "minimum_tangent_error_energy": 1.5084785426757165e-05
+      },
+      "base_model.model.model.layers.18.self_attn.v_proj": {
+        "update_energy": 4.587874541417513e-06,
+        "minimum_tangent_error_energy": 4.418564037299022e-06
+      },
+      "base_model.model.model.layers.19.mlp.down_proj": {
+        "update_energy": 1.329820858758504e-05,
+        "minimum_tangent_error_energy": 1.2821678245291534e-05
+      },
+      "base_model.model.model.layers.19.mlp.gate_proj": {
+        "update_energy": 5.2290421623227856e-05,
+        "minimum_tangent_error_energy": 2.3602244099086967e-05
+      },
+      "base_model.model.model.layers.19.mlp.up_proj": {
+        "update_energy": 4.1593739416114274e-05,
+        "minimum_tangent_error_energy": 3.4900782952755514e-05
+      },
+      "base_model.model.model.layers.19.self_attn.k_proj": {
+        "update_energy": 4.4710569953434696e-06,
+        "minimum_tangent_error_energy": 2.271765234363975e-06
+      },
+      "base_model.model.model.layers.19.self_attn.o_proj": {
+        "update_energy": 1.4432439823196833e-05,
+        "minimum_tangent_error_energy": 1.3645414756288378e-05
+      },
+      "base_model.model.model.layers.19.self_attn.q_proj": {
+        "update_energy": 2.2127562631634357e-05,
+        "minimum_tangent_error_energy": 2.1791933736308906e-05
+      },
+      "base_model.model.model.layers.19.self_attn.v_proj": {
+        "update_energy": 4.787891465708488e-06,
+        "minimum_tangent_error_energy": 4.088272790614059e-06
+      },
+      "base_model.model.model.layers.2.mlp.down_proj": {
+        "update_energy": 2.5185788447088102e-05,
+        "minimum_tangent_error_energy": 1.075827505618105e-05
+      },
+      "base_model.model.model.layers.2.mlp.gate_proj": {
+        "update_energy": 5.0540196279656334e-05,
+        "minimum_tangent_error_energy": 3.4605467728639326e-05
+      },
+      "base_model.model.model.layers.2.mlp.up_proj": {
+        "update_energy": 5.3828560250086964e-05,
+        "minimum_tangent_error_energy": 5.2639434945243974e-05
+      },
+      "base_model.model.model.layers.2.self_attn.k_proj": {
+        "update_energy": 6.4770196568840645e-06,
+        "minimum_tangent_error_energy": 3.809517869455574e-06
+      },
+      "base_model.model.model.layers.2.self_attn.o_proj": {
+        "update_energy": 2.142796432394023e-05,
+        "minimum_tangent_error_energy": 1.3528686080044298e-05
+      },
+      "base_model.model.model.layers.2.self_attn.q_proj": {
+        "update_energy": 2.5655097260802498e-05,
+        "minimum_tangent_error_energy": 2.382273827755778e-05
+      },
+      "base_model.model.model.layers.2.self_attn.v_proj": {
+        "update_energy": 9.285445538705965e-06,
+        "minimum_tangent_error_energy": 4.8927539648585325e-06
+      },
+      "base_model.model.model.layers.20.mlp.down_proj": {
+        "update_energy": 1.3683743585954264e-05,
+        "minimum_tangent_error_energy": 1.2527635269353446e-05
+      },
+      "base_model.model.model.layers.20.mlp.gate_proj": {
+        "update_energy": 3.6883092081377915e-05,
+        "minimum_tangent_error_energy": 3.654208161475981e-05
+      },
+      "base_model.model.model.layers.20.mlp.up_proj": {
+        "update_energy": 3.7428510331547564e-05,
+        "minimum_tangent_error_energy": 3.535648829297264e-05
+      },
+      "base_model.model.model.layers.20.self_attn.k_proj": {
+        "update_energy": 4.411162406669837e-06,
+        "minimum_tangent_error_energy": 4.35422115604686e-06
+      },
+      "base_model.model.model.layers.20.self_attn.o_proj": {
+        "update_energy": 1.3453489413104652e-05,
+        "minimum_tangent_error_energy": 1.3178032661608454e-05
+      },
+      "base_model.model.model.layers.20.self_attn.q_proj": {
+        "update_energy": 1.600973235796883e-05,
+        "minimum_tangent_error_energy": 1.58697647983733e-05
+      },
+      "base_model.model.model.layers.20.self_attn.v_proj": {
+        "update_energy": 3.779514871037664e-06,
+        "minimum_tangent_error_energy": 2.905950906884283e-06
+      },
+      "base_model.model.model.layers.21.mlp.down_proj": {
+        "update_energy": 9.360982430998222e-06,
+        "minimum_tangent_error_energy": 9.353100581029428e-06
+      },
+      "base_model.model.model.layers.21.mlp.gate_proj": {
+        "update_energy": 3.757593202064697e-05,
+        "minimum_tangent_error_energy": 3.720015766066318e-05
+      },
+      "base_model.model.model.layers.21.mlp.up_proj": {
+        "update_energy": 5.005686806945173e-05,
+        "minimum_tangent_error_energy": 3.752933087921815e-05
+      },
+      "base_model.model.model.layers.21.self_attn.k_proj": {
+        "update_energy": 4.44516786291909e-06,
+        "minimum_tangent_error_energy": 2.429964481996159e-06
+      },
+      "base_model.model.model.layers.21.self_attn.o_proj": {
+        "update_energy": 1.4946769251245364e-05,
+        "minimum_tangent_error_energy": 1.2310463414314949e-05
+      },
+      "base_model.model.model.layers.21.self_attn.q_proj": {
+        "update_energy": 1.5636029021968674e-05,
+        "minimum_tangent_error_energy": 1.544610904409551e-05
+      },
+      "base_model.model.model.layers.21.self_attn.v_proj": {
+        "update_energy": 5.224270449020592e-06,
+        "minimum_tangent_error_energy": 4.883921390213344e-06
+      },
+      "base_model.model.model.layers.22.mlp.down_proj": {
+        "update_energy": 1.2100715386540882e-05,
+        "minimum_tangent_error_energy": 7.472464184340447e-06
+      },
+      "base_model.model.model.layers.22.mlp.gate_proj": {
+        "update_energy": 4.259571912829928e-05,
+        "minimum_tangent_error_energy": 3.2229167330619114e-05
+      },
+      "base_model.model.model.layers.22.mlp.up_proj": {
+        "update_energy": 3.4902351592492546e-05,
+        "minimum_tangent_error_energy": 3.4798342563073585e-05
+      },
+      "base_model.model.model.layers.22.self_attn.k_proj": {
+        "update_energy": 3.827305387010094e-06,
+        "minimum_tangent_error_energy": 2.683024841346051e-06
+      },
+      "base_model.model.model.layers.22.self_attn.o_proj": {
+        "update_energy": 9.392211654519119e-06,
+        "minimum_tangent_error_energy": 9.287949561325063e-06
+      },
+      "base_model.model.model.layers.22.self_attn.q_proj": {
+        "update_energy": 1.8840125298705428e-05,
+        "minimum_tangent_error_energy": 1.7165044233946237e-05
+      },
+      "base_model.model.model.layers.22.self_attn.v_proj": {
+        "update_energy": 4.8249125497929235e-06,
+        "minimum_tangent_error_energy": 4.621264722891082e-06
+      },
+      "base_model.model.model.layers.23.mlp.down_proj": {
+        "update_energy": 2.1503658990871075e-05,
+        "minimum_tangent_error_energy": 1.7876741157916723e-05
+      },
+      "base_model.model.model.layers.23.mlp.gate_proj": {
+        "update_energy": 3.494648823082585e-05,
+        "minimum_tangent_error_energy": 3.482291992392622e-05
+      },
+      "base_model.model.model.layers.23.mlp.up_proj": {
+        "update_energy": 3.5029086046148206e-05,
+        "minimum_tangent_error_energy": 3.482631372618935e-05
+      },
+      "base_model.model.model.layers.23.self_attn.k_proj": {
+        "update_energy": 3.7510755457847016e-06,
+        "minimum_tangent_error_energy": 3.7482685507699854e-06
+      },
+      "base_model.model.model.layers.23.self_attn.o_proj": {
+        "update_energy": 9.729916734079938e-06,
+        "minimum_tangent_error_energy": 9.67279391648651e-06
+      },
+      "base_model.model.model.layers.23.self_attn.q_proj": {
+        "update_energy": 1.5852755076526905e-05,
+        "minimum_tangent_error_energy": 1.310147001251076e-05
+      },
+      "base_model.model.model.layers.23.self_attn.v_proj": {
+        "update_energy": 4.835054882341812e-06,
+        "minimum_tangent_error_energy": 4.678541830921503e-06
+      },
+      "base_model.model.model.layers.24.mlp.down_proj": {
+        "update_energy": 1.2388562247610649e-05,
+        "minimum_tangent_error_energy": 6.0298052426137775e-06
+      },
+      "base_model.model.model.layers.24.mlp.gate_proj": {
+        "update_energy": 3.5373498456766044e-05,
+        "minimum_tangent_error_energy": 3.482948691900605e-05
+      },
+      "base_model.model.model.layers.24.mlp.up_proj": {
+        "update_energy": 3.574742211597027e-05,
+        "minimum_tangent_error_energy": 3.5373400701934e-05
+      },
+      "base_model.model.model.layers.24.self_attn.k_proj": {
+        "update_energy": 4.110038927515714e-06,
+        "minimum_tangent_error_energy": 3.5768596548749846e-06
+      },
+      "base_model.model.model.layers.24.self_attn.o_proj": {
+        "update_energy": 1.2426532901450396e-05,
+        "minimum_tangent_error_energy": 1.2162420500783455e-05
+      },
+      "base_model.model.model.layers.24.self_attn.q_proj": {
+        "update_energy": 1.6451239650767772e-05,
+        "minimum_tangent_error_energy": 1.262488685635502e-05
+      },
+      "base_model.model.model.layers.24.self_attn.v_proj": {
+        "update_energy": 4.002284592858486e-06,
+        "minimum_tangent_error_energy": 3.999126286411242e-06
+      },
+      "base_model.model.model.layers.25.mlp.down_proj": {
+        "update_energy": 2.211524769382706e-05,
+        "minimum_tangent_error_energy": 7.006598271565156e-06
+      },
+      "base_model.model.model.layers.25.mlp.gate_proj": {
+        "update_energy": 3.5893440676217505e-05,
+        "minimum_tangent_error_energy": 3.327681489174201e-05
+      },
+      "base_model.model.model.layers.25.mlp.up_proj": {
+        "update_energy": 3.337883603535702e-05,
+        "minimum_tangent_error_energy": 3.3285326086298186e-05
+      },
+      "base_model.model.model.layers.25.self_attn.k_proj": {
+        "update_energy": 3.84080527298755e-06,
+        "minimum_tangent_error_energy": 3.8377614299871005e-06
+      },
+      "base_model.model.model.layers.25.self_attn.o_proj": {
+        "update_energy": 1.0099444778847971e-05,
+        "minimum_tangent_error_energy": 1.006812656832958e-05
+      },
+      "base_model.model.model.layers.25.self_attn.q_proj": {
+        "update_energy": 1.9135915365254497e-05,
+        "minimum_tangent_error_energy": 1.858640242030962e-05
+      },
+      "base_model.model.model.layers.25.self_attn.v_proj": {
+        "update_energy": 3.9648397226817705e-06,
+        "minimum_tangent_error_energy": 3.872622500784118e-06
+      },
+      "base_model.model.model.layers.26.mlp.down_proj": {
+        "update_energy": 9.057867624077982e-06,
+        "minimum_tangent_error_energy": 9.047959824385907e-06
+      },
+      "base_model.model.model.layers.26.mlp.gate_proj": {
+        "update_energy": 4.2138616955698845e-05,
+        "minimum_tangent_error_energy": 3.438501546843754e-05
+      },
+      "base_model.model.model.layers.26.mlp.up_proj": {
+        "update_energy": 3.491249388691868e-05,
+        "minimum_tangent_error_energy": 3.471050363390424e-05
+      },
+      "base_model.model.model.layers.26.self_attn.k_proj": {
+        "update_energy": 3.558436457427269e-06,
+        "minimum_tangent_error_energy": 2.540413392725864e-06
+      },
+      "base_model.model.model.layers.26.self_attn.o_proj": {
+        "update_energy": 1.054941353709384e-05,
+        "minimum_tangent_error_energy": 1.0456301393153276e-05
+      },
+      "base_model.model.model.layers.26.self_attn.q_proj": {
+        "update_energy": 1.4190683449248394e-05,
+        "minimum_tangent_error_energy": 1.3726675390326679e-05
+      },
+      "base_model.model.model.layers.26.self_attn.v_proj": {
+        "update_energy": 4.926794912406624e-06,
+        "minimum_tangent_error_energy": 2.4488974793862917e-06
+      },
+      "base_model.model.model.layers.27.mlp.down_proj": {
+        "update_energy": 9.658000331838127e-06,
+        "minimum_tangent_error_energy": 9.563072220432725e-06
+      },
+      "base_model.model.model.layers.27.mlp.gate_proj": {
+        "update_energy": 3.036874377530435e-05,
+        "minimum_tangent_error_energy": 3.0268054801220198e-05
+      },
+      "base_model.model.model.layers.27.mlp.up_proj": {
+        "update_energy": 4.460127950055534e-05,
+        "minimum_tangent_error_energy": 2.4917345776910897e-05
+      },
+      "base_model.model.model.layers.27.self_attn.k_proj": {
+        "update_energy": 3.4948898801576658e-06,
+        "minimum_tangent_error_energy": 3.0249481162090626e-06
+      },
+      "base_model.model.model.layers.27.self_attn.o_proj": {
+        "update_energy": 1.0503112564284189e-05,
+        "minimum_tangent_error_energy": 5.205861647611076e-06
+      },
+      "base_model.model.model.layers.27.self_attn.q_proj": {
+        "update_energy": 1.501004850563082e-05,
+        "minimum_tangent_error_energy": 9.005039512713428e-06
+      },
+      "base_model.model.model.layers.27.self_attn.v_proj": {
+        "update_energy": 3.770090290088598e-06,
+        "minimum_tangent_error_energy": 3.517810462234926e-06
+      },
+      "base_model.model.model.layers.28.mlp.down_proj": {
+        "update_energy": 1.409858734979681e-05,
+        "minimum_tangent_error_energy": 9.137576366009694e-06
+      },
+      "base_model.model.model.layers.28.mlp.gate_proj": {
+        "update_energy": 3.53213494116652e-05,
+        "minimum_tangent_error_energy": 3.329335159964895e-05
+      },
+      "base_model.model.model.layers.28.mlp.up_proj": {
+        "update_energy": 3.513851023306864e-05,
+        "minimum_tangent_error_energy": 3.488178839953157e-05
+      },
+      "base_model.model.model.layers.28.self_attn.k_proj": {
+        "update_energy": 4.071546155468839e-06,
+        "minimum_tangent_error_energy": 3.4351843034858116e-06
+      },
+      "base_model.model.model.layers.28.self_attn.o_proj": {
+        "update_energy": 1.2336164298812037e-05,
+        "minimum_tangent_error_energy": 1.2014134742961064e-05
+      },
+      "base_model.model.model.layers.28.self_attn.q_proj": {
+        "update_energy": 1.5090313056541168e-05,
+        "minimum_tangent_error_energy": 1.4983542039714425e-05
+      },
+      "base_model.model.model.layers.28.self_attn.v_proj": {
+        "update_energy": 3.892304410977479e-06,
+        "minimum_tangent_error_energy": 3.830829824305599e-06
+      },
+      "base_model.model.model.layers.29.mlp.down_proj": {
+        "update_energy": 2.3700120155990413e-05,
+        "minimum_tangent_error_energy": 1.0379889370967654e-05
+      },
+      "base_model.model.model.layers.29.mlp.gate_proj": {
+        "update_energy": 3.992326604185176e-05,
+        "minimum_tangent_error_energy": 3.9582543721243784e-05
+      },
+      "base_model.model.model.layers.29.mlp.up_proj": {
+        "update_energy": 3.569858526134072e-05,
+        "minimum_tangent_error_energy": 3.524996958189958e-05
+      },
+      "base_model.model.model.layers.29.self_attn.k_proj": {
+        "update_energy": 3.266297011329253e-06,
+        "minimum_tangent_error_energy": 1.3931570361137227e-06
+      },
+      "base_model.model.model.layers.29.self_attn.o_proj": {
+        "update_energy": 1.6648003088706205e-05,
+        "minimum_tangent_error_energy": 1.034774936724764e-05
+      },
+      "base_model.model.model.layers.29.self_attn.q_proj": {
+        "update_energy": 1.7148698118956323e-05,
+        "minimum_tangent_error_energy": 1.4715695099136916e-05
+      },
+      "base_model.model.model.layers.29.self_attn.v_proj": {
+        "update_energy": 4.622980861436174e-06,
+        "minimum_tangent_error_energy": 4.606096695102567e-06
+      },
+      "base_model.model.model.layers.3.mlp.down_proj": {
+        "update_energy": 2.1090045708358227e-05,
+        "minimum_tangent_error_energy": 2.0440061304714032e-05
+      },
+      "base_model.model.model.layers.3.mlp.gate_proj": {
+        "update_energy": 5.999347304420999e-05,
+        "minimum_tangent_error_energy": 4.303420047993262e-05
+      },
+      "base_model.model.model.layers.3.mlp.up_proj": {
+        "update_energy": 5.536492295410965e-05,
+        "minimum_tangent_error_energy": 2.6718283662962735e-05
+      },
+      "base_model.model.model.layers.3.self_attn.k_proj": {
+        "update_energy": 6.1497841196297915e-06,
+        "minimum_tangent_error_energy": 3.2131680629287403e-06
+      },
+      "base_model.model.model.layers.3.self_attn.o_proj": {
+        "update_energy": 1.8458150979552806e-05,
+        "minimum_tangent_error_energy": 1.8273462335734248e-05
+      },
+      "base_model.model.model.layers.3.self_attn.q_proj": {
+        "update_energy": 2.726125175993267e-05,
+        "minimum_tangent_error_energy": 2.3192971951145894e-05
+      },
+      "base_model.model.model.layers.3.self_attn.v_proj": {
+        "update_energy": 8.013326324078444e-06,
+        "minimum_tangent_error_energy": 7.5721542964234245e-06
+      },
+      "base_model.model.model.layers.30.mlp.down_proj": {
+        "update_energy": 1.1045127776043573e-05,
+        "minimum_tangent_error_energy": 1.0988308724604218e-05
+      },
+      "base_model.model.model.layers.30.mlp.gate_proj": {
+        "update_energy": 4.080410557499222e-05,
+        "minimum_tangent_error_energy": 2.8379047175738245e-05
+      },
+      "base_model.model.model.layers.30.mlp.up_proj": {
+        "update_energy": 4.643654654362986e-05,
+        "minimum_tangent_error_energy": 4.03052588141014e-05
+      },
+      "base_model.model.model.layers.30.self_attn.k_proj": {
+        "update_energy": 3.9023168036307075e-06,
+        "minimum_tangent_error_energy": 3.8594919635537866e-06
+      },
+      "base_model.model.model.layers.30.self_attn.o_proj": {
+        "update_energy": 9.168414633012763e-06,
+        "minimum_tangent_error_energy": 9.07466565353977e-06
+      },
+      "base_model.model.model.layers.30.self_attn.q_proj": {
+        "update_energy": 1.2981818957419945e-05,
+        "minimum_tangent_error_energy": 1.2495015916633256e-05
+      },
+      "base_model.model.model.layers.30.self_attn.v_proj": {
+        "update_energy": 5.14581815955122e-06,
+        "minimum_tangent_error_energy": 2.8007628141591595e-06
+      },
+      "base_model.model.model.layers.31.mlp.down_proj": {
+        "update_energy": 1.4625303848668233e-05,
+        "minimum_tangent_error_energy": 1.203749407049711e-05
+      },
+      "base_model.model.model.layers.31.mlp.gate_proj": {
+        "update_energy": 3.3487157451357135e-05,
+        "minimum_tangent_error_energy": 2.948636793629823e-05
+      },
+      "base_model.model.model.layers.31.mlp.up_proj": {
+        "update_energy": 4.2483371016258914e-05,
+        "minimum_tangent_error_energy": 3.7911698336531224e-05
+      },
+      "base_model.model.model.layers.31.self_attn.k_proj": {
+        "update_energy": 3.226993816152904e-06,
+        "minimum_tangent_error_energy": 3.0775468350610846e-06
+      },
+      "base_model.model.model.layers.31.self_attn.o_proj": {
+        "update_energy": 2.0650938793441867e-05,
+        "minimum_tangent_error_energy": 1.001878475063704e-05
+      },
+      "base_model.model.model.layers.31.self_attn.q_proj": {
+        "update_energy": 1.3729165341907992e-05,
+        "minimum_tangent_error_energy": 1.3260174309267509e-05
+      },
+      "base_model.model.model.layers.31.self_attn.v_proj": {
+        "update_energy": 6.185628666982102e-06,
+        "minimum_tangent_error_energy": 1.6450947754983427e-06
+      },
+      "base_model.model.model.layers.32.mlp.down_proj": {
+        "update_energy": 1.115425534880731e-05,
+        "minimum_tangent_error_energy": 1.1061256288595186e-05
+      },
+      "base_model.model.model.layers.32.mlp.gate_proj": {
+        "update_energy": 3.99666057597629e-05,
+        "minimum_tangent_error_energy": 3.2904834300824514e-05
+      },
+      "base_model.model.model.layers.32.mlp.up_proj": {
+        "update_energy": 4.6710534721013695e-05,
+        "minimum_tangent_error_energy": 2.327760937570483e-05
+      },
+      "base_model.model.model.layers.32.self_attn.k_proj": {
+        "update_energy": 4.335398097359335e-06,
+        "minimum_tangent_error_energy": 4.193203950518611e-06
+      },
+      "base_model.model.model.layers.32.self_attn.o_proj": {
+        "update_energy": 1.706746035456933e-05,
+        "minimum_tangent_error_energy": 1.375709652483144e-05
+      },
+      "base_model.model.model.layers.32.self_attn.q_proj": {
+        "update_energy": 1.419552840735249e-05,
+        "minimum_tangent_error_energy": 1.4064283807958193e-05
+      },
+      "base_model.model.model.layers.32.self_attn.v_proj": {
+        "update_energy": 4.9559092258044096e-06,
+        "minimum_tangent_error_energy": 3.7029434577557738e-06
+      },
+      "base_model.model.model.layers.33.mlp.down_proj": {
+        "update_energy": 1.24954811356264e-05,
+        "minimum_tangent_error_energy": 5.728554114323084e-06
+      },
+      "base_model.model.model.layers.33.mlp.gate_proj": {
+        "update_energy": 3.1417931509622286e-05,
+        "minimum_tangent_error_energy": 2.0158856210540997e-05
+      },
+      "base_model.model.model.layers.33.mlp.up_proj": {
+        "update_energy": 2.831926897480869e-05,
+        "minimum_tangent_error_energy": 2.7332982570573626e-05
+      },
+      "base_model.model.model.layers.33.self_attn.k_proj": {
+        "update_energy": 3.0305698606565418e-06,
+        "minimum_tangent_error_energy": 3.0203441942091504e-06
+      },
+      "base_model.model.model.layers.33.self_attn.o_proj": {
+        "update_energy": 2.3398809765198094e-05,
+        "minimum_tangent_error_energy": 1.7148716463395982e-05
+      },
+      "base_model.model.model.layers.33.self_attn.q_proj": {
+        "update_energy": 1.751792991055274e-05,
+        "minimum_tangent_error_energy": 9.495266461877036e-06
+      },
+      "base_model.model.model.layers.33.self_attn.v_proj": {
+        "update_energy": 3.5954254699058944e-06,
+        "minimum_tangent_error_energy": 3.5366847276048604e-06
+      },
+      "base_model.model.model.layers.34.mlp.down_proj": {
+        "update_energy": 2.7533965939498535e-05,
+        "minimum_tangent_error_energy": 6.139838593211232e-06
+      },
+      "base_model.model.model.layers.34.mlp.gate_proj": {
+        "update_energy": 3.3022306259575585e-05,
+        "minimum_tangent_error_energy": 3.219927170193169e-05
+      },
+      "base_model.model.model.layers.34.mlp.up_proj": {
+        "update_energy": 4.51933318412736e-05,
+        "minimum_tangent_error_energy": 1.7302892928499534e-05
+      },
+      "base_model.model.model.layers.34.self_attn.k_proj": {
+        "update_energy": 6.2012964358893695e-06,
+        "minimum_tangent_error_energy": 2.964911120895474e-06
+      },
+      "base_model.model.model.layers.34.self_attn.o_proj": {
+        "update_energy": 2.7631404396585795e-05,
+        "minimum_tangent_error_energy": 1.8379421795253006e-05
+      },
+      "base_model.model.model.layers.34.self_attn.q_proj": {
+        "update_energy": 1.6580579421999012e-05,
+        "minimum_tangent_error_energy": 1.108638974139023e-05
+      },
+      "base_model.model.model.layers.34.self_attn.v_proj": {
+        "update_energy": 5.121973502767246e-06,
+        "minimum_tangent_error_energy": 2.123450658597812e-06
+      },
+      "base_model.model.model.layers.35.mlp.down_proj": {
+        "update_energy": 8.944419645745192e-06,
+        "minimum_tangent_error_energy": 1.6232278783473137e-06
+      },
+      "base_model.model.model.layers.35.mlp.gate_proj": {
+        "update_energy": 2.9708139654254477e-05,
+        "minimum_tangent_error_energy": 2.7897245733318907e-05
+      },
+      "base_model.model.model.layers.35.mlp.up_proj": {
+        "update_energy": 2.6430340489633375e-05,
+        "minimum_tangent_error_energy": 2.0535243994639992e-05
+      },
+      "base_model.model.model.layers.35.self_attn.k_proj": {
+        "update_energy": 4.184206596878158e-06,
+        "minimum_tangent_error_energy": 3.8139133651967625e-06
+      },
+      "base_model.model.model.layers.35.self_attn.o_proj": {
+        "update_energy": 1.3791788645456747e-05,
+        "minimum_tangent_error_energy": 1.288445797840152e-05
+      },
+      "base_model.model.model.layers.35.self_attn.q_proj": {
+        "update_energy": 1.2716065132633904e-05,
+        "minimum_tangent_error_energy": 1.2572556496687298e-05
+      },
+      "base_model.model.model.layers.35.self_attn.v_proj": {
+        "update_energy": 4.906319051983978e-06,
+        "minimum_tangent_error_energy": 3.4609660508922512e-06
+      },
+      "base_model.model.model.layers.4.mlp.down_proj": {
+        "update_energy": 1.8954079816545587e-05,
+        "minimum_tangent_error_energy": 1.89184079869652e-05
+      },
+      "base_model.model.model.layers.4.mlp.gate_proj": {
+        "update_energy": 5.4857672498031356e-05,
+        "minimum_tangent_error_energy": 5.39202749143505e-05
+      },
+      "base_model.model.model.layers.4.mlp.up_proj": {
+        "update_energy": 6.026762884829863e-05,
+        "minimum_tangent_error_energy": 1.2691752750008945e-05
+      },
+      "base_model.model.model.layers.4.self_attn.k_proj": {
+        "update_energy": 5.145881105358117e-06,
+        "minimum_tangent_error_energy": 4.8633105180841e-06
+      },
+      "base_model.model.model.layers.4.self_attn.o_proj": {
+        "update_energy": 1.7749613306033427e-05,
+        "minimum_tangent_error_energy": 9.43705056904615e-06
+      },
+      "base_model.model.model.layers.4.self_attn.q_proj": {
+        "update_energy": 2.5425507405803248e-05,
+        "minimum_tangent_error_energy": 2.3426940524641678e-05
+      },
+      "base_model.model.model.layers.4.self_attn.v_proj": {
+        "update_energy": 8.24593217306181e-06,
+        "minimum_tangent_error_energy": 8.201467144552883e-06
+      },
+      "base_model.model.model.layers.5.mlp.down_proj": {
+        "update_energy": 1.5085585693083764e-05,
+        "minimum_tangent_error_energy": 1.406383700910741e-05
+      },
+      "base_model.model.model.layers.5.mlp.gate_proj": {
+        "update_energy": 5.879269213156168e-05,
+        "minimum_tangent_error_energy": 5.3120323629935906e-05
+      },
+      "base_model.model.model.layers.5.mlp.up_proj": {
+        "update_energy": 6.50932843123685e-05,
+        "minimum_tangent_error_energy": 4.258614178346125e-05
+      },
+      "base_model.model.model.layers.5.self_attn.k_proj": {
+        "update_energy": 7.332982582131744e-06,
+        "minimum_tangent_error_energy": 6.220830935345971e-06
+      },
+      "base_model.model.model.layers.5.self_attn.o_proj": {
+        "update_energy": 2.2904702295372616e-05,
+        "minimum_tangent_error_energy": 6.7358894701662136e-06
+      },
+      "base_model.model.model.layers.5.self_attn.q_proj": {
+        "update_energy": 2.271618256504758e-05,
+        "minimum_tangent_error_energy": 2.267514840490923e-05
+      },
+      "base_model.model.model.layers.5.self_attn.v_proj": {
+        "update_energy": 7.437783266151939e-06,
+        "minimum_tangent_error_energy": 7.389963148352732e-06
+      },
+      "base_model.model.model.layers.6.mlp.down_proj": {
+        "update_energy": 1.3681504424148205e-05,
+        "minimum_tangent_error_energy": 5.064883177913289e-06
+      },
+      "base_model.model.model.layers.6.mlp.gate_proj": {
+        "update_energy": 4.729256665546243e-05,
+        "minimum_tangent_error_energy": 4.1114763879074476e-05
+      },
+      "base_model.model.model.layers.6.mlp.up_proj": {
+        "update_energy": 5.070346735308776e-05,
+        "minimum_tangent_error_energy": 4.235348005211961e-05
+      },
+      "base_model.model.model.layers.6.self_attn.k_proj": {
+        "update_energy": 7.148935097780454e-06,
+        "minimum_tangent_error_energy": 4.078744723187361e-06
+      },
+      "base_model.model.model.layers.6.self_attn.o_proj": {
+        "update_energy": 2.015353036890959e-05,
+        "minimum_tangent_error_energy": 1.1880393135727756e-05
+      },
+      "base_model.model.model.layers.6.self_attn.q_proj": {
+        "update_energy": 1.9985832745788436e-05,
+        "minimum_tangent_error_energy": 1.9934313128526454e-05
+      },
+      "base_model.model.model.layers.6.self_attn.v_proj": {
+        "update_energy": 6.77838593694286e-06,
+        "minimum_tangent_error_energy": 6.7692010125311915e-06
+      },
+      "base_model.model.model.layers.7.mlp.down_proj": {
+        "update_energy": 1.2249715676639266e-05,
+        "minimum_tangent_error_energy": 1.1864465296919416e-05
+      },
+      "base_model.model.model.layers.7.mlp.gate_proj": {
+        "update_energy": 4.69838051611282e-05,
+        "minimum_tangent_error_energy": 4.562619174390417e-05
+      },
+      "base_model.model.model.layers.7.mlp.up_proj": {
+        "update_energy": 4.87668894028521e-05,
+        "minimum_tangent_error_energy": 4.707764396733729e-05
+      },
+      "base_model.model.model.layers.7.self_attn.k_proj": {
+        "update_energy": 5.035425271281194e-06,
+        "minimum_tangent_error_energy": 5.0035724444181796e-06
+      },
+      "base_model.model.model.layers.7.self_attn.o_proj": {
+        "update_energy": 1.3461661719693924e-05,
+        "minimum_tangent_error_energy": 1.1461935431385735e-05
+      },
+      "base_model.model.model.layers.7.self_attn.q_proj": {
+        "update_energy": 2.1867337012085094e-05,
+        "minimum_tangent_error_energy": 2.1769217311363787e-05
+      },
+      "base_model.model.model.layers.7.self_attn.v_proj": {
+        "update_energy": 6.1792851326344075e-06,
+        "minimum_tangent_error_energy": 5.9135361981237105e-06
+      },
+      "base_model.model.model.layers.8.mlp.down_proj": {
+        "update_energy": 1.1524586765583916e-05,
+        "minimum_tangent_error_energy": 1.0809026666415154e-05
+      },
+      "base_model.model.model.layers.8.mlp.gate_proj": {
+        "update_energy": 4.334457427231576e-05,
+        "minimum_tangent_error_energy": 4.210696378065985e-05
+      },
+      "base_model.model.model.layers.8.mlp.up_proj": {
+        "update_energy": 4.085831212714751e-05,
+        "minimum_tangent_error_energy": 3.9390812418001634e-05
+      },
+      "base_model.model.model.layers.8.self_attn.k_proj": {
+        "update_energy": 5.25154863299227e-06,
+        "minimum_tangent_error_energy": 5.221571289372968e-06
+      },
+      "base_model.model.model.layers.8.self_attn.o_proj": {
+        "update_energy": 1.0270410524101785e-05,
+        "minimum_tangent_error_energy": 1.0240893624440891e-05
+      },
+      "base_model.model.model.layers.8.self_attn.q_proj": {
+        "update_energy": 1.718599067761259e-05,
+        "minimum_tangent_error_energy": 1.6006654250297787e-05
+      },
+      "base_model.model.model.layers.8.self_attn.v_proj": {
+        "update_energy": 6.09923698408147e-06,
+        "minimum_tangent_error_energy": 1.678180254891989e-06
+      },
+      "base_model.model.model.layers.9.mlp.down_proj": {
+        "update_energy": 9.946911209163488e-06,
+        "minimum_tangent_error_energy": 9.599467721396965e-06
+      },
+      "base_model.model.model.layers.9.mlp.gate_proj": {
+        "update_energy": 3.815615407922236e-05,
+        "minimum_tangent_error_energy": 3.723044783127164e-05
+      },
+      "base_model.model.model.layers.9.mlp.up_proj": {
+        "update_energy": 3.543480067254593e-05,
+        "minimum_tangent_error_energy": 3.062334172102783e-05
+      },
+      "base_model.model.model.layers.9.self_attn.k_proj": {
+        "update_energy": 4.763886398117038e-06,
+        "minimum_tangent_error_energy": 4.188678187968715e-06
+      },
+      "base_model.model.model.layers.9.self_attn.o_proj": {
+        "update_energy": 1.0869702499745924e-05,
+        "minimum_tangent_error_energy": 7.584970881444487e-06
+      },
+      "base_model.model.model.layers.9.self_attn.q_proj": {
+        "update_energy": 1.7161129537955826e-05,
+        "minimum_tangent_error_energy": 1.5905901597935214e-05
+      },
+      "base_model.model.model.layers.9.self_attn.v_proj": {
+        "update_energy": 4.2479419403852735e-06,
+        "minimum_tangent_error_energy": 4.137958094274205e-06
+      }
+    },
+    "recorded_delta_l2": 0.07273559948044367,
+    "minimum_tangent_error_l2": 0.06455599901123496,
+    "minimum_relative_tangent_error": 0.8875433690292476,
+    "scope": "Projection of the saved last finite optimizer update onto the saved active adapter tangent. At a transfer boundary this compares the pre-transfer update with the post-transfer tangent. It is not the next native Adam update or a full finite-step impossibility bound, because simultaneous factor steps include a second-order cross term."
+  }
 }

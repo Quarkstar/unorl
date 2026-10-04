@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 import statistics
 from pathlib import Path
 
@@ -10,6 +11,29 @@ import torch
 from safetensors.torch import load
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def tangent_approximation_error(pairs, active_a, active_b):
+    """Lower bound for representing a saved finite update in the new tangent.
+
+    Project both sides of the low-rank factors without creating a dense matrix.
+    This uses the actual last optimizer delta, not reconstructed Adam history.
+    """
+    a = torch.cat([row.double() for row, _ in pairs], dim=0)
+    b = torch.cat([column.double() for _, column in pairs], dim=1)
+    u = active_b.double() / active_b.double().norm()
+    v = active_a.double().T / active_a.double().norm()
+
+    def squared_norm(left, right):
+        _, rb = torch.linalg.qr(left, mode="reduced")
+        _, ra = torch.linalg.qr(right.T, mode="reduced")
+        return (rb @ ra.T).square().sum().item()
+
+    energy = squared_norm(b, a)
+    residual = squared_norm(b - u @ (u.T @ b), a - (a @ v) @ v.T)
+    if energy <= 0 or not math.isfinite(energy) or not math.isfinite(residual):
+        raise ValueError("Expected a finite nonzero saved optimizer update")
+    return {"update_energy": energy, "minimum_tangent_error_energy": residual}
 
 
 def factor_geometry(pairs):
@@ -116,6 +140,25 @@ def main():
         ** 0.5,
         "limitations": "Saved factor geometry only; excludes FP32 base-rounding residuals. Normalized span ranks discard component magnitudes. No future-gradient, Adam-history, causal accuracy or performance claim.",
     }
+    previous_delta = client.get("relora_previous_delta")
+    if previous_delta is not None:
+        if previous_delta.keys() != names:
+            raise ValueError("Saved optimizer delta and adapter layer names differ")
+        tangent_rows = {
+            name: tangent_approximation_error(
+                previous_delta[name], adapter[name + suffixes[0]], adapter[name + suffixes[1]]
+            )
+            for name in sorted(names)
+        }
+        total_energy = sum(row["update_energy"] for row in tangent_rows.values())
+        residual_energy = sum(row["minimum_tangent_error_energy"] for row in tangent_rows.values())
+        report["last_optimizer_delta_tangent_bound"] = {
+            "layers": tangent_rows,
+            "recorded_delta_l2": total_energy**0.5,
+            "minimum_tangent_error_l2": residual_energy**0.5,
+            "minimum_relative_tangent_error": (residual_energy / total_energy) ** 0.5,
+            "scope": "Projection of the saved last finite optimizer update onto the saved active adapter tangent. At a transfer boundary this compares the pre-transfer update with the post-transfer tangent. It is not the next native Adam update or a full finite-step impossibility bound, because simultaneous factor steps include a second-order cross term.",
+        }
     output = ROOT / f"research/data/{args.run_id}-factor-span-step{args.step}.json"
     output.write_text(json.dumps(report, indent=2) + "\n")
     print(
