@@ -4149,6 +4149,44 @@ learned spectra and held-out comparison remain separate required evidence.
 The prefix audit and source hashes are retained in
 `research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-recorded-prefix-step7.json`.
 
+### Step 20: full-model checkpoint and raw evaluation verified
+
+The first real checkpoint audit passes after the step-20 evaluation finishes
+at approximately 10:38 UTC on 2026-10-04. All eight native scheduler states
+are at 20. Each rank has 504 populated Adam parameter states, with all counters
+at 20, matching the per-name saved counter map and configured constant LR.
+Preparation buffers are empty, window metadata is closed and no correction
+history exists, as expected before update 21. All **160** policy-memory rows
+are present. Raw AIME samples reproduce the aggregates at both zero and 20.
+
+| Measure | Prepared trial through 20 | Historical standard LoRA |
+| --- | ---: | ---: |
+| Training correctness, updates 1–10 | 9.2578% | 9.6484% |
+| Training correctness, updates 11–20 | 14.2969% | 14.8438% |
+| Training correctness, updates 1–20 | 11.7773% | 12.2461% |
+| AIME25 avg@8 at 20 | 7.9167% (19/240) | 4.1667% (10/240) |
+| AIME25 pass@8 at 20 | 26.6667% (8/30) | 23.3333% (7/30) |
+
+The training trends are similar and the trial's sampled evaluation is higher.
+**No prepared collection or transfer has happened yet**, so neither difference
+can establish a ReLoRA effect. The full method becomes exercised by the
+preparation window at 21–40 and transfer at 40. Its post-transfer performance
+and learned rank remain the substantive comparison.
+
+At update 20, entropy is **0.426500**, gradient norm **0.0542433**, actual
+weight-update L2 **0.0876564**, and cosine with the preceding update
+**0.880918**. Mean generated response length is **1117.93 tokens**;
+`policy/response_length=8192` is not that rollout mean. Prefix training
+allocator maxima remain **17.3438 / 18.1836 GiB allocated/reserved**.
+The step-20 evaluation took **97.83 seconds**, separately from the
+**152.87-second** training step including checkpoint work.
+
+The auditable record is
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-checkpoint-step20.json`.
+It hashes the source logs, raw evaluations and all eight optimizer/extra-state
+files. This read-only audit does not reconstruct dense model weights, test
+full-model resume or establish useful rank; those limitations remain explicit.
+
 ## 69. What the finite preparation window changes in Adam
 
 The prepared method preserves the effective weight at the switch and maps

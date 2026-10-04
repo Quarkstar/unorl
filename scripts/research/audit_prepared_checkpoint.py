@@ -112,10 +112,18 @@ def audit(run_id, step):
         actual = [float(state["step"]) for state in states]
         assert Counter(actual) == Counter(counters.values())
         assert all(set(state) == {"step", "exp_avg", "exp_avg_sq"} for state in states)
+        for state in states:
+            for key in ("exp_avg", "exp_avg_sq"):
+                tensor = state[key]
+                local = tensor.to_local() if hasattr(tensor, "to_local") else tensor
+                assert torch.isfinite(local).all(), (rank, key, "nonfinite moment")
+                if key == "exp_avg_sq":
+                    assert (local >= 0).all(), (rank, key, "negative second moment")
         rank_checks.append(
             {
                 "rank": rank,
                 "active_optimizer_states": len(states),
+                "finite_moment_states": len(states),
                 "counter_histogram": dict(Counter(actual)),
                 "active_preparation_target": active_target,
                 "preparation_count": step - (active_target - window) if active_target else 0,
@@ -125,7 +133,7 @@ def audit(run_id, step):
     prefix["checkpoint_protocol"] = protocol
     prefix["limitations"] += (
         " Native checkpoint checks cover scheduler/protocol, per-name saved counters, "
-        "optimizer counter multisets, preparation buffers and correction-history lengths. "
+        "optimizer counter multisets, finite local moments, preparation buffers and correction-history lengths. "
         "They do not associate optimizer integer IDs with parameter names, reconstruct "
         "full model weights, test full-model resume or prove useful learned rank."
     )

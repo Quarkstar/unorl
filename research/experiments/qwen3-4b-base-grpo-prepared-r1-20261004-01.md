@@ -11,7 +11,7 @@ title: "GRPO · prepared-history rank-aware ReLoRA, rank 1"
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-prepared-r1-20261004-01` |
-| Record | 2 steps logged / 100 planned |
+| Record | 20 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -58,6 +58,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | Step | Sample accuracy | Pass@8 |
 |---:|---:|---:|
 | 0 | 3.3% | 16.7% |
+| 20 | 7.9% | 26.7% |
 
 
 ## Evaluation sample counts
@@ -65,16 +66,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | Benchmark | Step | Correct responses | Questions solved ≥1 time |
 |---|---:|---:|---:|
 | aime25 | 0 | 8/240 | 5/30 |
+| aime25 | 20 | 19/240 | 8/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **6.1%** over the first 2 logged updates and **6.1%** over the last 2. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **9.3%** over the first 10 logged updates and **14.3%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.8799 at step 1 → 0.7069 at step 2.
-- Policy gradient norm: 0.03134 at step 1 → 0.02967 at step 2.
-- Mean generated response tokens: 1455 at step 1 → 1195 at step 2.
+- Logged entropy: 0.8799 at step 1 → 0.4265 at step 20.
+- Policy gradient norm: 0.03134 at step 1 → 0.05424 at step 20.
+- Mean generated response tokens: 1455 at step 1 → 1118 at step 20.
 
-Best recorded AIME25 pass@8: **16.7% at step 0**. Last recorded: **16.7% at step 0**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **26.7% at step 20**. Last recorded: **26.7% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
