@@ -99,3 +99,35 @@ def test_base_comparison_exposes_recipe_differences_and_incomplete_final_window(
     assert "100" not in report["evaluations"]
     gain = report["evaluations"]["80"]["avg@8"]["difference_in_improvement_from_step0"]
     assert gain["candidate_minus_control"] == 0
+
+
+def test_gradual_transition_windows_follow_updates_affected_by_refresh():
+    from scripts.research.analyze_refresh_base import analyze
+
+    def run(name, end):
+        return {
+            "run_id": name,
+            "config": {},
+            "metrics": [
+                {
+                    "step": step,
+                    "metrics": {"reward/mean_positive_reward": 0.2 if step <= 50 else 0.4},
+                }
+                for step in range(1, end + 1)
+            ],
+            "evaluation_question_scores": [],
+        }
+
+    partial = analyze(run("standard", 100), run("gradual", 49))
+    assert partial["windows"]["41-50"]["updates"] == 9
+    assert not partial["windows"]["41-50"]["complete"]
+    complete = analyze(run("standard", 100), run("gradual", 60))
+    assert complete["windows"]["41-50"]["complete"]
+    assert complete["windows"]["51-60"]["complete"]
+    assert (
+        complete["windows"]["41-50"]["metrics"]["reward/mean_positive_reward"]["candidate"] == 0.2
+    )
+    assert (
+        complete["windows"]["51-60"]["metrics"]["reward/mean_positive_reward"]["candidate"] == 0.4
+    )
+    assert not complete["windows"]["81-90"]["complete"]

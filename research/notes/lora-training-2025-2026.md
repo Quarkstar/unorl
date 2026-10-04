@@ -2622,3 +2622,35 @@ optimizer states and numeric model exports were removed, reclaiming
 unchanged, with logs, metrics, rank and memory diagnostics preserved. The
 [cleanup manifest](../data/refresh-control-cleanup.json) records paths and
 hashes. The historical standard step-100 checkpoint remains untouched.
+
+
+## 52. Gradual-refresh starting evaluation and comparison protocol
+
+At 02:15 UTC on October 4, the new trial completed its initial AIME25
+evaluation. All 240 raw responses were checked as thirty groups of eight:
+4 responses correct and 3 questions solved, hence 1.667% avg@8 and 10.000%
+pass@8. This precedes optimization and every refresh. It is a sampled
+starting score, not evidence that the transition method harms performance.
+The historical standard starts at 2.500%/13.333%, the fresh standard at
+2.917%/13.333%, and one-shot refresh at 3.333%/13.333%. Report both absolute
+held-out values and paired-question improvement from step zero; adjustment
+does not remove training-seed uncertainty.
+
+Actual startup metadata confirms native AdamW (betas 0.9/0.999, epsilon
+1e-8), Kaiming initialization, rank one, alpha 32, and 2,064,384 trainable
+parameters. It records ten increments per cycle, no optimizer reset or LR
+restart, and base-then-adapter synchronization after merge/resume. This is
+runtime configuration evidence; successful real-engine synchronization at
+updates 40-49 and 80-89 remains to be observed.
+
+The experiment page now automatically compares each retained snapshot with
+all three completed references, writes downloadable paired analyses, and
+renders a four-run comparison plot. The analysis includes training windows
+41-50 and 51-60 as well as 81-90 and 91-100. A refresh after update 40 first
+affects training update 41, so these windows separate training during the
+ten-increment transition from the following ten updates. Only complete
+windows appear in the page table; partial counts remain in the JSON report.
+Five analysis tests passed, including rejection of treating nine affected
+updates as a completed ten-update window. Ruff passed. A direct-script import
+error in the report generator was detected and fixed before publication;
+the running training process was unaffected.

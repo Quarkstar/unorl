@@ -331,6 +331,8 @@ def experiment_page(run):
         "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     }:
         text += fresh_refresh_observations(run)
+    if rid == "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01":
+        text += gradual_refresh_observations(run)
     audit_path = BOOK / "data" / f"{rid}-completion-audit.json"
     if audit_path.exists():
         audit = json.loads(audit_path.read_text())
@@ -380,6 +382,69 @@ def fresh_refresh_observations(run):
                 low, high = gain["question_bootstrap_95_interval"]
                 text += f"| {metric}: improvement from step 0 | {100 * gain['candidate_minus_control']:+.2f} pp | [{100 * low:+.2f}, {100 * high:+.2f}] pp |\n"
     text += "\nIntervals resample the 30 whole questions, retaining each group of eight responses; they do not measure training-seed uncertainty or establish equivalence. A lead before the first rotation must not be credited to the method. See the [detailed first-principles investigation](../notes/lora-training-2025-2026.md) and [download the paired analysis](../data/refresh-base-fresh-control-analysis.json).\n"
+    return text
+
+
+def gradual_refresh_observations(run):
+    """Compare the active trial with retained references, never invent endpoints."""
+    from analyze_refresh_base import analyze
+
+    text = "\n## Gradual transition compared with retained baselines\n\n"
+    text += "Ten increments follow updates 40-49 and 80-89. Their first affected training updates are 41-50 and 81-90; updates 51-60 and 91-100 measure the following ten updates. Complete windows are shown below. Independent rollout trajectories and training-seed uncertainty prevent causal attribution from this single trial. Rank capacity also differs from the one-shot method.\n\n"
+    text += figure(
+        "../figures/comparison-gradual-refresh.svg",
+        "Historical and fresh standard LoRA, one-shot refresh, and the current ten-increment trial; missing candidate checkpoints are not extrapolated.",
+    )
+    references = [
+        (
+            "historical-standard",
+            "Historical standard LoRA",
+            "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+        ),
+        (
+            "fresh-standard",
+            "Completed fresh standard LoRA",
+            "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
+        ),
+        (
+            "one-shot",
+            "Completed one-shot refresh",
+            "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
+        ),
+    ]
+    for slug, label, rid in references:
+        path = BOOK / "data" / f"{rid}.json"
+        if not path.exists():
+            continue
+        reference = json.loads(path.read_text())
+        report = analyze(reference, run)
+        filename = f"gradual-refresh-vs-{slug}-analysis.json"
+        (BOOK / "data" / filename).write_text(json.dumps(report, indent=2) + "\n")
+        text += f"\n### {label}\n\n"
+        text += "| Training updates | Reference correctness | Gradual correctness | Difference |\n|---|---:|---:|---:|\n"
+        complete = 0
+        for window in ("1-20", "21-40", "41-50", "51-60", "61-80", "81-90", "91-100"):
+            row = report["windows"][window]
+            values = row["metrics"].get("reward/mean_positive_reward")
+            if row["complete"] and values:
+                complete += 1
+                text += f"| {window} | {100 * values['control']:.2f}% | {100 * values['candidate']:.2f}% | {100 * values['candidate_minus_control']:+.2f} pp |\n"
+        if not complete:
+            text += "\nNo complete paired training window is available yet.\n"
+        if report["evaluations"]:
+            step = max(report["evaluations"], key=int)
+            text += f"\nLatest common AIME25 evaluation: **step {step}**.\n\n| Metric | Gradual minus reference | Question-bootstrap 95% interval |\n|---|---:|---:|\n"
+            for metric, values in report["evaluations"][step].items():
+                low, high = values["question_bootstrap_95_interval"]
+                text += f"| {metric} | {100 * values['candidate_minus_control']:+.2f} pp | [{100 * low:+.2f}, {100 * high:+.2f}] pp |\n"
+                gain = values.get("difference_in_improvement_from_step0")
+                if gain:
+                    low, high = gain["question_bootstrap_95_interval"]
+                    text += f"| {metric}: gain from step 0 | {100 * gain['candidate_minus_control']:+.2f} pp | [{100 * low:+.2f}, {100 * high:+.2f}] pp |\n"
+        else:
+            text += "\nNo common scored evaluation is available yet.\n"
+        text += f"\n[Download all metric windows, question-level intervals, and configuration differences](../data/{filename}).\n"
+    text += "\nQuestion bootstrap retains eight-response groups but does not establish equivalence or account for training-seed variance. Startup, training correctness, and intermediate evaluations do not prove the final objective.\n"
     return text
 
 
@@ -521,6 +586,23 @@ def main():
     lora_runs = [by_id[rid] for rid in lora_ids]
     fresh_control_id = "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01"
     base_refresh_id = "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01"
+    gradual_id = "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01"
+    if gradual_id in by_id:
+        comparison(
+            [
+                by_id[rid]
+                for rid in (
+                    "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+                    fresh_control_id,
+                    base_refresh_id,
+                    gradual_id,
+                )
+                if rid in by_id
+            ],
+            {"primary", "reference", "ablation"},
+            "comparison-gradual-refresh",
+            "100-step budget · standard LoRA and compensated refresh",
+        )
     fresh_base_runs = [by_id[rid] for rid in (fresh_control_id, base_refresh_id) if rid in by_id]
     if len(fresh_base_runs) == 2:
         comparison(
@@ -617,10 +699,17 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
     )
     text += "\n## ReLoRA restart comparison: completed\n\nBoth 100-step runs completed successfully. Five-update restart ramp / constant-LR resets / standard LoRA reached final AIME25 avg@8 **15.8% / 17.1% / 20.0%**, and pass@8 **40.0% / 30.0% / 43.3%**. Final 20-step training correctness was **36.3% / 37.0% / 37.5%**. The ramp showed no clear benefit in this pair. Mean accumulated stable rank at step 100 was **1.89 / 2.16** for ramp / constant-LR resets: useful rank growth occurred, but did not translate into better learning. Both boundary KL probes averaged about **0.00055**, with no immediate post-merge reward collapse. These are one run per setting and 30 evaluation questions. Full Adam history was cleared in both runs; partial moment pruning remains untested.\n\n![Matched ReLoRA comparison](figures/comparison-relora.svg)\n\n**Retention issue:** automatic cleanup mistakenly removed raw evaluation response dumps together with model exports. Aggregate evaluations, training metrics, logs, memory traces and rank diagnostics remain. The cleanup rule now preserves benchmark dump directories and has a filesystem regression test.\n\n"
     text += "\n### Where merging falls behind\n\nThe [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-diverge-from-standard-lora) finds the main deficit at **steps 46–60**: both merge runs average **32.5%** training correctness versus **36.8%** for standard LoRA. The gap largely closes by steps 81–90. Response-length growth lags and entropy remains higher; gradient norms do not collapse. This is consistent with a temporary optimization delay after the first restart, not proof of a specific cause.\n\n![Aligned ReLoRA boundary analysis](figures/relora-boundary-analysis.svg)\n\n"
+    if gradual_id in by_id:
+        text += "\n## Ten-increment refresh: current trial\n\n"
+        text += f"[Detailed experiment and paired analyses](experiments/{gradual_id}.md). This 100-step trial replaces each abrupt 20-degree rotation with ten 2-degree increments separated by training updates. Existing standard LoRA runs are reused; no extra control is launched. Intermediate values do not establish the final result.\n\n"
+        text += figure(
+            "figures/comparison-gradual-refresh.svg",
+            "Historical and fresh standard rank-one LoRA, one-shot refresh, and the ten-increment trial; absent endpoints remain absent.",
+        )
     text += "\n## Compensated gradual refresh: completed 100-step trial\n\nThe [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The trial from base completed all 100 updates with refreshes at 40/80. Final AIME25 avg@8 / pass@8 was **17.08% / 36.67%**, versus historical standard LoRA's **20.00% / 43.33%**. Final-window training correctness was higher (**38.63% versus 37.48%**), but additional effective rank was modest. Performance parity remains unproven; see the [final analysis](notes/lora-training-2025-2026.md#final-result-gradual-refresh-preserves-learning-but-does-not-establish-parity).\n\nThe earlier shared-step-100 continuation candidate was manually stopped after 134 global updates. It does not answer the original base-model budget comparison and is retained separately as a diagnostic.\n\n"
     if len(fresh_base_runs) == 2:
         current = max((row["step"] for row in by_id[fresh_control_id]["metrics"]), default=0)
-        text += f"### Fresh standard-LoRA control\n\nThe fresh control snapshot contains **{current}/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Partial control curves are not a final endpoint comparison. Both sampled starting evaluations are retained, and question-level uncertainty is reported separately.\n\n![Fresh control versus gradual refresh](figures/comparison-refresh-base-fresh.svg)\n\n"
+        text += f"### Fresh standard-LoRA control\n\nThe fresh control snapshot contains **{current}/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Completed raw evaluations and successful-exit protocol audits are retained. Both sampled starting evaluations are reported, and question-level uncertainty does not establish equivalence.\n\n![Fresh control versus gradual refresh](figures/comparison-refresh-base-fresh.svg)\n\n"
         paired = [
             {
                 step: (avg, pas)

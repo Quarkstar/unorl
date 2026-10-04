@@ -1,0 +1,145 @@
+{
+  "run_ids": {
+    "control": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+    "candidate": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01"
+  },
+  "completed_updates": {
+    "control": 100,
+    "candidate": 0
+  },
+  "config_differences": {
+    "environment.env_class": {
+      "control": "conditional_math",
+      "candidate": "unorl_math"
+    },
+    "trainer.ckpt_interval": {
+      "control": 100,
+      "candidate": 20
+    },
+    "trainer.ckpt_path": {
+      "control": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/checkpoints",
+      "candidate": "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/checkpoints"
+    },
+    "trainer.export_path": {
+      "control": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/exports",
+      "candidate": "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/exports"
+    },
+    "trainer.log_path": {
+      "control": "runs/qwen3-4b-base-grpo-lora-r1-blog-20260923-01/infra",
+      "candidate": "runs/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01/infra"
+    },
+    "trainer.project_name": {
+      "control": "conditional-rl",
+      "candidate": "unorl"
+    },
+    "trainer.relora_enable_merge": {
+      "control": null,
+      "candidate": true
+    },
+    "trainer.relora_first_merge_step": {
+      "control": null,
+      "candidate": 40
+    },
+    "trainer.relora_merge_interval": {
+      "control": null,
+      "candidate": 40
+    },
+    "trainer.relora_probe_response_tokens": {
+      "control": null,
+      "candidate": 128
+    },
+    "trainer.relora_refresh_angle_degrees": {
+      "control": null,
+      "candidate": 20.0
+    },
+    "trainer.relora_refresh_updates": {
+      "control": null,
+      "candidate": 10
+    },
+    "trainer.relora_restart_warmup_updates": {
+      "control": null,
+      "candidate": 0
+    },
+    "trainer.run_name": {
+      "control": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+      "candidate": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01"
+    }
+  },
+  "windows": {
+    "1-20": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "21-40": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "41-45": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "46-60": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "41-50": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "51-60": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "61-80": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "81-90": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "91-100": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    },
+    "81-100": {
+      "updates": 0,
+      "complete": false,
+      "metrics": {}
+    }
+  },
+  "evaluations": {
+    "0": {
+      "avg@8": {
+        "candidate_minus_control": -0.008333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.03333333333333333,
+          0.0125
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      },
+      "pass@8": {
+        "candidate_minus_control": -0.03333333333333333,
+        "question_bootstrap_95_interval": [
+          -0.16666666666666666,
+          0.1
+        ],
+        "questions": 30,
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42
+      }
+    }
+  },
+  "limitations": "One control/candidate pair, not a multi-seed replication. Recipe differences are exposed explicitly. On-policy training windows contain different trajectories and are descriptive; no independent-sample confidence interval is assigned to them. Question bootstrap preserves eight-response groups but does not measure training-seed uncertainty or establish equivalence. Completion counts do not prove process success."
+}

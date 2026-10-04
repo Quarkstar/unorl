@@ -5,14 +5,28 @@ import json
 import statistics
 from pathlib import Path
 
-from scripts.research.analyze_refresh import KEYS, bootstrap_difference, paired_questions
+if __package__:
+    from scripts.research.analyze_refresh import KEYS, bootstrap_difference, paired_questions
+else:
+    from analyze_refresh import KEYS, bootstrap_difference, paired_questions
 
 ROOT = Path(__file__).resolve().parents[2] / "research"
 IDS = {
     "control": "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
     "candidate": "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
 }
-WINDOWS = [(1, 20), (21, 40), (41, 45), (46, 60), (61, 80), (81, 90), (91, 100), (81, 100)]
+WINDOWS = [
+    (1, 20),
+    (21, 40),
+    (41, 45),
+    (46, 60),
+    (41, 50),
+    (51, 60),
+    (61, 80),
+    (81, 90),
+    (91, 100),
+    (81, 100),
+]
 
 
 def analyze(control, candidate):

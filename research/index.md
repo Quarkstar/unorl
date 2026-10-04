@@ -67,7 +67,7 @@ Final columns use the last recorded AIME25 evaluation, whose step is shown separ
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · ten-increment compensated refresh, rank 1](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md) | — | — | — | — | AdamW (SkyRL default) |
+| [GRPO · ten-increment compensated refresh, rank 1](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md) | 0 | 0 | 1.7% | 10.0% | AdamW (SkyRL default) |
 | [GRPO · fresh standard rank-1 LoRA control (100 steps from base)](experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md) | 100 | 100 | 17.5% | 36.7% | AdamW (SkyRL default) |
 | [GRPO · compensated gradual refresh, rank 1 (100 steps from base)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md) | 100 | 100 | 17.1% | 36.7% | AdamW (SkyRL default) |
 | [GRPO · standard rank-1 ReLoRA, constant-LR resets](experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md) | 100 | 100 | 17.1% | 30.0% | AdamW (SkyRL default) |
@@ -148,6 +148,16 @@ The [boundary analysis](notes/lora-training-2025-2026.md#where-the-merge-curves-
 ![Aligned ReLoRA boundary analysis](figures/relora-boundary-analysis.svg)
 
 
+## Ten-increment refresh: current trial
+
+[Detailed experiment and paired analyses](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md). This 100-step trial replaces each abrupt 20-degree rotation with ten 2-degree increments separated by training updates. Existing standard LoRA runs are reused; no extra control is launched. Intermediate values do not establish the final result.
+
+```{figure} figures/comparison-gradual-refresh.svg
+:alt: Historical and fresh standard rank-one LoRA, one-shot refresh, and the ten-increment trial; absent endpoints remain absent.
+
+Historical and fresh standard rank-one LoRA, one-shot refresh, and the ten-increment trial; absent endpoints remain absent.
+```
+
 ## Compensated gradual refresh: completed 100-step trial
 
 The [first-principles design](notes/lora-training-2025-2026.md#first-principles-design-gradual-a-refresh-with-warm-b) keeps B warm, rotates A by 20 degrees, compensates the frozen weight, and retains Adam counters without an LR restart. B moment handling is approximate. The trial from base completed all 100 updates with refreshes at 40/80. Final AIME25 avg@8 / pass@8 was **17.08% / 36.67%**, versus historical standard LoRA's **20.00% / 43.33%**. Final-window training correctness was higher (**38.63% versus 37.48%**), but additional effective rank was modest. Performance parity remains unproven; see the [final analysis](notes/lora-training-2025-2026.md#final-result-gradual-refresh-preserves-learning-but-does-not-establish-parity).
@@ -156,7 +166,7 @@ The earlier shared-step-100 continuation candidate was manually stopped after 13
 
 ### Fresh standard-LoRA control
 
-The fresh control snapshot contains **100/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Partial control curves are not a final endpoint comparison. Both sampled starting evaluations are retained, and question-level uncertainty is reported separately.
+The fresh control snapshot contains **100/100 updates**. It uses the same runtime, optimizer, batch, rollout and response settings; refresh is disabled. Completed raw evaluations and successful-exit protocol audits are retained. Both sampled starting evaluations are reported, and question-level uncertainty does not establish equivalence.
 
 ![Fresh control versus gradual refresh](figures/comparison-refresh-base-fresh.svg)
 
