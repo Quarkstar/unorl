@@ -11,7 +11,7 @@ title: "GRPO · ten-increment compensated refresh, rank 1"
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01` |
-| Record | 24 steps logged / 100 planned |
+| Record | 41 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -55,6 +55,7 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---:|---:|---:|
 | 0 | 1.7% | 10.0% |
 | 20 | 5.8% | 20.0% |
+| 40 | 13.8% | 33.3% |
 
 
 ## Evaluation sample counts
@@ -63,16 +64,17 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 |---|---:|---:|---:|
 | aime25 | 0 | 4/240 | 3/30 |
 | aime25 | 20 | 14/240 | 6/30 |
+| aime25 | 40 | 33/240 | 10/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **10.2%** over the first 10 logged updates and **18.1%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **10.2%** over the first 10 logged updates and **25.8%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.845 at step 1 → 0.3991 at step 24.
-- Policy gradient norm: 0.03881 at step 1 → 0.03003 at step 24.
-- Mean generated response tokens: 1218 at step 1 → 1273 at step 24.
+- Logged entropy: 0.845 at step 1 → 0.1566 at step 41.
+- Policy gradient norm: 0.03881 at step 1 → 0.03006 at step 41.
+- Mean generated response tokens: 1218 at step 1 → 2961 at step 41.
 
-Best recorded AIME25 pass@8: **20.0% at step 20**. Last recorded: **20.0% at step 20**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **33.3% at step 40**. Last recorded: **33.3% at step 40**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
@@ -93,15 +95,16 @@ Historical and fresh standard LoRA, one-shot refresh, and the current ten-increm
 | Training updates | Reference correctness | Gradual correctness | Difference |
 |---|---:|---:|---:|
 | 1-20 | 12.25% | 12.44% | +0.20 pp |
+| 21-40 | 23.65% | 22.93% | -0.72 pp |
 
-Latest common AIME25 evaluation: **step 20**.
+Latest common AIME25 evaluation: **step 40**.
 
 | Metric | Gradual minus reference | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | +1.67 pp | [-2.08, +6.67] pp |
-| avg@8: gain from step 0 | +2.50 pp | [-2.08, +7.92] pp |
-| pass@8 | -3.33 pp | [-16.67, +10.00] pp |
-| pass@8: gain from step 0 | +0.00 pp | [-20.00, +20.00] pp |
+| avg@8 | +2.50 pp | [-1.67, +7.08] pp |
+| avg@8: gain from step 0 | +3.33 pp | [-1.67, +8.75] pp |
+| pass@8 | +6.67 pp | [+0.00, +16.67] pp |
+| pass@8: gain from step 0 | +10.00 pp | [-6.67, +26.67] pp |
 
 [Download all metric windows, question-level intervals, and configuration differences](../data/gradual-refresh-vs-historical-standard-analysis.json).
 
@@ -110,15 +113,16 @@ Latest common AIME25 evaluation: **step 20**.
 | Training updates | Reference correctness | Gradual correctness | Difference |
 |---|---:|---:|---:|
 | 1-20 | 12.21% | 12.44% | +0.23 pp |
+| 21-40 | 21.37% | 22.93% | +1.56 pp |
 
-Latest common AIME25 evaluation: **step 20**.
+Latest common AIME25 evaluation: **step 40**.
 
 | Metric | Gradual minus reference | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | +0.42 pp | [-3.75, +4.58] pp |
-| avg@8: gain from step 0 | +1.67 pp | [-3.33, +7.08] pp |
-| pass@8 | -3.33 pp | [-13.33, +6.67] pp |
-| pass@8: gain from step 0 | +0.00 pp | [-20.00, +23.33] pp |
+| avg@8 | +1.67 pp | [-4.58, +7.50] pp |
+| avg@8: gain from step 0 | +2.92 pp | [-2.92, +8.75] pp |
+| pass@8 | +10.00 pp | [-3.33, +23.33] pp |
+| pass@8: gain from step 0 | +13.33 pp | [+0.00, +30.00] pp |
 
 [Download all metric windows, question-level intervals, and configuration differences](../data/gradual-refresh-vs-fresh-standard-analysis.json).
 
@@ -127,15 +131,16 @@ Latest common AIME25 evaluation: **step 20**.
 | Training updates | Reference correctness | Gradual correctness | Difference |
 |---|---:|---:|---:|
 | 1-20 | 12.07% | 12.44% | +0.37 pp |
+| 21-40 | 24.71% | 22.93% | -1.78 pp |
 
-Latest common AIME25 evaluation: **step 20**.
+Latest common AIME25 evaluation: **step 40**.
 
 | Metric | Gradual minus reference | Question-bootstrap 95% interval |
 |---|---:|---:|
-| avg@8 | +0.00 pp | [-2.50, +2.50] pp |
-| avg@8: gain from step 0 | +1.67 pp | [-0.83, +4.58] pp |
-| pass@8 | +0.00 pp | [-10.00, +10.00] pp |
-| pass@8: gain from step 0 | +3.33 pp | [-6.67, +16.67] pp |
+| avg@8 | -3.33 pp | [-8.75, +1.25] pp |
+| avg@8: gain from step 0 | -1.67 pp | [-7.08, +3.33] pp |
+| pass@8 | +6.67 pp | [+0.00, +16.67] pp |
+| pass@8: gain from step 0 | +10.00 pp | [+0.00, +23.33] pp |
 
 [Download all metric windows, question-level intervals, and configuration differences](../data/gradual-refresh-vs-one-shot-analysis.json).
 

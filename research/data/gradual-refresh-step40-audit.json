@@ -1,0 +1,131 @@
+{
+  "run_id": "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+  "through_step": 40,
+  "completed_run": false,
+  "checkpoint_state_validation": [
+    {
+      "rank": 0,
+      "checkpoint_sha256": "de41573b7452ca2f14fdabef54e6328b82cdf33e8d8a0b398c513511d4b27ad5",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    },
+    {
+      "rank": 1,
+      "checkpoint_sha256": "9ee8579136043e90768c0e7cdde62a7dfa706f13e28cd9406d2887f9d19a2ce6",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    },
+    {
+      "rank": 2,
+      "checkpoint_sha256": "1ee9e2e82cf128baf72b4e954740975e94a9692f89aba89693e271b94a6f28b5",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    },
+    {
+      "rank": 3,
+      "checkpoint_sha256": "fe11ebad29ea68020f461fb4c47423c0663090e8ea95d9330307346e2bc29e09",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    },
+    {
+      "rank": 4,
+      "checkpoint_sha256": "dcc40a0d2d57ab69d914fbaa71f5a665f602262ce9655187d6d3c38e164461b1",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    },
+    {
+      "rank": 5,
+      "checkpoint_sha256": "7ca383d93c7fe3636a4d8b24e2f7599067c2639a59f309f847fd0d8f2fb09444",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    },
+    {
+      "rank": 6,
+      "checkpoint_sha256": "05740af1ff487b28dca544ac18fb8f879d9ca0f743c18137ac322acbd96c3d33",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    },
+    {
+      "rank": 7,
+      "checkpoint_sha256": "687f333638108fe85c2e238923ba7af4c5e2769eaa6f58339c1a9ce491124510",
+      "plane_sha256": "3cbffdcfac6b40e1bf886d0e640432cb2bc67df7147213e2b0c024dca233e0b8",
+      "planes": 252,
+      "transition_count": 1,
+      "scheduler_epoch": 40
+    }
+  ],
+  "all_rank_planes_identical": true,
+  "rank0_history_pairs_per_layer": 2,
+  "fixed_saved_plane_update_geometry": {
+    "0": {
+      "target_l2": 0.06906431851263364,
+      "unavailable_l2": 4.4936975992635185e-05,
+      "relative_residual": 0.0006506540129606152
+    },
+    "2": {
+      "target_l2": 0.06906431851263364,
+      "unavailable_l2": 0.0021709408273236624,
+      "relative_residual": 0.031433609627618944
+    },
+    "20": {
+      "target_l2": 0.06906431851263364,
+      "unavailable_l2": 0.02127107113142281,
+      "relative_residual": 0.3079893002568581
+    }
+  },
+  "training_memory_records": 320,
+  "max_allocated_gib": 17.58006763458252,
+  "max_reserved_gib": 18.515625,
+  "max_allocated_at": {
+    "step": 5,
+    "rank": 7
+  },
+  "max_reserved_at": {
+    "step": 5,
+    "rank": 7
+  },
+  "successful_base_then_adapter_sync_at_step40": true,
+  "limitations": "Partial trial. Checkpoint fields and plane identity validated on all eight ranks; no full-model resume performed here. Native tiny fixture separately verified exact recovery. Geometry measures the prior finite optimizer update outside the refreshed tangent, not the next gradient or a causal performance change. Sync audit records awaited transfer completion, not independent inference-engine tensor equality. Allocator scope excludes inference, synchronization and export.",
+  "evaluation_counts": [
+    {
+      "step": 0,
+      "responses": 240,
+      "questions": 30,
+      "correct": 4,
+      "solved": 3
+    },
+    {
+      "step": 20,
+      "responses": 240,
+      "questions": 30,
+      "correct": 14,
+      "solved": 6
+    },
+    {
+      "step": 40,
+      "responses": 240,
+      "questions": 30,
+      "correct": 33,
+      "solved": 10
+    }
+  ],
+  "raw_evaluation_sha256": {
+    "0": "abdceef33f9c7b983b4ea0bf8f1f2558f2dd1e0d3794f2b18bf895cb77facd93",
+    "20": "e84f44824cc8692464c18c759be703afd69359bc10102164649e38f9acaa8118",
+    "40": "bd8d51e71768e509ec73cc0f4fef7086866cf76599c5817e79e57b004bcd29f1"
+  }
+}

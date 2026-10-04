@@ -11,6 +11,7 @@ import torch
 
 from scripts.research.snapshot import parse_jsonl
 from unorl.refresh_geometry import update_space_residual
+from unorl.refresh_transition import rotate_in_refresh_plane
 from unorl.relora_refresh import rotated_row
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,6 +21,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--step", required=True, type=int)
+    parser.add_argument(
+        "--saved-gradual-plane",
+        action="store_true",
+        help="Use the active, checkpointed gradual-refresh plane instead of a hypothetical random direction",
+    )
     args = parser.parse_args()
     run = ROOT / "runs" / args.run_id
     config = json.loads((run / "config.json").read_text())
@@ -32,6 +38,14 @@ def main():
     if not factors:
         raise ValueError("Checkpoint has no saved actual-update factors")
     scale = config["trainer.policy.model.lora.alpha"] / config["trainer.policy.model.lora.rank"]
+    planes = None
+    if args.saved_gradual_plane:
+        transition = state["client_state"].get("gradual_refresh_transition")
+        if not transition or transition.get("version") != 1 or not transition.get("count"):
+            raise ValueError("Checkpoint has no active saved gradual-refresh plane")
+        planes = transition["planes"]
+        if planes.keys() != factors.keys():
+            raise ValueError("Saved plane names differ from actual-update factors")
     angles = {}
     for angle in (0, 2, 20, 45, 60):
         results = {}
@@ -44,7 +58,11 @@ def main():
             generator = torch.Generator().manual_seed(
                 config["trainer.seed"] + args.step * 10000 + index
             )
-            new_a = rotated_row(a.float(), angle, generator).double()
+            new_a = (
+                rotate_in_refresh_plane(a.float(), planes[name], angle)
+                if planes is not None
+                else rotated_row(a.float(), angle, generator)
+            ).double()
             results[name] = update_space_residual(new_a, b, terms)
         total = sum(row["target_l2"] ** 2 for row in results.values())
         unavailable = sum(row["unavailable_l2"] ** 2 for row in results.values())
@@ -74,6 +92,9 @@ def main():
         "layers": len(factors),
         "verified_actual_update_l2": actual_norm,
         "angles_degrees": angles,
+        "direction_source": "active checkpointed gradual plane"
+        if planes is not None
+        else "seeded hypothetical random direction",
         "limitations": (
             "Hypothetical rotations of the saved post-update adapter, measured against the last actual "
             "finite optimizer weight update. No model is trained or evaluated. Zero-angle residual may "

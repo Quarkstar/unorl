@@ -2797,3 +2797,93 @@ LoRA learning, not an independent estimate of a learning slope or a merge
 effect. Both detached monitors were verified live. The book snapshot and
 curves were refreshed by the hourly watcher; no restart or recipe change
 was made. The first intervention remains after update 40.
+
+
+## 56. Step 40 and the first gradual increment
+
+At 03:56 UTC on October 4, the step-40 AIME25 evaluation was available with
+all 240 responses in thirty groups of eight. There are 33 correct responses
+and ten solved questions, matching logged 13.750% avg@8 and 33.333% pass@8.
+Only the first 2-degree rotation has happened at this checkpoint. Updates
+1-40 still use ordinary-LoRA update directions; training update 41 is the
+first that learns in the refreshed direction. This evaluation cannot show
+whether ten interleaved increments improve the subsequent learning rate.
+
+| Run | Step-40 avg@8 | Step-40 pass@8 | Updates 21-40 training correctness |
+|---|---:|---:|---:|
+| Historical standard | 11.250% | 26.667% | 23.652% |
+| Fresh standard | 12.083% | 23.333% | 21.367% |
+| One-shot refresh | 17.083% | 26.667% | 24.707% |
+| Ten-increment trial | 13.750% | 33.333% | 22.930% |
+
+Against historical standard, avg@8 difference is +2.500 percentage points
+with paired-question bootstrap interval [-1.667,+7.083]; pass@8 difference
+is +6.667 points, interval [0,+16.667]. Against fresh standard, differences
+are +1.667 points [-4.583,+7.500] and +10.000 points [-3.333,+23.333]. Against
+one-shot refresh, avg@8 is lower by 3.333 points [-8.750,+1.250] while pass@8
+is higher by 6.667 points [0,+16.667]. These single-run question intervals
+do not include training-seed uncertainty. A lead already present before the
+first affected training update cannot establish a benefit from the method.
+
+For updates 21-40, mean entropy is 0.286373, gradient norm 0.039756, response
+length 1529 tokens, effective-update L2 0.074853 and adjacent-update cosine
+0.925130. Update scale lies between fresh standard (0.070549) and one-shot
+refresh (0.081068). The last ordinary update has L2 0.069064 and cosine
+0.937845; the first affected update at 41 has L2 0.066645 and cosine 0.949119.
+This initial runtime validation shows no immediate physical-update collapse;
+it is not a completed transition-window comparison. Wait for complete
+updates 41-50 and 51-60 rather than fitting a slope to isolated batches.
+
+### Actual transition, checkpoint and transport validation
+
+The first increment refreshed all 252 adapted projections after update 40,
+with correction L2 0.082935, FP32 rounding error relative to the correction
+0.043524%, minimum actual-row cosine 0.999391, 903 optimizer dictionary entries,
+and unchanged LR 1.5e-5. The response-prefix probe covers 1024 tokens across
+eight ranks: mean KL 0.000569, chosen-logprob mean absolute difference
+0.009077, maximum 0.367086, and argmax changes on 0.586% of tokens. This is
+comparable in scale to the one-shot 20-degree first-boundary KL 0.000476.
+Smaller input-space rotation has therefore not established better numerical
+forward continuity in the observed first probes. The probes use different
+trajectories, so this comparison does not isolate precision or angle as a
+cause. FP32 master compensation, BF16 forward casts and separate low-rank
+matmuls remain distinct issues; a smaller angle does not guarantee a
+proportional KL reduction.
+
+All eight actual full-model checkpoint extra-state files at step 40 were
+read on CPU. They agree on the hash of 252 saved planes, scheduler update
+40, transition start 40 and one completed increment. Every plane is finite,
+unit-normalized and orthogonal within tolerance. Rank zero retains exactly
+two compressed correction pairs per layer. Successful awaited backbone and
+adapter transfers are recorded at steps 40 and 41, and the new evaluation
+completed with the real inference engines. The transfer audit records call
+completion rather than independent bitwise equality of server weights.
+The native tiny distributed fixture separately proved exact resume; this
+inspection does not claim that the full-model checkpoint was resumed.
+
+The [partial checkpoint audit](../data/gradual-refresh-step40-audit.json)
+retains checkpoint hashes, state checks and all 320 per-rank memory records
+through update 40. Only update 40 is marked merged in this prefix. Peak
+training allocation/reservation remains 17.580/18.516 GiB at step 5 on rank 7;
+this is not a completed-run maximum. Accumulated stable rank at the first
+instant is essentially one, as expected from forward-preserving compensation
+before further optimizer updates change B's direction.
+
+### Geometry of the real saved update
+
+The geometry script now accepts `--saved-gradual-plane` to use the actual
+checkpointed plane rather than generate a new hypothetical direction. It
+reconstructs the adapter just after the optimizer update, before its refresh,
+from the saved finite-update factors. On the real step-40 update, the norm
+outside the available first-order update space is 0.0651% at zero rotation,
+3.1434% at the actual 2-degree increment, and 30.7989% at a hypothetical
+20-degree rotation in the same plane. Target L2 0.06906431851263364 agrees
+with the recorded physical optimizer update. The small zero-angle residual
+is the finite-update cross term rather than a discontinuity.
+
+The [reproducible geometry artifact](../data/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01-refresh-geometry-step40.json)
+contains every layer and the source checkpoint hash. It supports the local
+update-space rationale, not exact Adam history transport, future gradients,
+causal superiority, or the final goal. Keep the trial unchanged and evaluate
+learning after the whole transition, accumulated rank growth, numerical
+continuity and final held-out scores before selecting another method.
