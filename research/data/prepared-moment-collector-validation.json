@@ -17,18 +17,24 @@
   "resident_tensor_values_per_adapter_parameter": 9,
   "estimated_replicated_observer_mib_at_2064384_parameters": 70.875,
   "production_integrated": false,
-  "limitations": "CPU unit checks plus separately recorded tiny native FSDP2 validation. Resident tensor accounting excludes temporary products, checkpoint copies and hook activation retention until backward. No production-worker integration, full-model GPU peak, inference-engine synchronization or RL performance evidence.",
+  "limitations": "CPU unit checks plus separately recorded tiny native FSDP2 validation. Inputs now use checkpoint-managed save_for_backward rather than Python closure retention. Resident tensor accounting still excludes checkpoint recomputation, temporary products and CPU copies. No production-worker integration, full-model peak VRAM, inference synchronization or RL performance evidence.",
   "hook_module": "unorl/prepared_hooks.py",
-  "hook_source_sha256": "8c39fadf1777e8f0b9c7aca7440b08a7ee5d45ae272d989476f62072fba7476f",
+  "hook_source_sha256": "d6c3f450d38ebc714cecc6b0d946ff767fde9e0e35ac3122f3bbcd6857b724ee",
   "hook_tests": "tests/test_prepared_hooks.py",
-  "hook_tests_passed": 6,
-  "combined_tests_passed": 14,
+  "hook_tests_passed": 9,
+  "combined_tests_passed": 17,
   "hook_validation_scope": [
     "Both reentrant and nonreentrant Torch checkpoint modes",
     "One callback per actual training backward",
     "Skip no-grad evaluation and disable callbacks on closed graphs",
     "Detached activation wrapper released after backward even if output retained",
-    "Discard nonfinite native update without advancing prepared history"
+    "Discard nonfinite native update without advancing prepared history",
+    "Nonreentrant checkpoint discards captured input before backward and recomputes it",
+    "Closure-capture negative control retains that same otherwise discardable input",
+    "Underlying activation storage freed before backward with checkpointing",
+    "Without checkpointing, saved activation storage remains live until backward"
   ],
-  "native_validation_record": "prepared-moment-native-validation.json"
+  "native_validation_record": "prepared-checkpoint-hooks-native-validation.json",
+  "hook_tests_source_sha256": "90b231a1cb872274a1edf7f438cf1602d3f3870740946c59e924e7df60b522f3",
+  "combined_suite_with_selection_passed": 24
 }

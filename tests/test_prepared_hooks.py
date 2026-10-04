@@ -6,9 +6,10 @@ import weakref
 import pytest
 import torch
 import torch.nn.functional as F
+from torch.multiprocessing.reductions import StorageWeakRef
 from torch.utils.checkpoint import checkpoint
 
-from unorl.prepared_hooks import PreparedProjectionHook
+from unorl.prepared_hooks import PreparedProjectionHook, _PreparedProjection
 from unorl.prepared_moments import PreparedBasisMoments
 
 
@@ -117,3 +118,65 @@ def test_discarded_nonfinite_update_does_not_advance_history():
     assert observer.count == observer.pending_microbatches == 0
     assert observer.ga.count_nonzero() == observer.gb.count_nonzero() == 0
     assert observer.ma.count_nonzero() == observer.mb.count_nonzero() == 0
+
+
+@pytest.mark.parametrize("checkpointed", [False, True])
+def test_checkpoint_discards_observer_input_before_backward(monkeypatch, checkpointed):
+    layer = LinearAdapter()
+    observer = make_observer(layer)
+    hook = PreparedProjectionHook(layer, observer)
+    references = []
+    storage_references = []
+    original = _PreparedProjection.forward
+
+    def record(ctx, output, inputs, hook):
+        references.append(weakref.ref(inputs))
+        storage_references.append(StorageWeakRef(inputs.untyped_storage()))
+        return original(ctx, output, inputs, hook)
+
+    monkeypatch.setattr(_PreparedProjection, "forward", staticmethod(record))
+    x = torch.randn(2, 3, 11, dtype=torch.float64, requires_grad=True)
+
+    def block(inputs):
+        return layer(inputs.sin())
+
+    output = checkpoint(block, x, use_reentrant=False) if checkpointed else block(x)
+    gc.collect()
+    # SavedVariable can drop the Python wrapper while still holding storage.
+    # The storage lifetime, not only the wrapper, is the memory-relevant gate.
+    assert storage_references
+    assert all(reference.expired() == checkpointed for reference in storage_references)
+    if checkpointed:
+        assert references and all(reference() is None for reference in references)
+    output.square().mean().backward()
+    assert observer.pending_microbatches == hook.backward_calls == 1
+    hook.close()
+
+
+def test_closure_capture_negative_control_retains_checkpoint_input():
+    layer = LinearAdapter()
+    references = []
+    storage_references = []
+
+    def capture_forward(module, args, output):
+        inputs = args[0].detach()
+        references.append(weakref.ref(inputs))
+        storage_references.append(StorageWeakRef(inputs.untyped_storage()))
+
+        def capture(gradient):
+            # The old prototype's closure retains this otherwise discardable
+            # intermediate. Reading it ensures the negative control is real.
+            assert inputs.shape[-1] == 11
+            handle.remove()
+            return gradient
+
+        handle = output.register_hook(capture)
+
+    forward_handle = layer.register_forward_hook(capture_forward)
+    x = torch.randn(2, 3, 11, dtype=torch.float64, requires_grad=True)
+    output = checkpoint(lambda inputs: layer(inputs.sin()), x, use_reentrant=False)
+    gc.collect()
+    assert references and any(reference() is not None for reference in references)
+    assert storage_references and any(not reference.expired() for reference in storage_references)
+    output.square().mean().backward()
+    forward_handle.remove()

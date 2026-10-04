@@ -3922,3 +3922,75 @@ Production lifecycle and inference-sync checks, activation-lifetime handling
 and full-model memory measurement remain necessary before a matched
 100-update trial. The final success criteria remain both meaningful rank
 growth and performance matching or exceeding standard rank-one LoRA.
+
+## 67. Prepared capture now participates in activation checkpointing
+
+The output-hook prototype retained each detached layer input in a Python
+gradient callback. Releasing it after backward was insufficient: nonreentrant
+checkpointing could not discard that retained storage during the original
+forward. This made the observer-buffer estimate unsuitable as a peak-memory
+claim and could unnecessarily increase training memory.
+
+`unorl/prepared_hooks.py` now returns an identity autograd Function from the
+linear layer's forward hook. The Function uses `ctx.save_for_backward(inputs)`
+rather than a Python closure holding the input. Saved-tensor hooks, including
+Torch's nonreentrant checkpoint machinery, can discard and recompute it.
+During backward, the saved input and incoming output gradient are supplied
+to the existing projected collector exactly once. Output values and their
+gradients pass through unchanged; no observer gradients are added to the
+model. Closing the hook disables observation even on an already-created graph.
+
+### Evidence
+
+The [checkpoint-hook validation](../data/prepared-checkpoint-hooks-native-validation.json)
+records current source hashes, native reports and limitations. All **24**
+combined CPU tests pass: eight collector, seven selector and nine hook cases.
+Both reentrant and nonreentrant checkpoint modes preserve the projected
+native-gradient identities and collect once per training backward.
+
+A new test observes both the actual detached tensor wrapper and the underlying
+activation storage passed to the custom Function for an intermediate inside
+a checkpointed block. **Storage is released before backward**, then the
+backward collection succeeds. Without checkpointing, that storage stays live
+until backward. A second negative control implements the old output-gradient
+closure and retains the equivalent storage even with checkpointing. Checking
+the storage is necessary: autograd can release a Python wrapper while a
+SavedVariable still owns its storage. These tests establish participation in
+checkpoint discard/recompute, beyond the older release-after-backward test.
+
+The constrained-selector tiny native fixture was rerun on all eight GPUs.
+It passes without changing precision settings or numerical gates: maximum
+relative warmed-moment error is **0.000713729**, maximum boundary BF16 logit
+difference **0.001953125**, and effective weights plus all populated optimizer
+states replay bitwise exactly. The replacement produces the same reported
+native numerical results as the preceding capture implementation. AdamW,
+clipping/reduction, constant LR and native Parameter identities are preserved.
+
+### Scope and next integration requirements
+
+This is not a full-model memory benchmark. The tiny fixture retains its
+separate dense oracle, whose own callback still holds inputs; that oracle is
+not part of the proposed worker. The saved inputs can still be resident when
+checkpointing is disabled. Temporary projected products and checkpoint
+recomputation affect peak memory, and the 70.875 MiB observer-state estimate
+continues to exclude them. The identity Function returns a view, so arbitrary
+downstream in-place modifications are unsupported; the tested native Qwen
+fixture does not require them. Full Qwen3 training behavior remains to be
+validated in the integrated worker.
+
+The production worker must start fixed-basis preparation windows before the
+planned merges, accumulate the actual loss-normalized microbatch gradients,
+reduce them before updating cross moments, and discard skipped nonfinite
+updates. At a merge it must install warmed state with the **window observation
+count**, keep the global constant scheduler unchanged, compensate the base,
+record actual accumulated rank and signal/reference-drift diagnostics, then
+send base weights followed by the adapter to inference. Checkpoints must save
+the active preparation window and its bases/moments, rather than require
+native Adam counters to equal the global scheduler after a transfer.
+
+The existing `RefreshPolicyWorker.load_checkpoint` enforces that equality and
+therefore cannot be reused unchanged. The worker must also preserve detailed
+logs, per-rank training-memory measurements and merge audits. The planned
+matched-budget performance comparison remains 100 updates from base with
+historical standard rank-one LoRA reused; no full RL trial has started and the
+performance/rank-growth goal is still open.

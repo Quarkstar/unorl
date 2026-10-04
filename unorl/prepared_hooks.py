@@ -1,14 +1,37 @@
-"""Single-use output-gradient hooks for prepared linear-layer projections."""
+"""Checkpoint-managed input saving for prepared linear-layer projections."""
 
 import torch
+
+
+class _PreparedProjection(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, output, inputs, hook):
+        # save_for_backward participates in saved-tensor hooks, including
+        # nonreentrant checkpoint discard/recompute. A Python closure holding
+        # inputs would bypass that machinery and pin the activation storage.
+        ctx.save_for_backward(inputs)
+        ctx.hook = hook
+        ctx.observed = False
+        return output
+
+    @staticmethod
+    def backward(ctx, gradient):
+        hook = ctx.hook
+        if hook.enabled and not ctx.observed:
+            inputs = ctx.saved_tensors[0]
+            hook.observer.accumulate(inputs, gradient)
+            hook.backward_calls += 1
+            ctx.observed = True
+        return gradient, None, None
 
 
 class PreparedProjectionHook:
     """Observe training backward calls; skip evaluation and no-grad recomputation.
 
-    Activation references live in the autograd callback, never in the observer.
-    The callback removes itself after use. Closing disables callbacks from
-    already-created graphs as well as future forward registration.
+    Inputs are saved through autograd, not retained by Python callbacks.
+    Closing disables observation from already-created graphs as well as
+    future forward registration. Output values and their gradients pass
+    through unchanged; the returned tensor has an identity autograd node.
     """
 
     def __init__(self, layer, observer):
@@ -28,17 +51,7 @@ class PreparedProjectionHook:
             raise TypeError("Prepared projections require a tensor-in/tensor-out linear layer")
         if not output.requires_grad:
             return
-        inputs = args[0].detach()
-
-        def capture(gradient):
-            try:
-                if self.enabled:
-                    self.observer.accumulate(inputs, gradient)
-                    self.backward_calls += 1
-            finally:
-                handle.remove()
-
-        handle = output.register_hook(capture)
+        return _PreparedProjection.apply(output, args[0].detach(), self)
 
     def close(self):
         self.enabled = False
