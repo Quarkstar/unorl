@@ -4129,3 +4129,22 @@ The individual experiment page and main comparison are generated from the
 current snapshot and updated hourly. Full-model collection/transfer first
 becomes exercised at the preparation and merge boundaries; final reward,
 held-out performance and substantial learned rank remain unproven.
+
+### Independent recorded-prefix audit
+
+`scripts/research/audit_prepared_run.py` audits immutable completed records
+without loading or changing the running model. Its update-seven audit checks
+all **56 policy-memory records** (seven updates across eight ranks), initial
+base-plus-adapter synchronization and all **240 raw initial AIME samples**
+against the reported aggregate scores. The observed prefix maxima are
+**17.3438 GiB allocated / 18.1836 GiB reserved**. No prepared switch has yet
+occurred, so this result does not exercise selection or moment transfer.
+
+For subsequent audited prefixes the script additionally checks the scheduled
+selection boundaries, all 252 adapter layers' window counts, the retained
+local-descent constraint, transfer eligibility and synchronization after
+actual changes. A zero-selection boundary is allowed and reported explicitly;
+it is not counted as rank-growth success. Native checkpoint state, actual
+learned spectra and held-out comparison remain separate required evidence.
+The prefix audit and source hashes are retained in
+`research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-recorded-prefix-step7.json`.
