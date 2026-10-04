@@ -3367,3 +3367,124 @@ the remaining increments 81-89 and training through 100. Compare complete
 selecting the next method. Matching short-run standard LoRA scores without
 meaningful additional learned directions would not satisfy the rank-growth
 objective clarified by the user.
+
+
+## 62. Adaptive prepared directions: moment identities and the normal gradient
+
+This extends the fixed prepared-pair proposal with a mathematical direction
+selection rule. It remains a CPU-validated proposal, not a production method
+or selected next training trial. Candidate bases are fixed during each
+preparation window but may be replaced between cycles; there is no fixed
+global adapter-sized basis ceiling.
+
+### Why merging can escape a genuine rank-one limit
+
+Consider fitting the two-by-two target `diag(2, 1)` with squared Frobenius
+error divided by two. The rank-one solution `B @ A = diag(2, 0)` has loss
+0.5. Its weight gradient is `diag(0, -1)`, but both `B.T @ G` and `G @ A.T`
+are zero. Any rank-one matrix has a unit right-null vector v; because the
+smallest singular value of the target is one, the residual applied to v has
+norm at least one. Its Frobenius norm is therefore at least one, proving
+that this rank-one solution attains the global rank-one minimum.
+
+After merging it into the base, a new rank-one term `diag(0, 1)` gives the
+exact rank-two target and zero loss. This illustrates an actual capacity
+advantage, rather than counting random seed/compensation factors as learned
+rank. It is not evidence of a Qwen/RL plateau at step 100.
+
+For unit columns u and v along the old B and A, the inaccessible first-order
+weight-gradient component is:
+
+```python
+normal_G = (I_out - u @ u.T) @ G @ (I_in - v @ v.T)
+```
+
+No dense implementation of these projectors is proposed. The formula shows
+that at an old-adapter stationary point, a nonzero normal gradient can remain
+while the old parameter gradients vanish. A merge should eventually expose
+such useful components, not merely preserve the old input/output directions.
+
+### Collect sufficient statistics in small per-cycle bases
+
+Let `Qin` have shape [in_features, k] and `Qout` shape [out_features, k],
+with orthonormal columns fixed throughout the preparation window. Collect
+observed clipped gradient projections, with all microbatches aggregated first:
+
+```python
+Zb = G @ Qin                 # [out_features, k]
+Za = Qout.T @ G              # [k, in_features]
+mb = beta1 * mb + (1 - beta1) * Zb
+ma = beta1 * ma + (1 - beta1) * Za
+Cb = beta2 * Cb + (1 - beta2) * outer_per_output(Zb, Zb)
+Ca = beta2 * Ca + (1 - beta2) * outer_per_input(Za, Za)
+```
+
+These projections can be formed from activations and output gradients without
+materializing G, as in the fixed-pair proof. Cross moments are essential:
+diagonal variance alone cannot reconstruct variance after combining directions.
+
+At the boundary, choose coefficients `a_coeff` and `b_coeff`, potentially
+using the observed statistics, and set:
+
+```python
+A_next = a_coeff @ Qin.T
+B_next = Qout @ b_coeff
+mB_next = scale * mb @ a_coeff.T
+mA_next = scale * b_coeff.T @ ma
+vB_next[out] = scale**2 * a_coeff @ Cb[out] @ a_coeff.T
+vA_next[inp] = scale**2 * b_coeff.T @ Ca[inp] @ b_coeff
+```
+
+These identities exactly reproduce the moments of replaying the observed
+history in the *finally selected fixed coordinates*. Coefficients may be
+chosen after observing the window because each historical projection is
+linear in those coefficients, and its square is a quadratic form captured
+by C. Matching observation counts and bias correction remain mandatory.
+This is still not the history of a different counterfactual policy run.
+
+### A derived selection objective, with explicit limits
+
+The two projections give the same small mean-gradient core:
+
+```python
+core = Qout.T @ mb  # Also equals ma @ Qin.
+left, singular, right = torch.linalg.svd(core)
+b_direction = Qout @ left[:, :1]
+a_direction = right[:1] @ Qin.T
+```
+
+For unit coefficients, `b_coeff.T @ core @ a_coeff.T` is at most the largest
+singular value; the leading singular vectors attain this bound. Thus this
+choice maximizes alignment with the observed mean gradient among rank-one
+products inside the candidate spans. Scale/norm coefficients can then be
+included in the exact first/second moment maps above. Forward compensation
+preserves the instantaneous real-arithmetic effective weight.
+
+This does not automatically select a new direction: if useful gradient is
+still concentrated in the old directions, the optimum may retain them. Nor
+can a tiny random candidate span reliably capture a useful normal gradient
+in a large layer. Candidate-basis quality, novelty versus useful descent,
+current-gradient agreement and post-merge performance require evidence.
+Prescribing orthogonality without useful gradient signal would not solve the
+problem. Replacing bases each cycle permits continued rank growth; it does
+not guarantee substantial singular-value energy or a better policy.
+
+### CPU verification and resource estimate
+
+The [adaptive-basis validation](../data/prepared-basis-moment-validation.json)
+uses sixteen observed gradients, unequal 2/5/3-token microbatches, clipping,
+width-two fixed bases and coefficients selected from the final mean-gradient
+core. Mapped first and diagonal second moments agree with native AdamW replay
+to **4.86e-17** maximum absolute error. The independent oracle alone retains
+dense gradients. The rank-one stationary example above is also verified.
+There is no GPU/FSDP, production hook, memory or RL evaluation in this proof.
+
+For width two, fixed bases cost 2P values, first moments 2P and symmetrically
+packed cross moments 3P, where P is the combined active A/B parameter count.
+That is **55.125 MiB** additional FP32 persistent storage for P=2,064,384,
+plus **15.75 MiB** for two-basis gradient accumulators. The CPU fixture uses
+unpacked cross moments, which would cost 63 MiB rather than 55.125 MiB at
+model scale, excluding accumulators and its independent oracle. Peak
+production allocation, activation retention and distributed placement remain
+unmeasured. This is an extension to investigate after the current trial, not
+an excuse to launch another experiment before a validated implementation.

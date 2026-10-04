@@ -1,0 +1,14 @@
+{
+  "observed_updates": 16,
+  "candidate_basis_width": 2,
+  "coefficients_selected_after_history": true,
+  "max_native_adam_moment_error": 4.85722573273506e-17,
+  "projected_mean_gradient_core_top_singular_value": 0.04527378940823912,
+  "rank_one_stationary_example": {
+    "rank_one_loss": 0.5,
+    "rank_two_loss": 0.0,
+    "old_adapter_gradient_zero": true,
+    "normal_weight_gradient_nonzero": true
+  },
+  "limitations": "CPU double-precision identities with fixed per-cycle bases and observed clipping. Dense gradients retained only by the oracle. Adaptive coefficients are constant when replaying observed gradients, not a counterfactual policy trajectory. Rank-two matrix example illustrates capacity, not RL performance. No FSDP, GPU memory or production collector validation."
+}
