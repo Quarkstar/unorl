@@ -3,7 +3,19 @@
 import pytest
 import torch
 
-from unorl.merge_precision import aggregate_output_shifts, output_shift, weight_rounding_metrics
+from unorl.merge_precision import (
+    adam_step_counters,
+    aggregate_output_shifts,
+    output_shift,
+    weight_rounding_metrics,
+)
+
+
+def test_adam_counters_accept_frozen_placeholders_but_reject_missing_history():
+    state = {"step": torch.tensor(40), "exp_avg": torch.zeros(2), "exp_avg_sq": torch.ones(2)}
+    assert adam_step_counters([{}, state, {}]) == [40]
+    with pytest.raises(ValueError, match="missing"):
+        adam_step_counters([{"exp_avg": torch.zeros(2)}])
 
 
 def test_small_update_can_disappear_in_bf16_without_disappearing_in_fp32():

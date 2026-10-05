@@ -17,7 +17,12 @@ from skyrl.backends.skyrl_train.workers.model_wrapper import HFModelWrapper
 from transformers import AutoTokenizer
 
 from unorl.low_resource import adapter_layers, full_tensor, merge_and_reset
-from unorl.merge_precision import aggregate_output_shifts, output_shift, weight_rounding_metrics
+from unorl.merge_precision import (
+    adam_step_counters,
+    aggregate_output_shifts,
+    output_shift,
+    weight_rounding_metrics,
+)
 from unorl.relora_refresh_config import RefreshTrainConfig
 from unorl.relora_worker import ReLoRAStrategy
 
@@ -110,7 +115,7 @@ def main():
         _, restored = strategy.load_checkpoint(
             wrapped, str(checkpoint / "policy"), optimizer=optimizer, scheduler=scheduler
         )
-        counters = [float(state["step"]) for state in optimizer.state.values()]
+        counters = adam_step_counters(optimizer.state.values())
         if (
             scheduler.last_epoch != args.step
             or not counters

@@ -74,7 +74,9 @@ def main():
     ]
     write_status(status_file, "running_precision_audit", output=str(output))
     try:
-        with (run / "precision-audit.log").open("x") as log:
+        with (run / "precision-audit.log").open("a") as log:
+            log.write(json.dumps({"attempt_utc": datetime.now(timezone.utc).isoformat()}) + "\n")
+            log.flush()
             result = subprocess.run(
                 command,
                 cwd=ROOT,

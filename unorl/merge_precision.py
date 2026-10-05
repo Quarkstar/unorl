@@ -3,6 +3,18 @@
 import torch
 
 
+def adam_step_counters(states):
+    """Ignore frozen-parameter placeholders in native FSDP optimizer state."""
+    counters = []
+    for state in states:
+        if not state:
+            continue
+        if not {"step", "exp_avg", "exp_avg_sq"} <= state.keys():
+            raise ValueError("Nonempty native Adam state is missing counters or moments")
+        counters.append(float(state["step"]))
+    return counters
+
+
 @torch.no_grad()
 def weight_rounding_metrics(base, a, b, scale):
     """Separate native FP32 addition error from the subsequent BF16 cast.
