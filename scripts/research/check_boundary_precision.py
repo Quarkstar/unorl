@@ -9,11 +9,14 @@ import argparse
 import hashlib
 import json
 import os
+import sys
+import traceback
 from pathlib import Path
 
 import torch
 import torch.distributed as dist
 from skyrl.backends.skyrl_train.workers.model_wrapper import HFModelWrapper
+from torch.distributed.fsdp import FSDPModule
 from transformers import AutoTokenizer
 
 from unorl.low_resource import adapter_layers, full_tensor, merge_and_reset
@@ -53,10 +56,20 @@ def fixed_probe(run, step, tokenizer, rank, response_tokens):
 
 
 @torch.no_grad()
-def response_logits(model, ids, length):
-    return (
+def response_logits(model, ids, length, control_group):
+    logits = (
         model(ids.unsqueeze(0), logits_to_keep=length + 1, use_cache=False).logits[:, :-1].float()
     )
+    # Direct HF forwards bypass the native worker's inference resharding.
+    # Restore FP32 sharded parameters before inspecting or merging them,
+    # with all ranks kept in the same audit phase.
+    torch.cuda.synchronize()
+    dist.barrier(group=control_group)
+    for module in model.modules():
+        if isinstance(module, FSDPModule):
+            module.reshard()
+    dist.barrier(group=control_group)
+    return logits
 
 
 def main():
@@ -65,11 +78,13 @@ def main():
     parser.add_argument("--step", type=int, default=40)
     parser.add_argument("--response-tokens", type=int, default=128)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--attention-backend", choices=("training", "sdpa"), default="training")
     args = parser.parse_args()
     if args.step != 40 or not 1 <= args.response_tokens <= 256:
         parser.error("This shared-prefix experiment uses step 40 and at most 256 probe tokens")
     torch.cuda.set_device(int(os.environ["LOCAL_RANK"]))
     dist.init_process_group("nccl")
+    control_group = dist.new_group(backend="gloo")
     try:
         run = ROOT / "runs" / args.run_id
         raw_config = json.loads((run / "config.json").read_text())
@@ -100,7 +115,7 @@ def main():
         strategy.setup_distributed()
         wrapped = HFModelWrapper(
             cfg.policy.model.path,
-            use_flash_attention_2=cfg.flash_attn,
+            use_flash_attention_2=cfg.flash_attn if args.attention_backend == "training" else False,
             bf16=False,
             lora_rank=1,
             lora_alpha=32,
@@ -121,7 +136,7 @@ def main():
             or not counters
             or min(counters) != args.step
             or max(counters) != args.step
-            or restored.get("client_state", {}).get("relora_factor_history")
+            or any(restored.get("client_state", {}).get("relora_factor_history", {}).values())
         ):
             raise ValueError("Expected standard-LoRA state at the first pre-merge boundary")
         model = wrapped.model.eval()
@@ -130,8 +145,8 @@ def main():
             run, args.step, tokenizer, dist.get_rank(), args.response_tokens
         )
         torch.cuda.reset_peak_memory_stats()
-        before = response_logits(model, ids, length)
-        repeat = response_logits(model, ids, length)
+        before = response_logits(model, ids, length, control_group)
+        repeat = response_logits(model, ids, length, control_group)
         baseline = output_shift(before, repeat, ids[-length:])
         del repeat
         layers = {}
@@ -141,9 +156,10 @@ def main():
             b = full_tensor(layer.lora_B["default"].weight)
             if dist.get_rank() == 0:
                 layers[name] = weight_rounding_metrics(base, a, b, layer.scaling["default"])
+        dist.barrier(group=control_group)
         merge_metrics = merge_and_reset(model, seed=cfg.seed + args.step * 10000)
         optimizer.state.clear()
-        after = response_logits(model, ids, length)
+        after = response_logits(model, ids, length, control_group)
         shift = output_shift(before, after, ids[-length:])
         row = {
             "rank": dist.get_rank(),
@@ -158,7 +174,7 @@ def main():
             "peak_reserved_bytes": torch.cuda.max_memory_reserved(),
         }
         rows = [None] * dist.get_world_size()
-        dist.all_gather_object(rows, row)
+        dist.all_gather_object(rows, row, group=control_group)
         if dist.get_rank() == 0:
             totals = {
                 key: sum(layer[key] for layer in layers.values())
@@ -167,6 +183,7 @@ def main():
             report = {
                 "run_id": args.run_id,
                 "checkpoint_global_step": args.step,
+                "attention_backend": args.attention_backend,
                 "config_sha256": hashlib.sha256((run / "config.json").read_bytes()).hexdigest(),
                 "source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 "baseline_repeat": aggregate_output_shifts([r["baseline_repeat"] for r in rows]),
@@ -175,7 +192,7 @@ def main():
                 "layers": layers,
                 "ranks": rows,
                 "merge_metrics": merge_metrics,
-                "limitations": "Native FSDP mixed-precision forwards on fixed saved response prefixes. No vLLM receiver/kernel check, accuracy claim, full-response coverage, or optimizer-continuity test. Probe examples are not used to choose adapter directions. Source checkpoint is read-only.",
+                "limitations": "Native FSDP mixed-precision forwards on fixed saved response prefixes, with the attention backend recorded explicitly. An SDPA diagnostic is not a FlashAttention or vLLM kernel check. No accuracy claim, full-response coverage, or optimizer-continuity test. Probe examples are not used to choose adapter directions. Source checkpoint is read-only.",
             }
             args.output.parent.mkdir(parents=True, exist_ok=True)
             temporary = args.output.with_suffix(".tmp")
@@ -190,7 +207,14 @@ def main():
                 ),
                 flush=True,
             )
-    finally:
+    except Exception:
+        # A failed rank must exit promptly so torchrun can stop its peers.
+        # Destroying NCCL here can hide the original exception while another
+        # rank is waiting in an unmatched model-forward collective.
+        traceback.print_exc()
+        sys.stderr.flush()
+        os._exit(1)
+    else:
         dist.destroy_process_group()
 
 

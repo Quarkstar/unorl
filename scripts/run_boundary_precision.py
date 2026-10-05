@@ -22,6 +22,7 @@ def write_status(path, status, **fields):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-id", required=True)
+    parser.add_argument("--attention-backend", choices=("training", "sdpa"), default="training")
     args = parser.parse_args()
     if Path(args.run_id).name != args.run_id:
         parser.error("Expected a run directory name")
@@ -71,6 +72,8 @@ def main():
         "40",
         "--output",
         str(output),
+        "--attention-backend",
+        args.attention_backend,
     ]
     write_status(status_file, "running_precision_audit", output=str(output))
     try:
