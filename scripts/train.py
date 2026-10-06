@@ -87,6 +87,7 @@ def main():
             "gradual-refresh",
             "prepared",
             "guided-reset",
+            "update-cap",
         ],
         default="reinforce",
     )
@@ -107,6 +108,7 @@ def main():
             "gradual-refresh": "qwen3-4b-base-grpo-gradual-refresh-r1.json",
             "prepared": "qwen3-4b-base-grpo-prepared-r1.json",
             "guided-reset": "qwen3-4b-base-grpo-boundary-guided-r1.json",
+            "update-cap": "qwen3-4b-base-grpo-boundary-update-cap-r1.json",
         }[args.mode]
     run_id = args.run_id or f"unorl-{args.mode}-{datetime.now(timezone.utc):%Y%m%d-%H%M%S}"
     if Path(run_id).name != run_id or run_id in {".", ".."}:
@@ -131,6 +133,7 @@ def main():
         "gradual-refresh": "unorl.gradual_refresh_train",
         "prepared": "unorl.prepared_train",
         "guided-reset": "unorl.guided_reset_train",
+        "update-cap": "unorl.update_cap_train",
     }[args.mode]
     command = [str(PYTHON), "-m", module] + [f"{k}={json.dumps(v)}" for k, v in cfg.items()]
     if args.dry_run:
