@@ -135,3 +135,28 @@ sequence for diagnosis; there is no fallback checkpoint or automatic deletion.
 
 **Training branch results are pending.** This page describes the controlled
 design and completed numerical check, not a demonstrated performance gain.
+
+### Native one-update gate: passed
+
+The guided validation finished update 41 with **exit status zero** on October
+6 at 00:32 UTC. [Native validation record](../data/qwen3-4b-base-grpo-boundary-validation-r1-20261006-01.json)
+contains all layer-selection diagnostics, memory records and sync audits.
+
+- All 252 layers received a non-fallback guided direction.
+- Adam was cleared at the boundary, with scheduler counter 40 and LR 1.5e-5.
+- Post-reset gradient norm: **0.0651963**, finite and nonzero.
+- Dense backbone and fresh adapter synchronized to inference at step 41.
+- Native pre/post-merge response KL: **0.00038665**, measured on 1,024 actual
+  training response-prefix tokens; maximum chosen-token log-probability shift
+  0.24551 and highest-probability token flip fraction 0.48828%.
+- Peak allocated training memory across eight workers: **17.65 GiB**. This
+  allocator peak includes the extra calibration backward and the native update;
+  it is not total device memory or a matched memory-saving comparison.
+- Mean accumulated stable rank after this single fresh update: **1.01365**,
+  with 1.35% mean energy outside the leading singular direction. This records
+  initial rank growth, not a useful-rank or performance conclusion.
+
+The sequence driver accepted every gate and launched the standard-LoRA
+continuation at 00:32:43 UTC. Ordinary reset and guided reset are queued after
+it, each independently resuming the original shared pre-merge checkpoint.
+The one-update validation has no evaluation or saved optimizer checkpoint.
