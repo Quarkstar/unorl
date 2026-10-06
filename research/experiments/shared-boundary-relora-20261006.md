@@ -50,6 +50,8 @@ Adam and scheduler counters are 40 on every rank; no prior merges are present.
 Mean training correctness by ten-update window is 10.27%, 17.03%, 22.23%,
 and 31.13%. The single step-40 batch is 37.11%; it is not a window average.
 
+![Shared prefix training correctness and AIME25 evaluation, in Material colors.](../figures/shared-boundary-prefix-20261006.svg)
+
 ## Read-only merge check
 
 [Machine-readable precision report](../data/qwen3-4b-base-grpo-shared-prefix-r1-20261005-01-local-merge-precision-step40.json)
