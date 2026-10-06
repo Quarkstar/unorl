@@ -15,6 +15,8 @@ project:
   toc:
   - file: research/index.md
   - file: research/methods.md
+  - file: research/experiments/shared-boundary-relora-20261006.md
+    title: Shared step-40 ReLoRA comparison and merge precision check
   - title: Matched continuation from the standard-LoRA step-100 checkpoint
     children:
     - file: research/experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md
