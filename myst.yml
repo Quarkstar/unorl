@@ -19,6 +19,8 @@ project:
     title: Shared step-40 ReLoRA comparison and merge precision check
   - file: research/experiments/shared-boundary-update-cap-20261006.md
     title: Shared step-40 ReLoRA update-size control
+  - file: research/experiments/qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01.md
+    title: Retain-overlong standard rank-1 LoRA GRPO (in progress)
   - title: Matched continuation from the standard-LoRA step-100 checkpoint
     children:
     - file: research/experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md

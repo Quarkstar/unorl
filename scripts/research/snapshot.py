@@ -169,6 +169,11 @@ NOTES = {
         "incomplete",
         "Configuration is retained but no metrics survived. Treat this as an incomplete launch, not a zero-accuracy result.",
     ),
+    "qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01": (
+        "GRPO · retain-overlong rank-1 LoRA (filtering disabled)",
+        "ablation",
+        "Standard rank-one LoRA GRPO from base, identical to the historical baseline except generator.apply_overlong_filtering is false, so truncated responses keep their loss mask and train on their negative reward. Qwen3-4B-Base, all-linear rank 1 / alpha 32, native AdamW constant LR 1.5e-5, no warmup, GRPO without group-std normalization or KL, token-mean loss, no policy clipping, token TIS correction with clip 1e9, 32 prompts with eight rollouts, 8192 response budget, seed 42, eight GPUs, 100 updates, AIME25 avg@8/pass@8 every 20 updates. Isolates the retain-versus-filter choice relative to the post-step-60 plateau in which training reward flattens while response length grows and the truncation rate rises. Single run on 30 questions; no endpoint ranking is assumed. Metrics and figures are added from this snapshot once all updates and evaluations complete.",
+    ),
 }
 
 
