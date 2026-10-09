@@ -52,6 +52,17 @@ a capability ceiling: rank one may not hold what the task needs.
 - **Length/truncation is a small measurement effect**: doubling the generation
   budget removes truncation but moves accuracy only one to two points.
 
+## Length-cap measurement (closed)
+
+Re-evaluating the step-100 checkpoints at 16,384 tokens instead of 8,192 all but
+eliminates truncation (14–31% → 2–3%) but moves avg@8 by only **+1.25 to +2.5
+points**. The 8,192 and 16,384 evaluations are unpaired (different sampling), and
+the same checkpoint at the same budget scored **20.0%** in its training-run
+evaluation versus **16.25%** standalone — a ~3.75-point swing. So the generation
+cap is a small constant correction, and **a single evaluation carries roughly
+±4 points of sampling noise**, larger than most effects compared in this book.
+Configs: `configs/eval-aime25-{8192,16384}-{standard-0923,retain-overlong}.json`.
+
 ## The central open problem
 
 If full-parameter and rank-1 LoRA both saturate, then **rank is not the
