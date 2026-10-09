@@ -124,11 +124,6 @@ NOTES = {
         "historical",
         "Only verified correct self-generated responses are trained. This run demonstrates learning with rejection sampling. Training correctness and prompt-level training pass@8 are distinct quantities; compare response correctness with held-out avg@8, not training pass@8 with held-out pass@1.",
     ),
-    "qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01": (
-        "PPO · value-model warmup",
-        "historical",
-        "The run was stopped after early degradation. Five critic-only warmup steps precede actor updates; critic and policy settings differ from REINFORCE. This is evidence about this PPO configuration, not a general failure of PPO.",
-    ),
     "qwen3-4b-instruct-grpo-20260915-01": (
         "Archived · Instruct GRPO pilot",
         "historical",

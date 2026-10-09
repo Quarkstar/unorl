@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-09T07:51:34+00:00",
+  "reason": "User requested cleanup of the aborted LoRA-PPO baseline before starting the single-rollout PPO line.",
+  "run_id": "qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01",
+  "diagnosis": "The run was externally SIGTERM'd at global step 38 (no exit-status written, only .log and .pid). After a five-step critic-only warmup, policy entropy rose (0.85 -> 2.35) and training reward fell (0.10 -> 0.03); step-25 AIME25 avg@8 was 1.25% vs 3.33% at step 0. This is a record of one failed PPO configuration, not a general failure of PPO.",
+  "removed": [
+    {
+      "path": "runs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01",
+      "kind": "run_directory",
+      "bytes": 59340419
+    },
+    {
+      "path": "runs/logs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.log",
+      "kind": "log"
+    },
+    {
+      "path": "runs/logs/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.pid",
+      "kind": "log"
+    },
+    {
+      "path": "research/data/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.json",
+      "kind": "snapshot"
+    },
+    {
+      "path": "research/experiments/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.md",
+      "kind": "page"
+    },
+    {
+      "path": "research/figures/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.png",
+      "kind": "figure"
+    },
+    {
+      "path": "research/figures/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.svg",
+      "kind": "figure"
+    }
+  ],
+  "measurement_hashes_verified": {
+    "metrics.jsonl": "4ec8e8ec9cd8528f226782eee4771a8f05beb0dc8a22ea369bf26f318de3501c",
+    "evaluation.jsonl": "45f5c0bbd5405f9bff525c27c77624f4ecc34838b925841951465580c3b7e8d5",
+    "config.json": "d14ae6b75605dc41bfcfc476284e42382c40187334b7c710f0346244b1cc3523",
+    "training-data-audit.json": "7322793e2e43d2466ec1c1ac9994098a64d0c2e8fb6bce90b13477a963e6f14b"
+  },
+  "removed_registration": [
+    "scripts/research/snapshot.py: NOTES entry for the run",
+    "scripts/research/build.py: Part 1 membership"
+  ]
+}
