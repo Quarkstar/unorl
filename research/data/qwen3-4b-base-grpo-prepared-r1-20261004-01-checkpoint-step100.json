@@ -1,0 +1,195 @@
+{
+  "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+  "through_step": 100,
+  "scheduled_switches": [
+    40,
+    80
+  ],
+  "boundaries": [
+    {
+      "step": 40,
+      "selected_layers": 252,
+      "minimum_retained_descent": 0.9000326254814088,
+      "minimum_reference_a_cosine": 0.9993252577246455,
+      "minimum_reference_b_cosine": 0.8166646497628303
+    },
+    {
+      "step": 80,
+      "selected_layers": 252,
+      "minimum_retained_descent": 0.9000796425090819,
+      "minimum_reference_a_cosine": 0.999868725553519,
+      "minimum_reference_b_cosine": 0.9267460273390857
+    }
+  ],
+  "training_memory_records": 800,
+  "peak_allocated_gib": 17.8257474899292,
+  "peak_reserved_gib": 18.76171875,
+  "raw_evaluation_counts": [
+    {
+      "step": 0,
+      "correct_of_240": 8,
+      "solved_of_30": 5
+    },
+    {
+      "step": 20,
+      "correct_of_240": 19,
+      "solved_of_30": 8
+    },
+    {
+      "step": 40,
+      "correct_of_240": 36,
+      "solved_of_30": 12
+    },
+    {
+      "step": 60,
+      "correct_of_240": 35,
+      "solved_of_30": 8
+    },
+    {
+      "step": 80,
+      "correct_of_240": 43,
+      "solved_of_30": 11
+    },
+    {
+      "step": 100,
+      "correct_of_240": 38,
+      "solved_of_30": 8
+    }
+  ],
+  "source_sha256": {
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/config.json": "375228611fe024d674a4441560d3e2a4938b6d3558904e39079d5061534019e7",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/initial-adapter-audit.json": "a0ad7afa4bfae124c7a89389dc05194f4581b70ff4a3cc918c8922ecf804eb9b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/prepared-selection-audit.jsonl": "a8fac2f757bd3cbcc9a5b467d7228975c108b1a7b28acef017944cff91339d0e",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank0.jsonl": "b1a1e249ff3860df25422bf6e26318d9ce461e05d12bebdcf0923f0a211bcf16",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank1.jsonl": "1e5d1d25dc2277563cd058160ef6ae769e9bfd18d1cdea515ca07010a51b41ec",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank2.jsonl": "836ee0ba6873f376b53d1c8a9516ec9d83cf4f4a1c4cb17b3faecb129a18daf4",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank3.jsonl": "bfd52d75e237fe1ca1c37a79662440fff7bc3e531ae05d7e75d503751e4dc233",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank4.jsonl": "382a4b018fc6f2ed4a09efda3f9430f84f98ce6503ec5ff9279c2eb3c50968d7",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank5.jsonl": "4ced4eb136e49d224afd29e8412e24ecea018148a58f60f602d58e53235bfabd",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank6.jsonl": "b17a43cf3cef4f771c12aa59792e78345123da2dc1ddeb062d81b68ae2cff77b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/training-memory-rank7.jsonl": "963422707338029b0f5f4b9914d8ed4ebe7991844d2435723b1f0f8dffcfb150",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/backbone-sync-audit.jsonl": "bdbd28b077965ab3cdd0b2bfecc37decf1104b794bb282e7d6e2956d6f0cb675",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/merge-audit.jsonl": "906ce3d16ed292a25cb0036833159a9bf78500fd4d885173f9278868fa06bc3a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/evaluation.jsonl": "f6693acd3019b021dcbc54963f76ea4f38bb471284d0422bdc089a8ac7b83943",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "244d7914e46e7cedc78261d61ea01ca0dac59c0c05bf08f6c13f2258753bf058",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "b233ce30f5fd6896b33bed801fa75b0e8846ab69c420ea50edb616390b683063",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "d2085d4ccd75205ddb59707173a7ccdcf02ba324fa6037f91a85da1f929e9f5b",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "68d24fabc6c788756f770c1032af1298d5369e06d75589eba743d9eda8568de6",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "bb46edd28663f1849e67212da006bae750572e0bcce81168b4adbee9cf3b7225",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "e9293031b7e242879d19f5f3584d6832aca378dfb39d0b0e5d70c80e7df76e2a",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_0.pt": "35ac8ea8a09b60cd7b514d9dd116a9cf04b9cba4d4856b8cbf9ee6402d3ce829",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_0.pt": "943b9a94fb8b58b4e51b17de880572ed8b0c7e093b8a09f11db0625b4d6970a0",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_1.pt": "80f7b8446d338ce62ede3bac7b6736e1d6b73fae3cdbbce4fbe9ebca0ecac828",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_1.pt": "56f36575ed902a59e0fab2980f90be98f71ef8dc1cfefa0dae509e56748be849",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_2.pt": "50194028a9e137cb020b9d1538df0f2d7011ebbcb8df1d9f4e0128f9a329f234",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_2.pt": "0d38f6c4fe82dd7355fe5fabadb563a2f5703b08c4542e551a3f45cd40355dfd",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_3.pt": "ace1afde3c1a6fda2c3da1467fabea27839f11bc678d7fcea9a45f5c711c6b89",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_3.pt": "759efc3a6faf5942a9a2033aef46240a75c89272009a4d46dd4599eccad4c207",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_4.pt": "6a0039be10ea5e4d997d67d1ab5f2a9580264f45740efd7d72ccdfda9087f47d",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_4.pt": "202feac7663815879c76375c89cc54a08ae27164e06cd89001fbcceaf967a580",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_5.pt": "ef9a66a359608f1552fb1b06f846a75beacc1ee726785b6b727db131305ca764",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_5.pt": "925375d422fe967654abd306de814295f52c36efa28d4e2a2f7bf18ac190cb46",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_6.pt": "3044da42cc30f008fa019d431a676458c57f5195c2b975403fef4790af69ad30",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_6.pt": "e7d1d657170e3d0337d9984268ec865eac9d576af6dcf03adea321c8dcec1778",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/extra_state_world_size_8_rank_7.pt": "0e9bb423ca8305248e5a8610b201def177613ce1593d476e19a4d99ff31cd034",
+    "runs/qwen3-4b-base-grpo-prepared-r1-20261004-01/checkpoints/global_step_100/policy/optim_world_size_8_rank_7.pt": "ad64b6a4cf0bbb434b4bd04e21d6adf4d08a5c7ba62a9eb86cf0c355f3a605c8"
+  },
+  "limitations": "Read-only checkpoint and recorded-prefix audit, not a completed-run, full-model resume, live receiver tensor-equality, performance-parity or useful-rank certificate. Sources may contain later records; incomplete trailing JSONL writes are excluded. Memory is the policy allocator window, not total-device memory. Native checkpoint checks cover scheduler/protocol, per-name saved counters, optimizer counter multisets, finite local moments, preparation buffers and correction-history lengths. They do not associate optimizer integer IDs with parameter names, reconstruct full model weights, test full-model resume or prove useful learned rank.",
+  "checkpoint_rank_checks": [
+    {
+      "rank": 0,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 1,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 2,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 3,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 4,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 5,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 6,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    },
+    {
+      "rank": 7,
+      "active_optimizer_states": 504,
+      "finite_moment_states": 504,
+      "counter_histogram": {
+        "40.0": 504
+      },
+      "active_preparation_target": null,
+      "preparation_count": 0
+    }
+  ],
+  "checkpoint_protocol": {
+    "version": 1,
+    "seed": 42,
+    "first_merge": 40,
+    "merge_interval": 40,
+    "window_updates": 20,
+    "min_total_fraction": 0.9,
+    "angles": 256,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
+    "constant_lr": 1.5e-05
+  }
+}

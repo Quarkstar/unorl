@@ -153,5 +153,10 @@
     "id": "qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-01",
     "title": "Interrupted batch-normalized launch",
     "group": "incomplete"
+  },
+  {
+    "id": "qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01",
+    "title": "GRPO \u00b7 retain-overlong rank-1 LoRA (filtering disabled)",
+    "group": "ablation"
   }
 ]

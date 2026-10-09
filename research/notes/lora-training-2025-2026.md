@@ -4942,3 +4942,78 @@ sync, long-trajectory optimizer continuity, actual rank spectra, or accuracy.
 They cannot establish that this alternative works better than the running
 prepared method or standard LoRA. The current experiment remains unchanged;
 its 100-update endpoint and rank evidence still determine the next action.
+
+## Step-80 BF16 base-cast audit and gradient-probe motivation
+
+At the step-80 prepared-history transfer, the checkpoint's 252 native FP32
+base matrices were compared with their original Hugging Face BF16 matrices.
+The accumulated FP32 base compensation had L2 norm **4.2043**. Casting the
+compensated bases back to BF16 left a residual of **1.8363** (43.68% of the
+compensation norm), while that residual was **0.1285%** of the combined base
+weight norm. BF16 compensation norm was 4.3219 and cosine with the FP32
+compensation was 0.9076; 53.05% of entries changed in FP32 had no represented
+change relative to the original BF16 value. FP32 checkpoint storage agreed
+with the saved correction factors to relative L2 **1.21e-5**.
+
+This is a measurable representation effect, but not evidence that it caused
+reward loss: relative to the full base it is small, and the step-80 fixed
+response probe after the complete transfer measured mean KL **0.000515**,
+mean chosen-token log-probability shift **0.00835**, and argmax flips on
+**0.586%** of 1,024 tokens. That end-to-end probe includes both factor
+selection and base compensation, so it does not isolate casting. The data
+record is `research/data/qwen3-4b-base-grpo-prepared-r1-20261004-01-base-cast-step80.json`.
+
+The actual prepared selector also illustrates why a broader gradient probe is
+worth testing. At step 80, across 252 layers, selected A directions had mean
+absolute cosine **0.9999** with the previous A directions; selected B
+directions averaged **0.9497**. The selector searched only a two-dimensional
+candidate plane per factor (the old direction plus one random orthogonal
+direction), while retaining at least 90% of its estimated total descent.
+This finds some normal-gradient signal but strongly favors staying near the
+old A direction. A follow-up should probe a wider low-dimensional random
+subspace using activation/output-gradient products, without constructing
+dense weight gradients, then test whether its selected update improves a
+matched post-boundary branch. The current 8-GPU run remains live, so this is
+design evidence only; no second GPU trial has started.
+
+
+## October 5: shared pre-merge boundary and staged experiment plan
+
+The two initial October 5 normal-probe launches were stopped and excluded:
+the first started from the base model; the second substituted the historical
+step-100 LoRA checkpoint and changed the endpoint to 200. Neither implemented
+the agreed shared step-40 boundary experiment. Their logs remain for audit.
+Completed prepared-history weights/optimizer exports were cleaned; measured
+curves, spectra, checkpoint audits and evaluation dumps were preserved.
+
+No step-40 checkpoint survived earlier cleanup. Therefore
+`qwen3-4b-base-grpo-shared-prefix-r1-20261005-01` recreates standard rank-one
+LoRA GRPO updates 1–40 once, with merges disabled. Its config matches the
+fresh standard-LoRA refresh control except for a 40-update endpoint, checkpoint
+interval 40, and disabled dense HF exports. The native checkpoint retains
+model/adapters, AdamW, scheduler, RNG and dataloader state. A retention marker
+protects the shared origin until the later branches finish. Eight A100s,
+batch 32 × 8 rollouts, response limit 8192, constant LR 1.5e-5, no warmup,
+no KL, AIME25 avg@8/pass@8 every 20 steps, hourly health checks and 10-second
+NVML sampling remain as in the matched recipe.
+
+The queued precision stage waits for a successful prefix exit and all eight
+devices to be free. It restores the native step-40 checkpoint, verifies Adam
+counters and scheduler state, measures repeat-forward numerical noise, and
+compares identical saved prompt/response prefixes before and after an ordinary
+merge/reset. Weight-space FP32 merge and BF16 casting errors are measured
+separately. The saved held-out texts are numerical probes only and must never
+choose guided adapter directions. The checkpoint is read-only; this stage
+performs no training update and does not launch the later branches.
+
+After interpretation of this audit, the planned branches start from that same
+pre-merge state: standard LoRA continues its factors and Adam history; random
+ReLoRA and gradient-guided ReLoRA use the same merge schedule and Adam reset
+rule, isolating direction selection. All end at global step 100, with 60
+additional updates, rather than extending an unrelated run to 200. Guided
+refresh must use training-loss gradient probes outside the accumulated
+update's input/output spaces, not just relax the old prepared selector's
+90% retention constraint. Its production implementation and native FSDP
+validation remain pending. Optimizer-state transport is a later independent
+experiment. Success requires both comparable post-merge learning and retained
+singular-value energy beyond the leading direction; no improvement is assumed.

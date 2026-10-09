@@ -1,0 +1,93 @@
+{
+  "utc": "2026-10-05T01:46:15.858721+00:00",
+  "reason": "User requested stopping and cleanup of recent unsuccessful or misconfigured experiments.",
+  "runs": [
+    {
+      "run_id": "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+      "removed": [
+        {
+          "path": "checkpoints",
+          "bytes": 17794040208
+        },
+        {
+          "path": "relora-rank-factors.pt",
+          "bytes": 33620607
+        },
+        {
+          "path": "exports/global_step_100/policy",
+          "bytes": 17657172362
+        }
+      ],
+      "measurement_jsonl_hashes_verified": {
+        "rank-diagnostics.jsonl": "c763cdb406899018824e98b1bb20858e8472b473033b2d8cbed6a43204d88a63",
+        "evaluation.jsonl": "f6693acd3019b021dcbc54963f76ea4f38bb471284d0422bdc089a8ac7b83943",
+        "training-memory-rank5.jsonl": "4ced4eb136e49d224afd29e8412e24ecea018148a58f60f602d58e53235bfabd",
+        "metrics.jsonl": "2ae84b3733e3adf73c86da6b71651d7e185b2618083bfa40a00006e78ea73d6b",
+        "backbone-sync-audit.jsonl": "bdbd28b077965ab3cdd0b2bfecc37decf1104b794bb282e7d6e2956d6f0cb675",
+        "hourly-status.jsonl": "1b091124c9525b0e93c8161e1ac2e27000fe5e9c3b33764c84abe05920e41276",
+        "training-memory-rank6.jsonl": "b17a43cf3cef4f771c12aa59792e78345123da2dc1ddeb062d81b68ae2cff77b",
+        "training-memory-rank2.jsonl": "836ee0ba6873f376b53d1c8a9516ec9d83cf4f4a1c4cb17b3faecb129a18daf4",
+        "prepared-selection-audit.jsonl": "a8fac2f757bd3cbcc9a5b467d7228975c108b1a7b28acef017944cff91339d0e",
+        "training-memory-rank4.jsonl": "382a4b018fc6f2ed4a09efda3f9430f84f98ce6503ec5ff9279c2eb3c50968d7",
+        "vram-samples.jsonl": "8d99bf3a5fcebfc5e8861794eefc810fe5e4bd1e870f785d08fdd6acba936c25",
+        "merge-audit.jsonl": "906ce3d16ed292a25cb0036833159a9bf78500fd4d885173f9278868fa06bc3a",
+        "training-memory-rank1.jsonl": "1e5d1d25dc2277563cd058160ef6ae769e9bfd18d1cdea515ca07010a51b41ec",
+        "training-memory-rank3.jsonl": "bfd52d75e237fe1ca1c37a79662440fff7bc3e531ae05d7e75d503751e4dc233",
+        "training-memory-rank7.jsonl": "963422707338029b0f5f4b9914d8ed4ebe7991844d2435723b1f0f8dffcfb150",
+        "training-memory-rank0.jsonl": "b1a1e249ff3860df25422bf6e26318d9ce461e05d12bebdcf0923f0a211bcf16",
+        "exports/aime25/dumped_evals/global_step_60_evals/aggregated_results.jsonl": "8db4a835eb517e1eafa779328bc22e2a3f0c7f5af2546f9dc07e38465e3a0b05",
+        "exports/aime25/dumped_evals/global_step_60_evals/aime25.jsonl": "68d24fabc6c788756f770c1032af1298d5369e06d75589eba743d9eda8568de6",
+        "exports/aime25/dumped_evals/global_step_80_evals/aggregated_results.jsonl": "320df2db9a664993d4f80e0fb6c7466f6d900b1330c85d4c4ebe21aa211017b2",
+        "exports/aime25/dumped_evals/global_step_80_evals/aime25.jsonl": "bb46edd28663f1849e67212da006bae750572e0bcce81168b4adbee9cf3b7225",
+        "exports/aime25/dumped_evals/global_step_40_evals/aggregated_results.jsonl": "7db8fe399971cf778a8d8dc09fb74e1d2d243961da27206a2e03f5da6a461494",
+        "exports/aime25/dumped_evals/global_step_40_evals/aime25.jsonl": "d2085d4ccd75205ddb59707173a7ccdcf02ba324fa6037f91a85da1f929e9f5b",
+        "exports/aime25/dumped_evals/global_step_0_evals/aggregated_results.jsonl": "8fcb2946e77dfa0ec1da899a26a13b37471ed8661f483fdcc274ada2a8bb30fb",
+        "exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "244d7914e46e7cedc78261d61ea01ca0dac59c0c05bf08f6c13f2258753bf058",
+        "exports/aime25/dumped_evals/global_step_100_evals/aggregated_results.jsonl": "b578c1c8ac3d101e3e5d5e004cc2478b331b72c135cadbafcc052d896ed0a99c",
+        "exports/aime25/dumped_evals/global_step_100_evals/aime25.jsonl": "e9293031b7e242879d19f5f3584d6832aca378dfb39d0b0e5d70c80e7df76e2a",
+        "exports/aime25/dumped_evals/global_step_20_evals/aggregated_results.jsonl": "e5eda3bdf893aff1a53e892ca1f6f790a5491110d82e562feac0ddd995572034",
+        "exports/aime25/dumped_evals/global_step_20_evals/aime25.jsonl": "b233ce30f5fd6896b33bed801fa75b0e8846ab69c420ea50edb616390b683063"
+      }
+    },
+    {
+      "run_id": "qwen3-4b-base-grpo-normal-probe-r1-20261005-01",
+      "removed": [
+        {
+          "path": "checkpoints",
+          "bytes": 0
+        }
+      ],
+      "measurement_jsonl_hashes_verified": {
+        "evaluation.jsonl": "80291e1cf1efdc21fbd13eec33cb1e1c82648109036ba71e1279f4846a257fe2",
+        "training-memory-rank5.jsonl": "8a544b93e53b91f19c854bdd58df65a05bd859b3359f56eca8d4c2d076a1d750",
+        "metrics.jsonl": "c06324025a629d3bfc871e56cba5f245542e56ad399fca3cbb87447edd928576",
+        "backbone-sync-audit.jsonl": "24660ce0d2447feea543aea782a707ca7813e273313c5953b2fcfdee669b4cf8",
+        "hourly-status.jsonl": "a22ffd0acfd167e0fd901ab94a18daa65a378a4e6ca411e5052f1c167c911453",
+        "training-memory-rank6.jsonl": "2dbc3475693a1609242970d8b8cca3583bf68443a24e14607fe16bc8aab5f077",
+        "training-memory-rank2.jsonl": "3f3017c215b967c384718885d6f32ed7b1091262396dae25e677352eb530320a",
+        "training-memory-rank4.jsonl": "eb1691d7c12e9e42e8b71739ae67416612d01801a443c6fa1f2e0ff343e1b280",
+        "vram-samples.jsonl": "081f2878211ff33eca46fcc2457d1f23835d645dfe6656a863368324745e3dfb",
+        "training-memory-rank1.jsonl": "2bc8599736bf54799f8c1c7b9c476f6408626dc202ad7a3af074e195f17988ca",
+        "training-memory-rank3.jsonl": "931bfa9d85bdd77cd163e223a1653677cdc4df3cec6d8c58eef45719b853e647",
+        "training-memory-rank7.jsonl": "83a059779cd71dd62183216c37be715a417e312d1a21398b78dd763a58272379",
+        "training-memory-rank0.jsonl": "bdf12dfad464e6b1885eff585ec8c875315b9af4f7292e59b48cbf20b46c3536",
+        "exports/aime25/dumped_evals/global_step_0_evals/aggregated_results.jsonl": "fb163bf86ec434956b21e0229cc7f8e4886db4e1956497c34833c54151462826",
+        "exports/aime25/dumped_evals/global_step_0_evals/aime25.jsonl": "e8fa39888883f6479082a1d6a7e1a79d04383927b11156f08f4f285d10782469"
+      }
+    },
+    {
+      "run_id": "qwen3-4b-base-grpo-normal-probe-r1-boundary-20261005-01",
+      "removed": [
+        {
+          "path": "checkpoints",
+          "bytes": 0
+        }
+      ],
+      "measurement_jsonl_hashes_verified": {}
+    }
+  ],
+  "removed_launch_configs": [
+    "configs/qwen3-4b-base-grpo-normal-probe-r1.json",
+    "configs/qwen3-4b-base-grpo-normal-probe-r1-boundary-20261005-01.json"
+  ]
+}

@@ -11,7 +11,7 @@ title: "GRPO · prepared-history rank-aware ReLoRA, rank 1"
 | Setting | Value |
 |---|---|
 | Run ID | `qwen3-4b-base-grpo-prepared-r1-20261004-01` |
-| Record | 60 steps logged / 100 planned |
+| Record | 100 steps logged / 100 planned |
 | Group | Controlled follow-up experiments |
 | Optimizer | AdamW (SkyRL default) |
 | Model | models/Qwen3-4B-Base |
@@ -31,7 +31,7 @@ title: "GRPO · prepared-history rank-aware ReLoRA, rank 1"
 | Evaluation samples/question | 8 |
 | GPUs (policy) | 8 |
 | KL loss / reward | False / False |
-| Exit status | not retained |
+| Exit status | 0 |
 | Merges enabled | True |
 | First merge global step | 40 |
 | Refresh angle (degrees) | None |
@@ -61,6 +61,8 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | 20 | 7.9% | 26.7% |
 | 40 | 15.0% | 40.0% |
 | 60 | 14.6% | 26.7% |
+| 80 | 17.9% | 36.7% |
+| 100 | 15.8% | 26.7% |
 
 
 ## Evaluation sample counts
@@ -71,32 +73,34 @@ Evaluation points are unsmoothed. Training curves show raw values faintly and a 
 | aime25 | 20 | 19/240 | 8/30 |
 | aime25 | 40 | 36/240 | 12/30 |
 | aime25 | 60 | 35/240 | 8/30 |
+| aime25 | 80 | 43/240 | 11/30 |
+| aime25 | 100 | 38/240 | 8/30 |
 
 ## Quantitative observations
 
-Training response correctness averaged **9.3%** over the first 10 logged updates and **37.1%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
+Training response correctness averaged **9.3%** over the first 10 logged updates and **33.4%** over the last 10. These are different on-policy training batches, so this trend is not a fixed-test comparison.
 
-- Logged entropy: 0.8799 at step 1 → 0.1211 at step 60.
-- Policy gradient norm: 0.03134 at step 1 → 0.04184 at step 60.
-- Mean generated response tokens: 1455 at step 1 → 3805 at step 60.
+- Logged entropy: 0.8799 at step 1 → 0.1239 at step 100.
+- Policy gradient norm: 0.03134 at step 1 → 0.0333 at step 100.
+- Mean generated response tokens: 1455 at step 1 → 4047 at step 100.
 
-Best recorded AIME25 pass@8: **40.0% at step 40**. Last recorded: **26.7% at step 60**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
+Best recorded AIME25 pass@8: **40.0% at step 40**. Last recorded: **26.7% at step 100**. Selecting the peak after observing all checkpoints is optimistic; use the final result for an endpoint comparison.
 
 ## Interpretation limits
 
 One retained run is not a multi-seed study. AIME contains only 30 questions per year; avg@8 measures sampled single-response accuracy, while pass@8 measures question coverage. A peak checkpoint is not the final result. Response-count matching does not equal token-compute matching. See [measurement conventions](../methods.md).
 
-## Independently audited prefix through step 60
+## Independently audited prefix through step 100
 
 This is a partial-run checkpoint audit, not a completed experiment or proof of performance parity. All eight saved optimizer states, scheduler/protocol, finite local moments, preparation state, raw evaluation groups, and the recorded training-memory prefix were checked.
 
-Training allocator peak so far: **17.815 GiB allocated / 18.691 GiB reserved**, from **480 worker-update records**. These are policy allocator measurements, not total-device memory.
+Training allocator peak so far: **17.826 GiB allocated / 18.762 GiB reserved**, from **800 worker-update records**. These are policy allocator measurements, not total-device memory.
 
-[Download the checkpoint audit and source hashes](../data/qwen3-4b-base-grpo-prepared-r1-20261004-01-checkpoint-step60.json).
+[Download the checkpoint audit and source hashes](../data/qwen3-4b-base-grpo-prepared-r1-20261004-01-checkpoint-step100.json).
 
-Actual saved-factor mean stable rank: **1.1386**. Energy-weighted fraction outside each matrix's leading singular direction: **11.43%**. This measures the accumulated factor update, excluding base-rounding residuals; it is distinct from normalized direction-span rank.
+Actual saved-factor mean stable rank: **1.4752**. Energy-weighted fraction outside each matrix's leading singular direction: **29.83%**. This measures the accumulated factor update, excluding base-rounding residuals; it is distinct from normalized direction-span rank.
 
-[Download saved-factor diagnostics and source hashes](../data/qwen3-4b-base-grpo-prepared-r1-20261004-01-factor-span-step60.json).
+[Download saved-factor diagnostics and source hashes](../data/qwen3-4b-base-grpo-prepared-r1-20261004-01-factor-span-step100.json).
 
 ```{figure} ../figures/prepared-update-geometry.svg
 :alt: Recorded optimizer updates and boundary drift. Squares on the rank panel are independent saved-factor measurements at the indicated steps; missing ranks are not interpolated.
