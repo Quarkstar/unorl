@@ -37,6 +37,69 @@ GROUPS = {
     "confounded": "Optimizer and loss confounds",
     "incomplete": "Incomplete launch records",
 }
+
+# Book organization. The registry keeps fine-grained method groups for the API
+# and per-page metadata; PARTS is the goal-first reading order used by the index
+# and the table of contents. Every registry run must appear in exactly one part.
+PARTS = [
+    (
+        "Part 1 · Single-rollout reinforcement learning",
+        [
+            "qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01",
+            "qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01",
+            "qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01",
+        ],
+    ),
+    (
+        "Part 2 · Parameter-efficient adaptation",
+        [
+            "qwen3-4b-base-grpo-lora-r1-blog-20260923-01",
+            "qwen3-4b-base-grpo-20260916-01",
+            "qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01",
+            "qwen3-4b-base-grpo-lorafa-r1-20260930-01",
+            "qwen3-4b-base-grpo-lora-r1-last18-20260928-01",
+            "qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01",
+            "qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01",
+            "qwen3-4b-base-grpo-loft-simple-r1-20261001-01",
+        ],
+    ),
+    (
+        "Part 3 · Capacity accumulation across resets",
+        [
+            "qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01",
+            "qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01",
+            "qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01",
+            "qwen3-4b-base-grpo-nora-merge-r1-20260930-01",
+            "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
+            "qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01",
+            "qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01",
+            "qwen3-4b-base-grpo-prepared-r1-20261004-01",
+        ],
+    ),
+    (
+        "Part 4 · Saturation, long horizon and measurement",
+        [
+            "qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
+            "qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01",
+            "unorl-batchnorm-retain-truncated-20260926-01",
+        ],
+    ),
+    (
+        "Part 5 · Historical references and confounds",
+        [
+            "qwen3-4b-base-conditional-20260916-01",
+            "qwen3-4b-base-positive-only-20260918-01",
+            "qwen3-4b-instruct-grpo-20260915-01",
+            "qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-02",
+            "qwen3-4b-base-reinforce-batchmean-b256-20260924-01",
+            "qwen3-4b-base-reinforce-tokenmean-b256-20260924-01",
+            "qwen3-4b-base-reinforce-lora-r1-blog-20260923-03",
+            "qwen3-4b-base-reinforce-relora-gpu0-b16-m100-300-20260922-01",
+            "qwen3-4b-base-grpo-lora-r1-gpu0-20260923-01",
+            "qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-01",
+        ],
+    ),
+]
 plt.rcParams.update(
     {
         "font.family": "DejaVu Sans",
@@ -767,15 +830,26 @@ def main():
 title: UNORL research book
 ---
 
-# UNORL
+# UNORL — on-device continual reinforcement learning
 
-**Resource-efficient, on-policy reinforcement learning.** This book connects each experiment to its configuration, measured learning curves, and evaluation results. It builds from small versioned data snapshots; weights and generated solution text stay outside the repository.
+**Goal.** Run reinforcement learning on a language model under extreme resource limits — ultimately on a phone — so the model can keep adapting in place (continual learning). This book records every experiment with its configuration, learning curves and evaluation, and separates what is established from what is still a hypothesis. Read [the research program](program.md) for the full statement of the goal, the two levers, and the open problems.
 
-The present evidence supports learning with rank-1 LoRA and single-rollout REINFORCE using AdamW. At step 100, batch-normalized REINFORCE reaches AIME25 avg@8 **17.9%** and pass@8 **30.0%**, versus vanilla's **14.6% / 26.7%** and rank-1 GRPO's **20.0% / 43.3%**. These are single-run observations on 30 questions, not a reliable ranking of small differences. Earlier SGD trials are explicitly separated because they do not isolate algorithm choice.
+## Two levers on the resource budget
+
+| Lever | What it saves | What it costs |
+|---|---|---|
+| **Single-rollout RL** (algorithmic) | rollout and batch memory; one response per prompt | higher gradient variance |
+| **LoRA / ReLoRA** (parametric) | optimizer and parameter memory; rank-1 adapters | limits effective capacity |
+
+The experiments divide along these two levers: Part 1 develops the single-rollout line, Parts 2–3 the parametric line, Part 4 asks whether the resulting ceiling is real, and Part 5 keeps historical and confounded records separate.
+
+## What the evidence supports
+
+Rank-1 LoRA reaches the same range as full-parameter GRPO at 100 updates, and single-rollout batch-normalized REINFORCE with AdamW is competitive with multi-rollout GRPO: both are viable under the resource budget. But training reward saturates near steps 50–60 for LoRA, full-parameter and REINFORCE alike, and a 100→200 continuation is flat. ReLoRA merge/reset grows the accumulated stable rank to about two without improving the endpoint. Doubling the generation budget removes truncation but moves accuracy only one to two points. The current reading is that the setting, not the parameterization, is the limiter; see Part 4.
 
 ## Main comparison
 
-GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. Both generate 256 responses per update. The full-parameter reference uses different optimizer settings; all records expose their settings below.
+GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. Both generate 256 responses per update. The full-parameter reference uses different optimizer settings; all records expose their settings below. At step 100, batch-normalized REINFORCE reaches AIME25 avg@8 **17.9%** and pass@8 **30.0%**, vanilla REINFORCE **14.6% / 26.7%**, and rank-1 GRPO **20.0% / 43.3%**; these are single-run observations on 30 questions, not a reliable ranking of small differences.
 
 """
     text += figure(
@@ -798,12 +872,13 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         "figures/comparison-nora.svg",
         "Full-layer and final-half NoRA-init, compared with standard full-layer rank-1 LoRA GRPO.",
     )
-    text += "\n## All retained experiment results\n\nFinal columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.\n\n"
+    text += "\n## All retained experiment results\n\nGrouped by the two levers and the questions they answer. Final columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.\n\n"
     csvrows = []
-    for group, title in GROUPS.items():
-        text += f"### {title}\n\n| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |\n|---|---:|---:|---:|---:|---|\n"
-        for r in runs:
-            if r["group"] != group:
+    for part_title, part_ids in PARTS:
+        text += f"### {part_title}\n\n| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |\n|---|---:|---:|---:|---:|---|\n"
+        for rid in part_ids:
+            r = by_id.get(rid)
+            if r is None:
                 continue
             ev = evaluation(r)
             step, avg, pas = ev[-1] if ev else (None, None, None)
@@ -812,7 +887,7 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
             csvrows.append(
                 dict(
                     run_id=r["run_id"],
-                    group=group,
+                    group=r["group"],
                     last_train_step=last,
                     last_eval_step=step,
                     avg_at_8=avg,
@@ -885,18 +960,38 @@ GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. B
         w = csv.DictWriter(f, fieldnames=list(csvrows[0]), lineterminator="\n")
         w.writeheader()
         w.writerows(csvrows)
-    toc = [{"file": "research/index.md"}, {"file": "research/methods.md"}]
-    for group, title in GROUPS.items():
+    toc = [
+        {"file": "research/index.md"},
+        {"file": "research/program.md"},
+        {"file": "research/methods.md"},
+    ]
+    for part_title, part_ids in PARTS:
         toc.append(
             {
-                "title": title,
+                "title": part_title,
                 "children": [
-                    {"file": f"research/experiments/{r['run_id']}.md", "title": r["title"]}
-                    for r in runs
-                    if r["group"] == group
+                    {"file": f"research/experiments/{rid}.md", "title": by_id[rid]["title"]}
+                    for rid in part_ids
+                    if rid in by_id
                 ],
             }
         )
+    # Standalone, hand-written pages that are not registry snapshots.
+    toc.append(
+        {
+            "title": "Shared step-40 boundary comparison",
+            "children": [
+                {
+                    "file": "research/experiments/shared-boundary-relora-20261006.md",
+                    "title": "Shared step-40 ReLoRA comparison and merge precision check",
+                },
+                {
+                    "file": "research/experiments/shared-boundary-update-cap-20261006.md",
+                    "title": "Shared step-40 ReLoRA update-size control",
+                },
+            ],
+        }
+    )
     toc.extend(
         [
             {"file": "research/notes/nora.md"},

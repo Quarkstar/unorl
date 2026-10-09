@@ -2,15 +2,26 @@
 title: UNORL research book
 ---
 
-# UNORL
+# UNORL — on-device continual reinforcement learning
 
-**Resource-efficient, on-policy reinforcement learning.** This book connects each experiment to its configuration, measured learning curves, and evaluation results. It builds from small versioned data snapshots; weights and generated solution text stay outside the repository.
+**Goal.** Run reinforcement learning on a language model under extreme resource limits — ultimately on a phone — so the model can keep adapting in place (continual learning). This book records every experiment with its configuration, learning curves and evaluation, and separates what is established from what is still a hypothesis. Read [the research program](program.md) for the full statement of the goal, the two levers, and the open problems.
 
-The present evidence supports learning with rank-1 LoRA and single-rollout REINFORCE using AdamW. At step 100, batch-normalized REINFORCE reaches AIME25 avg@8 **17.9%** and pass@8 **30.0%**, versus vanilla's **14.6% / 26.7%** and rank-1 GRPO's **20.0% / 43.3%**. These are single-run observations on 30 questions, not a reliable ranking of small differences. Earlier SGD trials are explicitly separated because they do not isolate algorithm choice.
+## Two levers on the resource budget
+
+| Lever | What it saves | What it costs |
+|---|---|---|
+| **Single-rollout RL** (algorithmic) | rollout and batch memory; one response per prompt | higher gradient variance |
+| **LoRA / ReLoRA** (parametric) | optimizer and parameter memory; rank-1 adapters | limits effective capacity |
+
+The experiments divide along these two levers: Part 1 develops the single-rollout line, Parts 2–3 the parametric line, Part 4 asks whether the resulting ceiling is real, and Part 5 keeps historical and confounded records separate.
+
+## What the evidence supports
+
+Rank-1 LoRA reaches the same range as full-parameter GRPO at 100 updates, and single-rollout batch-normalized REINFORCE with AdamW is competitive with multi-rollout GRPO: both are viable under the resource budget. But training reward saturates near steps 50–60 for LoRA, full-parameter and REINFORCE alike, and a 100→200 continuation is flat. ReLoRA merge/reset grows the accumulated stable rank to about two without improving the endpoint. Doubling the generation budget removes truncation but moves accuracy only one to two points. The current reading is that the setting, not the parameterization, is the limiter; see Part 4.
 
 ## Main comparison
 
-GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. Both generate 256 responses per update. The full-parameter reference uses different optimizer settings; all records expose their settings below.
+GRPO uses 32 prompts × 8 responses; REINFORCE uses 256 prompts × 1 response. Both generate 256 responses per update. The full-parameter reference uses different optimizer settings; all records expose their settings below. At step 100, batch-normalized REINFORCE reaches AIME25 avg@8 **17.9%** and pass@8 **30.0%**, vanilla REINFORCE **14.6% / 26.7%**, and rank-1 GRPO **20.0% / 43.3%**; these are single-run observations on 30 questions, not a reliable ranking of small differences.
 
 ```{figure} figures/comparison-primary.svg
 :alt: Google Material palette. Evaluation points are unsmoothed; training curves use a trailing 10-update mean with raw values faintly shown.
@@ -54,71 +65,62 @@ Full-layer and final-half NoRA-init, compared with standard full-layer rank-1 Lo
 
 ## All retained experiment results
 
-Final columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.
+Grouped by the two levers and the questions they answer. Final columns use the last recorded AIME25 evaluation, whose step is shown separately from the last training step. A dash means missing evidence, not zero accuracy. Smoke tests are excluded.
 
-### Matched continuation from the standard-LoRA step-100 checkpoint
-
-| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
-|---|---:|---:|---:|---:|---|
-| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 200 | 200 | 17.1% | 33.3% | AdamW (SkyRL default) |
-| [GRPO · gradual A refresh with warm B (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md) | 134 | 120 | 17.1% | 40.0% | AdamW (SkyRL default) |
-
-### Controlled follow-up experiments
+### Part 1 · Single-rollout reinforcement learning
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [GRPO · prepared-history rank-aware ReLoRA, rank 1](experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md) | 60 | 60 | 14.6% | 26.7% | AdamW (SkyRL default) |
-| [GRPO · ten-increment compensated refresh, rank 1](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md) | 100 | 100 | 15.4% | 26.7% | AdamW (SkyRL default) |
-| [GRPO · fresh standard rank-1 LoRA control (100 steps from base)](experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md) | 100 | 100 | 17.5% | 36.7% | AdamW (SkyRL default) |
-| [GRPO · compensated gradual refresh, rank 1 (100 steps from base)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md) | 100 | 100 | 17.1% | 36.7% | AdamW (SkyRL default) |
-| [GRPO · standard rank-1 ReLoRA, constant-LR resets](experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md) | 100 | 100 | 17.1% | 30.0% | AdamW (SkyRL default) |
-| [GRPO · standard rank-1 ReLoRA, five-update restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | 100 | 100 | 15.8% | 40.0% | AdamW (SkyRL default) |
-| [GRPO · ReLoRA restart ramp, failed probe attempt](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | 39 | 20 | 6.2% | 26.7% | AdamW (SkyRL default) |
-| [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 100 | 100 | 3.3% | 20.0% | LoFTSimpleAdamW (Adam-family) |
-| [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 100 | 100 | 15.0% | 30.0% | AdamW (SkyRL default) |
-| [GRPO · full-layer rank-1 LoRA-FA](experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md) | 100 | 100 | 17.5% | 33.3% | AdamW (SkyRL default) |
-| [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 100 | 100 | 15.8% | 30.0% | AdamW (SkyRL default) |
-| [GRPO · rank-1 NoRA-init](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) | 100 | 100 | 17.9% | 36.7% | AdamW (SkyRL default) |
-| [GRPO · rank-1 LoRA in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md) | 100 | 100 | 17.9% | 33.3% | AdamW (SkyRL default) |
-| [Retain truncated failures · AdamW](experiments/unorl-batchnorm-retain-truncated-20260926-01.md) | 100 | 100 | 14.6% | 30.0% | AdamW (SkyRL default) |
+| [Vanilla REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01.md) | 100 | 100 | 14.6% | 26.7% | AdamW (SkyRL default) |
+| [Batch-normalized REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md) | 100 | 100 | 17.9% | 30.0% | AdamW (SkyRL default) |
+| [PPO · value-model warmup](experiments/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.md) | 38 | 25 | 1.2% | 10.0% | AdamW (SkyRL default) |
 
-### Current algorithm comparison
+### Part 2 · Parameter-efficient adaptation
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
 | [Rank-1 LoRA GRPO](experiments/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.md) | 100 | 100 | 20.0% | 43.3% | AdamW (SkyRL default) |
-| [Vanilla REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01.md) | 100 | 100 | 14.6% | 26.7% | AdamW (SkyRL default) |
-| [Batch-normalized REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md) | 100 | 100 | 17.9% | 30.0% | AdamW (SkyRL default) |
+| [Full-parameter GRPO](experiments/qwen3-4b-base-grpo-20260916-01.md) | 100 | 100 | 17.9% | 36.7% | AdamW (SkyRL default) |
+| [GRPO · fresh standard rank-1 LoRA control (100 steps from base)](experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md) | 100 | 100 | 17.5% | 36.7% | AdamW (SkyRL default) |
+| [GRPO · full-layer rank-1 LoRA-FA](experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md) | 100 | 100 | 17.5% | 33.3% | AdamW (SkyRL default) |
+| [GRPO · rank-1 LoRA in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md) | 100 | 100 | 17.9% | 33.3% | AdamW (SkyRL default) |
+| [GRPO · rank-1 NoRA-init](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md) | 100 | 100 | 17.9% | 36.7% | AdamW (SkyRL default) |
+| [GRPO · rank-1 NoRA-init in the final 18 layers](experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md) | 100 | 100 | 15.8% | 30.0% | AdamW (SkyRL default) |
+| [GRPO · full-layer rank-1 LoFT-simple](experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md) | 100 | 100 | 3.3% | 20.0% | LoFTSimpleAdamW (Adam-family) |
 
-### Full-parameter reference
+### Part 3 · Capacity accumulation across resets
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
-| [Full-parameter GRPO](experiments/qwen3-4b-base-grpo-20260916-01.md) | 100 | 100 | 17.9% | 36.7% | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 ReLoRA, constant-LR resets](experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md) | 100 | 100 | 17.1% | 30.0% | AdamW (SkyRL default) |
+| [GRPO · standard rank-1 ReLoRA, five-update restart ramp](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md) | 100 | 100 | 15.8% | 40.0% | AdamW (SkyRL default) |
+| [GRPO · ReLoRA restart ramp, failed probe attempt](experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md) | 39 | 20 | 6.2% | 26.7% | AdamW (SkyRL default) |
+| [GRPO · full NoRA-init with merge/reset](experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md) | 100 | 100 | 15.0% | 30.0% | AdamW (SkyRL default) |
+| [GRPO · compensated gradual refresh, rank 1 (100 steps from base)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md) | 100 | 100 | 17.1% | 36.7% | AdamW (SkyRL default) |
+| [GRPO · gradual A refresh with warm B (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md) | 134 | 120 | 17.1% | 40.0% | AdamW (SkyRL default) |
+| [GRPO · ten-increment compensated refresh, rank 1](experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md) | 100 | 100 | 15.4% | 26.7% | AdamW (SkyRL default) |
+| [GRPO · prepared-history rank-aware ReLoRA, rank 1](experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md) | 100 | 100 | 15.8% | 26.7% | AdamW (SkyRL default) |
 
-### Earlier research
+### Part 4 · Saturation, long horizon and measurement
+
+| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
+|---|---:|---:|---:|---:|---|
+| [GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)](experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md) | 200 | 200 | 17.1% | 33.3% | AdamW (SkyRL default) |
+| [GRPO · retain-overlong rank-1 LoRA (filtering disabled)](experiments/qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01.md) | 100 | 100 | 17.1% | 33.3% | AdamW (SkyRL default) |
+| [Retain truncated failures · AdamW](experiments/unorl-batchnorm-retain-truncated-20260926-01.md) | 100 | 100 | 14.6% | 30.0% | AdamW (SkyRL default) |
+
+### Part 5 · Historical references and confounds
 
 | Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
 |---|---:|---:|---:|---:|---|
 | [Archived · conditional online SFT](experiments/qwen3-4b-base-conditional-20260916-01.md) | 300 | 300 | 0.0% | 0.0% | AdamW (SkyRL default) |
 | [Archived · positive-only online SFT](experiments/qwen3-4b-base-positive-only-20260918-01.md) | 300 | 300 | 15.4% | 30.0% | AdamW (SkyRL default) |
-| [PPO · value-model warmup](experiments/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.md) | 38 | 25 | 1.2% | 10.0% | AdamW (SkyRL default) |
 | [Archived · Instruct GRPO pilot](experiments/qwen3-4b-instruct-grpo-20260915-01.md) | 12 | 0 | 45.0% | 66.7% | AdamW (SkyRL default) |
-
-### Optimizer and loss confounds
-
-| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
-|---|---:|---:|---:|---:|---|
 | [Batch-normalized REINFORCE · SGD](experiments/qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-02.md) | 100 | 100 | 2.1% | 6.7% | SGD |
 | [Mean-centered REINFORCE · SGD](experiments/qwen3-4b-base-reinforce-batchmean-b256-20260924-01.md) | 22 | 20 | 1.7% | 13.3% | SGD |
 | [Token-mean REINFORCE · SGD](experiments/qwen3-4b-base-reinforce-tokenmean-b256-20260924-01.md) | 73 | 60 | 2.9% | 13.3% | SGD |
 | [Early REINFORCE · loss-scale issue](experiments/qwen3-4b-base-reinforce-lora-r1-blog-20260923-03.md) | 100 | 100 | 2.5% | 16.7% | SGD |
 | [Single-GPU ReLoRA exploration](experiments/qwen3-4b-base-reinforce-relora-gpu0-b16-m100-300-20260922-01.md) | 295 | 200 | 1.7% | 6.7% | SGD |
-
-### Incomplete launch records
-
-| Experiment | Last train step | Last eval step | Avg@8 | Pass@8 | Optimizer |
-|---|---:|---:|---:|---:|---|
 | [Single-GPU LoRA launch record](experiments/qwen3-4b-base-grpo-lora-r1-gpu0-20260923-01.md) | — | — | — | — | AdamW (SkyRL default) |
 | [Interrupted batch-normalized launch](experiments/qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-01.md) | — | — | — | — | SGD |
 

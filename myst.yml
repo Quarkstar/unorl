@@ -14,73 +14,68 @@ project:
   - .tmp/**
   toc:
   - file: research/index.md
+  - file: research/program.md
   - file: research/methods.md
-  - file: research/experiments/shared-boundary-relora-20261006.md
-    title: Shared step-40 ReLoRA comparison and merge precision check
-  - file: research/experiments/shared-boundary-update-cap-20261006.md
-    title: Shared step-40 ReLoRA update-size control
-  - file: research/experiments/qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01.md
-    title: Retain-overlong standard rank-1 LoRA GRPO (in progress)
-  - title: Matched continuation from the standard-LoRA step-100 checkpoint
+  - title: Part 1 · Single-rollout reinforcement learning
     children:
-    - file: research/experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md
-      title: GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)
-    - file: research/experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md
-      title: GRPO · gradual A refresh with warm B (shared step-100 checkpoint)
-  - title: Controlled follow-up experiments
+    - file: research/experiments/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01.md
+      title: Vanilla REINFORCE · AdamW
+    - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md
+      title: Batch-normalized REINFORCE · AdamW
+    - file: research/experiments/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.md
+      title: PPO · value-model warmup
+  - title: Part 2 · Parameter-efficient adaptation
     children:
-    - file: research/experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md
-      title: GRPO · prepared-history rank-aware ReLoRA, rank 1
-    - file: research/experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md
-      title: GRPO · ten-increment compensated refresh, rank 1
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.md
+      title: Rank-1 LoRA GRPO
+    - file: research/experiments/qwen3-4b-base-grpo-20260916-01.md
+      title: Full-parameter GRPO
     - file: research/experiments/qwen3-4b-base-grpo-standard-r1-refresh-control-20261003-01.md
       title: GRPO · fresh standard rank-1 LoRA control (100 steps from base)
-    - file: research/experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md
-      title: GRPO · compensated gradual refresh, rank 1 (100 steps from base)
+    - file: research/experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md
+      title: GRPO · full-layer rank-1 LoRA-FA
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md
+      title: GRPO · rank-1 LoRA in the final 18 layers
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md
+      title: GRPO · rank-1 NoRA-init
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md
+      title: GRPO · rank-1 NoRA-init in the final 18 layers
+    - file: research/experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md
+      title: GRPO · full-layer rank-1 LoFT-simple
+  - title: Part 3 · Capacity accumulation across resets
+    children:
     - file: research/experiments/qwen3-4b-base-grpo-relora-r1-warmup0-20261002-01.md
       title: GRPO · standard rank-1 ReLoRA, constant-LR resets
     - file: research/experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261002-01.md
       title: GRPO · standard rank-1 ReLoRA, five-update restart ramp
     - file: research/experiments/qwen3-4b-base-grpo-relora-r1-warmup5-20261001-01.md
       title: GRPO · ReLoRA restart ramp, failed probe attempt
-    - file: research/experiments/qwen3-4b-base-grpo-loft-simple-r1-20261001-01.md
-      title: GRPO · full-layer rank-1 LoFT-simple
     - file: research/experiments/qwen3-4b-base-grpo-nora-merge-r1-20260930-01.md
       title: GRPO · full NoRA-init with merge/reset
-    - file: research/experiments/qwen3-4b-base-grpo-lorafa-r1-20260930-01.md
-      title: GRPO · full-layer rank-1 LoRA-FA
-    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-nora-init-last18-20260929-01.md
-      title: GRPO · rank-1 NoRA-init in the final 18 layers
-    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-nora-init-20260928-01.md
-      title: GRPO · rank-1 NoRA-init
-    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-last18-20260928-01.md
-      title: GRPO · rank-1 LoRA in the final 18 layers
+    - file: research/experiments/qwen3-4b-base-grpo-relora-refresh-r1-20261003-01.md
+      title: GRPO · compensated gradual refresh, rank 1 (100 steps from base)
+    - file: research/experiments/qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01.md
+      title: GRPO · gradual A refresh with warm B (shared step-100 checkpoint)
+    - file: research/experiments/qwen3-4b-base-grpo-gradual-refresh-r1-20261004-01.md
+      title: GRPO · ten-increment compensated refresh, rank 1
+    - file: research/experiments/qwen3-4b-base-grpo-prepared-r1-20261004-01.md
+      title: GRPO · prepared-history rank-aware ReLoRA, rank 1
+  - title: Part 4 · Saturation, long horizon and measurement
+    children:
+    - file: research/experiments/qwen3-4b-base-grpo-standard-r1-continue-20261003-01.md
+      title: GRPO · standard rank-1 LoRA continuation (shared step-100 checkpoint)
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01.md
+      title: GRPO · retain-overlong rank-1 LoRA (filtering disabled)
     - file: research/experiments/unorl-batchnorm-retain-truncated-20260926-01.md
       title: Retain truncated failures · AdamW
-  - title: Current algorithm comparison
-    children:
-    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.md
-      title: Rank-1 LoRA GRPO
-    - file: research/experiments/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01.md
-      title: Vanilla REINFORCE · AdamW
-    - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md
-      title: Batch-normalized REINFORCE · AdamW
-  - title: Full-parameter reference
-    children:
-    - file: research/experiments/qwen3-4b-base-grpo-20260916-01.md
-      title: Full-parameter GRPO
-  - title: Earlier research
+  - title: Part 5 · Historical references and confounds
     children:
     - file: research/experiments/qwen3-4b-base-conditional-20260916-01.md
       title: Archived · conditional online SFT
     - file: research/experiments/qwen3-4b-base-positive-only-20260918-01.md
       title: Archived · positive-only online SFT
-    - file: research/experiments/qwen3-4b-base-ppo-lora-r1-valuewarmup-20260924-01.md
-      title: PPO · value-model warmup
     - file: research/experiments/qwen3-4b-instruct-grpo-20260915-01.md
       title: Archived · Instruct GRPO pilot
-  - title: Optimizer and loss confounds
-    children:
     - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-02.md
       title: Batch-normalized REINFORCE · SGD
     - file: research/experiments/qwen3-4b-base-reinforce-batchmean-b256-20260924-01.md
@@ -91,12 +86,16 @@ project:
       title: Early REINFORCE · loss-scale issue
     - file: research/experiments/qwen3-4b-base-reinforce-relora-gpu0-b16-m100-300-20260922-01.md
       title: Single-GPU ReLoRA exploration
-  - title: Incomplete launch records
-    children:
     - file: research/experiments/qwen3-4b-base-grpo-lora-r1-gpu0-20260923-01.md
       title: Single-GPU LoRA launch record
     - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-r1-b256-20260925-01.md
       title: Interrupted batch-normalized launch
+  - title: Shared step-40 boundary comparison
+    children:
+    - file: research/experiments/shared-boundary-relora-20261006.md
+      title: Shared step-40 ReLoRA comparison and merge precision check
+    - file: research/experiments/shared-boundary-update-cap-20261006.md
+      title: Shared step-40 ReLoRA update-size control
   - file: research/notes/nora.md
   - file: research/notes/lora-training-2025-2026.md
   - file: research/notes/batchnorm-after60.md
