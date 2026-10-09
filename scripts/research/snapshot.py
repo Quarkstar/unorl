@@ -169,6 +169,11 @@ NOTES = {
         "ablation",
         "Standard rank-one LoRA GRPO from base, identical to the historical baseline except generator.apply_overlong_filtering is false, so truncated responses keep their loss mask and train on their negative reward. Qwen3-4B-Base, all-linear rank 1 / alpha 32, native AdamW constant LR 1.5e-5, no warmup, GRPO without group-std normalization or KL, token-mean loss, no policy clipping, token TIS correction with clip 1e9, 32 prompts with eight rollouts, 8192 response budget, seed 42, eight GPUs, 100 updates, AIME25 avg@8/pass@8 every 20 updates. Isolates the retain-versus-filter choice relative to the post-step-60 plateau in which training reward flattens while response length grows and the truncation rate rises. Single run on 30 questions; no endpoint ranking is assumed. Metrics and figures are added from this snapshot once all updates and evaluations complete.",
     ),
+    "qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01": (
+        "PPO · rank-1 critic diagnostic (single rollout)",
+        "ablation",
+        "Twenty-update diagnostic of the single-rollout PPO line. Qwen3-4B-Base, rank-one LoRA policy and a separate rank-one LoRA critic, GAE (gamma 1.0, lambda 0.95), clip 0.2, advantage batch-normalize, one rollout per prompt, five frozen critic-warmup steps. Added read-only diagnostics logged the critic value against the terminal reward. The critic stayed near zero (value mean -0.002 to -0.09, std 0.01 to 0.09) and only weakly correlated with reward (0.05-0.16) over the run, so GAE advantages were poor; policy entropy rose 0.85 to 1.99, training correctness fell 0.09 to 0.027, and AIME25 avg@8 fell from 2.08% to 0.42% with degenerate generations. Evidence that a rank-one critic cannot support GAE in this regime, not a general failure of PPO; the critic-free batch-normalized REINFORCE baseline is stronger. AIME25+AIME26 (60 questions) avg@8.",
+    ),
 }
 
 

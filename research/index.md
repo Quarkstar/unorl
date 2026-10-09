@@ -73,6 +73,7 @@ Grouped by the two levers and the questions they answer. Final columns use the l
 |---|---:|---:|---:|---:|---|
 | [Vanilla REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01.md) | 100 | 100 | 14.6% | 26.7% | AdamW (SkyRL default) |
 | [Batch-normalized REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md) | 100 | 100 | 17.9% | 30.0% | AdamW (SkyRL default) |
+| [PPO · rank-1 critic diagnostic (single rollout)](experiments/qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01.md) | 20 | 20 | 0.4% | 3.3% | AdamW (SkyRL default) |
 
 ### Part 2 · Parameter-efficient adaptation
 

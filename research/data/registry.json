@@ -153,5 +153,10 @@
     "id": "qwen3-4b-base-grpo-lora-r1-retain-overlong-20261008-01",
     "title": "GRPO \u00b7 retain-overlong rank-1 LoRA (filtering disabled)",
     "group": "ablation"
+  },
+  {
+    "id": "qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01",
+    "title": "PPO \u00b7 rank-1 critic diagnostic (single rollout)",
+    "group": "ablation"
   }
 ]

@@ -33,13 +33,61 @@ def monte_carlo_returns(rewards: torch.Tensor, response_mask: torch.Tensor) -> t
     return masked_rewards.flip(dims=(1,)).cumsum(dim=1).flip(dims=(1,)) * response_mask
 
 
+@torch.no_grad()
+def ppo_diagnostics(data):
+    """Read-only PPO health stats: is the critic informative and the advantage signed?
+
+    Compares the critic's value at the last response token with the terminal
+    outcome reward, and inspects the advantage sign, over the current batch.
+    A near-zero or negative value/reward correlation, or a negative
+    advantage/reward correlation, predicts policy divergence.
+    """
+    if "values" not in data or "advantages" not in data:
+        return {}
+    values = data["values"].float()
+    rewards = data["rewards"].float()
+    mask = data["response_mask"].float()
+    adv = data["advantages"].float()
+    n = values.shape[0]
+    lengths = mask.sum(dim=1).clamp_min(1).long()
+    rows = torch.arange(n, device=values.device)
+    last = (lengths - 1).clamp_min(0)
+    v_last = values[rows, last]
+    a_last = adv[rows, last]
+    reward = (rewards * mask).sum(dim=1)
+
+    def corr(x, y):
+        x = x - x.mean()
+        y = y - y.mean()
+        denom = (x.norm() * y.norm()).clamp_min(1e-12)
+        return (x * y).sum() / denom
+
+    valid = mask.bool()
+    return {
+        "diag/value_reward_corr": corr(v_last, reward).item(),
+        "diag/advantage_reward_corr": corr(a_last, reward).item(),
+        "diag/value_mean": v_last.mean().item(),
+        "diag/value_std": v_last.std().item(),
+        "diag/reward_mean": reward.mean().item(),
+        "diag/return_mean": data["returns"].float()[valid].mean().item()
+        if "returns" in data
+        else float("nan"),
+        "diag/advantage_mean": adv[valid].mean().item() if valid.any() else float("nan"),
+        "diag/advantage_pos_frac": (adv[valid] > 0).float().mean().item()
+        if valid.any()
+        else float("nan"),
+    }
+
+
 class ValueWarmupTrainer(BenchmarkTrainer):
     """Fit the critic on on-policy Monte Carlo targets before enabling PPO updates."""
 
     @torch.no_grad()
     def compute_advantages_and_returns(self, data):
         if self.global_step > self.cfg.trainer.critic_warmup_steps:
-            return super().compute_advantages_and_returns(data)
+            result = super().compute_advantages_and_returns(data)
+            self.all_metrics.update(ppo_diagnostics(data))
+            return result
 
         returns = monte_carlo_returns(data["rewards"], data["response_mask"])
         data["returns"] = returns
@@ -49,6 +97,7 @@ class ValueWarmupTrainer(BenchmarkTrainer):
         self.all_metrics["ppo/value_warmup_return_rms"] = torch.sqrt(
             returns.square().sum() / data["response_mask"].sum().clamp_min(1)
         ).item()
+        self.all_metrics.update(ppo_diagnostics(data))
         return data
 
     def train_critic_and_policy(self, data):

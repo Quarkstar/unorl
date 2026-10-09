@@ -22,6 +22,8 @@ project:
       title: Vanilla REINFORCE · AdamW
     - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md
       title: Batch-normalized REINFORCE · AdamW
+    - file: research/experiments/qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01.md
+      title: PPO · rank-1 critic diagnostic (single rollout)
   - title: Part 2 · Parameter-efficient adaptation
     children:
     - file: research/experiments/qwen3-4b-base-grpo-lora-r1-blog-20260923-01.md
