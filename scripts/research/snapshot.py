@@ -174,6 +174,11 @@ NOTES = {
         "ablation",
         "Twenty-update diagnostic of the single-rollout PPO line. Qwen3-4B-Base, rank-one LoRA policy and a separate rank-one LoRA critic, GAE (gamma 1.0, lambda 0.95), clip 0.2, advantage batch-normalize, one rollout per prompt, five frozen critic-warmup steps. Added read-only diagnostics logged the critic value against the terminal reward. The critic stayed near zero (value mean -0.002 to -0.09, std 0.01 to 0.09) and only weakly correlated with reward (0.05-0.16) over the run, so GAE advantages were poor; policy entropy rose 0.85 to 1.99, training correctness fell 0.09 to 0.027, and AIME25 avg@8 fell from 2.08% to 0.42% with degenerate generations. Evidence that a rank-one critic cannot support GAE in this regime, not a general failure of PPO; the critic-free batch-normalized REINFORCE baseline is stronger. AIME25+AIME26 (60 questions) avg@8.",
     ),
+    "qwen3-4b-base-ppo-lora-r32-example-20261012-01": (
+        "PPO · worked rank-32 LoRA recipe (collapsed)",
+        "ablation",
+        "Port of SkyRL's worked LoRA-PPO example to Qwen3-4B-Base and the DAPO math data: rank-32 LoRA policy and critic, use_kl_loss true, five samples per prompt, GAE (gamma 1.0, lambda 0.95), clip 0.2, policy and critic lr 3e-5, epochs 1, prompt 2048, response 8192, batch 256, AIME25+AIME26 (60 questions) eval. Stopped after 12 of 29 updates once the trajectory collapsed: mean response length exploded from 1.3k to 8.0k tokens, training correctness fell from 0.065 to 0.017, policy entropy rose 0.86 to 1.24 then collapsed to 0.19, and AIME25/AIME26 avg@8 fell to 0.42%/0.0%. The KL term was inactive (kl_loss_coef default 0.001, penalty about 1e-6) and the measured policy KL stayed small (at most 0.0068, then fell), so the collapse is length/objective driven, not drift away from the reference. Negative result: the worked recipe transfers to easy short GSM8K with a small Instruct model but does not transfer to hard long-response RL on a 4B base model. The 3e-5 LR is standard for LoRA and is not the cause.",
+    ),
 }
 
 

@@ -158,5 +158,10 @@
     "id": "qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01",
     "title": "PPO \u00b7 rank-1 critic diagnostic (single rollout)",
     "group": "ablation"
+  },
+  {
+    "id": "qwen3-4b-base-ppo-lora-r32-example-20261012-01",
+    "title": "PPO \u00b7 worked rank-32 LoRA recipe (collapsed)",
+    "group": "ablation"
   }
 ]
