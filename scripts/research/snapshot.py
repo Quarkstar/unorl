@@ -11,6 +11,10 @@ PLANNED_REFRESH = {
     "qwen3-4b-base-grpo-relora-refresh-r1-20261003-01",
     "qwen3-4b-base-grpo-standard-r1-continue-20261003-01",
     "qwen3-4b-base-grpo-relora-refresh-r1-continue-20261003-01",
+    # Matched estimator comparison arms (skip until their run dirs exist).
+    "qwen3-4b-base-grpo-lora-r1-a1-20261013-01",
+    "qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01",
+    "qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01",
 }
 
 NOTES = {
@@ -184,10 +188,20 @@ NOTES = {
         "ablation",
         "Full-parameter port of verl's PPO recipe to Qwen3-4B-Base and the DAPO math data: GAE single rollout, no KL loss, actor lr 1e-6, critic lr 1e-5, batch 1024/mini 256, clip 0.2, epochs 15, prompt 1024, response 8192. Stopped after 7 updates: mean response length rose from 1.6k to 7.5k tokens, training correctness fell from 0.101 to 0.048, and policy entropy fell from 0.92 to 0.18. Together with the earlier LoRA run the same collapse appears across LoRA versus full fine-tuning, KL on versus off, actor lr 3e-5 versus 1e-6, one versus five samples per prompt, and batch 256 versus 1024, while our GRPO runs (eight-sample group-mean baseline) are stable at the same 8192 response budget. This isolates the learned critic/GAE advantage estimator: on this hard long-horizon task it yields a length-biased advantage where the group baseline does not. Unverified hypothesis for later: SkyRL's PPO implementation may be faulty, since the same recipe trains in verl's own framework. PPO is set aside for now.",
     ),
-    "qwen3-4b-base-reinforce-plus-plus-r1-20261013-01": (
-        "REINFORCE++ · single rollout with sequence_mean",
+    "qwen3-4b-base-grpo-lora-r1-a1-20261013-01": (
+        "GRPO · rank 1 alpha 1 lr 1e-5",
         "ablation",
-        "Single-rollout REINFORCE++ from base on the DAPO math data. SkyRL's built-in reinforce++ estimator computes discounted returns-to-go from the terminal outcome reward and then whitens them over masked tokens (masked_whiten), so the advantage is batch-normalized with no critic. Qwen3-4B-Base, rank-1 LoRA (alpha 32), native AdamW constant LR 1.5e-5, no warmup, no KL, no clipping, one rollout per prompt (n_samples_per_prompt=1, update_epochs_per_batch=1), 256 prompts per update, 8192 response budget, 100 updates, AIME25+AIME26 (60 questions) avg@8 every 20 updates. Differs from the earlier batch-normalized REINFORCE by using the built-in reinforce++ estimator and loss_reduction=sequence_mean (per-sequence mean token loss, then batch mean) instead of token_mean, so long and short responses get equal weight. Metrics and figures are added from this snapshot once the run completes.",
+        "Matched estimator comparison, all rank-1 LoRA with alpha 1 (scale 1), native AdamW constant LR 1e-5, no KL, no clipping, token_mean, 256 responses per update, DAPO math, 100 updates, AIME25+AIME26 avg@8 every 20. This arm: GRPO with 32 prompts x 8 rollouts and the per-prompt group-mean baseline.",
+    ),
+    "qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01": (
+        "REINFORCE++ · rank 1 alpha 1 lr 1e-5",
+        "ablation",
+        "Matched estimator comparison arm: single-rollout REINFORCE++ (SkyRL built-in; discounted returns-to-go then masked_whiten), 256 prompts x 1, rank-1 LoRA alpha 1, LR 1e-5, token_mean. Same batch, response budget and evaluation as the GRPO and raw-REINFORCE arms.",
+    ),
+    "qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01": (
+        "Raw signed REINFORCE · rank 1 alpha 1 lr 1e-5",
+        "ablation",
+        "Matched estimator comparison arm: raw signed REINFORCE on the terminal +1/-1 reward with no centering or whitening (unorl signed_reinforce estimator and loss), 256 prompts x 1, rank-1 LoRA alpha 1, LR 1e-5, token_mean. Same batch, response budget and evaluation as the GRPO and REINFORCE++ arms.",
     ),
 }
 

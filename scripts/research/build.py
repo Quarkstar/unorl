@@ -47,7 +47,9 @@ PARTS = [
         [
             "qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01",
             "qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01",
-            "qwen3-4b-base-reinforce-plus-plus-r1-20261013-01",
+            "qwen3-4b-base-grpo-lora-r1-a1-20261013-01",
+            "qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01",
+            "qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01",
             "qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01",
             "qwen3-4b-base-ppo-lora-r32-example-20261012-01",
             "qwen3-4b-base-ppo-full-verl-20261013-01",
