@@ -179,6 +179,11 @@ NOTES = {
         "ablation",
         "Port of SkyRL's worked LoRA-PPO example to Qwen3-4B-Base and the DAPO math data: rank-32 LoRA policy and critic, use_kl_loss true, five samples per prompt, GAE (gamma 1.0, lambda 0.95), clip 0.2, policy and critic lr 3e-5, epochs 1, prompt 2048, response 8192, batch 256, AIME25+AIME26 (60 questions) eval. Stopped after 12 of 29 updates once the trajectory collapsed: mean response length exploded from 1.3k to 8.0k tokens, training correctness fell from 0.065 to 0.017, policy entropy rose 0.86 to 1.24 then collapsed to 0.19, and AIME25/AIME26 avg@8 fell to 0.42%/0.0%. The KL term was inactive (kl_loss_coef default 0.001, penalty about 1e-6) and the measured policy KL stayed small (at most 0.0068, then fell), so the collapse is length/objective driven, not drift away from the reference. Negative result: the worked recipe transfers to easy short GSM8K with a small Instruct model but does not transfer to hard long-response RL on a 4B base model. The 3e-5 LR is standard for LoRA and is not the cause.",
     ),
+    "qwen3-4b-base-ppo-full-verl-20261013-01": (
+        "PPO · full-finetune verl recipe (collapsed)",
+        "ablation",
+        "Full-parameter port of verl's PPO recipe to Qwen3-4B-Base and the DAPO math data: GAE single rollout, no KL loss, actor lr 1e-6, critic lr 1e-5, batch 1024/mini 256, clip 0.2, epochs 15, prompt 1024, response 8192. Stopped after 7 updates: mean response length rose from 1.6k to 7.5k tokens, training correctness fell from 0.101 to 0.048, and policy entropy fell from 0.92 to 0.18. Together with the earlier LoRA run the same collapse appears across LoRA versus full fine-tuning, KL on versus off, actor lr 3e-5 versus 1e-6, one versus five samples per prompt, and batch 256 versus 1024, while our GRPO runs (eight-sample group-mean baseline) are stable at the same 8192 response budget. This isolates the learned critic/GAE advantage estimator: on this hard long-horizon task it yields a length-biased advantage where the group baseline does not. Unverified hypothesis for later: SkyRL's PPO implementation may be faulty, since the same recipe trains in verl's own framework. PPO is set aside for now.",
+    ),
 }
 
 

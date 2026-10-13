@@ -51,6 +51,11 @@ a capability ceiling: rank one may not hold what the task needs.
   improve the endpoint; compensated refresh keeps parity.
 - **Length/truncation is a small measurement effect**: doubling the generation
   budget removes truncation but moves accuracy only one to two points.
+- **Critic-based PPO collapses on this setting**: full-parameter and LoRA PPO both
+drive response length to the cap and entropy to near zero, across KL on/off,
+actor lr 1e-6 vs 3e-5, one vs five samples per prompt, and batch 256 vs 1024,
+while GRPO's eight-sample group baseline is stable at the same 8192 budget. The
+learned critic/GAE advantage is the suspect. PPO is set aside for now.
 
 ## Length-cap measurement (closed)
 
@@ -83,7 +88,12 @@ alive), rather than another adapter variant.
 
 ## Open directions
 
-1. **Single-rollout PPO-like algorithm** — the under-explored algorithmic lever.
+1. **Critic-based PPO is set aside.** It collapses across LoRA and full
+   fine-tuning and every tuned hyperparameter tried (KL, LR, samples, batch) on
+   this hard long-response setting; the learned critic/GAE advantage is the
+   suspect, and a faulty SkyRL PPO implementation is an unverified possibility.
+   Revisit only with a group-baseline PPO variant, or after checking the
+   implementation against a reference.
 2. **A setting that rewards capacity** — so that LoRA vs full-parameter can
    differ at all.
 3. **Explicit on-device memory accounting** — turn the resource claim into a
