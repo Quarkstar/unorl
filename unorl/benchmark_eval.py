@@ -1,4 +1,4 @@
-"""Math benchmark environment with symbolic verification."""
+"""Math benchmark environment with bounded symbolic verification."""
 
 import skyrl_gym
 from math_verify import LatexExtractionConfig, parse, verify
@@ -12,22 +12,23 @@ def symbolic_score(response, ground_truth):
     result = score_answer(response, ground_truth)
     if result["acc"] or result["pred"] is None:
         return result
-    # Grade the final explicit answer only with symbolic parsing. Timeouts are
-    # disabled: math_verify implements them with signal.alarm, which raises in a
-    # non-main thread (SkyRL runs env steps in a worker pool when
-    # environment.skyrl_gym.max_env_workers > 0). The rule-based check above
-    # already handles the common case; this fallback only runs when it fails.
+    # Grade the final explicit answer only with bounded symbolic parsing.
+    # math_verify implements these timeouts with signal.alarm, which only works on
+    # the main thread, so evaluation must run with
+    # environment.skyrl_gym.max_env_workers = 0 (the default in our configs). A
+    # finite timeout is required: with None a pathological response can hang the
+    # parser indefinitely (observed 2026-10-13).
     gold = parse(
         "$" + str(ground_truth).strip("$") + "$",
         extraction_config=[LatexExtractionConfig()],
-        parsing_timeout=None,
+        parsing_timeout=2,
     )
     pred = parse(
         "$" + result["pred"].strip("$") + "$",
         extraction_config=[LatexExtractionConfig()],
-        parsing_timeout=None,
+        parsing_timeout=2,
     )
-    correct = bool(verify(gold, pred, timeout_seconds=None))
+    correct = bool(verify(gold, pred, timeout_seconds=2))
     return dict(score=1.0 if correct else -1.0, acc=correct, pred=result["pred"])
 
 
