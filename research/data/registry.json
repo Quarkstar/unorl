@@ -168,5 +168,20 @@
     "id": "qwen3-4b-base-ppo-full-verl-20261013-01",
     "title": "PPO \u00b7 full-finetune verl recipe (collapsed)",
     "group": "ablation"
+  },
+  {
+    "id": "qwen3-4b-base-grpo-lora-r1-a1-20261013-01",
+    "title": "GRPO \u00b7 rank 1 alpha 1 lr 1e-5",
+    "group": "ablation"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01",
+    "title": "REINFORCE++ \u00b7 rank 1 alpha 1 lr 1e-5",
+    "group": "ablation"
+  },
+  {
+    "id": "qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01",
+    "title": "Raw signed REINFORCE \u00b7 rank 1 alpha 1 lr 1e-5",
+    "group": "ablation"
   }
 ]

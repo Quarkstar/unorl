@@ -73,6 +73,9 @@ Grouped by the two levers and the questions they answer. Final columns use the l
 |---|---:|---:|---:|---:|---|
 | [Vanilla REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-adamw-r1-b256-20260925-01.md) | 100 | 100 | 14.6% | 26.7% | AdamW (SkyRL default) |
 | [Batch-normalized REINFORCE · AdamW](experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md) | 100 | 100 | 17.9% | 30.0% | AdamW (SkyRL default) |
+| [GRPO · rank 1 alpha 1 lr 1e-5](experiments/qwen3-4b-base-grpo-lora-r1-a1-20261013-01.md) | 100 | 100 | 2.5% | 13.3% | AdamW (SkyRL default) |
+| [REINFORCE++ · rank 1 alpha 1 lr 1e-5](experiments/qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01.md) | 100 | 100 | 2.5% | 16.7% | AdamW (SkyRL default) |
+| [Raw signed REINFORCE · rank 1 alpha 1 lr 1e-5](experiments/qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01.md) | 100 | 100 | 2.9% | 23.3% | AdamW (SkyRL default) |
 | [PPO · rank-1 critic diagnostic (single rollout)](experiments/qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01.md) | 20 | 20 | 0.4% | 3.3% | AdamW (SkyRL default) |
 | [PPO · worked rank-32 LoRA recipe (collapsed)](experiments/qwen3-4b-base-ppo-lora-r32-example-20261012-01.md) | 12 | 10 | 0.4% | 3.3% | AdamW (SkyRL default) |
 | [PPO · full-finetune verl recipe (collapsed)](experiments/qwen3-4b-base-ppo-full-verl-20261013-01.md) | 8 | — | — | — | AdamW (SkyRL default) |

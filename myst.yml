@@ -22,6 +22,12 @@ project:
       title: Vanilla REINFORCE · AdamW
     - file: research/experiments/qwen3-4b-base-reinforce-batchnorm-adamw-r1-b256-20260925-01.md
       title: Batch-normalized REINFORCE · AdamW
+    - file: research/experiments/qwen3-4b-base-grpo-lora-r1-a1-20261013-01.md
+      title: GRPO · rank 1 alpha 1 lr 1e-5
+    - file: research/experiments/qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01.md
+      title: REINFORCE++ · rank 1 alpha 1 lr 1e-5
+    - file: research/experiments/qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01.md
+      title: Raw signed REINFORCE · rank 1 alpha 1 lr 1e-5
     - file: research/experiments/qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01.md
       title: PPO · rank-1 critic diagnostic (single rollout)
     - file: research/experiments/qwen3-4b-base-ppo-lora-r32-example-20261012-01.md
