@@ -1,0 +1,23 @@
+{
+  "utc": "2026-10-14T01:40:56.354270+00:00",
+  "reason": "User: delete all FSDP checkpoints and model exports except the full-parameter reference qwen3-4b-base-grpo-20260916-01.",
+  "preserved": {
+    "checkpoint": "runs/qwen3-4b-base-grpo-20260916-01/checkpoints",
+    "model_export": "runs/qwen3-4b-base-grpo-20260916-01/exports/global_step_100"
+  },
+  "removed": {
+    "fsdp_checkpoints": "runs/*/checkpoints for every run except qwen3-4b-base-grpo-20260916-01",
+    "model_exports": "runs/*/exports/global_step_* for every run except qwen3-4b-base-grpo-20260916-01"
+  },
+  "space": {
+    "runs_before": "431G",
+    "runs_after": "68G"
+  },
+  "retained": [
+    "metrics.jsonl",
+    "evaluation.jsonl",
+    "exports/*/dumped_evals/",
+    "logs",
+    "source/"
+  ]
+}
