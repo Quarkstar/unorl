@@ -15,6 +15,10 @@ PLANNED_REFRESH = {
     "qwen3-4b-base-grpo-lora-r1-a1-20261013-01",
     "qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01",
     "qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01",
+    # Matched-effective-LR (alpha 1, lr 5e-4) estimator comparison arms.
+    "qwen3-4b-base-grpo-lora-r1-a1-lr5e-4-20261014-01",
+    "qwen3-4b-base-reinforce-plus-plus-r1-a1-lr5e-4-20261014-01",
+    "qwen3-4b-base-reinforce-adamw-r1-a1-lr5e-4-20261014-01",
 }
 
 NOTES = {
@@ -202,6 +206,21 @@ NOTES = {
         "Raw signed REINFORCE · rank 1 alpha 1 lr 1e-5",
         "ablation",
         "Matched estimator comparison arm: raw signed REINFORCE on the terminal +1/-1 reward with no centering or whitening (unorl signed_reinforce estimator and loss), 256 prompts x 1, rank-1 LoRA alpha 1, LR 1e-5, token_mean. Same batch, response budget and evaluation as the GRPO and REINFORCE++ arms.",
+    ),
+    "qwen3-4b-base-grpo-lora-r1-a1-lr5e-4-20261014-01": (
+        "GRPO · rank 1 alpha 1 lr 5e-4",
+        "ablation",
+        "Matched-effective-LR arm: GRPO, rank-1 LoRA alpha 1 (scale 1), LR 5e-4, so alpha/rank x lr is about the alpha-32 baseline's 32 x 1.5e-5 = 4.8e-4. 32 prompts x 8 rollouts, token_mean, no KL, no clipping, 100 updates, AIME25+AIME26 avg@8 every 20, logs only. Learns much faster than the alpha-32 baseline at matched nominal effective LR, indicating the alpha/LR split matters under AdamW beyond their product.",
+    ),
+    "qwen3-4b-base-reinforce-plus-plus-r1-a1-lr5e-4-20261014-01": (
+        "REINFORCE++ · rank 1 alpha 1 lr 5e-4",
+        "ablation",
+        "Matched-effective-LR estimator arm: single-rollout REINFORCE++ (SkyRL built-in; discounted returns-to-go then masked_whiten), 256 prompts x 1, rank-1 LoRA alpha 1, LR 5e-4, token_mean. Same batch, response budget and evaluation as the GRPO and raw-REINFORCE arms at this LR.",
+    ),
+    "qwen3-4b-base-reinforce-adamw-r1-a1-lr5e-4-20261014-01": (
+        "Raw signed REINFORCE · rank 1 alpha 1 lr 5e-4",
+        "ablation",
+        "Matched-effective-LR estimator arm: raw signed REINFORCE on the terminal +1/-1 reward with no centering or whitening (unorl signed_reinforce estimator and loss), 256 prompts x 1, rank-1 LoRA alpha 1, LR 5e-4, token_mean.",
     ),
 }
 
