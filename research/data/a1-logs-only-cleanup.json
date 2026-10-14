@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-14T01:36:23.081405+00:00",
+  "reason": "User: these experiments need logs only, no checkpoints.",
+  "removed": [
+    {
+      "path": "runs/qwen3-4b-base-grpo-lora-r1-a1-20261013-01/checkpoints",
+      "kind": "fsdp_checkpoint"
+    },
+    {
+      "path": "runs/qwen3-4b-base-grpo-lora-r1-a1-20261013-01/exports/global_step_*",
+      "kind": "model_export"
+    },
+    {
+      "path": "runs/qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01/checkpoints",
+      "kind": "fsdp_checkpoint"
+    },
+    {
+      "path": "runs/qwen3-4b-base-reinforce-plus-plus-r1-a1-20261013-01/exports/global_step_*",
+      "kind": "model_export"
+    }
+  ],
+  "retained": [
+    "metrics.jsonl",
+    "evaluation.jsonl",
+    "exports/*/dumped_evals/",
+    "logs"
+  ]
+}
