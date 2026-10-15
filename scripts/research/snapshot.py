@@ -19,6 +19,10 @@ PLANNED_REFRESH = {
     "qwen3-4b-base-grpo-lora-r1-a1-lr5e-4-20261014-01",
     "qwen3-4b-base-reinforce-plus-plus-r1-a1-lr5e-4-20261014-01",
     "qwen3-4b-base-reinforce-adamw-r1-a1-lr5e-4-20261014-01",
+    # Filtering-off (apply_overlong_filtering=false) counterparts.
+    "qwen3-4b-base-grpo-lora-r1-a1-lr5e-4-nofilter-20261015-01",
+    "qwen3-4b-base-reinforce-plus-plus-r1-a1-lr5e-4-nofilter-20261015-01",
+    "qwen3-4b-base-reinforce-adamw-r1-a1-lr5e-4-nofilter-20261015-01",
 }
 
 NOTES = {
@@ -221,6 +225,21 @@ NOTES = {
         "Raw signed REINFORCE · rank 1 alpha 1 lr 5e-4",
         "ablation",
         "Matched-effective-LR estimator arm: raw signed REINFORCE on the terminal +1/-1 reward with no centering or whitening (unorl signed_reinforce estimator and loss), 256 prompts x 1, rank-1 LoRA alpha 1, LR 5e-4, token_mean.",
+    ),
+    "qwen3-4b-base-grpo-lora-r1-a1-lr5e-4-nofilter-20261015-01": (
+        "GRPO · rank 1 alpha 1 lr 5e-4, overlong filtering off",
+        "ablation",
+        "Matched-effective-LR GRPO arm identical to the filtering-on version except generator.apply_overlong_filtering is false, so truncated responses keep their loss mask and train on their negative reward. Tests whether penalising truncation in the update stops the response-length / truncation drift seen with filtering on.",
+    ),
+    "qwen3-4b-base-reinforce-plus-plus-r1-a1-lr5e-4-nofilter-20261015-01": (
+        "REINFORCE++ · rank 1 alpha 1 lr 5e-4, overlong filtering off",
+        "ablation",
+        "Single-rollout REINFORCE++, rank-1 LoRA alpha 1, LR 5e-4, token_mean, identical to the filtering-on arm except apply_overlong_filtering is false.",
+    ),
+    "qwen3-4b-base-reinforce-adamw-r1-a1-lr5e-4-nofilter-20261015-01": (
+        "Raw signed REINFORCE · rank 1 alpha 1 lr 5e-4, overlong filtering off",
+        "ablation",
+        "Raw signed REINFORCE, rank-1 LoRA alpha 1, LR 5e-4, token_mean, identical to the filtering-on arm except apply_overlong_filtering is false.",
     ),
 }
 
