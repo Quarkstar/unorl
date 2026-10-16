@@ -7,6 +7,8 @@ qwen3-4b-base-reinforce-adamw-r1-a1-20261013-01,ablation,100,100,0.0291666666666
 qwen3-4b-base-grpo-lora-r1-a1-lr5e-4-20261014-01,ablation,100,100,0.20416666666666666,0.4
 qwen3-4b-base-reinforce-plus-plus-r1-a1-lr5e-4-20261014-01,ablation,100,100,0.18333333333333332,0.36666666666666664
 qwen3-4b-base-reinforce-adamw-r1-a1-lr5e-4-20261014-01,ablation,100,100,0.17083333333333334,0.3
+qwen3-4b-base-grpo-lora-r1-a1-lr5e-4-nofilter-20261015-01,ablation,100,100,0.175,0.3
+qwen3-4b-base-reinforce-plus-plus-r1-a1-lr5e-4-nofilter-20261015-01,ablation,100,100,0.1625,0.3333333333333333
 qwen3-4b-base-ppo-lora-r1-diagnostic-20261009-01,ablation,20,20,0.004166666666666667,0.03333333333333333
 qwen3-4b-base-ppo-lora-r32-example-20261012-01,ablation,12,10,0.004166666666666667,0.03333333333333333
 qwen3-4b-base-ppo-full-verl-20261013-01,ablation,8,,,
